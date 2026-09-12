@@ -1,0 +1,30 @@
+"use strict";
+
+const fs = require("node:fs");
+const path = require("node:path");
+const {autoMatchProject} = require("./layout-matcher.cjs");
+
+const projectId = process.argv[2];
+if (!projectId) throw new Error("Usage: node scripts/migrate-project-to-dual-timed-effects.cjs <projectId>");
+const root = process.cwd();
+const projectFile = path.join(root, "data", "projects", projectId, "project.json");
+if (!fs.existsSync(projectFile)) throw new Error("Project not found: " + projectId);
+const project = JSON.parse(fs.readFileSync(projectFile, "utf8"));
+const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+const backupDir = path.join(path.dirname(projectFile), "backups");
+fs.mkdirSync(backupDir, {recursive: true});
+const backupFile = path.join(backupDir, "project-before-dual-timed-effects-" + stamp + ".json");
+fs.writeFileSync(backupFile, JSON.stringify(project, null, 2) + "\n");
+const migrated = autoMatchProject(project, {force: true, effectsPerBeat: 2});
+const updatedAt = new Date().toISOString();
+migrated.beats = migrated.beats.map((beat) => ({...beat, render: {...(beat.render || {}), revision: Number(beat.render?.revision || 0) + 1, status: "stale", previewPath: null, renderedAt: null, error: null}}));
+migrated.render = {...(migrated.render || {}), status: "stale", progress: 0, outputPath: null, renderedAt: null, error: null};
+migrated.updatedAt = updatedAt;
+migrated.layerTiming = {mode: "dual-timed-effects", effectsPerBeat: 2, targetWindowSeconds: 15, migratedAt: updatedAt};
+const tempFile = projectFile + ".tmp-" + process.pid + "-" + Date.now();
+fs.writeFileSync(tempFile, JSON.stringify(migrated, null, 2) + "\n");
+fs.renameSync(tempFile, projectFile);
+const logFile = path.join(path.dirname(projectFile), "logs", "execution.log");
+fs.mkdirSync(path.dirname(logFile), {recursive: true});
+fs.appendFileSync(logFile, JSON.stringify({timestamp: updatedAt, level: "INFO", stage: "AUTO_LAYOUT", message: "dual-timed-effects-migrated", context: {effectsPerBeat: 2, targetWindowSeconds: 15, backup: path.relative(path.dirname(projectFile), backupFile), sample: migrated.beats.slice(0, 3).map((beat) => ({beatId: beat.id, duration: Number((beat.end - beat.start).toFixed(2)), layers: beat.layers.map((layer) => ({layerId: layer.layerId, layout: layer.layout, enterOffset: layer.commonProps.enterOffset, duration: layer.commonProps.duration, headline: layer.effectProps.headline, effectZh: layer.effectProps.effectZh}))}))}}) + "\n");
+console.log(JSON.stringify({projectId, backup: backupFile, beats: migrated.beats.map((beat) => ({beatId: beat.id, range: [beat.start, beat.end], layers: beat.layers.map((layer) => ({layerId: layer.layerId, layout: layer.layout, enterOffset: layer.commonProps.enterOffset, duration: layer.commonProps.duration, exitAnimation: layer.commonProps.exitAnimation, headline: layer.effectProps.headline, effectZh: layer.effectProps.effectZh, items: layer.effectProps.items}))}))}, null, 2));

@@ -1,0 +1,809 @@
+{
+  "captions": [
+    {
+      "id": "tail-subtitle-001",
+      "start": 222.58,
+      "end": 223.58,
+      "zh": "耳机事业部",
+      "en": "Apple product and hardware analysis."
+    },
+    {
+      "id": "tail-subtitle-002",
+      "start": 223.58,
+      "end": 224.62,
+      "zh": "他不是这样子",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-003",
+      "start": 224.62,
+      "end": 226.54,
+      "zh": "现在很多公司都会专门设计一个事业部",
+      "en": "Apple organization and leadership model."
+    },
+    {
+      "id": "tail-subtitle-004",
+      "start": 226.54,
+      "end": 228.02,
+      "zh": "去负责单组的产品线",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-005",
+      "start": 228.02,
+      "end": 229.1,
+      "zh": "但是这种的价格",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-006",
+      "start": 229.1,
+      "end": 231.42,
+      "zh": "就会造就这个事业部门之间各自为政",
+      "en": "Apple organization and leadership model."
+    },
+    {
+      "id": "tail-subtitle-007",
+      "start": 231.42,
+      "end": 232.66,
+      "zh": "然后信息不流通",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-008",
+      "start": 232.66,
+      "end": 235.26,
+      "zh": "那苹果这边他是职能型组织",
+      "en": "Apple organization and leadership model."
+    },
+    {
+      "id": "tail-subtitle-009",
+      "start": 235.26,
+      "end": 235.74,
+      "zh": "什么意思呢",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-010",
+      "start": 235.74,
+      "end": 237.62,
+      "zh": "就是他没有按照产品线来画损益表",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-011",
+      "start": 237.62,
+      "end": 240.58,
+      "zh": "而是每位高级副总裁都各负责",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-012",
+      "start": 240.58,
+      "end": 242.42,
+      "zh": "一个领域的职能",
+      "en": "Apple organization and leadership model."
+    },
+    {
+      "id": "tail-subtitle-013",
+      "start": 242.42,
+      "end": 243.86,
+      "zh": "比如说你是专门管硬件的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-014",
+      "start": 243.86,
+      "end": 244.94,
+      "zh": "你是专门管软件的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-015",
+      "start": 244.94,
+      "end": 245.98,
+      "zh": "你是专门管服务的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-016",
+      "start": 245.98,
+      "end": 247.26,
+      "zh": "你是专门管运营的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-017",
+      "start": 247.26,
+      "end": 250.18,
+      "zh": "一条的职能都很快了所有的产品线",
+      "en": "Apple organization and leadership model."
+    },
+    {
+      "id": "tail-subtitle-018",
+      "start": 250.18,
+      "end": 251.02,
+      "zh": "那这套价格",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-019",
+      "start": 251.02,
+      "end": 256.74,
+      "zh": "乔布斯在九七年回复也会定下来的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-020",
+      "start": 256.74,
+      "end": 259.78,
+      "zh": "而且各条产品线之间的信息是互通的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-021",
+      "start": 259.78,
+      "end": 261.02,
+      "zh": "但是这套价格",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-022",
+      "start": 261.02,
+      "end": 262.1,
+      "zh": "它也是有代价的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-023",
+      "start": 262.1,
+      "end": 265.62,
+      "zh": "就是整个公司只有CEO一个人能看到完整的平安来到",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-024",
+      "start": 265.62,
+      "end": 266.62,
+      "zh": "就是损益表",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-025",
+      "start": 266.62,
+      "end": 271.46,
+      "zh": "也就是说只有CEO可以去拍板跨职能的取舍",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-026",
+      "start": 271.46,
+      "end": 274.54,
+      "zh": "所以对于苹果来讲CEO他不只是管理层的一把手",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-027",
+      "start": 274.54,
+      "end": 276.98,
+      "zh": "更像是整个公司唯一的一个整合结订",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-028",
+      "start": 276.98,
+      "end": 278.7,
+      "zh": "那这次这个程度是被选上来之前",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-029",
+      "start": 278.7,
+      "end": 279.7,
+      "zh": "他有没有竞争对什么",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-030",
+      "start": 279.7,
+      "end": 281.66,
+      "zh": "实际上所有两个的一个是捷付威临母丝",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-031",
+      "start": 281.66,
+      "end": 284.06,
+      "zh": "苹果的CEO但是年纪和库克差不多",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-032",
+      "start": 284.06,
+      "end": 285.5,
+      "zh": "就是董事会估计就不太希望",
+      "en": "Apple organization and leadership model."
+    },
+    {
+      "id": "tail-subtitle-033",
+      "start": 285.5,
+      "end": 287.02,
+      "zh": "也选一个老登出来过两年",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-034",
+      "start": 287.02,
+      "end": 287.9,
+      "zh": "反而要再选很麻烦的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-035",
+      "start": 287.9,
+      "end": 288.86,
+      "zh": "所以就放弃他了",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-036",
+      "start": 288.86,
+      "end": 290.9,
+      "zh": "那第二个就是格内阁费的立即",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-037",
+      "start": 290.9,
+      "end": 293.54,
+      "zh": "就是大家经常在苹果宣传店里面看到跑步的那个哥们",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-038",
+      "start": 293.54,
+      "end": 295.98,
+      "zh": "主要负责的是软件服务这一块",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-039",
+      "start": 295.98,
+      "end": 297.74,
+      "zh": "那这次为什么没有选他选择是特务词呢",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-040",
+      "start": 297.74,
+      "end": 301.18,
+      "zh": "就是说明苹果未来的发展路径会更注重软件和硬件的结合",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-041",
+      "start": 301.18,
+      "end": 303.18,
+      "zh": "甚至会更注重硬件的研发",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-042",
+      "start": 303.18,
+      "end": 310.86,
+      "zh": "我去个例子像V-PRO这种产品虽然说已经出街了他可能过于超前了",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-043",
+      "start": 310.86,
+      "end": 312.9,
+      "zh": "但他基本上是代表了苹果代表了特务词未来的一个发展方向",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-044",
+      "start": 312.9,
+      "end": 315.66,
+      "zh": "就是端设AI硬件 格传来设备",
+      "en": "Apple AI and future product strategy."
+    },
+    {
+      "id": "tail-subtitle-045",
+      "start": 315.66,
+      "end": 317.18,
+      "zh": "他至于软件服务这一块",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-046",
+      "start": 317.18,
+      "end": 321.42,
+      "zh": "基本上在过去的十几二十年里面苹果已经把这一块给他吃干抹进红利",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-047",
+      "start": 321.42,
+      "end": 323.3,
+      "zh": "也好或者说他的护城河也好",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-048",
+      "start": 323.3,
+      "end": 324.98,
+      "zh": "已经全部都构建好了",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-049",
+      "start": 324.98,
+      "end": 328.02,
+      "zh": "那就不需要在玩这方面继续去深挖埋头苦干了",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-050",
+      "start": 328.02,
+      "end": 329.3,
+      "zh": "那这个库克同志去哪了呢",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-051",
+      "start": 329.3,
+      "end": 330.5,
+      "zh": "他实际上也没有完全走",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-052",
+      "start": 330.5,
+      "end": 332.38,
+      "zh": "他是留任了苹果的执行董事长",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-053",
+      "start": 332.38,
+      "end": 337.38,
+      "zh": "这就和当年乔布斯把库克提上来的时候一样送上马",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-054",
+      "start": 337.38,
+      "end": 339.98,
+      "zh": "服异成特务词以后他的缺点",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-055",
+      "start": 339.98,
+      "end": 341.58,
+      "zh": "他的缺点就是在财务",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-056",
+      "start": 341.58,
+      "end": 344.94,
+      "zh": "然后销售、法务、政府关系这块可能不是特别支得开",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-057",
+      "start": 344.94,
+      "end": 347.66,
+      "zh": "所以库克就会在这方面发挥他的余热",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-058",
+      "start": 347.66,
+      "end": 351.74,
+      "zh": "把这个特务词刚上任的这三到五年的时间里面把这个路再给他铺好",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-059",
+      "start": 351.74,
+      "end": 352.74,
+      "zh": "好实一点",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-060",
+      "start": 352.74,
+      "end": 355.22,
+      "zh": "他这个海外是怎么看来特务词上台和苹果的未来呢",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-061",
+      "start": 355.22,
+      "end": 357.82,
+      "zh": "这个乐观派就非常靠这F4利益肯德这个价格",
+      "en": "Market perspective on Apple."
+    },
+    {
+      "id": "tail-subtitle-062",
+      "start": 357.82,
+      "end": 359.82,
+      "zh": "包括端侧AI未来的发展",
+      "en": "Apple AI and future product strategy."
+    },
+    {
+      "id": "tail-subtitle-063",
+      "start": 359.82,
+      "end": 361.42,
+      "zh": "以及可穿戴设备未来的发展",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-064",
+      "start": 361.42,
+      "end": 362.7,
+      "zh": "这些都是非常好",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-065",
+      "start": 362.7,
+      "end": 363.86,
+      "zh": "那看空派最大的问题",
+      "en": "Market perspective on Apple."
+    },
+    {
+      "id": "tail-subtitle-066",
+      "start": 363.86,
+      "end": 365.46,
+      "zh": "他们就认为苹果的AI对得太慢",
+      "en": "Apple AI and future product strategy."
+    },
+    {
+      "id": "tail-subtitle-067",
+      "start": 365.46,
+      "end": 367.82,
+      "zh": "而且未来端侧AI可能不会是一个大局势",
+      "en": "Apple AI and future product strategy."
+    },
+    {
+      "id": "tail-subtitle-068",
+      "start": 367.82,
+      "end": 368.66,
+      "zh": "你用苹果手机",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-069",
+      "start": 368.66,
+      "end": 370.74,
+      "zh": "然后也不会用Siri去干很多事情",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-070",
+      "start": 370.74,
+      "end": 373.34,
+      "zh": "你还是用苹果手机去访问那些AI医院",
+      "en": "Apple AI and future product strategy."
+    },
+    {
+      "id": "tail-subtitle-071",
+      "start": 373.34,
+      "end": 374.58,
+      "zh": "去让他们去干活",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-072",
+      "start": 374.58,
+      "end": 375.38,
+      "zh": "对吧",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-073",
+      "start": 375.38,
+      "end": 376.66,
+      "zh": "那两派都有共同的特点",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-074",
+      "start": 376.66,
+      "end": 377.78,
+      "zh": "就是苹果是怎么看来AI",
+      "en": "Apple AI and future product strategy."
+    },
+    {
+      "id": "tail-subtitle-075",
+      "start": 377.78,
+      "end": 380.26,
+      "zh": "然后苹果在未来会怎么运用AI",
+      "en": "Apple AI and future product strategy."
+    },
+    {
+      "id": "tail-subtitle-076",
+      "start": 380.26,
+      "end": 384.54,
+      "zh": "以及怎么运用自己手里的算力和Apple's利益的价格的结合",
+      "en": "Apple AI and future product strategy."
+    },
+    {
+      "id": "tail-subtitle-077",
+      "start": 384.54,
+      "end": 386.9,
+      "zh": "应该是在未来十年至关生死的一件事情",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-078",
+      "start": 386.9,
+      "end": 387.94,
+      "zh": "那我怎么看呢",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-079",
+      "start": 387.94,
+      "end": 388.58,
+      "zh": "说了半天",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-080",
+      "start": 388.58,
+      "end": 390.02,
+      "zh": "我实际上看法就非常积极了",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-081",
+      "start": 390.02,
+      "end": 393.58,
+      "zh": "为什么啊就是我实际上是不敢赌定苹果这家公司未来会发展有多好的",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-082",
+      "start": 393.58,
+      "end": 395.5,
+      "zh": "但是特务师他是一个硬件狂魔",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-083",
+      "start": 395.5,
+      "end": 396.54,
+      "zh": "而且是一个工程师",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-084",
+      "start": 396.54,
+      "end": 397.06,
+      "zh": "对不对",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-085",
+      "start": 397.06,
+      "end": 398.5,
+      "zh": "我们从他之前做出来的东西",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-086",
+      "start": 398.5,
+      "end": 401.54,
+      "zh": "就可以看到他的这个极大的创新和变革的劲头",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-087",
+      "start": 401.54,
+      "end": 403.38,
+      "zh": "如果说要用皇帝比较",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-088",
+      "start": 403.38,
+      "end": 405.26,
+      "zh": "我又觉得库克他就很太拥振",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-089",
+      "start": 405.26,
+      "end": 406.54,
+      "zh": "情情免免",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-090",
+      "start": 406.54,
+      "end": 408.06,
+      "zh": "努力做好供应链",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-091",
+      "start": 408.06,
+      "end": 410.18,
+      "zh": "果然也给苹果斩下了丰厚的家庭",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-092",
+      "start": 410.18,
+      "end": 411.94,
+      "zh": "但是美中不足的就是库克时代苹果",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-093",
+      "start": 411.94,
+      "end": 413.02,
+      "zh": "稍显乏味一些",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-094",
+      "start": 413.02,
+      "end": 414.3,
+      "zh": "也没有什么积极的创新",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-095",
+      "start": 414.3,
+      "end": 415.7,
+      "zh": "也没有什么出格的举动",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-096",
+      "start": 415.7,
+      "end": 416.06,
+      "zh": "对吧",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-097",
+      "start": 416.06,
+      "end": 419.7,
+      "zh": "相比起乔布斯时代这也是库克让人诟病最多的地方",
+      "en": "Apple leadership transition."
+    },
+    {
+      "id": "tail-subtitle-098",
+      "start": 419.7,
+      "end": 421.58,
+      "zh": "那特务师呢他就有点像乾隆",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-099",
+      "start": 421.58,
+      "end": 422.06,
+      "zh": "对吧",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-100",
+      "start": 422.06,
+      "end": 423.18,
+      "zh": "家庭这样丰厚",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-101",
+      "start": 423.18,
+      "end": 424.58,
+      "zh": "可以使劲的去造",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-102",
+      "start": 424.58,
+      "end": 426.14,
+      "zh": "使劲的去创新",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-103",
+      "start": 426.14,
+      "end": 427.74,
+      "zh": "让我们大开眼界",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-104",
+      "start": 427.74,
+      "end": 429.42,
+      "zh": "那因为我们不是苹果的金融消费者",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-105",
+      "start": 429.42,
+      "end": 431.18,
+      "zh": "我们也没有办法做到金融消费者",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-106",
+      "start": 431.18,
+      "end": 432.54,
+      "zh": "我们是他的产品消费者",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-107",
+      "start": 432.54,
+      "end": 432.78,
+      "zh": "对不对",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-108",
+      "start": 432.78,
+      "end": 433.58,
+      "zh": "那对我们来讲",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-109",
+      "start": 433.58,
+      "end": 435.86,
+      "zh": "只要他的产品足够让我们眼前一亮",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-110",
+      "start": 435.86,
+      "end": 437.22,
+      "zh": "或者他的产品率足够强",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-111",
+      "start": 437.22,
+      "end": 438.98,
+      "zh": "我觉得这就是一件非常好的事情",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-112",
+      "start": 438.98,
+      "end": 439.82,
+      "zh": "那么以上就是本期视频",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-113",
+      "start": 439.82,
+      "end": 440.74,
+      "zh": "全面的网络足够欢迎大家",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-114",
+      "start": 440.74,
+      "end": 441.9,
+      "zh": "小伙伴们下期视频",
+      "en": "Apple technology and product analysis."
+    },
+    {
+      "id": "tail-subtitle-115",
+      "start": 441.9,
+      "end": 442.62,
+      "zh": "再见",
+      "en": "Apple technology and product analysis."
+    }
+  ]
+}

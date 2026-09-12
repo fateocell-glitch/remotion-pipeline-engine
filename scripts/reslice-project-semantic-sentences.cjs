@@ -1,0 +1,37 @@
+"use strict";
+
+const fs = require("node:fs");
+const path = require("node:path");
+const {generateInitialBeats} = require("./generate-beat-plan.cjs");
+const {rebuildProjectText} = require("./project-onboarding.cjs");
+const {autoMatchProject} = require("./layout-matcher.cjs");
+const {ensureProjectLifecycle} = require("./project-render-assets.cjs");
+
+const projectId = process.argv[2];
+if (!projectId) throw new Error("Usage: node scripts/reslice-project-semantic-sentences.cjs <projectId>");
+const root = process.cwd();
+const projectFile = path.join(root, "data", "projects", projectId, "project.json");
+if (!fs.existsSync(projectFile)) throw new Error("Project not found: " + projectId);
+const project = JSON.parse(fs.readFileSync(projectFile, "utf8"));
+const captions = Array.isArray(project.captions) ? project.captions : [];
+const totalDuration = Math.max(...captions.map((caption) => Number(caption.end) || 0), ...project.beats.map((beat) => Number(beat.end) || 0));
+const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+const backupDir = path.join(path.dirname(projectFile), "backups");
+fs.mkdirSync(backupDir, {recursive: true});
+const backupFile = path.join(backupDir, "project-before-sentence-snap-" + stamp + ".json");
+fs.writeFileSync(backupFile, JSON.stringify(project, null, 2) + "\n");
+const beatDrafts = generateInitialBeats(totalDuration, 30, captions).map((beat) => ({id: beat.id, start: beat.start, end: beat.end, eyebrow: beat.chapter, subtitle: beat.headline, zh: beat.zh, en: beat.en, layout: beat.layout, layoutSource: "auto", layoutLocked: false, effectProps: {}, layers: []}));
+const textRebuilt = rebuildProjectText({...project, beats: beatDrafts, captions}, {force: true});
+const matched = autoMatchProject(textRebuilt, {force: true, effectsPerBeat: 2});
+const updatedAt = new Date().toISOString();
+const next = ensureProjectLifecycle({...matched, slicing: {strategy: "semantic-sentence-snap", targetDuration: 30, minDuration: 22, maxDuration: 35}, layerTiming: {mode: "semantic-dual-timed-effects", effectsPerBeat: 2, handoff: "nearest-clause-boundary", migratedAt: updatedAt}, targetBeatDuration: 30, updatedAt});
+next.beats = next.beats.map((beat) => ({...beat, render: {...(beat.render || {}), revision: Number(beat.render?.revision || 0) + 1, status: "stale", previewPath: null, renderedAt: null, error: null}}));
+next.render = {...(next.render || {}), status: "stale", progress: 0, outputPath: null, renderedAt: null, error: null};
+const tempFile = projectFile + ".tmp-" + process.pid + "-" + Date.now();
+fs.writeFileSync(tempFile, JSON.stringify(next, null, 2) + "\n");
+fs.renameSync(tempFile, projectFile);
+const samples = next.beats.slice(0, 5).map((beat) => { const ending = captions.filter((caption) => Number(caption.end) <= Number(beat.end) + .001).at(-1); return {beatId: beat.id, startSec: beat.start, endSec: beat.end, duration: Number((beat.end - beat.start).toFixed(2)), endingCaption: ending?.zh || "", endsAtCaptionEndpoint: Boolean(ending && Math.abs(Number(ending.end) - Number(beat.end)) < .02), handoffSec: beat.layers?.[1]?.commonProps?.enterOffset}; });
+const logFile = path.join(path.dirname(projectFile), "logs", "execution.log");
+fs.mkdirSync(path.dirname(logFile), {recursive: true});
+fs.appendFileSync(logFile, JSON.stringify({timestamp: updatedAt, level: "INFO", stage: "SLICE_BEATS", message: "semantic-sentence-snap-reslice-completed", context: {previousBeatCount: project.beats.length, nextBeatCount: next.beats.length, targetDuration: 30, minDuration: 22, maxDuration: 35, backup: path.relative(path.dirname(projectFile), backupFile), samples}}) + "\n");
+console.log(JSON.stringify({projectId, backup: backupFile, samples}, null, 2));

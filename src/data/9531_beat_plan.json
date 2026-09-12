@@ -1,0 +1,90 @@
+[
+  {
+    "start": 0,
+    "end": 24.4,
+    "lt": "LT-01",
+    "surfaceMode": "full-block",
+    "chapter": "01 官方定调",
+    "headline": "AI搜索不是魔法宇宙",
+    "headlineSize": 40,
+    "headlineColor": "&H00F2F7FB",
+    "animation": "block fade/slide cascade"
+  },
+  {
+    "start": 24.4,
+    "end": 65.9,
+    "lt": "LT-03",
+    "surfaceMode": "compact-block",
+    "chapter": "02 焦虑入口",
+    "headline": "先停下无效动作",
+    "headlineSize": 34,
+    "headlineColor": "&H00FFDCA8",
+    "animation": "block fade/slide cascade"
+  },
+  {
+    "start": 65.9,
+    "end": 130.8,
+    "lt": "LT-05",
+    "surfaceMode": "text-only",
+    "chapter": "03 地基没变",
+    "headline": "SEO仍是入口地基",
+    "headlineSize": 38,
+    "headlineColor": "&H00A7D8FF",
+    "animation": "text-only fade/cascade"
+  },
+  {
+    "start": 130.8,
+    "end": 189.1,
+    "lt": "LT-10",
+    "surfaceMode": "chips-only",
+    "chapter": "04 五大迷思",
+    "headline": "别为AI偏方买单",
+    "headlineSize": 35,
+    "headlineColor": "&H00A8FFF0",
+    "animation": "staged chip reveal"
+  },
+  {
+    "start": 189.1,
+    "end": 266.4,
+    "lt": "LT-12",
+    "surfaceMode": "metric-card",
+    "chapter": "05 真正有效",
+    "headline": "第一手经验最稀缺",
+    "headlineSize": 36,
+    "headlineColor": "&H00D8FFB8",
+    "animation": "card fade/slide + number emphasis"
+  },
+  {
+    "start": 266.4,
+    "end": 321.2,
+    "lt": "LT-14",
+    "surfaceMode": "comparison-card",
+    "chapter": "06 商业入口",
+    "headline": "资料要喂得准确",
+    "headlineSize": 34,
+    "headlineColor": "&H00B9E7FF",
+    "animation": "comparison reveal"
+  },
+  {
+    "start": 321.2,
+    "end": 356.1,
+    "lt": "LT-17",
+    "surfaceMode": "clean-hold",
+    "chapter": "07 未来趋势",
+    "headline": "AI代理值得盯",
+    "headlineSize": 35,
+    "headlineColor": "&H00B6F7C8",
+    "animation": "block fade/slide cascade"
+  },
+  {
+    "start": 356.1,
+    "end": 389.79,
+    "lt": "LT-27",
+    "surfaceMode": "text-only",
+    "chapter": "08 终极策略",
+    "headline": "把资源投向真实价值",
+    "headlineSize": 39,
+    "headlineColor": "&H00D6FFC0",
+    "animation": "text-only fade/cascade"
+  }
+]

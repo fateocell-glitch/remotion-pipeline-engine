@@ -7,16 +7,20 @@
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.522",
+    "@remotion/player": "4.0.522",
+    "@remotion/tailwind-v4": "4.0.522",
+    "opencc-js": "1.0.5",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.522",
-    "@remotion/tailwind-v4": "4.0.522",
     "tailwindcss": "4.0.0"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.522",
     "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
     "@types/web": "0.0.166",
+    "esbuild": "0.25.10",
     "eslint": "9.19.0",
     "prettier": "3.8.1",
     "typescript": "5.9.3"
@@ -24,8 +28,25 @@
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",
+    "render:alpha": "remotion render MyComp out/tech-card-alpha.mov --image-format=png --pixel-format=yuva444p10le --codec=prores --prores-profile=4444",
+    "render:preview": "remotion render MyComp out/tech-card-alpha-preview.webm --image-format=png --pixel-format=yuva420p --codec=vp9",
+    "render:9531-tech": "remotion render Tech9531 out/9531-tech-remotion.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p",
+    "render:shousilang-tech": "remotion render TechShousilang out/shousilang-tech-remotion.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p",
+    "render:jasonwu-test": "remotion render src/index.ts JasonWuTest out/jasonwu-test-optimized.mp4 --codec=h264 --crf=20 --pixel-format=yuv420p --concurrency=75% --x264-preset=veryfast",
+    "render:jasonwu-test:segments": "powershell -ExecutionPolicy Bypass -File scripts/render-jasonwu-test-segments.ps1",
+    "render:jasonwu-long:segments": "powershell -ExecutionPolicy Bypass -File scripts/render-jasonwu-long-segments.ps1",
+    "render:jasonwu-effects-demo": "remotion render src/index.ts JasonWuEffectDemo out/jasonwu-effect-demo.mp4 --codec=h264 --crf=20 --pixel-format=yuv420p --concurrency=75% --x264-preset=veryfast",
+    "render:jasonwu-component-catalog": "powershell -ExecutionPolicy Bypass -File scripts/render-jasonwu-component-catalog.ps1",
+    "render:jasonwu-test:scene1": "remotion render src/index.ts JasonWuTest out/segments/jasonwu-test-001.mp4 --frames=0-749 --codec=h264 --crf=20 --pixel-format=yuv420p --concurrency=75% --x264-preset=veryfast",
+    "render:jasonwu-test:scene2": "remotion render src/index.ts JasonWuTest out/segments/jasonwu-test-002.mp4 --frames=750-1679 --codec=h264 --crf=20 --pixel-format=yuv420p --concurrency=75% --x264-preset=veryfast",
+    "render:jasonwu-test:scene3": "remotion render src/index.ts JasonWuTest out/segments/jasonwu-test-003.mp4 --frames=1680-2729 --codec=h264 --crf=20 --pixel-format=yuv420p --concurrency=75% --x264-preset=veryfast",
+    "render:jasonwu-test:scene4": "remotion render src/index.ts JasonWuTest out/segments/jasonwu-test-004.mp4 --frames=2730-4049 --codec=h264 --crf=20 --pixel-format=yuv420p --concurrency=75% --x264-preset=veryfast",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "render:zhuzige-full:segments": "powershell -ExecutionPolicy Bypass -File scripts/render-zhuzige-full-segments.ps1",
+    "render:zhuzige-full:v2:segments": "powershell -ExecutionPolicy Bypass -File scripts/render-zhuzige-full-v2-segments.ps1",
+    "test:qa": "node scripts/test-runner.cjs",
+    "test:watch": "node scripts/test-runner.cjs --watch"
   },
   "sideEffects": [
     "*.css"

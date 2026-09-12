@@ -5,3 +5,30 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+# Dependencies and package-manager caches
+node_modules/
+.pnpm-store/
+# Render artifacts and local project output
+projects/*/renders/
+data/projects/
+renders/
+out/
+.remotion/
+# Source media and generated audio
+*.mp4
+*.mov
+*.mp3
+*.wav
+# Local models and speech/vision caches
+data/models/
+data/face-detector-python/
+models/
+whisper-cache/
+# Local environment and diagnostics
+.env.local
+*.log
+.tmp-*/
+.tmp-*
+__pycache__/
+*.remotion-in-progress
+.local-repo-metadata/

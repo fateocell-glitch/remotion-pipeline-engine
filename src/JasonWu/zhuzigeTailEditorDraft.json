@@ -1,0 +1,19 @@
+{
+  "beats": [
+    {"id":"zhuzige-candidates","eyebrow":"SUCCESSION DECISION","subtitle":"接班人的取舍","zh":"董事会最终选择了更年轻的硬件负责人","en":"The board ultimately chooses the younger hardware leader.","layout":"photo-wall"},
+    {"id":"zhuzige-direction","eyebrow":"NEXT DIRECTION","subtitle":"软硬件重新结合","zh":"新领导层意味着更重视硬件创新和软硬协同","en":"The next era emphasizes hardware innovation and integration.","layout":"data-flow"},
+    {"id":"zhuzige-soft-hard","eyebrow":"PRODUCT ROADMAP","subtitle":"新形态硬件的窗口","zh":"端侧 AI、可穿戴与新形态设备正在成为方向","en":"On-device AI, wearables, and new devices shape the roadmap.","layout":"product-explosion"},
+    {"id":"zhuzige-future","eyebrow":"ACT 05 · THE NEXT BATTLE","subtitle":"苹果的下一阶段","zh":"未来的关键是如何把算力、系统和产品重新结合","en":"The next task is to reunite compute, systems, and products.","layout":"market-battlefield"},
+    {"id":"zhuzige-future-devices","eyebrow":"NEXT HARDWARE","subtitle":"Vision Pro 与端侧 AI","zh":"新产品形态要从展示技术变成真实体验","en":"New forms must become real experiences, not just demos.","layout":"newspaper-swap"},
+    {"id":"zhuzige-services","eyebrow":"SERVICES MOAT","subtitle":"成熟业务与新增量","zh":"服务业务已经成熟，新体验才是增长空间","en":"Services are mature; new experiences create the next growth space.","layout":"cook-machine"},
+    {"id":"zhuzige-cook-transition","eyebrow":"TRANSITION SUPPORT","subtitle":"库克留下的能力","zh":"库克仍会以经验支持新任 CEO 的过渡","en":"Cook's experience continues to support the transition.","layout":"route-map"},
+    {"id":"zhuzige-market-debate","eyebrow":"GLOBAL DEBATE","subtitle":"乐观与担忧并存","zh":"有人看好端侧 AI，也有人认为苹果起步太慢","en":"Some favor Apple's AI future; others fear it is late.","layout":"data-flow"},
+    {"id":"zhuzige-ai-question","eyebrow":"AI QUESTION","subtitle":"算力如何变成体验","zh":"真正的问题不是 AI 标签，而是它如何进入产品","en":"The question is not the AI label, but how it enters products.","layout":"screen-recording"},
+    {"id":"zhuzige-opinion","eyebrow":"A PERSONAL VIEW","subtitle":"不必预言未来","zh":"未来无法预言，但工程能力值得被认真看待","en":"The future is unknown, but engineering capacity matters.","layout":"zoom-statement"},
+    {"id":"zhuzige-innovation","eyebrow":"INNOVATION WINDOW","subtitle":"从厚实基础走向创新","zh":"积累足够厚实，下一任掌舵人才能放手创新","en":"A strong base gives the next leader room to innovate.","layout":"desktop-folders"},
+    {"id":"zhuzige-cook-legacy","eyebrow":"COOK LEGACY","subtitle":"运营机器留下的基础","zh":"库克时代为苹果积累了极其丰厚的能力","en":"The Cook era leaves Apple an exceptionally strong foundation.","layout":"time-rewind"},
+    {"id":"zhuzige-consumer","eyebrow":"CONSUMER VIEW","subtitle":"产品才是最终答案","zh":"作为消费者，我们期待的不是数字，而是下一次惊喜","en":"As consumers, we want the next great surprise, not just metrics.","layout":"clipboard-note"},
+    {"id":"zhuzige-product-close","eyebrow":"ONE MORE PRODUCT","subtitle":"体验必须足够出色","zh":"只要产品足够强，苹果就仍然值得期待","en":"If the product is strong enough, Apple remains worth watching.","layout":"closing-checklist"},
+    {"id":"zhuzige-finale","eyebrow":"ACT 06 · ONE MORE THING","subtitle":"你看好特纳斯吗","zh":"这就是本期视频：你看好特纳斯开启的新时代吗？","en":"Do you believe in the Ternus era?","layout":"spotlight-question"}
+  ]
+}

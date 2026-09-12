@@ -1,0 +1,1833 @@
+{
+  "schemaVersion": 1,
+  "projectId": "new-video",
+  "name": "New Video",
+  "compositionId": "ProjectEditor",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "videoSrc": "new-video.mp4",
+  "audioSrc": "new-video-audio.wav",
+  "targetBeatDuration": 12,
+  "beats": [
+    {
+      "id": "beat-001",
+      "start": 0,
+      "end": 12,
+      "eyebrow": "01 · 市场与机会",
+      "subtitle": "市场机会判断",
+      "zh": "苹果和微乱没做到的事 这家公司做到了 这也许是线阶段 AIPC AMAC该有的样子 我举几个最简单的例子 帮我打开三个Type 分别是YouTube X和Medium",
+      "en": "Apple and Weilon didn't do it, but this company did it. This may be the kind of AMAC that should be connected to the app. I'll give you a few simple examples. I'll open three tabs, namely YouTube, X and Media. In",
+      "layout": "chapter-card",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-002",
+      "start": 12,
+      "end": 24,
+      "eyebrow": "02 · 核心观点",
+      "subtitle": "分别是YouTub...",
+      "zh": "分别是YouTube X和Medium 在Crom流浪器里 打开三个指定的网页 你看它很简单就完成了 再来一个 在Video Production 下创建新的任务 完成简积 截止时间是周日网上8点",
+      "en": "namely YouTube, X and Media. In Chrome, the three-digit network, you see, it's very simple and complete. Another one, in the new task of creating a new video production, complete the video. The time of the end is 8 o'clock on the day of the day. You",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-003",
+      "start": 24,
+      "end": 36,
+      "eyebrow": "03 · 核心观点",
+      "subtitle": "截止时间是周日网上...",
+      "zh": "截止时间是周日网上8点 你看它会先去Todos里边 获取我的项目列表 然后在Video Production 这个项目下边 创建任务 并且设定截止时间 最后再来一个",
+      "en": "end is 8 o'clock on the day of the day. You see, it will first go to the east and get my project surface. Then in the video production, this project will be created, and set up the time. Finally, in the last",
+      "layout": "zoom-statement",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-004",
+      "start": 36,
+      "end": 48,
+      "eyebrow": "04 · 效率工作流",
+      "subtitle": "效率工作流升级",
+      "zh": "最后再来一个 在桌面创建一个 名为123的文件家 你看很轻松就搞定了 我刚才演示的软件叫做Rakecast 它是Mac三边一款效率工具 我用了一段时间之后发现",
+      "en": "in the last one, create a name 123 file home. You see, it's very easy to get ready. The software I just showed you is called Raycast. It's Mac on the top of the screen. I used it for a while",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-005",
+      "start": 48,
+      "end": 60,
+      "eyebrow": "05 · 效率工作流",
+      "subtitle": "效率工作流升级",
+      "zh": "我用了一段时间之后发现 它不只是一个工具 而是一个Hub 一个Sonyo 可以去调度所有的软件 比如要搜索本地文胆的话 就选Search Files 然后输入关键词 它会特别顺滑地列出相关的文胆",
+      "en": "used it for a while and found that it's not just a tool, but a hub, a mouse. You can download all the software. For example, if you want to use a mouse, you can choose Search files, then remove the software. It will be very smooth and smooth. If",
+      "layout": "data-flow",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "ready",
+        "previewPath": "out/project-assets/new-video/beat-005-r1.mp4",
+        "renderedAt": "2026-09-09T17:53:43.156Z",
+        "error": null
+      }
+    },
+    {
+      "id": "beat-006",
+      "start": 60,
+      "end": 72,
+      "eyebrow": "06 · 核心观点",
+      "subtitle": "它会特别顺滑地列出...",
+      "zh": "它会特别顺滑地列出相关的文胆 要用Google搜索的话 就选择Search Google 回车之后输入关键词就好 它会自动打开一个新的网页 要用Plexi搜索的话",
+      "en": "the software. It will be very smooth and smooth. If you want to use Google, you can choose Search Google. After returning to the software, it will automatically open a new network. If you want to use perplexity,",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-007",
+      "start": 72,
+      "end": 84,
+      "eyebrow": "07 · 核心观点",
+      "subtitle": "要用Plexi搜索...",
+      "zh": "要用Plexi搜索的话 就选择AskPlexi 它会打开一个对华宽 除了输入问题之外 还可以选择搜索的范围 就跟官网一样 要翻译的话就选择Translate 如果你只是想要了解一个大概的意思的话",
+      "en": "you want to use perplexity, you can choose Ask perplexity. It will open up a different network, and if you want to choose a social range, it will be the same. If you want to翻譯, you can choose Translate. If you just want to know a little bit about the meaning, then",
+      "layout": "zoom-statement",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-008",
+      "start": 84,
+      "end": 96,
+      "eyebrow": "08 · 核心观点",
+      "subtitle": "如果你只是想要了解...",
+      "zh": "如果你只是想要了解一个大概的意思的话 那用它基本就足够了 要关闭进程的话 就选择CareProgress 它会列出目前所有正在运行的进程 你可以选择按照CPU的占用排序 或者按内存占用排序",
+      "en": "want to know a little bit about the meaning, then use it for the basic purpose. If you want to close the process, you can choose Kia Progress. It will train all the progress in the current process. You can choose to search for CPU software, or content software. If",
+      "layout": "photo-wall",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-009",
+      "start": 96,
+      "end": 108,
+      "eyebrow": "09 · 产品能力",
+      "subtitle": "产品能力突破",
+      "zh": "或者按内存占用排序 要设置桌面布局的话 就选择Window Layout 你可以让几个软件按照你的意愿 在屏幕上随意排列 要查看自己的形成安排的话 就选择MySchedule",
+      "en": "CPU software, or content software. If you don't want to set the network, you can choose Window Layout. You can make several software accounts for your application on your screen. If you want to check your own performance, you can choose My Schedule. It",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-010",
+      "start": 108,
+      "end": 120,
+      "eyebrow": "10 · 产品能力",
+      "subtitle": "产品能力突破",
+      "zh": "就选择MySchedule 它会把日历里的形成全都给列出来 要给现在听的这首歌 加个喜爱的话 就选择Favorite Track 它会操作AppleMute这个去加薪 这些功能以部分通过Recars的内置的",
+      "en": "you can choose My Schedule. It will send all the progress in daily life. If you want to listen to this song now, you can choose Favourite Track. It will make Apple Music to add new songs. These functions can be found in the core of",
+      "layout": "data-flow",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-011",
+      "start": 120,
+      "end": 132,
+      "eyebrow": "11 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "这些功能以部分通过Recars的内置的 核心功能实现 比如基础的搜索系统操作等等 高频的产金 而另一部分者通过插件去实现 目的是要去满足去覆盖那些常委的需求 今年年初Recars的推出了AI插件",
+      "en": "functions can be found in the core of Rekas's content. For example, the CPU storage system, and the high quality of the system. And the other part of this is the process of testing. The purpose is to get rid of the frequent requests. This year, Rekas recommended AI testing. Although it",
+      "layout": "zoom-statement",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-012",
+      "start": 132,
+      "end": 144,
+      "eyebrow": "12 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "今年年初Recars的推出了AI插件 虽然还只是Beta版 但是这几十个AI插件已经实现了三个功能 第一自然而言交互 视频开头的例子大家都看到了",
+      "en": "year, Rekas recommended AI testing. Although it is still just Beta版, But this several AI tests have been tested for three functions. First, of course, the language teacher. All the links to the video are in the description. Now",
+      "layout": "pivot-list",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-013",
+      "start": 144,
+      "end": 156,
+      "eyebrow": "13 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "视频开头的例子大家都看到了 现在你只需要去AdMoke AI插件 告诉它你要什么 它就会帮你去操作对应的软件 一个典型的例子是中端 我只需要AddShell 然后输入命令",
+      "en": "the links to the video are in the description. Now you just need to go to Edmock AI test and tell him what you want. He will help you to do the correct software. One point of the list is中端. I only need to add需要, then delete the password, he will",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-014",
+      "start": 156,
+      "end": 168,
+      "eyebrow": "14 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "然后输入命令 它就会帮我去调用中端去执行 并且还会把结果拿过来显示 比如输入Olamalist的这条命令 它会列出我已经下载好的所有模型 而且这个AI插件还懂得去做个表格来展现结果",
+      "en": "delete the password, he will help me to use the中端 to implement it. And he will take the result to the test. For example, I will delete the Alamo list of this password. He will read out all the information I have downloaded. And this AI test still understands how to make an example. The second point",
+      "layout": "data-flow",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-015",
+      "start": 168,
+      "end": 180,
+      "eyebrow": "15 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "而且这个AI插件还懂得去做个表格来展现结果 第二 跨应用调度 举个例子帮我预定一个视频会议 明天中午12点 主题是新选题讨论 AI插件会调用两个软件",
+      "en": "downloaded. And this AI test still understands how to make an example. The second point is to use the download. The舉個例子幫我預定一個視頻會議明天中午12點. 主題是新選題討論. AI test will use two software. The",
+      "layout": "ordered-sequence",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-016",
+      "start": 180,
+      "end": 192,
+      "eyebrow": "16 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "AI插件会调用两个软件 意识Zoom因为是视频会议 所以它得帮我穿件一个会议链接 而是Kalinder 它得帮我Book上这个时间段 这种跨应用的调度 不需要你一个一个去安排",
+      "en": "test will use two software. The first is Zoom, because it is a視頻會議. So it has to send me an email. The second is Kaling. It has to help me book this time. This kind of user's download. You don't have to go to the settings, you",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-017",
+      "start": 192,
+      "end": 204,
+      "eyebrow": "17 · 核心观点",
+      "subtitle": "不需要你一个一个去...",
+      "zh": "不需要你一个一个去安排 可以通过Preset实现 比如我刚才演示的那个 就是现成了Kalinder Assistant 它的结构很简单 意识Instructions就是你要干嘛 二十都需要哪些插件参与 比如Kalinder和Zoom",
+      "en": "don't have to go to the settings, you can go through the preset. For example, the one I just tested is the Kaling Assistant. The result is very simple. The first is Instructions. What do you want to do? The second is to do some tests. For example, Kaling and Zoom. What",
+      "layout": "data-flow",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-018",
+      "start": 204,
+      "end": 216,
+      "eyebrow": "18 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "比如Kalinder和Zoom 以及用什么模型 过往上已经有几十个Preset了 大家感兴趣可以去翻一翻 我就不过多演示了 第三 AI对话 这个功能其实最早应该是一年前推出的",
+      "en": "example, Kaling and Zoom. What kind of model is it? There have been several presets in the past. If you are interested, you can try it out. I will not try too much. The third is AI. This job should be launched one year ago. But",
+      "layout": "ordered-sequence",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-019",
+      "start": 216,
+      "end": 228,
+      "eyebrow": "19 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "这个功能其实最早应该是一年前推出的 只不过当时支持的模型很少 只有GPD3.5和GPD4 后来慢慢添加了Cloud,Mistro等知名的模型 到了今天 这个AI对话功能 已经覆盖了市面上所有的主流模型",
+      "en": "job should be launched one year ago. But it supports the model very little. There are only GPT3.5 and GPT4. Then it will gradually add a cloud, mistro, and light model. Today, the AI team's work has covered all kinds of models in the world. The",
+      "layout": "zoom-statement",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-020",
+      "start": 228,
+      "end": 240,
+      "eyebrow": "20 · 模型生态",
+      "subtitle": "模型能力扩展",
+      "zh": "已经覆盖了市面上所有的主流模型 我个人最常用的是这两个 它俩有推力 有连网收索 很舒服 而且我还给他们设置了一个快捷键 用起来就更顺手了 说真的 自从安装了Rekas之后",
+      "en": "covered all kinds of models in the world. The most common thing for me is these two. Both of them have a lot of advantages. They are very comfortable. And I have also set them up. It is easier to use. To be honest, after installing the ReCars, I",
+      "layout": "photo-wall",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-021",
+      "start": 240,
+      "end": 252,
+      "eyebrow": "21 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "自从安装了Rekas之后 我打开Curedwide的次数都变少了 因为基本功能重合了 人家用起来更加轻便 特别适合日常随便讨论几句的场景 Rekas的AI插件功能 需要付费才能开启",
+      "en": "after installing the ReCars, I have already opened the worldwide technology. Because the basic functions have been combined. It is more convenient to use. Especially suitable for daily life. ReCars's AI technology needs to be fully equipped. The",
+      "layout": "data-flow",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-022",
+      "start": 252,
+      "end": 264,
+      "eyebrow": "22 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "需要付费才能开启 价格很便宜 一个月8美金 如果你再加钱 就可以使用更高级的模型 比如Cured3.73net 我目前是指付8美金这一档 感觉这个是我今年订阅的",
+      "en": "be fully equipped. The price is cheap. If you are at home, you can use a higher model. For example, cloud 3.73net. My goal is to support the scale of the AI. I think this is the best AI product",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-023",
+      "start": 264,
+      "end": 276,
+      "eyebrow": "23 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "感觉这个是我今年订阅的 最超级的AI产品 有了它之后 再加上我上上期推荐的AI工具和效率工具 全套快捷键用起来真的效率飞起 而且我越用越觉得 一个AI商有去无份集成所有的软件",
+      "en": "think this is the best AI product I've ever booked this year. After this, I will add the AI technology and efficiency of the AI technology. It's really effective. Also, I think it's better to have all kinds of software in the AI industry. And",
+      "layout": "data-flow",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-024",
+      "start": 276,
+      "end": 288,
+      "eyebrow": "24 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "一个AI商有去无份集成所有的软件 然后在一个见面上完成所有的交互 这个就是我想要的 AI PC AIMac的功能和体验 因为无份集成 所以不需要打开软件",
+      "en": "have all kinds of software in the AI industry. And then, in the entire software industry. This is what I want to experience with AI PC, AIMAC, and AIMAC. Because the software doesn't have to open",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-025",
+      "start": 288,
+      "end": 300,
+      "eyebrow": "25 · 效率工作流",
+      "subtitle": "效率工作流升级",
+      "zh": "所以不需要打开软件 就能完成任务 你别小看这一个小小的改变 它对注意力集中效率提升 有非常非常大的帮助 因为无份集成 所以自然语言的交互价值就提向了 你不再需要去了解",
+      "en": "have to open the software industry. Don't look at this small change. It's very, very helpful for the efficiency and efficiency. Because the software doesn't have to be supported by the software industry. You don't have to talk",
+      "layout": "data-flow",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-026",
+      "start": 300,
+      "end": 312,
+      "eyebrow": "26 · 产品能力",
+      "subtitle": "产品能力突破",
+      "zh": "你不再需要去了解 去思考某个软件怎么操作 下需求就好 像苹果和微软在样的大公司 需要考虑的东西很多 不只是做产品 所以给了Rekas发育的时间 这个是非常非常保规的机会穿口",
+      "en": "don't have to talk about how the software industry works. The next demand is good. It needs to consider a lot of things such as Apple and Weirong. It's not just a product. So, it takes a lot of time for RayCars to develop. This is a very, very precious opportunity. After",
+      "layout": "diagonal-chips",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-027",
+      "start": 312,
+      "end": 324,
+      "eyebrow": "27 · 商业模式",
+      "subtitle": "付费价值判断",
+      "zh": "这个是非常非常保规的机会穿口 即使之后大产追上来了 只要你能保持灵活性和开放性 我相信Rekas还是有生存空间的 这个是我决定长期订阅支持他们的原因",
+      "en": "is a very, very precious opportunity. After that, the market has come up. As long as you can keep your own trust and trust. I believe that RayCars is still in the air. This is the reason why I decided to support them. Ok,",
+      "layout": "zoom-statement",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-028",
+      "start": 324,
+      "end": 336,
+      "eyebrow": "28 · AI 战略",
+      "subtitle": "AI 战略转向",
+      "zh": "这个是我决定长期订阅支持他们的原因 以上就是本期内容 想了解AI就来我们NewType社群 那咱们下期见",
+      "en": "is the reason why I decided to support them. Ok, that's it for today. I want to talk about our new type design. See you next time.",
+      "layout": "photo-wall",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    },
+    {
+      "id": "beat-029",
+      "start": 336,
+      "end": 337.48,
+      "eyebrow": "29 · 核心观点",
+      "subtitle": "咱们下期见",
+      "zh": "那咱们下期见",
+      "en": "you next time.",
+      "layout": "closing-checklist",
+      "layoutSource": "auto",
+      "layoutLocked": false,
+      "effectProps": {},
+      "render": {
+        "revision": 1,
+        "status": "idle",
+        "previewPath": null,
+        "renderedAt": null,
+        "error": null
+      }
+    }
+  ],
+  "captions": [
+    {
+      "id": "subtitle-001",
+      "start": 0,
+      "end": 1.8,
+      "zh": "苹果和微乱没做到的事",
+      "en": "Apple and Weilon didn't do it,"
+    },
+    {
+      "id": "subtitle-002",
+      "start": 1.8,
+      "end": 3.32,
+      "zh": "这家公司做到了",
+      "en": "but this company did it."
+    },
+    {
+      "id": "subtitle-003",
+      "start": 3.32,
+      "end": 4.64,
+      "zh": "这也许是线阶段",
+      "en": "This may be the"
+    },
+    {
+      "id": "subtitle-004",
+      "start": 4.64,
+      "end": 7.32,
+      "zh": "AIPC AMAC该有的样子",
+      "en": "kind of AMAC that should be connected to the"
+    },
+    {
+      "id": "subtitle-005",
+      "start": 7.32,
+      "end": 9.68,
+      "zh": "我举几个最简单的例子",
+      "en": "app. I'll give you a few simple examples. I'll"
+    },
+    {
+      "id": "subtitle-006",
+      "start": 9.68,
+      "end": 10.92,
+      "zh": "帮我打开三个Type",
+      "en": "open three tabs,"
+    },
+    {
+      "id": "subtitle-007",
+      "start": 10.92,
+      "end": 13.64,
+      "zh": "分别是YouTube X和Medium",
+      "en": "namely YouTube, X and Media. In"
+    },
+    {
+      "id": "subtitle-008",
+      "start": 13.64,
+      "end": 14.8,
+      "zh": "在Crom流浪器里",
+      "en": "Chrome, the three-digit"
+    },
+    {
+      "id": "subtitle-009",
+      "start": 14.8,
+      "end": 16.56,
+      "zh": "打开三个指定的网页",
+      "en": "network, you see, it's"
+    },
+    {
+      "id": "subtitle-010",
+      "start": 16.56,
+      "end": 18.72,
+      "zh": "你看它很简单就完成了",
+      "en": "very simple and complete. Another"
+    },
+    {
+      "id": "subtitle-011",
+      "start": 18.72,
+      "end": 19.52,
+      "zh": "再来一个",
+      "en": "one, in the"
+    },
+    {
+      "id": "subtitle-012",
+      "start": 19.52,
+      "end": 22.2,
+      "zh": "在Video Production 下创建新的任务",
+      "en": "new task of creating a new video production, complete the"
+    },
+    {
+      "id": "subtitle-013",
+      "start": 22.2,
+      "end": 23.6,
+      "zh": "完成简积",
+      "en": "video. The time of the"
+    },
+    {
+      "id": "subtitle-014",
+      "start": 23.6,
+      "end": 26.24,
+      "zh": "截止时间是周日网上8点",
+      "en": "end is 8 o'clock on the day of the day. You"
+    },
+    {
+      "id": "subtitle-015",
+      "start": 26.24,
+      "end": 28.44,
+      "zh": "你看它会先去Todos里边",
+      "en": "see, it will first go to the"
+    },
+    {
+      "id": "subtitle-016",
+      "start": 28.44,
+      "end": 30,
+      "zh": "获取我的项目列表",
+      "en": "east and get my project"
+    },
+    {
+      "id": "subtitle-017",
+      "start": 30,
+      "end": 32.6,
+      "zh": "然后在Video Production 这个项目下边",
+      "en": "surface. Then in the video production, this project"
+    },
+    {
+      "id": "subtitle-018",
+      "start": 32.6,
+      "end": 33.56,
+      "zh": "创建任务",
+      "en": "will be created,"
+    },
+    {
+      "id": "subtitle-019",
+      "start": 33.56,
+      "end": 35.8,
+      "zh": "并且设定截止时间",
+      "en": "and set up the time. Finally,"
+    },
+    {
+      "id": "subtitle-020",
+      "start": 35.8,
+      "end": 36.92,
+      "zh": "最后再来一个",
+      "en": "in the last"
+    },
+    {
+      "id": "subtitle-021",
+      "start": 36.92,
+      "end": 38.12,
+      "zh": "在桌面创建一个",
+      "en": "one, create a"
+    },
+    {
+      "id": "subtitle-022",
+      "start": 38.12,
+      "end": 40.12,
+      "zh": "名为123的文件家",
+      "en": "name 123 file home. You see,"
+    },
+    {
+      "id": "subtitle-023",
+      "start": 40.12,
+      "end": 42.72,
+      "zh": "你看很轻松就搞定了",
+      "en": "it's very easy to get ready. The"
+    },
+    {
+      "id": "subtitle-024",
+      "start": 42.72,
+      "end": 45.24,
+      "zh": "我刚才演示的软件叫做Rakecast",
+      "en": "software I just showed you is called Raycast. It's"
+    },
+    {
+      "id": "subtitle-025",
+      "start": 45.24,
+      "end": 47.52,
+      "zh": "它是Mac三边一款效率工具",
+      "en": "Mac on the top of the screen. I"
+    },
+    {
+      "id": "subtitle-026",
+      "start": 47.52,
+      "end": 49.08,
+      "zh": "我用了一段时间之后发现",
+      "en": "used it for a while"
+    },
+    {
+      "id": "subtitle-027",
+      "start": 49.08,
+      "end": 50.6,
+      "zh": "它不只是一个工具",
+      "en": "and found that it's not"
+    },
+    {
+      "id": "subtitle-028",
+      "start": 50.6,
+      "end": 51.64,
+      "zh": "而是一个Hub",
+      "en": "just a tool, but"
+    },
+    {
+      "id": "subtitle-029",
+      "start": 51.64,
+      "end": 52.44,
+      "zh": "一个Sonyo",
+      "en": "a hub, a"
+    },
+    {
+      "id": "subtitle-030",
+      "start": 52.44,
+      "end": 54.56,
+      "zh": "可以去调度所有的软件",
+      "en": "mouse. You can download all the software. For"
+    },
+    {
+      "id": "subtitle-031",
+      "start": 54.56,
+      "end": 56.64,
+      "zh": "比如要搜索本地文胆的话",
+      "en": "example, if you want to use"
+    },
+    {
+      "id": "subtitle-032",
+      "start": 56.64,
+      "end": 58.04,
+      "zh": "就选Search Files",
+      "en": "a mouse, you can"
+    },
+    {
+      "id": "subtitle-033",
+      "start": 58.04,
+      "end": 59.64,
+      "zh": "然后输入关键词",
+      "en": "choose Search files, then remove"
+    },
+    {
+      "id": "subtitle-034",
+      "start": 59.64,
+      "end": 62.84,
+      "zh": "它会特别顺滑地列出相关的文胆",
+      "en": "the software. It will be very smooth and smooth. If"
+    },
+    {
+      "id": "subtitle-035",
+      "start": 62.84,
+      "end": 64.24,
+      "zh": "要用Google搜索的话",
+      "en": "you want to use"
+    },
+    {
+      "id": "subtitle-036",
+      "start": 64.24,
+      "end": 65.8,
+      "zh": "就选择Search Google",
+      "en": "Google, you can choose Search"
+    },
+    {
+      "id": "subtitle-037",
+      "start": 65.8,
+      "end": 68.04,
+      "zh": "回车之后输入关键词就好",
+      "en": "Google. After returning to the software, it"
+    },
+    {
+      "id": "subtitle-038",
+      "start": 68.04,
+      "end": 70.36,
+      "zh": "它会自动打开一个新的网页",
+      "en": "will automatically open a new network. If"
+    },
+    {
+      "id": "subtitle-039",
+      "start": 70.36,
+      "end": 72.08,
+      "zh": "要用Plexi搜索的话",
+      "en": "you want to use perplexity,"
+    },
+    {
+      "id": "subtitle-040",
+      "start": 72.08,
+      "end": 74.32,
+      "zh": "就选择AskPlexi",
+      "en": "you can choose Ask perplexity. It will"
+    },
+    {
+      "id": "subtitle-041",
+      "start": 74.32,
+      "end": 76.08,
+      "zh": "它会打开一个对华宽",
+      "en": "open up a different network, and"
+    },
+    {
+      "id": "subtitle-042",
+      "start": 76.08,
+      "end": 77.36,
+      "zh": "除了输入问题之外",
+      "en": "if you want to"
+    },
+    {
+      "id": "subtitle-043",
+      "start": 77.36,
+      "end": 78.96,
+      "zh": "还可以选择搜索的范围",
+      "en": "choose a social range, it"
+    },
+    {
+      "id": "subtitle-044",
+      "start": 78.96,
+      "end": 80.64,
+      "zh": "就跟官网一样",
+      "en": "will be the same. If"
+    },
+    {
+      "id": "subtitle-045",
+      "start": 80.64,
+      "end": 83.04,
+      "zh": "要翻译的话就选择Translate",
+      "en": "you want to翻譯, you can choose Translate. If you just"
+    },
+    {
+      "id": "subtitle-046",
+      "start": 83.04,
+      "end": 85.6,
+      "zh": "如果你只是想要了解一个大概的意思的话",
+      "en": "want to know a little bit about the meaning, then"
+    },
+    {
+      "id": "subtitle-047",
+      "start": 85.6,
+      "end": 87.56,
+      "zh": "那用它基本就足够了",
+      "en": "use it for the basic purpose. If"
+    },
+    {
+      "id": "subtitle-048",
+      "start": 87.56,
+      "end": 89.04,
+      "zh": "要关闭进程的话",
+      "en": "you want to close the"
+    },
+    {
+      "id": "subtitle-049",
+      "start": 89.04,
+      "end": 90.92,
+      "zh": "就选择CareProgress",
+      "en": "process, you can choose Kia Progress."
+    },
+    {
+      "id": "subtitle-050",
+      "start": 90.92,
+      "end": 93.64,
+      "zh": "它会列出目前所有正在运行的进程",
+      "en": "It will train all the progress in the current"
+    },
+    {
+      "id": "subtitle-051",
+      "start": 93.64,
+      "end": 95.8,
+      "zh": "你可以选择按照CPU的占用排序",
+      "en": "process. You can choose to search for"
+    },
+    {
+      "id": "subtitle-052",
+      "start": 95.8,
+      "end": 97.76,
+      "zh": "或者按内存占用排序",
+      "en": "CPU software, or content software. If"
+    },
+    {
+      "id": "subtitle-053",
+      "start": 97.76,
+      "end": 99.4,
+      "zh": "要设置桌面布局的话",
+      "en": "you don't want to set the"
+    },
+    {
+      "id": "subtitle-054",
+      "start": 99.4,
+      "end": 101.12,
+      "zh": "就选择Window Layout",
+      "en": "network, you can choose Window Layout."
+    },
+    {
+      "id": "subtitle-055",
+      "start": 101.12,
+      "end": 103.04,
+      "zh": "你可以让几个软件按照你的意愿",
+      "en": "You can make several software accounts for"
+    },
+    {
+      "id": "subtitle-056",
+      "start": 103.04,
+      "end": 104.88,
+      "zh": "在屏幕上随意排列",
+      "en": "your application on your screen. If"
+    },
+    {
+      "id": "subtitle-057",
+      "start": 104.88,
+      "end": 106.84,
+      "zh": "要查看自己的形成安排的话",
+      "en": "you want to check your own performance,"
+    },
+    {
+      "id": "subtitle-058",
+      "start": 106.84,
+      "end": 108.56,
+      "zh": "就选择MySchedule",
+      "en": "you can choose My Schedule. It"
+    },
+    {
+      "id": "subtitle-059",
+      "start": 108.56,
+      "end": 111.44,
+      "zh": "它会把日历里的形成全都给列出来",
+      "en": "will send all the progress in daily life. If you"
+    },
+    {
+      "id": "subtitle-060",
+      "start": 111.44,
+      "end": 112.88,
+      "zh": "要给现在听的这首歌",
+      "en": "want to listen to this"
+    },
+    {
+      "id": "subtitle-061",
+      "start": 112.88,
+      "end": 114.24,
+      "zh": "加个喜爱的话",
+      "en": "song now, you can choose"
+    },
+    {
+      "id": "subtitle-062",
+      "start": 114.24,
+      "end": 115.92,
+      "zh": "就选择Favorite Track",
+      "en": "Favourite Track. It will make Apple"
+    },
+    {
+      "id": "subtitle-063",
+      "start": 115.92,
+      "end": 118.44,
+      "zh": "它会操作AppleMute这个去加薪",
+      "en": "Music to add new songs. These"
+    },
+    {
+      "id": "subtitle-064",
+      "start": 118.44,
+      "end": 121.04,
+      "zh": "这些功能以部分通过Recars的内置的",
+      "en": "functions can be found in the core of"
+    },
+    {
+      "id": "subtitle-065",
+      "start": 121.04,
+      "end": 122.4,
+      "zh": "核心功能实现",
+      "en": "Rekas's content. For example,"
+    },
+    {
+      "id": "subtitle-066",
+      "start": 122.4,
+      "end": 124.56,
+      "zh": "比如基础的搜索系统操作等等",
+      "en": "the CPU storage system, and the high"
+    },
+    {
+      "id": "subtitle-067",
+      "start": 124.56,
+      "end": 125.84,
+      "zh": "高频的产金",
+      "en": "quality of the system. And"
+    },
+    {
+      "id": "subtitle-068",
+      "start": 125.84,
+      "end": 128.6,
+      "zh": "而另一部分者通过插件去实现",
+      "en": "the other part of this is the process of testing."
+    },
+    {
+      "id": "subtitle-069",
+      "start": 128.6,
+      "end": 131.68,
+      "zh": "目的是要去满足去覆盖那些常委的需求",
+      "en": "The purpose is to get rid of the frequent requests. This"
+    },
+    {
+      "id": "subtitle-070",
+      "start": 131.68,
+      "end": 134.72,
+      "zh": "今年年初Recars的推出了AI插件",
+      "en": "year, Rekas recommended AI testing. Although it"
+    },
+    {
+      "id": "subtitle-071",
+      "start": 134.72,
+      "end": 136.48,
+      "zh": "虽然还只是Beta版",
+      "en": "is still just Beta版, But"
+    },
+    {
+      "id": "subtitle-072",
+      "start": 136.48,
+      "end": 140.6,
+      "zh": "但是这几十个AI插件已经实现了三个功能",
+      "en": "this several AI tests have been tested for three functions. First,"
+    },
+    {
+      "id": "subtitle-073",
+      "start": 140.6,
+      "end": 142.6,
+      "zh": "第一自然而言交互",
+      "en": "of course, the language teacher. All"
+    },
+    {
+      "id": "subtitle-074",
+      "start": 142.6,
+      "end": 144.64,
+      "zh": "视频开头的例子大家都看到了",
+      "en": "the links to the video are in the description. Now"
+    },
+    {
+      "id": "subtitle-075",
+      "start": 144.64,
+      "end": 147.32,
+      "zh": "现在你只需要去AdMoke AI插件",
+      "en": "you just need to go to Edmock AI test and tell"
+    },
+    {
+      "id": "subtitle-076",
+      "start": 147.32,
+      "end": 148.8,
+      "zh": "告诉它你要什么",
+      "en": "him what you want. He"
+    },
+    {
+      "id": "subtitle-077",
+      "start": 148.8,
+      "end": 151.32,
+      "zh": "它就会帮你去操作对应的软件",
+      "en": "will help you to do the correct software. One"
+    },
+    {
+      "id": "subtitle-078",
+      "start": 151.32,
+      "end": 153.56,
+      "zh": "一个典型的例子是中端",
+      "en": "point of the list is中端. I"
+    },
+    {
+      "id": "subtitle-079",
+      "start": 153.56,
+      "end": 155.04,
+      "zh": "我只需要AddShell",
+      "en": "only need to add需要, then"
+    },
+    {
+      "id": "subtitle-080",
+      "start": 155.04,
+      "end": 156.28,
+      "zh": "然后输入命令",
+      "en": "delete the password, he will"
+    },
+    {
+      "id": "subtitle-081",
+      "start": 156.28,
+      "end": 158.68,
+      "zh": "它就会帮我去调用中端去执行",
+      "en": "help me to use the中端 to implement it. And"
+    },
+    {
+      "id": "subtitle-082",
+      "start": 158.68,
+      "end": 161.2,
+      "zh": "并且还会把结果拿过来显示",
+      "en": "he will take the result to the test. For example,"
+    },
+    {
+      "id": "subtitle-083",
+      "start": 161.2,
+      "end": 163.48,
+      "zh": "比如输入Olamalist的这条命令",
+      "en": "I will delete the Alamo list of this password. He"
+    },
+    {
+      "id": "subtitle-084",
+      "start": 163.48,
+      "end": 166.36,
+      "zh": "它会列出我已经下载好的所有模型",
+      "en": "will read out all the information I have"
+    },
+    {
+      "id": "subtitle-085",
+      "start": 166.36,
+      "end": 170.16,
+      "zh": "而且这个AI插件还懂得去做个表格来展现结果",
+      "en": "downloaded. And this AI test still understands how to make an example. The second point"
+    },
+    {
+      "id": "subtitle-086",
+      "start": 170.16,
+      "end": 170.64,
+      "zh": "第二",
+      "en": "is to"
+    },
+    {
+      "id": "subtitle-087",
+      "start": 170.64,
+      "end": 172.12,
+      "zh": "跨应用调度",
+      "en": "use the download. The舉個例子幫我預定一個視頻會議明天中午12點."
+    },
+    {
+      "id": "subtitle-088",
+      "start": 172.12,
+      "end": 174.52,
+      "zh": "举个例子帮我预定一个视频会议",
+      "en": ""
+    },
+    {
+      "id": "subtitle-089",
+      "start": 174.52,
+      "end": 175.88,
+      "zh": "明天中午12点",
+      "en": "主題是新選題討論."
+    },
+    {
+      "id": "subtitle-090",
+      "start": 175.88,
+      "end": 178.12,
+      "zh": "主题是新选题讨论",
+      "en": "AI"
+    },
+    {
+      "id": "subtitle-091",
+      "start": 178.12,
+      "end": 180.44,
+      "zh": "AI插件会调用两个软件",
+      "en": "test will use two software. The"
+    },
+    {
+      "id": "subtitle-092",
+      "start": 180.44,
+      "end": 182.56,
+      "zh": "意识Zoom因为是视频会议",
+      "en": "first is Zoom, because it is a視頻會議. So"
+    },
+    {
+      "id": "subtitle-093",
+      "start": 182.56,
+      "end": 185.04,
+      "zh": "所以它得帮我穿件一个会议链接",
+      "en": "it has to send me an email. The second"
+    },
+    {
+      "id": "subtitle-094",
+      "start": 185.04,
+      "end": 186.04,
+      "zh": "而是Kalinder",
+      "en": "is Kaling. It"
+    },
+    {
+      "id": "subtitle-095",
+      "start": 186.04,
+      "end": 188.48,
+      "zh": "它得帮我Book上这个时间段",
+      "en": "has to help me book this time. This"
+    },
+    {
+      "id": "subtitle-096",
+      "start": 188.48,
+      "end": 190.08,
+      "zh": "这种跨应用的调度",
+      "en": "kind of user's download. You"
+    },
+    {
+      "id": "subtitle-097",
+      "start": 190.08,
+      "end": 192.08,
+      "zh": "不需要你一个一个去安排",
+      "en": "don't have to go to the settings, you"
+    },
+    {
+      "id": "subtitle-098",
+      "start": 192.08,
+      "end": 193.84,
+      "zh": "可以通过Preset实现",
+      "en": "can go through the preset. For"
+    },
+    {
+      "id": "subtitle-099",
+      "start": 193.84,
+      "end": 195.36,
+      "zh": "比如我刚才演示的那个",
+      "en": "example, the one I"
+    },
+    {
+      "id": "subtitle-100",
+      "start": 195.36,
+      "end": 197.64,
+      "zh": "就是现成了Kalinder Assistant",
+      "en": "just tested is the Kaling Assistant. The"
+    },
+    {
+      "id": "subtitle-101",
+      "start": 197.64,
+      "end": 199,
+      "zh": "它的结构很简单",
+      "en": "result is very simple. The"
+    },
+    {
+      "id": "subtitle-102",
+      "start": 199,
+      "end": 201.76,
+      "zh": "意识Instructions就是你要干嘛",
+      "en": "first is Instructions. What do you want to do? The"
+    },
+    {
+      "id": "subtitle-103",
+      "start": 201.76,
+      "end": 203.72,
+      "zh": "二十都需要哪些插件参与",
+      "en": "second is to do some tests. For"
+    },
+    {
+      "id": "subtitle-104",
+      "start": 203.72,
+      "end": 205.24,
+      "zh": "比如Kalinder和Zoom",
+      "en": "example, Kaling and Zoom. What"
+    },
+    {
+      "id": "subtitle-105",
+      "start": 205.24,
+      "end": 206.96,
+      "zh": "以及用什么模型",
+      "en": "kind of model is it? There"
+    },
+    {
+      "id": "subtitle-106",
+      "start": 206.96,
+      "end": 209.28,
+      "zh": "过往上已经有几十个Preset了",
+      "en": "have been several presets in the past. If"
+    },
+    {
+      "id": "subtitle-107",
+      "start": 209.28,
+      "end": 210.88,
+      "zh": "大家感兴趣可以去翻一翻",
+      "en": "you are interested, you can try it out. I"
+    },
+    {
+      "id": "subtitle-108",
+      "start": 210.88,
+      "end": 212.76,
+      "zh": "我就不过多演示了",
+      "en": "will not try too"
+    },
+    {
+      "id": "subtitle-109",
+      "start": 212.76,
+      "end": 213.2,
+      "zh": "第三",
+      "en": "much. The"
+    },
+    {
+      "id": "subtitle-110",
+      "start": 213.2,
+      "end": 214.48,
+      "zh": "AI对话",
+      "en": "third is AI. This"
+    },
+    {
+      "id": "subtitle-111",
+      "start": 214.48,
+      "end": 217.32,
+      "zh": "这个功能其实最早应该是一年前推出的",
+      "en": "job should be launched one year ago. But"
+    },
+    {
+      "id": "subtitle-112",
+      "start": 217.32,
+      "end": 219.44,
+      "zh": "只不过当时支持的模型很少",
+      "en": "it supports the model very"
+    },
+    {
+      "id": "subtitle-113",
+      "start": 219.44,
+      "end": 221.76,
+      "zh": "只有GPD3.5和GPD4",
+      "en": "little. There are only GPT3.5 and"
+    },
+    {
+      "id": "subtitle-114",
+      "start": 221.76,
+      "end": 225.08,
+      "zh": "后来慢慢添加了Cloud,Mistro等知名的模型",
+      "en": "GPT4. Then it will gradually add a cloud, mistro, and light"
+    },
+    {
+      "id": "subtitle-115",
+      "start": 225.08,
+      "end": 225.88,
+      "zh": "到了今天",
+      "en": "model. Today, the"
+    },
+    {
+      "id": "subtitle-116",
+      "start": 225.88,
+      "end": 227.28,
+      "zh": "这个AI对话功能",
+      "en": "AI team's work has"
+    },
+    {
+      "id": "subtitle-117",
+      "start": 227.28,
+      "end": 230.16,
+      "zh": "已经覆盖了市面上所有的主流模型",
+      "en": "covered all kinds of models in the world. The"
+    },
+    {
+      "id": "subtitle-118",
+      "start": 230.16,
+      "end": 232.12,
+      "zh": "我个人最常用的是这两个",
+      "en": "most common thing for me is these two. Both"
+    },
+    {
+      "id": "subtitle-119",
+      "start": 232.12,
+      "end": 233.08,
+      "zh": "它俩有推力",
+      "en": "of them have a"
+    },
+    {
+      "id": "subtitle-120",
+      "start": 233.08,
+      "end": 233.96,
+      "zh": "有连网收索",
+      "en": "lot of"
+    },
+    {
+      "id": "subtitle-121",
+      "start": 233.96,
+      "end": 234.96,
+      "zh": "很舒服",
+      "en": "advantages. They are very comfortable. And"
+    },
+    {
+      "id": "subtitle-122",
+      "start": 234.96,
+      "end": 237.08,
+      "zh": "而且我还给他们设置了一个快捷键",
+      "en": "I have also set them up. It"
+    },
+    {
+      "id": "subtitle-123",
+      "start": 237.08,
+      "end": 239,
+      "zh": "用起来就更顺手了",
+      "en": "is easier to use. To"
+    },
+    {
+      "id": "subtitle-124",
+      "start": 239,
+      "end": 239.64,
+      "zh": "说真的",
+      "en": "be honest,"
+    },
+    {
+      "id": "subtitle-125",
+      "start": 239.64,
+      "end": 241.32,
+      "zh": "自从安装了Rekas之后",
+      "en": "after installing the ReCars, I"
+    },
+    {
+      "id": "subtitle-126",
+      "start": 241.32,
+      "end": 243.64,
+      "zh": "我打开Curedwide的次数都变少了",
+      "en": "have already opened the worldwide technology. Because"
+    },
+    {
+      "id": "subtitle-127",
+      "start": 243.64,
+      "end": 245.52,
+      "zh": "因为基本功能重合了",
+      "en": "the basic functions have been"
+    },
+    {
+      "id": "subtitle-128",
+      "start": 245.52,
+      "end": 247.28,
+      "zh": "人家用起来更加轻便",
+      "en": "combined. It is more convenient to"
+    },
+    {
+      "id": "subtitle-129",
+      "start": 247.28,
+      "end": 250.12,
+      "zh": "特别适合日常随便讨论几句的场景",
+      "en": "use. Especially suitable for daily life. ReCars's AI"
+    },
+    {
+      "id": "subtitle-130",
+      "start": 250.12,
+      "end": 251.76,
+      "zh": "Rekas的AI插件功能",
+      "en": "technology needs to"
+    },
+    {
+      "id": "subtitle-131",
+      "start": 251.76,
+      "end": 253.48,
+      "zh": "需要付费才能开启",
+      "en": "be fully equipped. The"
+    },
+    {
+      "id": "subtitle-132",
+      "start": 253.48,
+      "end": 254.28,
+      "zh": "价格很便宜",
+      "en": "price is"
+    },
+    {
+      "id": "subtitle-133",
+      "start": 254.28,
+      "end": 255.96,
+      "zh": "一个月8美金",
+      "en": "cheap. If you"
+    },
+    {
+      "id": "subtitle-134",
+      "start": 255.96,
+      "end": 257.16,
+      "zh": "如果你再加钱",
+      "en": "are at home, you"
+    },
+    {
+      "id": "subtitle-135",
+      "start": 257.16,
+      "end": 259.04,
+      "zh": "就可以使用更高级的模型",
+      "en": "can use a higher model. For"
+    },
+    {
+      "id": "subtitle-136",
+      "start": 259.04,
+      "end": 261.24,
+      "zh": "比如Cured3.73net",
+      "en": "example, cloud 3.73net. My goal"
+    },
+    {
+      "id": "subtitle-137",
+      "start": 261.24,
+      "end": 263.36,
+      "zh": "我目前是指付8美金这一档",
+      "en": "is to support the scale of the AI. I"
+    },
+    {
+      "id": "subtitle-138",
+      "start": 263.36,
+      "end": 265,
+      "zh": "感觉这个是我今年订阅的",
+      "en": "think this is the best AI product"
+    },
+    {
+      "id": "subtitle-139",
+      "start": 265,
+      "end": 266.8,
+      "zh": "最超级的AI产品",
+      "en": "I've ever booked this year. After"
+    },
+    {
+      "id": "subtitle-140",
+      "start": 266.8,
+      "end": 267.72,
+      "zh": "有了它之后",
+      "en": "this, I will"
+    },
+    {
+      "id": "subtitle-141",
+      "start": 267.72,
+      "end": 271.16,
+      "zh": "再加上我上上期推荐的AI工具和效率工具",
+      "en": "add the AI technology and efficiency of the AI technology. It's"
+    },
+    {
+      "id": "subtitle-142",
+      "start": 271.16,
+      "end": 274,
+      "zh": "全套快捷键用起来真的效率飞起",
+      "en": "really effective. Also,"
+    },
+    {
+      "id": "subtitle-143",
+      "start": 274,
+      "end": 275.72,
+      "zh": "而且我越用越觉得",
+      "en": "I think it's better to"
+    },
+    {
+      "id": "subtitle-144",
+      "start": 275.72,
+      "end": 278.68,
+      "zh": "一个AI商有去无份集成所有的软件",
+      "en": "have all kinds of software in the AI industry. And"
+    },
+    {
+      "id": "subtitle-145",
+      "start": 278.68,
+      "end": 281.72,
+      "zh": "然后在一个见面上完成所有的交互",
+      "en": "then, in the entire software industry. This"
+    },
+    {
+      "id": "subtitle-146",
+      "start": 281.72,
+      "end": 282.84,
+      "zh": "这个就是我想要的",
+      "en": "is what I want"
+    },
+    {
+      "id": "subtitle-147",
+      "start": 282.84,
+      "end": 283.48,
+      "zh": "AI PC",
+      "en": "to experience"
+    },
+    {
+      "id": "subtitle-148",
+      "start": 283.48,
+      "end": 285.48,
+      "zh": "AIMac的功能和体验",
+      "en": "with AI PC, AIMAC, and AIMAC. Because"
+    },
+    {
+      "id": "subtitle-149",
+      "start": 285.48,
+      "end": 286.84,
+      "zh": "因为无份集成",
+      "en": "the software doesn't"
+    },
+    {
+      "id": "subtitle-150",
+      "start": 286.84,
+      "end": 288.12,
+      "zh": "所以不需要打开软件",
+      "en": "have to open"
+    },
+    {
+      "id": "subtitle-151",
+      "start": 288.12,
+      "end": 289.48,
+      "zh": "就能完成任务",
+      "en": "the software industry. Don't"
+    },
+    {
+      "id": "subtitle-152",
+      "start": 289.48,
+      "end": 291.64,
+      "zh": "你别小看这一个小小的改变",
+      "en": "look at this small change. It's"
+    },
+    {
+      "id": "subtitle-153",
+      "start": 291.64,
+      "end": 293.28,
+      "zh": "它对注意力集中效率提升",
+      "en": "very, very helpful for"
+    },
+    {
+      "id": "subtitle-154",
+      "start": 293.28,
+      "end": 295.08,
+      "zh": "有非常非常大的帮助",
+      "en": "the efficiency and efficiency. Because"
+    },
+    {
+      "id": "subtitle-155",
+      "start": 295.08,
+      "end": 296.32,
+      "zh": "因为无份集成",
+      "en": "the software doesn't have"
+    },
+    {
+      "id": "subtitle-156",
+      "start": 296.32,
+      "end": 299.2,
+      "zh": "所以自然语言的交互价值就提向了",
+      "en": "to be supported by the software industry. You"
+    },
+    {
+      "id": "subtitle-157",
+      "start": 299.2,
+      "end": 300.56,
+      "zh": "你不再需要去了解",
+      "en": "don't have to talk"
+    },
+    {
+      "id": "subtitle-158",
+      "start": 300.56,
+      "end": 302.56,
+      "zh": "去思考某个软件怎么操作",
+      "en": "about how the software industry works. The"
+    },
+    {
+      "id": "subtitle-159",
+      "start": 302.56,
+      "end": 303.92,
+      "zh": "下需求就好",
+      "en": "next demand is good. It"
+    },
+    {
+      "id": "subtitle-160",
+      "start": 303.92,
+      "end": 305.84,
+      "zh": "像苹果和微软在样的大公司",
+      "en": "needs to consider a lot of things"
+    },
+    {
+      "id": "subtitle-161",
+      "start": 305.84,
+      "end": 307.32,
+      "zh": "需要考虑的东西很多",
+      "en": "such as Apple and Weirong. It's"
+    },
+    {
+      "id": "subtitle-162",
+      "start": 307.32,
+      "end": 308.8,
+      "zh": "不只是做产品",
+      "en": "not just a product. So,"
+    },
+    {
+      "id": "subtitle-163",
+      "start": 308.8,
+      "end": 311.12,
+      "zh": "所以给了Rekas发育的时间",
+      "en": "it takes a lot of time for RayCars to develop. This"
+    },
+    {
+      "id": "subtitle-164",
+      "start": 311.12,
+      "end": 313.6,
+      "zh": "这个是非常非常保规的机会穿口",
+      "en": "is a very, very precious opportunity. After"
+    },
+    {
+      "id": "subtitle-165",
+      "start": 313.6,
+      "end": 315.68,
+      "zh": "即使之后大产追上来了",
+      "en": "that, the market has come up. As"
+    },
+    {
+      "id": "subtitle-166",
+      "start": 315.68,
+      "end": 318,
+      "zh": "只要你能保持灵活性和开放性",
+      "en": "long as you can keep your own trust and trust. I"
+    },
+    {
+      "id": "subtitle-167",
+      "start": 318,
+      "end": 320.88,
+      "zh": "我相信Rekas还是有生存空间的",
+      "en": "believe that RayCars is still in the air. This"
+    },
+    {
+      "id": "subtitle-168",
+      "start": 320.88,
+      "end": 324.04,
+      "zh": "这个是我决定长期订阅支持他们的原因",
+      "en": "is the reason why I decided to support them. Ok,"
+    },
+    {
+      "id": "subtitle-169",
+      "start": 324.04,
+      "end": 325.96,
+      "zh": "以上就是本期内容",
+      "en": "that's it for today. I"
+    },
+    {
+      "id": "subtitle-170",
+      "start": 325.96,
+      "end": 328.2,
+      "zh": "想了解AI就来我们NewType社群",
+      "en": "want to talk about our new type design. See"
+    },
+    {
+      "id": "subtitle-171",
+      "start": 328.2,
+      "end": 329.56,
+      "zh": "那咱们下期见",
+      "en": "you next time."
+    }
+  ],
+  "autoMatch": {
+    "changed": [
+      "beat-002",
+      "beat-003",
+      "beat-004",
+      "beat-005",
+      "beat-006",
+      "beat-007",
+      "beat-008",
+      "beat-009",
+      "beat-010",
+      "beat-011",
+      "beat-012",
+      "beat-013",
+      "beat-014",
+      "beat-015",
+      "beat-016",
+      "beat-017",
+      "beat-018",
+      "beat-019",
+      "beat-020",
+      "beat-021",
+      "beat-022",
+      "beat-023",
+      "beat-024",
+      "beat-025",
+      "beat-026",
+      "beat-027",
+      "beat-028",
+      "beat-029"
+    ],
+    "generatedAt": "2026-09-09T17:36:51.116Z"
+  },
+  "render": {
+    "status": "idle",
+    "progress": 0,
+    "outputPath": null,
+    "renderedAt": null,
+    "error": null
+  }
+}

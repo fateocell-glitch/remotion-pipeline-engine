@@ -1,0 +1,6 @@
+const assert = require("node:assert/strict");
+const test = require("node:test");
+const {DEFAULT_GLOBAL_SETTINGS, mergeGlobalSettings} = require("./global-settings.cjs");
+test("fills missing global settings with production defaults", () => { assert.deepEqual(mergeGlobalSettings(), DEFAULT_GLOBAL_SETTINGS); });
+test("clamps global settings into supported rendering ranges", () => { const s=mergeGlobalSettings({background:{dimOpacity:3,blurRadius:-1},subtitles:{bottomOffset:10,fontSizeZh:90,fontSizeEn:1}}); assert.equal(s.background.dimOpacity,0.9); assert.equal(s.background.blurRadius,0); assert.equal(s.subtitles.bottomOffset,60); assert.equal(s.subtitles.fontSizeZh,60); assert.equal(s.subtitles.fontSizeEn,18); });
+test("uses the Studio clean-plate defaults for new or migrated projects", () => { const s=mergeGlobalSettings(); assert.equal(s.background.dimOpacity,0); assert.equal(s.background.blurRadius,0); assert.equal(s.background.vignette,false); assert.equal(s.theme.primaryAccent,"#00F2FE"); assert.equal(s.theme.cardStyle,"glass"); assert.equal(s.theme.autoContrastStroke,true); assert.deepEqual(s.subtitles,{bottomOffset:120,fontSizeZh:46,fontSizeEn:22,highlightColor:"#F59E0B"}); });

@@ -1,0 +1,3102 @@
+{
+  "schemaVersion": 2,
+  "updatedAt": "2026-09-12T16:11:05.479Z",
+  "families": [
+    {
+      "id": "metrics",
+      "name": "指标与数据"
+    },
+    {
+      "id": "steps",
+      "name": "流程与时序"
+    },
+    {
+      "id": "chips",
+      "name": "标签与参数"
+    },
+    {
+      "id": "narrative",
+      "name": "叙事与观点"
+    },
+    {
+      "id": "entities",
+      "name": "人物与产品"
+    }
+  ],
+  "components": [
+    {
+      "id": "capital-dashboard",
+      "name": "资本仪表盘",
+      "family": "metrics",
+      "description": "metrics · market · growth",
+      "tags": [
+        "metrics",
+        "market",
+        "growth"
+      ],
+      "data": [
+        "number",
+        "percentage"
+      ],
+      "version": 3,
+      "tokens": {
+        "mountMode": "top-left",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 1282,
+        "boundsY": 382,
+        "boundsWidth": 538,
+        "boundsHeight": 108,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ],
+        "marketLabel": "增长",
+        "marketTo": 128,
+        "marketSuffix": "%",
+        "engineeringLabel": "效率",
+        "engineeringTo": 84,
+        "engineeringSuffix": "%"
+      },
+      "updatedAt": "2026-09-12T05:06:21.524Z",
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "engineering-return",
+      "name": "工程回归",
+      "family": "metrics",
+      "description": "metrics · hardware · product",
+      "tags": [
+        "metrics",
+        "hardware",
+        "product"
+      ],
+      "data": [
+        "number",
+        "comparison"
+      ],
+      "version": 5,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 110,
+        "boundsY": 210,
+        "boundsWidth": 1580,
+        "boundsHeight": 456,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Design tokens update the live component preview.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "updatedAt": "2026-09-12T05:33:14.857Z",
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "progress-donut",
+      "name": "环形进度",
+      "family": "metrics",
+      "description": "metrics · confirmation · progress",
+      "tags": [
+        "metrics",
+        "confirmation",
+        "progress"
+      ],
+      "data": [
+        "percentage"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "recovery-progress-bars",
+      "name": "进度确认条",
+      "family": "metrics",
+      "description": "metrics · process · progress",
+      "tags": [
+        "metrics",
+        "process",
+        "progress"
+      ],
+      "data": [
+        "list",
+        "percentage"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "分析",
+          "制作",
+          "验证"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ],
+        "label": "执行进度",
+        "values": [
+          72,
+          58,
+          91
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "data-flow",
+      "name": "数据分屏",
+      "family": "metrics",
+      "description": "metrics · comparison · market",
+      "tags": [
+        "metrics",
+        "comparison",
+        "market"
+      ],
+      "data": [
+        "number",
+        "comparison"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ],
+        "leftLabel": "INPUT",
+        "leftValue": "42%",
+        "rightLabel": "OUTPUT",
+        "rightValue": "86%",
+        "from": 42,
+        "to": 86
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "platform-shift-line",
+      "name": "产品线增长",
+      "family": "metrics",
+      "description": "metrics · timeline · product",
+      "tags": [
+        "metrics",
+        "timeline",
+        "product"
+      ],
+      "data": [
+        "list",
+        "number"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ],
+        "metricLabel": "增长率",
+        "count": 3,
+        "milestones": [
+          "基础",
+          "扩展",
+          "规模化"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "hud-glow-stack",
+      "name": "HUD 浮动发光",
+      "family": "metrics",
+      "description": "metrics · product · statement",
+      "tags": [
+        "metrics",
+        "product",
+        "statement"
+      ],
+      "data": [
+        "list",
+        "number"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "ordered-sequence",
+      "name": "顺序步骤",
+      "family": "steps",
+      "description": "process · steps",
+      "tags": [
+        "process",
+        "steps"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义策略",
+          "装配视觉",
+          "输出成片"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "event-timeline",
+      "name": "增长时间轴",
+      "family": "steps",
+      "description": "timeline · process",
+      "tags": [
+        "timeline",
+        "process"
+      ],
+      "data": [
+        "list",
+        "time"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "rewind-milestones",
+      "name": "时间回溯宽版",
+      "family": "steps",
+      "description": "timeline · process · product",
+      "tags": [
+        "timeline",
+        "process",
+        "product"
+      ],
+      "data": [
+        "list",
+        "time"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "time-rewind",
+      "name": "时间回溯",
+      "family": "steps",
+      "description": "timeline · statement",
+      "tags": [
+        "timeline",
+        "statement"
+      ],
+      "data": [
+        "time"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "route-map",
+      "name": "二维地图",
+      "family": "steps",
+      "description": "process · market",
+      "tags": [
+        "process",
+        "market"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "check-progress",
+      "name": "进度确认",
+      "family": "steps",
+      "description": "process · confirmation · progress",
+      "tags": [
+        "process",
+        "confirmation",
+        "progress"
+      ],
+      "data": [
+        "list",
+        "percentage"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "org-chart",
+      "name": "组织架构",
+      "family": "steps",
+      "description": "process · person · organization",
+      "tags": [
+        "process",
+        "person",
+        "organization"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "draw-line",
+      "name": "画线强调",
+      "family": "steps",
+      "description": "process · timeline · statement",
+      "tags": [
+        "process",
+        "timeline",
+        "statement"
+      ],
+      "data": [
+        "time"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "zoom-statement",
+      "name": "镜头推拉大字",
+      "family": "chips",
+      "description": "statement · comparison · verdict",
+      "tags": [
+        "statement",
+        "comparison",
+        "verdict"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "updatedAt": "2026-09-12T05:32:51.141Z",
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "opinion-hero",
+      "name": "观点主视觉",
+      "family": "narrative",
+      "description": "statement · person · verdict",
+      "tags": [
+        "statement",
+        "person",
+        "verdict"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "bare-typography",
+      "name": "纯文字排版",
+      "family": "chips",
+      "description": "statement · verdict",
+      "tags": [
+        "statement",
+        "verdict"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "updatedAt": "2026-09-12T05:32:59.325Z",
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "spotlight-question",
+      "name": "浮动评论",
+      "family": "narrative",
+      "description": "statement · question · comparison",
+      "tags": [
+        "statement",
+        "question",
+        "comparison"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "bull-bear",
+      "name": "多空对比",
+      "family": "narrative",
+      "description": "comparison · market · risk",
+      "tags": [
+        "comparison",
+        "market",
+        "risk"
+      ],
+      "data": [
+        "comparison"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "market-battlefield",
+      "name": "市场对垒",
+      "family": "narrative",
+      "description": "comparison · market · competition",
+      "tags": [
+        "comparison",
+        "market",
+        "competition"
+      ],
+      "data": [
+        "comparison",
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "tradeoff-reject-round",
+      "name": "圆形红色否定项",
+      "family": "narrative",
+      "description": "risk · comparison · warning",
+      "tags": [
+        "risk",
+        "comparison",
+        "warning"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "reject-list",
+      "name": "错误清单",
+      "family": "narrative",
+      "description": "risk · warning · process",
+      "tags": [
+        "risk",
+        "warning",
+        "process"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "person-rank",
+      "name": "人物交接",
+      "family": "entities",
+      "description": "person · organization · leadership",
+      "tags": [
+        "person",
+        "organization",
+        "leadership"
+      ],
+      "data": [
+        "person",
+        "comparison"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "avatar-handoff",
+      "name": "头像交接",
+      "family": "entities",
+      "description": "person · leadership · timeline",
+      "tags": [
+        "person",
+        "leadership",
+        "timeline"
+      ],
+      "data": [
+        "person",
+        "comparison"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "product-explosion",
+      "name": "产品爆炸图",
+      "family": "entities",
+      "description": "product · hardware · spec",
+      "tags": [
+        "product",
+        "hardware",
+        "spec"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": false
+    },
+    {
+      "id": "cook-machine",
+      "name": "经营机器",
+      "family": "entities",
+      "description": "product · hardware · process",
+      "tags": [
+        "product",
+        "hardware",
+        "process"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "photo-wall",
+      "name": "照片墙",
+      "family": "entities",
+      "description": "person · product · market",
+      "tags": [
+        "person",
+        "product",
+        "market"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": false
+    },
+    {
+      "id": "logo-wordmark",
+      "name": "标志文字",
+      "family": "entities",
+      "description": "product · market · statement",
+      "tags": [
+        "product",
+        "market",
+        "statement"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "diagonal-chips",
+      "name": "斜入标签",
+      "family": "chips",
+      "description": "product · hardware · spec",
+      "tags": [
+        "product",
+        "hardware",
+        "spec"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 8,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "SYSTEM READY",
+          "LIVE TOKENS",
+          "SYNCED PREVIEW"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "floating-chips",
+      "name": "发光浮动标签",
+      "family": "narrative",
+      "description": "product · spec · market",
+      "tags": [
+        "product",
+        "spec",
+        "market"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "updatedAt": "2026-09-12T05:32:54.905Z",
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "desktop-folders",
+      "name": "桌面文件夹",
+      "family": "narrative",
+      "description": "process · product · spec",
+      "tags": [
+        "process",
+        "product",
+        "spec"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "updatedAt": "2026-09-12T05:32:48.725Z",
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "clipboard-note",
+      "name": "剪贴板批注",
+      "family": "chips",
+      "description": "process · confirmation · statement",
+      "tags": [
+        "process",
+        "confirmation",
+        "statement"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "briefing-poster",
+      "name": "报纸简报二号",
+      "family": "chips",
+      "description": "market · statement · product",
+      "tags": [
+        "market",
+        "statement",
+        "product"
+      ],
+      "data": [
+        "list",
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "screen-recording",
+      "name": "屏幕录制框",
+      "family": "chips",
+      "description": "process · product · spec",
+      "tags": [
+        "process",
+        "product",
+        "spec"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "flying-paper-stack",
+      "name": "飞入纸卡二号",
+      "family": "chips",
+      "description": "process · statement · market",
+      "tags": [
+        "process",
+        "statement",
+        "market"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "chapter-card",
+      "name": "章节卡",
+      "family": "narrative",
+      "description": "chapter · statement · verdict",
+      "tags": [
+        "chapter",
+        "statement",
+        "verdict"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "value-verdict",
+      "name": "价值判断",
+      "family": "narrative",
+      "description": "metrics · verdict · statement",
+      "tags": [
+        "metrics",
+        "verdict",
+        "statement"
+      ],
+      "data": [
+        "number",
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "closing-checklist",
+      "name": "结尾清单",
+      "family": "narrative",
+      "description": "confirmation · verdict · checklist",
+      "tags": [
+        "confirmation",
+        "verdict",
+        "checklist"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "结构明确",
+          "节奏稳定",
+          "可直接出片"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ],
+        "title": "FINAL CHECKLIST"
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "checklist-editorial",
+      "name": "编辑清单二号",
+      "family": "narrative",
+      "description": "confirmation · statement · checklist",
+      "tags": [
+        "confirmation",
+        "statement",
+        "checklist"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "finale-kinetic",
+      "name": "结尾冲击",
+      "family": "narrative",
+      "description": "chapter · statement · verdict",
+      "tags": [
+        "chapter",
+        "statement",
+        "verdict"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "pivot-list",
+      "name": "规格打字机",
+      "family": "narrative",
+      "description": "comparison · statement · verdict",
+      "tags": [
+        "comparison",
+        "statement",
+        "verdict"
+      ],
+      "data": [
+        "list",
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Design tokens update the live component preview.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.32,
+      "faceAvoidanceEligible": true
+    },
+    {
+      "id": "newspaper-swap",
+      "name": "报纸标题",
+      "family": "narrative",
+      "description": "comparison · market · verdict",
+      "tags": [
+        "comparison",
+        "market",
+        "verdict"
+      ],
+      "data": [
+        "comparison",
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 15
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "视觉节奏",
+          "行动结论"
+        ],
+        "steps": [
+          "定义目标",
+          "组织信息",
+          "完成验证"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "重点信息",
+          "持续观察"
+        ]
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": true
+    }
+  ],
+  "subtitleAssets": [
+    {
+      "id": "karaoke-captions",
+      "name": "卡拉 OK 逐词字幕",
+      "family": "subtitles",
+      "description": "逐词高亮的双语字幕资产",
+      "version": 1,
+      "tokens": {
+        "highlightColor": "#F59E0B",
+        "fontSizeZh": 46,
+        "fontSizeEn": 22,
+        "lineGap": 12,
+        "wordScale": 1.08,
+        "backgroundOpacity": 0.58
+      },
+      "mockData": {
+        "zh": "逐词高亮字幕预览",
+        "en": "Word-by-word caption preview"
+      }
+    }
+  ]
+}

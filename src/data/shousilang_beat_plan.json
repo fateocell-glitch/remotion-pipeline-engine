@@ -1,0 +1,98 @@
+[
+  {
+    "start": 0,
+    "end": 31,
+    "lt": "LT-01",
+    "surfaceMode": "full-block",
+    "motion": "left-slide",
+    "chapter": "01 排队神话",
+    "headline": "三小时排队",
+    "headlineSize1280": 76,
+    "headlineColor": "&H006BE838",
+    "numericVisual": null
+  },
+  {
+    "start": 31,
+    "end": 64,
+    "lt": "LT-03",
+    "surfaceMode": "compact-block",
+    "motion": "compact-expand",
+    "chapter": "02 中端缺口",
+    "headline": "空白被击中",
+    "headlineSize1280": 70,
+    "headlineColor": "&H00FF9B24",
+    "numericVisual": null
+  },
+  {
+    "start": 64,
+    "end": 92,
+    "lt": "LT-12",
+    "surfaceMode": "metric-card",
+    "motion": "left-slide",
+    "chapter": "03 价格锚点",
+    "headline": "9.5%的机会",
+    "headlineSize1280": 72,
+    "headlineColor": "&H0000FFFF",
+    "numericVisual": "9.5%"
+  },
+  {
+    "start": 92,
+    "end": 126,
+    "lt": "LT-10",
+    "surfaceMode": "chips-only",
+    "motion": "chip-stagger",
+    "chapter": "04 营销抓手",
+    "headline": "平价高级感",
+    "headlineSize1280": 72,
+    "headlineColor": "&H00FFFFFF",
+    "numericVisual": null
+  },
+  {
+    "start": 126,
+    "end": 162,
+    "lt": "LT-17",
+    "surfaceMode": "text-only",
+    "motion": "bottom-rise",
+    "chapter": "05 接住客流",
+    "headline": "服务被拆成系统",
+    "headlineSize1280": 68,
+    "headlineColor": "&H00800080",
+    "numericVisual": null
+  },
+  {
+    "start": 162,
+    "end": 190,
+    "lt": "LT-14",
+    "surfaceMode": "comparison-card",
+    "motion": "left-slide",
+    "chapter": "06 后厨效率",
+    "headline": "机器扛住峰值",
+    "headlineSize1280": 70,
+    "headlineColor": "&H0000FFFF",
+    "numericVisual": null
+  },
+  {
+    "start": 190,
+    "end": 215,
+    "lt": "LT-15",
+    "surfaceMode": "metric-card",
+    "motion": "left-slide",
+    "chapter": "07 风险反噬",
+    "headline": "安全是底线",
+    "headlineSize1280": 68,
+    "headlineColor": "&H000000FF",
+    "numericVisual": "14%"
+  },
+  {
+    "start": 215,
+    "end": 232.766,
+    "lt": "LT-27",
+    "surfaceMode": "clean-hold",
+    "motion": "bottom-rise",
+    "chapter": "08 热度之后",
+    "headline": "最后看复购",
+    "headlineSize1280": 72,
+    "headlineColor": "&H0000FFFF",
+    "numericVisual": null
+  }
+]
