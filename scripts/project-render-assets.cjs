@@ -3,6 +3,7 @@
 const {createHash} = require("node:crypto");
 const {mergeGlobalSettings} = require("./services/global-settings.cjs");
 const {compactEffectCopy} = require("./services/effect-copy.cjs");
+const {normalizeBeatLayers} = require("./services/effect-layer-schema.cjs");
 const {componentPresetFingerprintSync} = require("./services/component-registry-store.cjs");
 
 const safeId = (value) => String(value ?? "").replace(/[^a-z0-9_-]/gi, "-");
@@ -13,19 +14,51 @@ const stableJson = (value) => {
 };
 const defaultProjectRender = () => ({status: "idle", progress: 0, outputPath: null, renderedAt: null, error: null});
 const defaultBeatRender = () => ({revision: 1, status: "idle", previewPath: null, renderedAt: null, error: null, contentHash: null, renderedVideoPath: null});
+const TERMINAL_MICRO_TAIL_MAX_DURATION = 5;
+const TERMINAL_TAIL_MAX_DURATION = 38;
+function absorbTerminalTailBeats(beats) {
+  const source = Array.isArray(beats) ? beats : [];
+  if (source.length < 2) return source;
+  const previous = source[source.length - 2];
+  const tail = source[source.length - 1];
+  const previousDuration = Number(previous?.end) - Number(previous?.start);
+  const tailDuration = Number(tail?.end) - Number(tail?.start);
+  if (!Number.isFinite(previousDuration) || !Number.isFinite(tailDuration) || tailDuration <= 0 || tailDuration > TERMINAL_MICRO_TAIL_MAX_DURATION || previousDuration + tailDuration > TERMINAL_TAIL_MAX_DURATION) return source;
+  const handoffOffset = previousDuration;
+  const previousLayers = Array.isArray(previous.layers) ? previous.layers.map((layer) => ({...layer, commonProps:{...(layer.commonProps ?? {})}})) : [];
+  const lastPreviousLayer = previousLayers.at(-1);
+  if (lastPreviousLayer) {
+    const enterOffset = Math.max(0, Number(lastPreviousLayer.commonProps?.enterOffset ?? lastPreviousLayer.enterOffset) || 0);
+    lastPreviousLayer.commonProps.duration = Math.max(.01, handoffOffset - enterOffset);
+    if (!lastPreviousLayer.commonProps.exitAnimation || lastPreviousLayer.commonProps.exitAnimation === "none") lastPreviousLayer.commonProps.exitAnimation = "fade-out";
+  }
+  const tailLayers = (Array.isArray(tail.layers) ? tail.layers : []).map((layer, index) => {
+    const commonProps = {...(layer.commonProps ?? {})};
+    const localEnter = Math.max(0, Number(commonProps.enterOffset ?? layer.enterOffset) || 0);
+    commonProps.enterOffset = Number((handoffOffset + localEnter).toFixed(2));
+    return {...layer, layerId:"tail-" + tail.id + "-" + (layer.layerId || index + 1), commonProps, enterOffset:commonProps.enterOffset};
+  });
+  const previousRender = previous.render ?? defaultBeatRender();
+  const artifactPath = previousRender.renderedVideoPath || previousRender.previewPath || previous.renderedVideoPath || null;
+  const artifactHash = previousRender.contentHash || previous.contentHash || null;
+  const merged = {...previous, end:tail.end, layers:[...previousLayers, ...tailLayers], faceZone:tail.faceZone ?? previous.faceZone ?? null, terminalTailAbsorbed:{sourceBeatId:tail.id, tailDuration:Number(tailDuration.toFixed(2)), mergedAt:new Date().toISOString()}, renderStatus:"dirty", renderedVideoPath:artifactPath, contentHash:artifactHash, render:{...previousRender, revision:Math.max(1, Number(previousRender.revision) || 1) + 1, status:"stale", previewPath:artifactPath, renderedVideoPath:artifactPath, contentHash:artifactHash, error:null}};
+  return [...source.slice(0, -2), merged];
+}
+
 
 function ensureProjectLifecycle(project) {
   return {
     ...project,
     globalSettings: mergeGlobalSettings(project.globalSettings),
     render: {...defaultProjectRender(), ...(project.render ?? {})},
-    beats: (project.beats ?? []).map((beat) => ({
+    beats: absorbTerminalTailBeats((project.beats ?? []).map((beat) => ({
       ...beat,
       subtitle: compactEffectCopy(beat.subtitle),
       zh: compactEffectCopy(beat.zh),
       en: compactEffectCopy(beat.en),
+      layers: normalizeBeatLayers(beat),
       render: {...defaultBeatRender(), ...(beat.render ?? {})},
-    })),
+    }))),
   };
 }
 
@@ -43,7 +76,8 @@ function renderPayload(project, beat, presetSignature) {
   }));
   const layouts = [...new Set([layout, ...(Array.isArray(beatData.layers) ? beatData.layers.map((layer) => layer?.layout) : [])].filter(Boolean))];
   const resolvedPresets = Array.isArray(presetSignature) ? presetSignature.filter((entry) => layouts.includes(entry?.id)) : componentPresetFingerprintSync(process.cwd(), layouts);
-  return {version: 3, fps: project.fps, globalSettings: project.globalSettings, componentPresets: resolvedPresets, beat: {id: beatData.id, start: beatData.start, end: beatData.end, eyebrow: beatData.eyebrow, subtitle: beatData.subtitle, zh: beatData.zh, en: beatData.en, layers: beatData.layers, faceZone: beatData.faceZone}, captions};
+  const renderPresets = resolvedPresets.map((preset) => ({id:preset?.id, family:preset?.family, displayIntent:preset?.displayIntent, tokens:preset?.tokens, sfx:preset?.sfx}));
+  return {version: 6, presenterSafeContract: 2, fps: project.fps, globalSettings: project.globalSettings, componentPresets: renderPresets, beat: {id: beatData.id, start: beatData.start, end: beatData.end, eyebrow: beatData.eyebrow, subtitle: beatData.subtitle, zh: beatData.zh, en: beatData.en, layers: beatData.layers, faceZone: beatData.faceZone}, captions};
 }
 function renderContentHash(project, beat, presetSignature) {
   return createHash("sha256").update(stableJson(renderPayload(project, beat, presetSignature))).digest("hex");
@@ -80,10 +114,18 @@ function reconcileProjectRenderCache(project, assetExists) {
   const beats = normalized.beats.map((beat) => {
     const render = beat.render;
     const expectedHash = renderContentHash(normalized, beat);
-    const path = render.renderedVideoPath || render.previewPath || beat.renderedVideoPath;
+    const storedPath = render.renderedVideoPath || render.previewPath || beat.renderedVideoPath;
+    const canonicalPath = currentAssetPath(normalized.projectId, beat);
+    const path = storedPath && assetExists(storedPath) ? storedPath : assetExists(canonicalPath) ? canonicalPath : null;
     const isRendered = render.status === "ready" || render.status === "rendered" || beat.renderStatus === "rendered";
-    if (isRendered && path && render.contentHash && assetExists(path)) {
+    const canInspectArtifact = Boolean(path) && (isRendered || render.status === "stale" || beat.renderStatus === "dirty" || beat.renderStatus === "failed");
+    if (isRendered && path && render.contentHash === expectedHash) {
       const next = {...beat, renderStatus: "rendered", renderedVideoPath: path, contentHash: expectedHash, render: {...render, status: "ready", previewPath: path, renderedVideoPath: path, contentHash: expectedHash, error: null}};
+      if (stableJson(next) !== stableJson(beat)) changed = true;
+      return next;
+    }
+    if (canInspectArtifact) {
+      const next = {...beat, renderStatus: "dirty", renderedVideoPath: path, contentHash: render.contentHash || beat.contentHash || null, render: {...render, status: "stale", previewPath: path, renderedVideoPath: path, error: render.error || null}};
       if (stableJson(next) !== stableJson(beat)) changed = true;
       return next;
     }
@@ -101,9 +143,11 @@ function invalidateBeat(project, beatId) {
   const beats = normalized.beats.map((beat) => {
     if (beat.id !== beatId) return beat;
     found = true;
-    return {...beat, renderStatus: "dirty", renderedVideoPath: null, contentHash: null, render: {...defaultBeatRender(), revision: beat.render.revision + 1, status: "stale"}};
+    const artifactPath = beat.render.renderedVideoPath || beat.render.previewPath || beat.renderedVideoPath || null;
+    const artifactHash = beat.render.contentHash || beat.contentHash || null;
+    return {...beat, renderStatus: "dirty", renderedVideoPath: artifactPath, contentHash: artifactHash, render: {...defaultBeatRender(), revision: beat.render.revision + 1, status: "stale", previewPath: artifactPath, renderedVideoPath: artifactPath, contentHash: artifactHash, renderedAt: beat.render.renderedAt || null}};
   });
-  if (!found) throw new Error(`Unknown beat: ${beatId}`);
+  if (!found) throw new Error("Unknown beat: " + beatId);
   return {...normalized, beats, render: {...normalized.render, status: "stale", progress: 0, outputPath: null, renderedAt: null, error: null}};
 }
 function editableBeat(beat) {
@@ -158,7 +202,9 @@ function mergeProjectEdits(previousProject, editedProject) {
     const captionChanged = captionChangeOverlapsBeat(captionChanges, beat);
     if (!beatChanged && !captionChanged) return {...beat, render: before.render, renderStatus: before.renderStatus, renderedVideoPath: before.renderedVideoPath, contentHash: before.contentHash};
     changed = true;
-    return {...beat, renderStatus: "dirty", renderedVideoPath: null, contentHash: null, render: {...defaultBeatRender(), revision: before.render.revision + 1, status: "stale"}};
+    const artifactPath = before.render.renderedVideoPath || before.render.previewPath || before.renderedVideoPath || null;
+    const artifactHash = before.render.contentHash || before.contentHash || null;
+    return {...beat, renderStatus: "dirty", renderedVideoPath: artifactPath, contentHash: artifactHash, render: {...defaultBeatRender(), revision: before.render.revision + 1, status: "stale", previewPath: artifactPath, renderedVideoPath: artifactPath, contentHash: artifactHash, renderedAt: before.render.renderedAt || null}};
   });
   return {...edited, beats, render: changed ? {...edited.render, status: "stale", progress: 0, outputPath: null, renderedAt: null, error: null} : previous.render};
 }
@@ -166,13 +212,17 @@ function updateBeatRender(project, beatId, revision, patch) {
   const normalized = ensureProjectLifecycle(project);
   return {...normalized, beats: normalized.beats.map((beat) => {
     if (beat.id !== beatId || beat.render.revision !== revision) return beat;
+    const previousArtifact = beat.render.renderedVideoPath || beat.render.previewPath || beat.renderedVideoPath || null;
     const render = {...beat.render, ...patch};
+    const artifactPath = render.renderedVideoPath || render.previewPath || previousArtifact;
+    const artifactHash = render.contentHash || beat.contentHash || null;
     const status = patch.status;
     const rendered = status === "ready" || status === "rendered";
     const invalid = status === "stale" || status === "failed";
-    return {...beat, render, ...(rendered ? {renderStatus: "rendered", renderedVideoPath: render.renderedVideoPath || render.previewPath, contentHash: render.contentHash} : {}), ...(invalid ? {renderStatus: status === "failed" ? "failed" : "dirty", renderedVideoPath: null, contentHash: null} : {}), ...(status === "rendering" ? {renderStatus: "rendering"} : {})};
+    const cachedRender = invalid ? {...render, previewPath: artifactPath, renderedVideoPath: artifactPath, contentHash: artifactHash} : render;
+    return {...beat, render: cachedRender, ...(rendered ? {renderStatus: "rendered", renderedVideoPath: artifactPath, contentHash: artifactHash} : {}), ...(invalid ? {renderStatus: status === "failed" ? "failed" : "dirty", renderedVideoPath: artifactPath, contentHash: artifactHash} : {}), ...(status === "rendering" ? {renderStatus: "rendering"} : {})};
   })};
 }
 function canAssemble(beats) { return beats.length > 0 && beats.every((beat) => beat?.render?.status === "ready"); }
-module.exports = {canAssemble, currentAssetPath, defaultBeatRender, defaultProjectRender, ensureProjectLifecycle, invalidateBeat, mergeProjectEdits, projectAssetDir, recoverOrphanedBeatRenders, reconcileProjectRenderCache, renderContentHash, renderPayload, updateBeatRender};
+module.exports = {absorbTerminalTailBeats, canAssemble, currentAssetPath, defaultBeatRender, defaultProjectRender, ensureProjectLifecycle, invalidateBeat, mergeProjectEdits, projectAssetDir, recoverOrphanedBeatRenders, reconcileProjectRenderCache, renderContentHash, renderPayload, updateBeatRender};
 

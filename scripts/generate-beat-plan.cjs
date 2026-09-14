@@ -43,9 +43,9 @@ const nearestBoundary = (candidates, pivot) => candidates.slice().sort((left, ri
 function chooseBoundary(captions, start, total, target, language = "zh") {
   const semanticMode = target >= 18;
   if (!semanticMode) return roundSeconds(Math.min(total, start + target));
-  const minDuration = language === "en" ? 20 : 22;
+  const minDuration = target >= 25 ? 25 : (language === "en" ? 20 : 22);
   const preferredDuration = Math.max(minDuration, target || 30);
-  const maxDuration = language === "en" ? 32 : 35;
+  const maxDuration = target >= 25 ? 35 : (language === "en" ? 32 : 35);
   const minEnd = Math.min(total, start + minDuration);
   const hardEnd = Math.min(total, start + maxDuration);
   const candidates = boundaryCandidates(captions, start, minEnd, hardEnd);
@@ -72,10 +72,12 @@ function generateInitialBeats(totalDurationInSeconds, targetBeatDuration = 30, c
 
   while (currentStart < totalDurationInSeconds) {
     const remaining = totalDurationInSeconds - currentStart;
-    const finalThreshold = targetBeatDuration >= 18 ? (language === "en" ? 20 : 22) : targetBeatDuration;
-    const maxDuration = language === "en" ? 32 : 35;
+    const finalThreshold = targetBeatDuration >= 25 ? 25 : (targetBeatDuration >= 18 ? (language === "en" ? 20 : 22) : targetBeatDuration);
+    const maxDuration = targetBeatDuration >= 25 ? 35 : (language === "en" ? 32 : 35);
     const previousDuration = beats.length ? beats.at(-1).end - beats.at(-1).start : 0;
-    if (targetBeatDuration >= 18 && beats.length && remaining < finalThreshold && previousDuration + remaining <= maxDuration) {
+    const canAbsorbWithinNormalLimit = previousDuration + remaining <= maxDuration;
+    const canAbsorbMicroTail = remaining <= 5 && previousDuration + remaining <= 38;
+    if (targetBeatDuration >= 18 && beats.length && remaining < finalThreshold && (canAbsorbWithinNormalLimit || canAbsorbMicroTail)) {
       beats.at(-1).end = roundSeconds(totalDurationInSeconds);
       break;
     }

@@ -60,3 +60,30 @@ test("maps failure output to a usable diagnosis", () => {
   assert.equal(diagnoseRenderFailure("JavaScript heap out of memory"), "系统内存不足");
   assert.equal(diagnoseRenderFailure("Error in composition"), "组件动画异常或 Chromium 渲染异常");
 });
+
+
+test("accepts multi-item Layer payloads without legacy effectProps", () => {
+  const beat = validChineseBeat();
+  beat.layers = [
+    {layout: "ordered-sequence", payload: {items: ["需求验证", "形成判断"]}, commonProps: props(0, 14)},
+    {layout: "clipboard-note", payload: {items: ["核心发现", "结果验证"]}, commonProps: props(14.5, 15)},
+  ];
+  const result = validateBeatIntegrity(beat, {language: "zh"});
+  assert.equal(result.errors.some((error) => error.code === "component-items"), false);
+});
+
+test("allows an absorbed terminal tail up to 38 seconds only on the final Beat", () => {
+  const beat = {id:"beat-010",start:297.51,end:333.18,layout:"chapter-card",effectProps:{headline:"结尾结论",effectText:"收束全文观点"},terminalTailAbsorbed:{sourceBeatId:"beat-011",tailDuration:2.94},layers:[{layout:"chapter-card",effectProps:{headline:"结尾结论",effectText:"收束全文观点"},commonProps:props(0,35.67)}]};
+  const result = validateBeatIntegrity(beat, {beats:[beat]});
+  assert.equal(result.errors.some((error) => error.code === "beat-duration"), false);
+});
+
+test("allows a clipboard note with one supporting label and narrative body", () => {
+  const beat = validChineseBeat();
+  beat.layers = [
+    {layout: "clipboard-note", payload: {bodyText: "单件利润再薄，只要交易频次和规模足够高，固定成本就会被持续摊薄。", items: ["提高购买频次"]}, commonProps: props(0, 14)},
+    {layout: "hud-glow-stack", payload: {items: ["扩大生产数量", "优化采购物流", "拉开成本差距"]}, commonProps: props(14.5, 15)},
+  ];
+  const result = validateBeatIntegrity(beat, {language: "zh"});
+  assert.equal(result.errors.some((error) => error.code === "component-items"), false);
+});

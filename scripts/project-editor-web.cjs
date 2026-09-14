@@ -26,9 +26,10 @@ const projectsDir = join(root, "data", "projects");
 const previewDir = join(root, "out", "project-editor-web-previews");
 const componentAssetRegistry = getComponentRegistrySync(root);
 const componentAssetsById = new Map(componentAssetRegistry.components.map((component) => [component.id, component]));
-const layouts = ["person-rank","event-timeline","pivot-list","value-verdict","capital-dashboard","cook-machine","engineering-return","market-battlefield","finale-kinetic","reject-list","check-progress","diagonal-chips","floating-chips","bare-typography","chapter-card","logo-wordmark","ordered-sequence","org-chart","draw-line","progress-donut","avatar-handoff","bull-bear","opinion-hero","photo-wall","product-explosion","newspaper-swap","route-map","data-flow","screen-recording","zoom-statement","desktop-folders","time-rewind","clipboard-note","closing-checklist","platform-shift-line","tradeoff-reject-round","recovery-progress-bars","hud-glow-stack","briefing-poster","rewind-milestones","flying-paper-stack","checklist-editorial","spotlight-question"];
+const layouts = ["person-rank","event-timeline","pivot-list","capital-dashboard","cook-machine","engineering-return","market-battlefield","finale-kinetic","reject-list","check-progress","diagonal-chips","floating-chips","bare-typography","chapter-card","logo-wordmark","ordered-sequence","org-chart","draw-line","progress-donut","avatar-handoff","bull-bear","opinion-hero","photo-wall","product-explosion","route-map","data-flow","screen-recording","zoom-statement","desktop-folders","time-rewind","clipboard-note","closing-checklist","platform-shift-line","tradeoff-reject-round","recovery-progress-bars","hud-glow-stack","briefing-poster","rewind-milestones","flying-paper-stack","checklist-editorial","spotlight-question"];
 const layoutSet = new Set(layouts);
 const jobs = new Map();
+const activeBeatRenders = new Map();
 const logger = createLogger({root});
 const isLocalAdmin = (req) => ["127.0.0.1", "::1", "::ffff:127.0.0.1"].includes(String(req.socket?.remoteAddress || ""));
 const logWork = (projectId, action, details = {}) => logger.info({traceId: `trace-${Date.now()}`, projectId, stage: action === "upload-started" ? "UPLOAD" : action.includes("render") ? "RENDER_FULL" : action.includes("progress") ? "TRANSCRIBE" : "SLICE_BEATS", message: action, context: details}).catch(() => {});
@@ -38,16 +39,16 @@ const layoutOverrides = {
   "tradeoff-reject-round": {category: "story", label: "圆形红色否定项", fields: [{key: "label", label: "否定项标签", type: "text"}, {key: "title", label: "否定项标题", type: "text"}, {key: "items", label: "圆形否定项", type: "string-list"}], defaults: {items: ["无效投入", "重复流程", "低效路径"]}},
   "recovery-progress-bars": {category: "data", label: "进度确认条", fields: [{key: "label", label: "进度标签", type: "text"}, {key: "title", label: "进度标题", type: "text"}, {key: "items", label: "进度项目", type: "string-list"}, {key: "values", label: "进度数值（%）", type: "string-list"}], defaults: {items: ["需求确认", "能力建设", "结果验证"], values: [68,54,42]}},
   "hud-glow-stack": {category: "interactive", label: "HUD 浮动发光", fields: [{key: "subLabel", label: "卡片辅助标签", type: "text"}, {key: "items", label: "HUD 卡片内容", type: "string-list"}], defaults: {subLabel: "LIVE SIGNAL", items: ["核心信号", "关键判断", "下一步动作"]}},
-  "briefing-poster": {category: "story", label: "报纸简报二号", fields: [{key: "label", label: "简报标签", type: "text"}, {key: "title", label: "简报标题", type: "text"}, {key: "items", label: "简报要点", type: "string-list"}], defaults: {items: ["核心判断", "产品路径", "下一步行动"]}},
-  "rewind-milestones": {category: "story", label: "时间回溯宽版", fields: [{key: "label", label: "回溯标签", type: "text"}, {key: "title", label: "回溯标题", type: "text"}, {key: "years", label: "年份节点", type: "string-list"}, {key: "milestoneLabel", label: "节点说明", type: "text"}], defaults: {years: ["过去", "现在", "下一阶段"]}},
+  "briefing-poster": {category: "story", label: "报纸简报二号", fields: [{key: "label", label: "简报标签", type: "text"}, {key: "bodyText", label: "正文内容", type: "textarea"}, {key: "items", label: "副文内容", type: "string-list"}], defaults: {bodyText: "展示可编辑的真实组件预设", items: ["核心判断", "产品路径", "下一步行动"]}},
+  "rewind-milestones": {category: "story", label: "时间回溯宽版", fields: [{key: "label", label: "回溯标签", type: "text"}, {key: "title", label: "回溯标题", type: "text"}, {key: "years", label: "年份节点", type: "string-list"}, {key: "milestoneLabel", label: "节点说明", type: "text"}], defaults: {years: ["起点", "探索", "迭代", "现在", "下一步"]}},
   "flying-paper-stack": {category: "story", label: "飞入纸卡二号", fields: [{key: "headline", label: "主卡标题", type: "text"}, {key: "ghostTitle", label: "背景卡标题", type: "text"}, {key: "body", label: "卡片正文", type: "textarea"}], defaults: {ghostTitle: "阶段观察"}},
   "checklist-editorial": {category: "story", label: "编辑清单二号", fields: [{key: "label", label: "清单标签", type: "text"}, {key: "title", label: "清单标题", type: "text"}, {key: "items", label: "清单内容", type: "string-list"}], defaults: {items: ["核心价值", "执行路径", "结果验证"]}},
   "ordered-sequence": {category: "story", label: "顺序步骤", fields: [{key: "categoryTag", label: "阶段标签", type: "text"}, {key: "steps", label: "步骤列表", type: "string-list"}], defaults: {}},
   "photo-wall": {category: "story", label: "照片墙", fields: [{key: "items", label: "照片墙标签", type: "string-list"}], defaults: {}},
-  "bull-bear": {category: "data", label: "多空对比", fields: [{key: "bullLabel", label: "看多标签", type: "text"}, {key: "bullText", label: "看多观点", type: "textarea"}, {key: "bearLabel", label: "看空标签", type: "text"}, {key: "bearText", label: "看空观点", type: "textarea"}], defaults: {}},
+  "bull-bear": {category: "data", label: "多空对比", fields: [], defaults: {}},
   "data-flow": {category: "data", label: "数据分屏", fields: [{key: "leftLabel", label: "左侧标签", type: "text"}, {key: "leftValue", label: "左侧数值", type: "text"}, {key: "rightLabel", label: "右侧标签", type: "text"}, {key: "rightValue", label: "右侧数值", type: "text"}, {key: "from", label: "起始比例", type: "number"}, {key: "to", label: "结束比例", type: "number"}], defaults: {}},
   "event-timeline": {category: "data", label: "增长时间轴", fields: [{key: "years", label: "时间节点", type: "string-list"}], defaults: {years: ["起步", "迭代", "规模化", "目标"]}},
-  "capital-dashboard": {category: "data", label: "资本仪表盘", fields: [{key: "marketLabel", label: "第一数字标签", type: "text"}, {key: "marketTo", label: "第一数字", type: "number"}, {key: "marketSuffix", label: "第一数字单位", type: "text"}, {key: "engineeringLabel", label: "第二数字标签", type: "text"}, {key: "engineeringTo", label: "第二数字", type: "number"}, {key: "engineeringSuffix", label: "第二数字单位", type: "text"}], defaults: {marketLabel: "市场规模", marketTo: 4600, marketSuffix: "亿", engineeringLabel: "增长率", engineeringTo: 25, engineeringSuffix: "%"}},
+  "capital-dashboard": {category: "data", label: "资本仪表盘", fields: [{key: "marketLabel", label: "小标题1【标题内容】", type: "text"}, {key: "marketTo", label: "数值1【数字内容】", type: "number"}, {key: "marketSuffix", label: "数字单位", type: "text"}, {key: "engineeringLabel", label: "小标题2【标题内容】", type: "text"}, {key: "engineeringTo", label: "数值2【数字内容】", type: "number"}, {key: "engineeringSuffix", label: "数字单位", type: "text"}], defaults: {marketLabel: "市场规模", marketTo: 4600, marketSuffix: "亿", engineeringLabel: "增长率", engineeringTo: 25, engineeringSuffix: "%"}},
   "pivot-list": {category: "interactive", label: "规格打字机", fields: [{key: "text", label: "打字机文本", type: "textarea"}], defaults: {}},
   "reject-list": {category: "story", label: "错误清单", fields: [checkboxColorField], defaults: {boxColor: "auto"}},
   "check-progress": {category: "interactive", label: "进度确认", fields: [checkboxColorField], defaults: {boxColor: "auto"}},
@@ -60,8 +61,8 @@ const layoutOverrides = {
   "person-rank": {category: "story", label: "人物交接", fields: [{key: "leftName", label: "左侧人物", type: "text"}, {key: "rightName", label: "右侧人物", type: "text"}], defaults: {}},
   "spotlight-question": {category: "interactive", label: "浮动评论", fields: [{key: "comments", label: "评论内容", type: "text"}], defaults: {}},
 };
-const canonicalLayoutLabels = {"person-rank":"人物交接","event-timeline":"增长时间轴","pivot-list":"规格打字机","value-verdict":"价值判断","capital-dashboard":"资本仪表盘","cook-machine":"经营机器","engineering-return":"工程回归","market-battlefield":"市场对垒","finale-kinetic":"结尾冲击","reject-list":"错误清单","check-progress":"进度确认","diagonal-chips":"斜入标签","floating-chips":"发光浮动标签","bare-typography":"纯文字排版","chapter-card":"章节卡","logo-wordmark":"标志文字","ordered-sequence":"顺序步骤","org-chart":"组织架构","draw-line":"画线强调","progress-donut":"环形进度","avatar-handoff":"头像交接","bull-bear":"多空对比","opinion-hero":"观点主视觉","photo-wall":"照片墙","product-explosion":"产品爆炸图","newspaper-swap":"报纸标题","route-map":"二维地图","data-flow":"数据分屏","screen-recording":"屏幕录制框","zoom-statement":"镜头推拉大字","desktop-folders":"桌面文件夹","time-rewind":"时间回溯","clipboard-note":"剪贴板批注","closing-checklist":"结尾清单","spotlight-question":"浮动评论","platform-shift-line":"产品线增长","tradeoff-reject-round":"圆形红色否定项","recovery-progress-bars":"进度确认条","hud-glow-stack":"HUD 浮动发光","briefing-poster":"报纸简报二号","rewind-milestones":"时间回溯宽版","flying-paper-stack":"飞入纸卡二号","checklist-editorial":"编辑清单二号"};
-const layoutMetadata = layouts.map((key) => ({key, label: canonicalLayoutLabels[key] ?? layoutOverrides[key]?.label ?? key, category: layoutOverrides[key]?.category ?? "story", family: componentAssetsById.get(key)?.family ?? layoutOverrides[key]?.family ?? null, fields: layoutOverrides[key]?.fields ?? [], defaults: layoutOverrides[key]?.defaults ?? {}}));
+const canonicalLayoutLabels = {"person-rank":"人物交接","event-timeline":"增长时间轴","pivot-list":"规格打字机","capital-dashboard":"资本仪表盘","cook-machine":"经营机器","engineering-return":"工程回归","market-battlefield":"市场对垒","finale-kinetic":"结尾冲击","reject-list":"错误清单","check-progress":"进度确认","diagonal-chips":"斜入标签","floating-chips":"发光浮动标签","bare-typography":"纯文字排版","chapter-card":"章节卡","logo-wordmark":"标志文字","ordered-sequence":"顺序步骤","org-chart":"组织架构","draw-line":"画线强调","progress-donut":"环形进度","avatar-handoff":"头像交接","bull-bear":"多空对比","opinion-hero":"观点主视觉","photo-wall":"照片墙","product-explosion":"产品爆炸图","route-map":"二维地图","data-flow":"数据分屏","screen-recording":"屏幕录制框","zoom-statement":"镜头推拉大字","desktop-folders":"桌面文件夹","time-rewind":"时间回溯","clipboard-note":"剪贴板批注","closing-checklist":"结尾清单","spotlight-question":"浮动评论","platform-shift-line":"产品线增长","tradeoff-reject-round":"圆形红色否定项","recovery-progress-bars":"进度确认条","hud-glow-stack":"HUD 浮动发光","briefing-poster":"报纸简报二号","rewind-milestones":"时间回溯宽版","flying-paper-stack":"飞入纸卡二号","checklist-editorial":"编辑清单二号"};
+const layoutMetadata = layouts.map((key) => ({key, label: canonicalLayoutLabels[key] ?? layoutOverrides[key]?.label ?? key, category: layoutOverrides[key]?.category ?? "story", family: componentAssetsById.get(key)?.family ?? layoutOverrides[key]?.family ?? null, fields: layoutOverrides[key]?.fields ?? [], defaults: layoutOverrides[key]?.defaults ?? {}, editorSchema: componentAssetsById.get(key)?.editorSchema ?? null}));
 
 const send = (res, status, body, type = "application/json; charset=utf-8") => {res.writeHead(status, {"Content-Type": type, "Cache-Control": "no-store"}); res.end(body);};
 const projectPath = (id) => projectPaths(root, id).projectFile;
@@ -82,8 +83,11 @@ const withNormalizedLayers = (project) => ({
 });
 const getProject = async (id) => {
   const source = JSON.parse(await readFile(projectPath(id), "utf8"));
-  const captions = Array.isArray(source.captions) ? source.captions : [];
-  const normalizedBase = withNormalizedLayers(ensureProjectLifecycle({...source, captions}));
+  const storage = projectPaths(root, id);
+  const captions = source.state !== "CAPTIONS_REVIEW" && existsSync(storage.captionsConfirmedFile)
+    ? JSON.parse(await readFile(storage.captionsConfirmedFile, "utf8"))
+    : (Array.isArray(source.captions) ? source.captions : []);
+  const normalizedBase = withNormalizedLayers(ensureProjectLifecycle({...source, captions, captionReviewMerged: source.captionReviewMerged === true || source.state !== "CAPTIONS_REVIEW"}));
   const recovered = recoverOrphanedBeatRenders(normalizedBase, (beat) => [...jobs.values()].some((job) => job.kind === "beat" && job.projectId === id && job.beatId === beat.id && job.state === "running"));
   const cache = reconcileProjectRenderCache(recovered.project, (relativePath) => existsSync(join(root, relativePath)));
   const normalized = cache.project;
@@ -92,23 +96,31 @@ const getProject = async (id) => {
   }
   return normalized;
 };
+const canonicalCaptionFile = (storage, project) => {
+  if (project.state !== "CAPTIONS_REVIEW" && existsSync(storage.captionsConfirmedFile)) return storage.captionsConfirmedFile;
+  if (existsSync(storage.captionsDraftFile)) return storage.captionsDraftFile;
+  if (existsSync(storage.captionsConfirmedFile)) return storage.captionsConfirmedFile;
+  return storage.captionsCleanedFile;
+};
 const readCaptionReview = async (projectId) => {
   const storage = projectPaths(root, projectId);
-  const file = existsSync(storage.captionsDraftFile) ? storage.captionsDraftFile : storage.captionsCleanedFile;
-  if (!existsSync(file)) throw new Error("字幕核对草稿不存在。");
   const project = JSON.parse(await readFile(projectPath(projectId), "utf8"));
+  const file = canonicalCaptionFile(storage, project);
+  if (!existsSync(file)) throw new Error("字幕核对草稿不存在。");
   const sourceCaptions = JSON.parse(await readFile(file, "utf8"));
-  const useProjectMerged = project.captionReviewMerged === true && Array.isArray(project.captions) && project.captions.length > 0 && project.captions.length < sourceCaptions.length;
-  const captions = project.captionReviewMerged === true ? (useProjectMerged ? project.captions : sourceCaptions) : mergeShortCaptions(sourceCaptions);
-  const bilingual = project.language === "en" || project.bilingual === true || project.subtitleMode === "bilingual" || project.captionsMode === "bilingual";
-  if (project.captionReviewMerged !== true || useProjectMerged || JSON.stringify(sourceCaptions) !== JSON.stringify(captions)) {
+  const captions = project.state === "CAPTIONS_REVIEW"
+    ? (project.captionReviewMerged === true ? sourceCaptions : mergeShortCaptions(sourceCaptions))
+    : sourceCaptions;
+  if (project.state === "CAPTIONS_REVIEW" && (project.captionReviewMerged !== true || JSON.stringify(sourceCaptions) !== JSON.stringify(captions))) {
     await writeFile(storage.captionsDraftFile, JSON.stringify(captions, null, 2) + "\n");
+  }
+  if (JSON.stringify(project.captions) !== JSON.stringify(captions) || project.captionReviewMerged !== true) {
     project.captions = captions;
     project.captionReviewMerged = true;
     project.updatedAt = new Date().toISOString();
     await writeProjectAtomically(projectId, project);
   }
-  return {projectId, state: project.state, bilingual, captions};
+  return {projectId, state: project.state, bilingual: project.language === "en" || project.bilingual === true || project.subtitleMode === "bilingual" || project.captionsMode === "bilingual", captions};
 };
 const writeCaptionDraft = async (projectId, captions) => {
   if (!Array.isArray(captions)) throw new Error("字幕草稿格式无效。");
@@ -176,6 +188,7 @@ const startEnglishCaptionTranslation = async (projectId) => {
       latest.captions = latest.captions.map((caption, index) => ({...caption, en: String(caption.en || "").trim() || String(merged[index]?.en || "").trim()}));
       latest.subtitleTranslation = {status: "ready", completedAt: new Date().toISOString(), source: "faster-whisper-translate"};
       latest.updatedAt = new Date().toISOString();
+      if (latest.state !== "CAPTIONS_REVIEW") await writeFile(storage.captionsConfirmedFile, JSON.stringify(latest.captions, null, 2) + "\n");
       await writeProjectAtomically(projectId, latest);
       jobs.set(jobId, {state: "done", kind: "subtitle-translation", projectId, jobId, progress: 100, message: "英文字幕已补齐"});
       logWork(projectId, "subtitle-translation-completed", {captionCount: latest.captions.length});
@@ -294,7 +307,7 @@ const startFullRender = async (projectId) => {
   return jobId;
 };
 
-const renderPreviewCatalog = () => "<!doctype html><html lang=\"zh-CN\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>组件动效验收库</title><style>body{margin:0;background:#090d16;color:#f3f4f6;font:14px Inter,Microsoft YaHei,Arial,sans-serif}main{max-width:1480px;margin:auto;padding:34px}h1{margin:0;font-size:26px}.sub{margin:9px 0 28px;color:#94a3b8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px}.card{overflow:hidden;border:1px solid #26384f;border-radius:8px;background:#0d1520}.card video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#000}.meta{padding:12px 14px}.meta strong{display:block;font-size:15px}.meta span{display:block;margin-top:4px;color:#8fa2b9;font-family:ui-monospace,monospace;font-size:12px}.tag{display:inline-block;margin-top:9px;padding:3px 7px;border:1px solid #00f2fe;color:#bdf7ff;font-size:11px}</style></head><body><main><h1>组件动效验收库</h1><p class=\"sub\">每张卡片均为真实 Remotion 导出的 4 秒短动画：自动播放两轮，悬停或点击重播。</p><section class=\"grid\">"+layoutMetadata.map((item)=>"<article class=\"card\"><video src=\"/preview-catalog-animation/"+item.key+".mp4\" muted playsinline preload=\"metadata\" data-preview-loop=\"0\"></video><div class=\"meta\"><strong>"+item.label+"</strong><span>"+item.key+"</span><i class=\"tag\">Real Remotion · 2 loops</i></div></article>").join("")+"</section><script>document.querySelectorAll('video[data-preview-loop]').forEach(function(video){function replay(){video.dataset.previewLoop='0';video.currentTime=0;video.play().catch(function(){});}video.addEventListener('loadeddata',replay,{once:true});video.addEventListener('ended',function(){var count=Number(video.dataset.previewLoop||0);if(count<1){video.dataset.previewLoop=String(count+1);video.currentTime=0;video.play().catch(function(){});return;}video.currentTime=Math.max(0,(video.duration||0)-.04);});video.addEventListener('pointerenter',replay);video.addEventListener('click',replay);});</script></main></body></html>";
+const renderPreviewCatalog = () => "<!doctype html><html lang=\"zh-CN\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>组件动效验收库</title><style>body{margin:0;background:#090d16;color:#f3f4f6;font:14px Inter,Microsoft YaHei,Arial,sans-serif}main{max-width:1480px;margin:auto;padding:34px}h1{margin:0;font-size:26px}.sub{margin:9px 0 28px;color:#94a3b8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px}.card{overflow:hidden;border:1px solid #26384f;border-radius:8px;background:#0d1520}.card video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#000}.meta{padding:12px 14px}.meta strong{display:block;font-size:15px}.meta span{display:block;margin-top:4px;color:#8fa2b9;font-family:ui-monospace,monospace;font-size:12px}.tag{display:inline-block;margin-top:9px;padding:3px 7px;border:1px solid #00f2fe;color:#bdf7ff;font-size:11px}</style></head><body><main><h1>组件动效验收库</h1><p class=\"sub\">每张卡片均为真实 Remotion 导出的 4 秒短动画：自动播放两轮，悬停或点击重播。</p><section class=\"grid\">"+layoutMetadata.map((item)=>"<article class=\"card\"><video src=\"/preview-catalog-animation/"+item.key+".mp4?v=20260912-headerfix\" muted playsinline preload=\"metadata\" data-preview-loop=\"0\"></video><div class=\"meta\"><strong>"+item.label+"</strong><span>"+item.key+"</span><i class=\"tag\">Real Remotion · 2 loops</i></div></article>").join("")+"</section><script>document.querySelectorAll('video[data-preview-loop]').forEach(function(video){function replay(){video.dataset.previewLoop='0';video.currentTime=0;video.play().catch(function(){});}video.addEventListener('loadeddata',replay,{once:true});video.addEventListener('ended',function(){var count=Number(video.dataset.previewLoop||0);if(count<1){video.dataset.previewLoop=String(count+1);video.currentTime=0;video.play().catch(function(){});return;}video.currentTime=Math.max(0,(video.duration||0)-.04);});video.addEventListener('pointerenter',replay);video.addEventListener('click',replay);});</script></main></body></html>";
 
 const page = buildPage(layoutMetadata);
 
@@ -337,8 +350,7 @@ createServer(async (req, res) => {
     if (abandonRoute && req.method === "DELETE") {const project=JSON.parse(await readFile(projectPath(abandonRoute[1]),"utf8")); if(project.state !== "CAPTIONS_REVIEW") return send(res,409,"Only an unconfirmed project can be abandoned.","text/plain"); await deleteProject(root,abandonRoute[1],{isRunning:isProjectRunning}); return send(res,200,JSON.stringify({projectId:abandonRoute[1],abandoned:true}));}
     const projectMatch = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)$/);
     if (projectMatch && req.method === "GET") return send(res, 200, JSON.stringify(await getProject(projectMatch[1])));
-    if (projectMatch && req.method === "PUT") {let body=""; for await(const chunk of req) body += chunk; const incoming = JSON.parse(body); if(!validProject(incoming)) return send(res,400,"Invalid project.","text/plain"); const project = mergeProjectEdits(await getProject(projectMatch[1]), incoming); await writeProjectAtomically(projectMatch[1], `${JSON.stringify(project,null,2)}
-`); return send(res,200,JSON.stringify(project));}
+    if (projectMatch && req.method === "PUT") {let body=""; for await(const chunk of req) body += chunk; const incoming = JSON.parse(body); if(!validProject(incoming)) return send(res,400,"Invalid project.","text/plain"); const project = mergeProjectEdits(await getProject(projectMatch[1]), incoming); if(project.state !== "CAPTIONS_REVIEW") await writeFile(projectPaths(root, projectMatch[1]).captionsConfirmedFile, JSON.stringify(project.captions, null, 2) + "\n"); await writeProjectAtomically(projectMatch[1], `${JSON.stringify(project,null,2)}\n`); return send(res,200,JSON.stringify(project));}
     if (projectMatch && req.method === "PATCH") {let body=""; for await(const chunk of req) body += chunk; const payload=JSON.parse(body); const project=await renameProject(root, projectMatch[1], payload.name); await logger.info({traceId: "trace-"+Date.now(), projectId: projectMatch[1], stage: "UPLOAD", message: "project-renamed", context: {name: project.name}}); return send(res,200,JSON.stringify(project));}
     if (projectMatch && req.method === "DELETE") {await deleteProject(root, projectMatch[1], {isRunning: isProjectRunning}); await logger.info({traceId: "trace-"+Date.now(), projectId: projectMatch[1], stage: "UPLOAD", message: "project-deleted"}); return send(res,200,JSON.stringify({projectId: projectMatch[1]}));}
     const cleanupMatch = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/previews\/clean$/);
@@ -363,11 +375,22 @@ createServer(async (req, res) => {
     const auto = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/auto-match$/);
     if (auto && req.method === "POST") {const current = await getProject(auto[1]); const project = autoMatchProject({...current, beats: hydrateBeatDrafts(current.beats, current.captions)}); await writeProjectAtomically(auto[1], `${JSON.stringify(project,null,2)}
 `); return send(res,200,JSON.stringify(project));}
+    const preflight = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/beats\/([a-z0-9-]+)\/preflight$/);
+    if (preflight && req.method === "POST") {
+      const project = await getProject(preflight[1]);
+      const beat = project.beats.find((item) => item.id === preflight[2]);
+      if (!beat) return send(res, 404, "Unknown beat.", "text/plain");
+      const integrity = validateBeatIntegrity(beat, project);
+      return send(res, 200, JSON.stringify({valid: integrity.valid, beatId: beat.id, diagnostics: integrity.errors}));
+    }
     const render = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/render\/([a-z0-9-]+)$/);
     if (render && req.method === "POST") {
       let project = await getProject(render[1]);
       const beat = project.beats.find((item) => item.id === render[2]);
       if (!beat) return send(res, 404, "Unknown beat.", "text/plain");
+      const renderSlot = render[1] + ":" + render[2];
+      const activeJobId = activeBeatRenders.get(renderSlot);
+      if (activeJobId) return send(res, 202, JSON.stringify({jobId: activeJobId, reused: true}));
 
       const integrity = validateBeatIntegrity(beat, project);
       if (!integrity.valid) {
@@ -381,16 +404,23 @@ createServer(async (req, res) => {
 
       const revision = beat.render.revision;
       const contentHash = renderContentHash(project, beat);
-      const relativeOutput = currentAssetPath(render[1], beat);
+      const canonicalOutput = currentAssetPath(render[1], beat);
+      const relativeOutput = existsSync(join(root, canonicalOutput)) ? canonicalOutput.replace(/\.mp4$/i, "-" + Date.now() + ".mp4") : canonicalOutput;
       const output = join(root, relativeOutput);
       const frames = Math.floor(beat.start * project.fps) + "-" + (Math.ceil(beat.end * project.fps) - 1);
       const totalFrames = Math.ceil(beat.end * project.fps) - Math.floor(beat.start * project.fps);
       const command = "remotion render src/index.ts ProjectEditor " + output + " --frames=" + frames;
       const jobId = "beat-" + render[1] + "-" + render[2] + "-" + revision + "-" + Date.now();
       const remotionArgs = ["render", "src/index.ts", "ProjectEditor", output, "--props=" + projectPath(render[1]), "--frames=" + frames, "--codec=h264", "--crf=20", "--pixel-format=yuv420p", "--concurrency=2", "--x264-preset=veryfast"];
-      await mkdir(dirname(output), {recursive: true});
-      project = updateBeatRender(project, beat.id, revision, {status: "rendering", previewPath: null, renderedAt: null, error: null});
-      await writeProjectAtomically(render[1], JSON.stringify(project, null, 2) + "\n");
+      activeBeatRenders.set(renderSlot, jobId);
+      try {
+        await mkdir(dirname(output), {recursive: true});
+        project = updateBeatRender(project, beat.id, revision, {status: "rendering", previewPath: null, renderedAt: null, error: null});
+        await writeProjectAtomically(render[1], JSON.stringify(project, null, 2) + "\n");
+      } catch (error) {
+        if (activeBeatRenders.get(renderSlot) === jobId) activeBeatRenders.delete(renderSlot);
+        throw error;
+      }
       jobs.set(jobId, {state: "running", kind: "beat", projectId: render[1], beatId: beat.id, progress: 0, percentage: 0, currentFrame: 0, totalFrames, fps: 0, startedAt: Date.now(), message: "正在初始化单拍渲染...", attempt: 0, maxRetries: 1});
       await logger.info({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-started", command, context: {revision, layout: beat.layout, effectProps: beat.effectProps}});
 
@@ -412,12 +442,14 @@ createServer(async (req, res) => {
         cpu.on("error", () => resolve(null));
       });
       let settled = false;
+      const releaseRenderSlot = () => { if (activeBeatRenders.get(renderSlot) === jobId) activeBeatRenders.delete(renderSlot); };
       const finishFailure = async (error, message) => {
         if (settled) return;
         settled = true;
         const latest = await getProject(render[1]);
         const saved = updateBeatRender(latest, beat.id, revision, {status: "failed", previewPath: null, renderedAt: null, error});
         await writeProjectAtomically(render[1], JSON.stringify(saved, null, 2) + "\n");
+        releaseRenderSlot();
         jobs.set(jobId, {...(jobs.get(jobId) || {}), state: "failed", kind: "beat", projectId: render[1], beatId: beat.id, error, message});
         await logger.error({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-failed", errorStack: error, command});
       };
@@ -482,23 +514,49 @@ if (stalled) {
             await finishFailure("连续 30 秒无新增帧，自动重试后仍失败。\n" + log, diagnosis);
             return;
           }
-          if (code === 0) {
-            settled = true;
-                const latest = await getProject(render[1]);
-            const saved = updateBeatRender(latest, beat.id, revision, {status: "ready", previewPath: relativeOutput, renderedVideoPath: relativeOutput, contentHash, renderedAt: new Date().toISOString(), error: null});
-            await writeProjectAtomically(render[1], JSON.stringify(saved, null, 2) + "\n");
-            jobs.set(jobId, {...(jobs.get(jobId) || {}), state: "done", kind: "beat", projectId: render[1], beatId: beat.id, progress: 100, percentage: 100, message: "当前 beat 预览完成", output: "/project-asset/" + render[1] + "/" + beat.id});
-            await logger.info({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-completed", command, context: {output: relativeOutput, revision, attempt}});
-            return;
+          try {
+            if (code === 0) {
+              const latest = await getProject(render[1]);
+              const saved = updateBeatRender(latest, beat.id, revision, {status: "ready", previewPath: relativeOutput, renderedVideoPath: relativeOutput, contentHash, renderedAt: new Date().toISOString(), error: null});
+              await writeProjectAtomically(render[1], JSON.stringify(saved, null, 2) + "\n");
+              settled = true;
+              releaseRenderSlot();
+              jobs.set(jobId, {...(jobs.get(jobId) || {}), state: "done", kind: "beat", projectId: render[1], beatId: beat.id, progress: 100, percentage: 100, message: "当前 beat 预览完成", output: "/project-asset/" + render[1] + "/" + beat.id});
+              await logger.info({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-completed", command, context: {output: relativeOutput, revision, attempt}});
+              return;
+            }
+            await finishFailure(log || "Remotion exited with " + code, diagnoseRenderFailure(log));
+          } catch (error) {
+            await finishFailure(error.stack || error.message || String(error), "渲染完成后缓存核验失败");
           }
-          await finishFailure(log || "Remotion exited with " + code, diagnoseRenderFailure(log));
         });
       };
       launchAttempt(0);
       return send(res, 202, JSON.stringify({jobId}));
     }
     const asset = url.pathname.match(/^\/project-asset\/([a-z0-9-]+)\/([a-z0-9-]+)$/);
-    if (asset && req.method === "GET") {const project=await getProject(asset[1]);const beat=project.beats.find((item)=>item.id===asset[2]);const file=(beat?.render?.status==="ready"||beat?.renderStatus==="rendered")&&(beat?.render?.renderedVideoPath||beat?.renderedVideoPath||beat?.render?.previewPath)?join(root,beat.render.renderedVideoPath||beat.renderedVideoPath||beat.render.previewPath):null;if(!file||!existsSync(file))return send(res,404,"Not found","text/plain");const info=await stat(file);res.writeHead(200,{"Content-Type":"video/mp4","Content-Length":info.size});return createReadStream(file).pipe(res);}
+    if (asset && req.method === "GET") {
+      const project = await getProject(asset[1]);
+      const beat = project.beats.find((item) => item.id === asset[2]);
+      const relativePath = beat?.render?.renderedVideoPath || beat?.renderedVideoPath || beat?.render?.previewPath;
+      const file = relativePath ? join(root, relativePath) : null;
+      if (!file || !existsSync(file)) return send(res, 404, "Not found", "text/plain");
+      const info = await stat(file);
+      const range=req.headers.range;
+      if(!range){
+        res.writeHead(200,{"Content-Type":"video/mp4","Content-Length":info.size,"Accept-Ranges":"bytes","Cache-Control":"no-store"});
+        return createReadStream(file).pipe(res);
+      }
+      const match=/bytes=(\d*)-(\d*)/.exec(range);
+      const start=Number(match?.[1]||0);
+      const end=Math.min(Number(match?.[2]||info.size-1),info.size-1);
+      if(!match||!Number.isFinite(start)||start<0||start>=info.size||end<start){
+        res.writeHead(416,{"Content-Range":"bytes */"+info.size,"Accept-Ranges":"bytes"});
+        return res.end();
+      }
+      res.writeHead(206,{"Content-Type":"video/mp4","Content-Length":end-start+1,"Content-Range":`bytes ${start}-${end}/${info.size}`,"Accept-Ranges":"bytes","Cache-Control":"no-store"});
+      return createReadStream(file,{start,end}).pipe(res);
+    }
     const statusRoute = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/render-status$/);
     if (statusRoute && req.method === "GET") {const matches=[...jobs.values()].filter((job)=>job.kind==="full"&&job.projectId===statusRoute[1]);const latest=matches.at(-1);if(latest)return send(res,200,JSON.stringify(latest));const project=await getProject(statusRoute[1]);const recovered=await recoverCompletedFullRender(statusRoute[1],project);if(recovered)return send(res,200,JSON.stringify(recovered));const complete=Math.min(project.beats.length,segmentCount(statusRoute[1]));if(complete>0)return send(res,200,JSON.stringify({state:"running",kind:"full",projectId:statusRoute[1],stage:"checking_cache",totalBeats:project.beats.length,cachedBeats:complete,pendingBeats:Math.max(0,project.beats.length-complete),currentBeatIndex:0,currentBeatId:null,currentBeatProgress:0,overallProgress:renderProgress(complete,project.beats.length),progress:renderProgress(complete,project.beats.length),message:`检测到已完成 ${complete} / ${project.beats.length} 个单拍，正在恢复生产状态…`}));return send(res,200,JSON.stringify({state:"idle"}));}
     const translationRoute = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/translate-captions$/);
@@ -507,7 +565,7 @@ if (stalled) {
     if (full && req.method === "POST") return send(res,202,JSON.stringify({jobId:await startFullRender(full[1])}));
     const openRendersRoute = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/open-renders$/);
     if (openRendersRoute && req.method === "POST") {const renderDir=await openProjectRenders(openRendersRoute[1]);return send(res,200,JSON.stringify({opened:true,renderDir}));}
-    if (req.method === "POST" && url.pathname === "/api/onboard") {const id=url.searchParams.get("id")||"",name=url.searchParams.get("name")||id,extension=(url.searchParams.get("extension")||"").toLowerCase(),target=Number(url.searchParams.get("target")||30);if(!/^[a-z0-9-]+$/.test(id)||!["mp4","mov","m4v","wav"].includes(extension))return send(res,400,"Only MP4, MOV, M4V, or WAV files are supported.","text/plain");if(existsSync(projectPath(id)))return send(res,409,"This project ID already exists. Choose a new ID.","text/plain");logWork(id,"upload-started",{name,extension,target});const jobId=`onboard-${id}-${Date.now()}`,storage=await createProjectStorage(root,id),isAudio=extension==="wav",file=isAudio?storage.audioFile:storage.rawVideo;if(isAudio)await require("node:fs/promises").copyFile(join(root,"public","test.mp4"),storage.rawVideo);jobs.set(jobId,{state:"uploading",step:1,progress:8,message:"正在上传文件…"});const stream=createWriteStream(file);req.pipe(stream);stream.on("finish",()=>{logWork(id,"upload-finished",{file:"source/raw.mp4"});const startedAt=Date.now();jobs.set(jobId,{state:"running",step:2,stage:"transcribing",progress:10,startedAt,message:"正在提取音频字幕，进度： 正在捕获台词"});const heartbeat=setInterval(()=>{const current=jobs.get(jobId);if(!current||current.state!=="running"||current.stage!=="transcribing")return;let captionCount=Number(current.captionCount||0);try{if(!captionCount){const parsed=JSON.parse(readFileSync(storage.captionsFile,"utf8"));captionCount=Array.isArray(parsed.transcription)?parsed.transcription.length:Array.isArray(parsed)?parsed.length:0}}catch(_){}const elapsed=Math.floor((Date.now()-startedAt)/1000);const timeText=current.transcriptionProgressText||((captionCount?"已捕获 "+captionCount+" 句台词":"正在捕获台词")+" · 已耗时 "+elapsed+"s");jobs.set(jobId,{...current,elapsedSeconds:elapsed,captionCount,message:"正在提取音频字幕，进度： "+timeText,transcriptionProgressText:current.transcriptionProgressText||timeText})},1000);stage1TranscribeToReview({projectId:id,name,targetBeatDuration:target,audioAlreadyPrepared:isAudio,onProgress:p=>{logWork(id,"onboarding-progress",p);const current=jobs.get(jobId)||{};jobs.set(jobId,{...current,state:"running",...p})}}).then(()=>{clearInterval(heartbeat);logWork(id,"captions-review-ready");jobs.set(jobId,{state:"done",step:3,stage:"captions_review",progress:100,nextAction:"captions_review",message:"转录完成，请先核对字幕内容。"})}).catch(error=>{clearInterval(heartbeat);logWork(id,"onboarding-failed",{error:error.message});jobs.set(jobId,{state:"failed",error:error.message})})});stream.on("error",error=>jobs.set(jobId,{state:"failed",error:error.message}));return send(res,202,JSON.stringify({jobId}));}
+    if (req.method === "POST" && url.pathname === "/api/onboard") {const id=url.searchParams.get("id")||"",name=url.searchParams.get("name")||id,extension=(url.searchParams.get("extension")||"").toLowerCase(),target=Number(url.searchParams.get("target")||30);if(!Number.isFinite(target)||target<25||target>35)return send(res,400,"Target semantic window must be between 25 and 35 seconds.","text/plain");if(!/^[a-z0-9-]+$/.test(id)||!["mp4","mov","m4v","wav"].includes(extension))return send(res,400,"Only MP4, MOV, M4V, or WAV files are supported.","text/plain");if(existsSync(projectPath(id)))return send(res,409,"This project ID already exists. Choose a new ID.","text/plain");logWork(id,"upload-started",{name,extension,target});const jobId=`onboard-${id}-${Date.now()}`,storage=await createProjectStorage(root,id),isAudio=extension==="wav",file=isAudio?storage.audioFile:storage.rawVideo;if(isAudio)await require("node:fs/promises").copyFile(join(root,"public","test.mp4"),storage.rawVideo);jobs.set(jobId,{state:"uploading",step:1,progress:8,message:"正在上传文件…"});const stream=createWriteStream(file);req.pipe(stream);stream.on("finish",()=>{logWork(id,"upload-finished",{file:"source/raw.mp4"});const startedAt=Date.now();jobs.set(jobId,{state:"running",step:2,stage:"transcribing",progress:10,startedAt,message:"正在提取音频字幕，进度： 正在捕获台词"});const heartbeat=setInterval(()=>{const current=jobs.get(jobId);if(!current||current.state!=="running"||current.stage!=="transcribing")return;let captionCount=Number(current.captionCount||0);try{if(!captionCount){const parsed=JSON.parse(readFileSync(storage.captionsFile,"utf8"));captionCount=Array.isArray(parsed.transcription)?parsed.transcription.length:Array.isArray(parsed)?parsed.length:0}}catch(_){}const elapsed=Math.floor((Date.now()-startedAt)/1000);const timeText=current.transcriptionProgressText||((captionCount?"已捕获 "+captionCount+" 句台词":"正在捕获台词")+" · 已耗时 "+elapsed+"s");jobs.set(jobId,{...current,elapsedSeconds:elapsed,captionCount,message:"正在提取音频字幕，进度： "+timeText,transcriptionProgressText:current.transcriptionProgressText||timeText})},1000);stage1TranscribeToReview({projectId:id,name,targetBeatDuration:target,audioAlreadyPrepared:isAudio,onProgress:p=>{logWork(id,"onboarding-progress",p);const current=jobs.get(jobId)||{};jobs.set(jobId,{...current,state:"running",...p})}}).then(()=>{clearInterval(heartbeat);logWork(id,"captions-review-ready");jobs.set(jobId,{state:"done",step:3,stage:"captions_review",progress:100,nextAction:"captions_review",message:"转录完成，请先核对字幕内容。"})}).catch(error=>{clearInterval(heartbeat);logWork(id,"onboarding-failed",{error:error.message});jobs.set(jobId,{state:"failed",error:error.message})})});stream.on("error",error=>jobs.set(jobId,{state:"failed",error:error.message}));return send(res,202,JSON.stringify({jobId}));}
     const diagnosticRoute = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/diagnostic-report$/);
     if (diagnosticRoute && req.method === "GET") {const project=await getProject(diagnosticRoute[1]);const file=projectPaths(root,diagnosticRoute[1]).executionLog;const rows=existsSync(file)?(await readFile(file,"utf8")).trim().split("\n").filter(Boolean).map((line)=>JSON.parse(line)):[];const errors=rows.filter((row)=>row.level==="ERROR");const stale=project.beats.filter((beat)=>beat.render?.status==="failed"||beat.render?.status==="stale").map((beat)=>({id:beat.id,status:beat.render?.status,error:beat.render?.error}));const last=errors.at(-1);const report=[`# Video Studio Diagnostic Report`,`- Project: ${project.projectId}`,`- State: ${project.state ?? "READY"}`,`- Beats: ${project.beats.length}`,`- Failed or stale beats: ${JSON.stringify(stale)}`,`- Last error: ${last ? last.message : "None"}`,last?.errorStack ? `\n\`\`\`\n${last.errorStack}\n\`\`\`` : ""].filter(Boolean).join("\n");return send(res,200,report,"text/markdown; charset=utf-8");}
     const logsRoute = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/logs$/);
@@ -519,6 +577,8 @@ if (stalled) {
     return send(res,404,"Not found","text/plain");
   } catch (error) {return send(res,500,JSON.stringify({error:error.message}));}
 }).listen(4318,"127.0.0.1",()=>console.log("Project Editor Web ready at http://127.0.0.1:4318"));
+
+
 
 
 

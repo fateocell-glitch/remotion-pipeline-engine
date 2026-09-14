@@ -29,6 +29,16 @@ assert.match(
   /bindAnimatedLayoutPreview|previewLoops/,
   "the Studio must limit automatic preview playback loops",
 );
+assert.match(
+  studio,
+  /preview-catalog-animation\/\"\+encodeURIComponent\(payload\.layout\)\+\"\.mp4\?v=/,
+  "the Studio must version animated preview video URLs so stale component catalog caches are bypassed",
+);
+assert.match(
+  server,
+  /preview-catalog-animation\/\"\+item\.key\+\"\.mp4\?v=/,
+  "the preview catalog page must version animated preview video URLs",
+);
 
 for (const layout of layouts) {
   const file = join(root, "public", "preview-catalog-animation", `${layout}.mp4`);

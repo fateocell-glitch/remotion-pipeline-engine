@@ -1,0 +1,17 @@
+"use strict";
+const {readFileSync,writeFileSync}=require("node:fs");
+const {join}=require("node:path");
+const {rebuildProjectText}=require("./project-onboarding.cjs");
+const {autoMatchProject}=require("./layout-matcher.cjs");
+const projectId=process.argv[2];
+if(!projectId)throw new Error("Usage: node scripts/reextract-visual-cards.cjs <projectId>");
+const root=process.cwd();
+const file=join(root,"data","projects",projectId,"project.json");
+const source=JSON.parse(readFileSync(file,"utf8"));
+const rebuilt=rebuildProjectText(source,{force:true});
+const generated=autoMatchProject(rebuilt,{force:true,effectsPerBeat:2});
+const beats=generated.beats.map((beat)=>({...beat,render:{...(beat.render||{}),revision:Number(beat.render?.revision||0)+1,status:"stale",previewPath:null,renderedAt:null,error:null,contentHash:null,renderedVideoPath:null},renderStatus:"dirty",renderedVideoPath:null,contentHash:null}));
+const project={...generated,beats,render:{...(generated.render||{}),status:"stale",progress:0,outputPath:null,renderedAt:null,error:null},updatedAt:new Date().toISOString()};
+writeFileSync(file,JSON.stringify(project,null,2)+"\n");
+const report=project.beats.slice(0,5).map((beat)=>({id:beat.id,duration:Number((beat.end-beat.start).toFixed(2)),layers:(beat.layers||[]).map((layer)=>({layout:layer.layout,headline:layer.effectProps?.headline,effectText:layer.effectProps?.effectText,bodyText:layer.effectProps?.bodyText||layer.effectProps?.body,items:layer.effectProps?.contentPayload?.items||layer.effectProps?.contentPayload?.steps||[]}))}));
+console.log(JSON.stringify({projectId,beatCount:project.beats.length,report},null,2));

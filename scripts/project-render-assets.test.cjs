@@ -37,7 +37,7 @@ test("legacy projects receive render lifecycle defaults", () => {
   });
 });
 
-test("editing a ready beat increments its revision and hides its preview", () => {
+test("editing a ready beat increments its revision and keeps its last preview", () => {
   const project = invalidateBeat({
     projectId: "demo",
     render: {status: "ready", progress: 100, outputPath: "out/demo.mp4", renderedAt: "now", error: null},
@@ -50,11 +50,11 @@ test("editing a ready beat increments its revision and hides its preview", () =>
   assert.deepEqual(project.beats[0].render, {
     revision: 2,
     status: "stale",
-    previewPath: null,
-    renderedAt: null,
+    previewPath: "out/beat-001-r1.mp4",
+    renderedAt: "now",
     error: null,
     contentHash: null,
-    renderedVideoPath: null,
+    renderedVideoPath: "out/beat-001-r1.mp4",
   });
   assert.equal(project.render.status, "stale");
   assert.equal(project.render.outputPath, null);
@@ -166,4 +166,55 @@ test("active beat rendering states are preserved while their job is running", ()
   const result = recoverOrphanedBeatRenders(project, (beat) => beat.id === "beat-001");
   assert.equal(result.changed, false);
   assert.equal(result.project.beats[0].render.status, "rendering");
+});
+
+
+test("reconciliation invalidates an existing render when its content hash is obsolete", () => {
+  const project = ensureProjectLifecycle({projectId:"qa-stale-hash", fps:30, globalSettings:{}, captions:[], beats:[{id:"beat-001", start:0, end:4, subtitle:"安全岛", zh:"安全岛约束", en:"", layout:"diagonal-chips", effectProps:{}, render:{revision:1, status:"ready", previewPath:"data/projects/qa-stale-hash/renders/beats/beat-001-r1.mp4", renderedVideoPath:"data/projects/qa-stale-hash/renders/beats/beat-001-r1.mp4", contentHash:"obsolete-contract-hash"}}]});
+  const result = reconcileProjectRenderCache(project, () => true).project.beats[0];
+  assert.equal(result.render.status, "stale");
+  assert.equal(result.renderStatus, "dirty");
+});
+
+test('stale beat keeps its existing artifact available for inspection', () => {
+  const path = 'data/projects/cache-preview/renders/beats/beat-001-r1.mp4';
+  const project = ensureProjectLifecycle({projectId:'cache-preview', fps:30, globalSettings:{}, captions:[], beats:[{id:'beat-001', start:0, end:4, subtitle:'changed', zh:'old artifact', en:'', layout:'diagonal-chips', effectProps:{}, render:{revision:1, status:'ready', previewPath:path, renderedVideoPath:path, contentHash:'oldhash'}}]});
+  const beat = reconcileProjectRenderCache(project, () => true).project.beats[0];
+  assert.equal(beat.render.status, 'stale');
+  assert.equal(beat.renderStatus, 'dirty');
+  assert.equal(beat.render.previewPath, path);
+  assert.equal(beat.renderedVideoPath, path);
+});
+
+
+
+test("template mock data and its editor version do not invalidate a rendered Beat", () => {
+  const project = ensureProjectLifecycle({projectId:"template-cache", fps:30, globalSettings:{}, captions:[], beats:[{id:"beat-001", start:0, end:4, subtitle:"Stable", zh:"Stable copy", en:"", layout:"diagonal-chips", effectProps:{}}]});
+  const beat = project.beats[0];
+  const initial = renderContentHash(project, beat, [{id:"diagonal-chips", family:"chips", version:1, displayIntent:"side-overlay", tokens:{gap:16,scale:1}, sfx:{enter:"none",exit:"none",volume:.65}, mockData:{headline:"Template A",items:["One"]}}]);
+  const mockOnlyChange = renderContentHash(project, beat, [{id:"diagonal-chips", family:"chips", version:99, displayIntent:"side-overlay", tokens:{gap:16,scale:1}, sfx:{enter:"none",exit:"none",volume:.65}, mockData:{headline:"Template B",items:["Two","Three"]}}]);
+  const renderTokenChange = renderContentHash(project, beat, [{id:"diagonal-chips", family:"chips", version:99, displayIntent:"side-overlay", tokens:{gap:24,scale:1}, sfx:{enter:"none",exit:"none",volume:.65}, mockData:{headline:"Template B"}}]);
+  assert.equal(initial, mockOnlyChange);
+  assert.notEqual(initial, renderTokenChange);
+});
+
+test("absorbs an existing terminal micro Beat into the preceding Layer stack", () => {
+  const project = ensureProjectLifecycle({projectId:"terminal-tail",fps:30,globalSettings:{},captions:[],beats:[
+    {id:"beat-010",start:297.51,end:330.24,layout:"route-map",effectProps:{},layers:[
+      {layerId:"layer-1",layout:"route-map",effectProps:{},commonProps:{enterOffset:0,duration:13.19,position:"center",offsetX:0,offsetY:0,scale:1,enterAnimation:"spring-up",exitAnimation:"fade-out",sfx:"none"}},
+      {layerId:"layer-2",layout:"checklist-editorial",effectProps:{},commonProps:{enterOffset:13.19,position:"center",offsetX:0,offsetY:0,scale:1,enterAnimation:"slide-right",exitAnimation:"none",sfx:"none"}}
+    ],render:{revision:7,status:"ready",previewPath:"old.mp4"}},
+    {id:"beat-011",start:330.24,end:333.18,layout:"closing-checklist",effectProps:{},layers:[
+      {layerId:"layer-1",layout:"closing-checklist",effectProps:{},commonProps:{enterOffset:0,position:"center",offsetX:0,offsetY:0,scale:1,enterAnimation:"spring-up",exitAnimation:"none",sfx:"none"}}
+    ]}
+  ]});
+  assert.equal(project.beats.length, 1);
+  const merged = project.beats[0];
+  assert.equal(merged.end, 333.18);
+  assert.equal(merged.layers.length, 3);
+  assert.equal(merged.layers[2].layout, "closing-checklist");
+  assert.equal(merged.layers[2].commonProps.enterOffset, 32.73);
+  assert.equal(merged.render.status, "stale");
+  assert.equal(merged.render.revision, 8);
+  assert.equal(merged.terminalTailAbsorbed.sourceBeatId, "beat-011");
 });

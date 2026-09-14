@@ -6,14 +6,25 @@ const {dirname, join} = require("node:path");
 const {tmpdir} = require("node:os");
 
 const {extractBeatContent} = require("./services/beat-content-extraction.cjs");
-const {getComponentRegistrySync, getFamilyCandidates} = require("./services/component-registry-store.cjs");
-const {autoMatchProject} = require("./layout-matcher.cjs");
+const {getComponentRegistrySync, getFamilyCandidates, updateComponentPreset} = require("./services/component-registry-store.cjs");
+const {autoMatchProject, buildEffectProps} = require("./layout-matcher.cjs");
 const {reconcileProjectRenderCache, renderContentHash, ensureProjectLifecycle, currentAssetPath} = require("./project-render-assets.cjs");
 
 const allowedFamilies = new Set(["metrics", "steps", "chips", "narrative", "entities"]);
+const allowedIntents = new Set(["process", "metrics", "narrative", "contrast", "system"]);
+const allowedVisualWeights = new Set(["heavy", "medium", "light"]);
 const forbiddenCopy = ["从素材到成片", "从素材到成片的操作路径", "关键路线出现转折", "核心体验进入实测", "这一拍的核心判断"];
+const topLeftRequired = new Set([
+  "bare-typography", "chapter-card", "logo-wordmark", "opinion-hero", "ordered-sequence",
+  "progress-donut", "platform-shift-line", "tradeoff-reject-round", "recovery-progress-bars",
+  "hud-glow-stack", "briefing-poster", "rewind-milestones", "flying-paper-stack",
+  "checklist-editorial", "closing-checklist",  "clipboard-note",
+]);
+const fullscreenLayouts = new Set(["chapter-card", "finale-kinetic"]);
 const selected = new Set(process.argv.slice(2).filter((arg) => arg.startsWith("test:")));
 const watch = process.argv.includes("--watch");
+const fixedHeaderBottom = 58 + 31 + 8 + 54;
+const fixedHeaderSafeGap = 32;
 
 function shouldRun(name) {
   return selected.size === 0 || selected.has(name);
@@ -33,7 +44,7 @@ function assertNoForbidden(value, label) {
 
 async function testRegistry() {
   const registry = getComponentRegistrySync(process.cwd());
-  assert.equal(registry.components.length, 43, "registry must contain 43 visual components");
+  assert.equal(registry.components.length, 49, "registry must contain 49 visual components");
   const ids = new Set();
   for (const component of registry.components) {
     assert.equal(typeof component.id, "string", "component id must be a string");
@@ -42,8 +53,55 @@ async function testRegistry() {
     ids.add(component.id);
     assert.ok(allowedFamilies.has(component.family), component.id + " has unexpected family " + component.family);
     assert.ok(component.tokens && typeof component.tokens === "object" && !Array.isArray(component.tokens), component.id + " must include tokens");
+    assert.ok(["side-overlay", "fullscreen-modal"].includes(component.displayIntent), component.id + " must declare displayIntent");
     assert.ok(component.mockData && typeof component.mockData === "object" && !Array.isArray(component.mockData), component.id + " must include mockData");
+    assert.ok(component.manifest && typeof component.manifest === "object" && !Array.isArray(component.manifest), component.id + " must include a Component Manifest");
+    assert.equal(component.manifest.id, component.id, component.id + " manifest id must mirror component id");
+    assert.ok(allowedIntents.has(component.manifest.intent), component.id + " must declare a valid manifest intent");
+    assert.ok(component.manifest.capacity && Number.isFinite(component.manifest.capacity.minItems) && Number.isFinite(component.manifest.capacity.maxItems), component.id + " must declare manifest capacity");
+    assert.ok(component.manifest.capacity.minItems >= 1 && component.manifest.capacity.maxItems >= component.manifest.capacity.minItems, component.id + " manifest capacity must be a valid range");
+    assert.ok(Array.isArray(component.manifest.keywords) && component.manifest.keywords.length >= 3, component.id + " manifest must include semantic keywords");
+    assert.ok(allowedVisualWeights.has(component.manifest.visualWeight), component.id + " must declare visual weight");
   }
+}
+
+async function testVisualPresets() {
+  const registry = getComponentRegistrySync(process.cwd());
+  for (const component of registry.components) {
+    const tokens = component.tokens || {};
+    if (component.displayIntent === "fullscreen-modal") continue;
+    assert.ok(["center", "left", "right", "top", "bottom", "top-left"].includes(tokens.mountMode), component.id + " must declare a valid mount mode");
+    assert.ok(tokens.boundsX >= 60, component.id + " must register a real visual boundsX with safe left margin");
+    assert.ok(tokens.boundsY >= 58, component.id + " must register a real visual boundsY with safe top margin");
+    assert.ok(tokens.boundsWidth > 0 && tokens.boundsWidth <= 1920, component.id + " must declare a legal visual width");
+    assert.ok(tokens.boundsHeight > 0 && tokens.boundsHeight <= 1080, component.id + " must declare a legal visual height");
+  }
+  for (const component of registry.components.filter((item) => fullscreenLayouts.has(item.id))) {
+    assert.equal(component.displayIntent, "fullscreen-modal", component.id + " must be explicitly fullscreen");
+  }
+  for (const component of registry.components.filter((item) => topLeftRequired.has(item.id) && !fullscreenLayouts.has(item.id))) {
+    assert.equal(component.tokens.mountMode, "top-left", component.id + " must default to the left/top-left visual zone");
+  }
+  const ordered = registry.components.find((component) => component.id === "ordered-sequence");
+  assert.ok(ordered, "ordered-sequence must exist in the visual registry");
+  assert.equal(ordered.tokens.mountMode, "top-left", "ordered-sequence content should start from the authored top-left content zone");
+  assert.ok(ordered.tokens.boundsY >= fixedHeaderBottom + fixedHeaderSafeGap, "ordered-sequence content must stay below the fixed global header safe zone");
+  const briefing = registry.components.find((component) => component.id === "briefing-poster");
+  assert.ok(briefing, "briefing-poster must exist in the visual registry");
+  assert.ok(briefing.tokens.boundsY >= fixedHeaderBottom + fixedHeaderSafeGap, "briefing-poster paper card must stay below the fixed global header safe zone");
+  assert.ok(briefing.tokens.boundsHeight <= 760, "briefing-poster must stay compact enough for side-overlay use");
+  const rewind = registry.components.find((component) => component.id === "rewind-milestones");
+  assert.ok(rewind, "rewind-milestones must exist in the visual registry");
+  assert.ok(rewind.tokens.defaultItemCount >= 5, "rewind-milestones must default to five editable milestones");
+  assert.ok(rewind.tokens.boundsY >= fixedHeaderBottom + fixedHeaderSafeGap, "rewind-milestones content must stay below the fixed global header safe zone");
+  assert.ok(rewind.tokens.boundsWidth <= 1280, "rewind-milestones must stay compact enough for side-overlay use");
+  const typewriter = registry.components.find((component) => component.id === "engineering-return");
+  assert.ok(typewriter, "engineering-return must exist in the visual registry");
+  assert.equal(typewriter.family, "narrative", "engineering-return must use the narrative editor, not the metrics editor");
+  assert.equal(typewriter.mockData.contentPayload.type, "narrative", "engineering-return must expose a text payload for the typewriter renderer");
+  assert.equal(typewriter.mockData.contentPayload.bodyText, typewriter.mockData.text, "engineering-return textarea must drive the visible typewriter text");
+  const motionWrapper = readFileSync(join(process.cwd(), "src/JasonWu/components/common/MotionWrapper.tsx"), "utf8");
+  assert.equal(motionWrapper.includes("mountMode === \"top-left\" ? 76 - boundsY"), false, "top-left content must not be pulled into the fixed header band");
 }
 
 async function testMatcher() {
@@ -70,8 +128,61 @@ async function testMatcher() {
   const candidates = getFamilyCandidates(registry, "diagonal-chips");
   assert.ok(candidates.length > 1, "family replacement should return candidates");
   for (const candidate of candidates) assert.equal(candidate.family, diagonal.family, "family replacement must not cross families");
+  const hud = buildEffectProps({eyebrow: "LIVE SIGNAL", subtitle: "core signal", effectText: "Current Beat semantic content", zh: "Current Beat semantic content"}, captions, "hud-glow-stack");
+  assert.equal(hud.contentPayload.type, "chips", "HUD extraction must use the shared chips payload");
+  assert.equal(hud.contentPayload.items[0].title, hud.items[0], "chip title must mirror the renderer item");
+  assert.equal(typeof hud.contentPayload.items[0].subtitle, "string", "chip subtitle must exist for the shared editor");
+  assert.equal(buildEffectProps({eyebrow: "BRIEF", subtitle: "brief", effectText: "details"}, captions, "briefing-poster").contentPayload.type, "steps", "briefing poster must use the shared list payload");
 }
 
+async function testLayerOwnedCopy() {
+  const project = ensureProjectLifecycle({projectId: "qa-layer-copy", fps: 30, globalSettings: {}, captions: [], beats: [{id: "beat-001", start: 0, end: 30, eyebrow: "Legacy category", subtitle: "Legacy headline", zh: "Legacy copy", layout: "chapter-card", effectProps: {}, layers: [{layerId: "layer-1", layout: "chapter-card", category: "01 · Layer", headline: "Layer one", effectText: "First layer copy", payload: {body: "First layer copy"}}, {layerId: "layer-2", layout: "hud-glow-stack", category: "02 · Layer", headline: "Layer two", effectText: "Second layer copy", payload: {items: ["One", "Two"]}}]}]});
+  const [first, second] = project.beats[0].layers;
+  assert.equal(first.category, "01 · Layer");
+  assert.equal(first.headline, "Layer one");
+  assert.equal(first.effectText, "First layer copy");
+  assert.equal(second.category, "02 · Layer");
+  assert.equal(second.headline, "Layer two");
+  assert.equal(second.effectText, "Second layer copy");
+  assert.deepEqual(second.payload.items, ["One", "Two"]);
+  assert.equal(second.payload.contentPayload.type, "chips", "legacy chip rows must normalize to the shared payload");
+  assert.deepEqual(second.payload.contentPayload.items.map((item) => item.title), ["One", "Two"]);
+}
+
+async function testCompositionSourceIsParseable() {
+  const composition = readFileSync(join(process.cwd(), "src", "JasonWu", "JasonWuComposition.tsx"), "utf8");
+  assert.equal(composition.includes(";\\n    const "), false, "composition source must not contain a literal \\n between TypeScript statements");
+}
+
+async function testEmptyFieldsStayEmpty() {
+  const root = join(tmpdir(), "component-empty-fields-" + process.pid + "-" + Date.now());
+  mkdirSync(join(root, "src", "design"), {recursive: true});
+  const emptyPayload = {type: "narrative", bodyText: "", highlightQuote: ""};
+  await updateComponentPreset(root, "logo-wordmark", {mockData: {category: "", eyebrow: "", categoryTag: "", label: "", headline: "", title: "", body: "", bodyText: "", effectText: "", text: "", highlightQuote: "", contentPayload: emptyPayload}});
+  const registry = getComponentRegistrySync(root);
+  const component = registry.components.find((item) => item.id === "logo-wordmark");
+  assert.ok(component, "logo-wordmark must exist in copied registry");
+  assert.equal(component.mockData.category, "", "empty category must not fall back to DESIGN SYSTEM");
+  assert.equal(component.mockData.headline, "", "empty headline must not fall back to default headline");
+  assert.equal(component.mockData.contentPayload.bodyText, "", "empty body text must remain empty");
+  assert.equal(component.mockData.contentPayload.highlightQuote, "", "empty sub text must remain empty");
+  rmSync(root, {recursive: true, force: true});
+}async function testEmptyListItemsStayEditable() {
+  const componentContent = readFileSync(join(process.cwd(), "src", "design", "component-content.ts"), "utf8");
+  assert.doesNotMatch(componentContent, /payload\.items[\s\S]{0,220}\.filter\(\(item\) => item\.title\)/, "chip payload rows must not be removed when title is empty");
+  assert.doesNotMatch(componentContent, /payload\.steps[\s\S]{0,220}\.filter\(\(item\) => item\.text\)/, "step payload rows must not be removed when text is empty");
+  assert.match(componentContent, /payload\.items[\s\S]{0,180}subtitle: typeof item\?\.subtitle === "string" \? item\.subtitle : ""/, "chip subtitle rows must preserve empty strings");
+  assert.match(componentContent, /payload\.steps[\s\S]{0,180}text: stringValue\(item\?\.text\)/, "step rows must preserve empty text strings");
+}
+async function testAddedListItemsAreRenderable() {
+  const adminClient = readFileSync(join(process.cwd(), "src", "design", "admin-components-client.tsx"), "utf8");
+  const recoveredEffects = readFileSync(join(process.cwd(), "src", "JasonWu", "RecoveredEffectComponents.tsx"), "utf8");
+  const incompleteEffects = readFileSync(join(process.cwd(), "src", "JasonWu", "IncompleteEffectComponents.tsx"), "utf8");
+  assert.match(adminClient, /payloadItemCount=\(payload:ComponentContentPayload\)=>payload\.type==="chips"\?payload\.items\.length:payload\.type==="steps"\?payload\.steps\.length:0/, "adding rows must update the render item count token");
+  assert.match(adminClient, /defaultItemCount:Math\.min\(8,count\)/, "new list rows must raise defaultItemCount so they render after saving");
+  assert.match(recoveredEffects, /Math\.max\(itemLimit\(props, maxItems\), rows\.length\)/, "recovered list components must render explicit rows beyond the old default count");
+  assert.match(incompleteEffects, /Math\.max\(itemLimit\(props, fallback\), rows\.length\)/, "incomplete list components must render explicit rows beyond the old default count");
+}
 async function testCache() {
   const base = ensureProjectLifecycle({projectId: "qa-cache", fps: 30, globalSettings: {}, captions: [], beats: [{id: "beat-001", start: 0, end: 4, subtitle: "稳定缓存", zh: "稳定缓存", en: "", layout: "diagonal-chips", effectProps: {}, render: {revision: 1, status: "ready"}}]});
   const beat = base.beats[0];
@@ -95,7 +206,13 @@ async function testCache() {
 async function runOnce() {
   const cases = [
     ["test:registry", testRegistry],
+    ["test:visual-presets", testVisualPresets],
     ["test:matcher", testMatcher],
+    ["test:layer-owned-copy", testLayerOwnedCopy],
+    ["test:composition-source", testCompositionSourceIsParseable],
+    ["test:empty-fields", testEmptyFieldsStayEmpty],
+    ["test:empty-list-items", testEmptyListItemsStayEditable],
+    ["test:added-list-items", testAddedListItemsAreRenderable],
     ["test:cache", testCache],
   ];
   let passed = 0;
@@ -118,3 +235,9 @@ if (watch) {
 } else {
   runOnce().catch((error) => { console.error(error.stack || error.message); process.exit(1); });
 }
+
+
+
+
+
+

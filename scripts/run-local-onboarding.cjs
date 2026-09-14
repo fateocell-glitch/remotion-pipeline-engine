@@ -10,6 +10,7 @@ const {createProjectStorage, writeProject} = require("./services/project-store.c
 const {cleanWhisperTranscript} = require("./services/transcript-cleaner.cjs");
 const {captionsToWhisperTranscript, runFasterTranscription, writeCaptionBridgeOutput} = require("./faster-transcription.cjs");
 const {detectProjectFaceZones} = require("./services/face-detector.cjs");
+const {createTwentyFiveSecondDualUniqueProject} = require("./produce-project-25s-dual-unique.cjs");
 
 const root = process.cwd();
 const run = (command, args, {allowFailure = false} = {}) =>
@@ -153,8 +154,15 @@ async function stage2ProduceFromConfirmed({workspaceRoot = root, projectId, onPr
   const reviewCaptions = mergeShortCaptions(confirmedCaptions);
   const transcript = captionsToWhisperTranscript(reviewCaptions.map((caption) => ({...caption, text: caption.text || (language === "en" ? caption.en : caption.zh) || ""})), language);
   onProgress?.({step: 4, stage: "semantic_slicing", progress: 68, message: "正在按已确认字幕执行语义分拍…"});
-  const project = buildProjectFromWhisper({projectId, name: shell.name, videoSrc: shell.videoSrc, audioSrc: shell.audioSrc, duration: Number(shell.duration), transcript, targetBeatDuration: Number(shell.targetBeatDuration) || 30});
+  const targetBeatDuration = Number(shell.targetBeatDuration) || 30;
+  const baseProject = buildProjectFromWhisper({projectId, name: shell.name, videoSrc: shell.videoSrc, audioSrc: shell.audioSrc, duration: Number(shell.duration), transcript, targetBeatDuration});
+  const project = targetBeatDuration === 25
+    ? createTwentyFiveSecondDualUniqueProject(baseProject, {targetSeconds: 25})
+    : baseProject;
+  // Once confirmed, this file and project.captions are the same canonical transcript.
+  await writeFile(storage.captionsConfirmedFile, JSON.stringify(reviewCaptions, null, 2) + "\n");
   project.captions = reviewCaptions;
+  project.captionReviewMerged = true;
   onProgress?.({step: 5, stage: "matching_components", progress: 88, message: "正在匹配 43 种视觉组件并装配双图层…"});
   project.schemaVersion = 3;
   project.state = "READY";

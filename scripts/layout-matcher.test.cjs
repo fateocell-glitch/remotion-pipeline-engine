@@ -69,8 +69,8 @@ test("two timed effects split a thirty second Beat into independent semantic win
   assert.equal(beat.layers[0].commonProps.exitAnimation, "fade-out");
   assert.equal(beat.layers[1].commonProps.enterOffset, 14);
   assert.equal(beat.layers[1].commonProps.exitAnimation, "none");
-  assert.match(beat.layers[0].effectProps.items.join(" "), /Google官方|投机切块/);
-  assert.match(beat.layers[1].effectProps.items.join(" "), /可抓取性|真实经验/);
+  assert.match(beat.layers[0].effectProps.headline + beat.layers[0].effectProps.effectText, /谷歌|官方|边界|泡沫/);
+  assert.match(beat.layers[1].effectProps.headline + beat.layers[1].effectProps.effectText, /网站|可抓取性|长期|成交/);
   assert.notDeepEqual(beat.layers[0].effectProps.items, beat.layers[1].effectProps.items);
 });
 
@@ -80,3 +80,4 @@ test("dual timed layers hand off at the nearest semantic endpoint", () => {
   const captions = [{start:0,end:7,zh:"前半判断"},{start:7,end:14.2,zh:"前半完整分句，"},{start:14.2,end:21,zh:"后半论据"},{start:21,end:30,zh:"结论收束。"}];
   assert.equal(findSemanticHandoff(captions, beat), 14.2);
 });
+

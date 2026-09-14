@@ -32,3 +32,7 @@ whisper-cache/
 __pycache__/
 *.remotion-in-progress
 .local-repo-metadata/
+
+# Local build and QA artifacts
+build/
+test-artifacts/

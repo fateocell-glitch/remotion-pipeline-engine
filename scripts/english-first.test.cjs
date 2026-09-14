@@ -13,7 +13,7 @@ test("builds native English beats with word-safe copy and English component tags
     {offsets:{from:54000,to:72000},text:"The final verdict is a disciplined path to durable growth."},
   ]}});
   assert.equal(project.language,"en");
-  assert.equal(project.beats.length,3);
+  assert.equal(project.beats.length,2);
   for(const beat of project.beats){
     assert.equal(/[\u3400-\u9fff]/.test(beat.subtitle+beat.effectText),false);
     assert.ok(beat.subtitle.split(/\s+/).length>=3&&beat.subtitle.split(/\s+/).length<=6);

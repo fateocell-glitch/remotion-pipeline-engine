@@ -28,7 +28,7 @@ import {zhuzigeFullCues} from "./zhuzigeFullScript";
 import {zhuzigeFullTranscript} from "./zhuzigeFullTranscript";
 import {applyZhuzigeTailDraft, applyZhuzigeTailSubtitleDraft} from "./zhuzigeTailDraft";
 import {applyZhuzigeEditorDraft, applyZhuzigeSubtitleDraft} from "./zhuzigeEditorDraft";
-import {LayoutEffectRenderer} from "./DemoEffectAdditions";
+import {LayoutEffectHeader, LayoutEffectRenderer} from "./DemoEffectAdditions";
 import {activeLayerAtTime, layerCue, normalizeCueLayers} from "./effectLayers";
 import {defaultProject, projectToCues, projectToTranscript} from "./projectLoader";
 import type {VideoProject} from "./projectTypes";
@@ -192,48 +192,6 @@ const floatingGlow = (frame: number, startFrame: number, color: string) => {
     transform: `translateY(${y}px)`,
     boxShadow: `0 0 ${18 + glow * 18}px color-mix(in srgb, ${color} 33%, transparent)`,
   };
-};
-
-const SectionLabel: React.FC<{cue: JasonWuCue; eyebrow?: string; subtitle?: string; enterOffset?: number}> = ({cue, eyebrow, subtitle, enterOffset = 0}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const startFrame = Math.round((cue.start + Math.max(0, enterOffset)) * fps);
-
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: 76,
-        top: 76,
-        ...entryStyle(frame, startFrame),
-      }}
-    >
-      <div
-        style={{
-          color: COLORS.blue,
-          fontSize: 25,
-          lineHeight: "26px",
-          fontWeight: 900,
-          letterSpacing: 7,
-          textShadow: "0 0 18px rgba(10, 132, 255, 0.55)",
-        }}
-      >
-        {eyebrow ?? cue.section.eyebrow}
-      </div>
-      <div
-        style={{
-          marginTop: 7,
-          color: COLORS.white,
-          fontSize: 20,
-          lineHeight: "25px",
-          fontWeight: 800,
-          textShadow: "0 2px 8px rgba(0,0,0,0.9)",
-        }}
-      >
-        {subtitle ?? cue.section.subtitle}
-      </div>
-    </div>
-  );
 };
 
 const CHECKBOX_COLORS = {purple: "#8B5CF6", blue: "#0A84FF", gold: "#FFD166", white: "#F8FAFC", green: "#36D399", red: "#FF6B6B"} as const;
@@ -1237,7 +1195,7 @@ export const CustomEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
 
   if (cue.layout === "diagonal-chips") {
     const props = cue.effectProps ?? {};
-    const text = (key: string, fallback: string) => typeof props[key] === "string" && props[key].trim() ? props[key].trim() : fallback;
+    const text = (key: string, fallback: string) => typeof props[key] === "string" ? String(props[key]).trim() : fallback;
     const eyebrow = text("eyebrow", "HARDWARE SIGNALS");
     const chips = [text("chip1", cueLines(cue, 3)[0] ?? "CORE SIGNAL"), text("chip2", cueLines(cue, 3)[1] ?? "KEY PATH"), text("chip3", cueLines(cue, 3)[2] ?? "NEXT STEP")];
     return (
@@ -1251,7 +1209,7 @@ export const CustomEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
   }
   if (cue.layout === "floating-chips") {
     const props = cue.effectProps ?? {};
-    const text = (key: string, fallback: string) => typeof props[key] === "string" && props[key].trim() ? props[key].trim() : fallback;
+    const text = (key: string, fallback: string) => typeof props[key] === "string" ? String(props[key]).trim() : fallback;
     const eyebrow = text("eyebrow", "LIVE SIGNALS");
     const chips = [text("chip1", cueLines(cue, 3)[0] ?? "CORE SIGNAL"), text("chip2", cueLines(cue, 3)[1] ?? "KEY PATH"), text("chip3", cueLines(cue, 3)[2] ?? "NEXT STEP")];
     return (
@@ -1278,10 +1236,15 @@ export const CustomEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
   }
 
   if (cue.layout === "logo-wordmark") {
+    const props = cue.effectProps ?? {};
+    const text = (key: string, fallback: string) => typeof props[key] === "string" ? String(props[key]).trim() : fallback;
+    const body = text("body", text("bodyText", text("effectText", cue.caption.zh || title)));
+    const quote = text("highlightQuote", cue.section.eyebrow || "PROJECT SIGNAL");
+    const mark = text("mark", "A").slice(0, 2);
     return (
       <div style={{position: "absolute", left: 100, top: 270, display: "flex", alignItems: "center", gap: 30, ...entryStyle(frame, startFrame, -28)}}>
-        <div style={{width: 126, height: 126, borderRadius: 28, border: "2px solid #0A84FF", color: COLORS.blue, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 42, fontWeight: 950}}>01</div>
-        <div><div style={{color: COLORS.white, fontSize: 74, fontWeight: 950, letterSpacing: 5}}>{title}</div><div style={{color: COLORS.blue, fontSize: 24, fontWeight: 950, letterSpacing: 6, marginTop: 7}}>{cue.section.eyebrow || "PROJECT SIGNAL"}</div><div style={{...titleStyle, marginTop: 24}}>{title}</div></div>
+        <div style={{width: 126, height: 126, borderRadius: 28, border: "2px solid #0A84FF", color: COLORS.blue, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 42, fontWeight: 950}}>{mark}</div>
+        <div style={{maxWidth: 820}}><div style={{color: COLORS.white, fontSize: 74, lineHeight: "86px", fontWeight: 950, letterSpacing: 2, overflowWrap: "break-word"}}>{body}</div>{quote ? <div style={{color: COLORS.gold, fontSize: 24, lineHeight: "32px", fontWeight: 950, letterSpacing: 6, marginTop: 7, overflowWrap: "break-word"}}>{quote}</div> : null}</div>
       </div>
     );
   }
@@ -1368,8 +1331,13 @@ export const V1NewEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
   }
 
   if (cue.layout === "product-explosion") {
-    const parts = [["NEXT", 90, 86], ["SENSOR", 115, 340], ["DISPLAY", 800, 76], ["BATTERY", 760, 338]];
-    return <div style={{position: "absolute", left: 108, top: 170, width: 1050}}><div style={{color: COLORS.blue, fontSize: 17, fontWeight: 900, letterSpacing: 4}}>PRODUCT EXPLOSION</div><div style={{position: "relative", height: 382}}><div style={{position: "absolute", left: 407, top: 103, width: 224, height: 160, background: localPanel, border: `2px solid ${COLORS.gold}`, opacity: enter(8), scale: enter(8)}}><div style={{marginTop: 49, textAlign: "center", color: COLORS.white, fontSize: 27, fontWeight: 950}}>ON-DEVICE AI</div></div>{parts.map(([label, left, top], index) => <div key={label} style={{position: "absolute", left, top, padding: "16px 22px", background: localPanel, border: `1px solid ${COLORS.blue}`, color: COLORS.white, fontSize: 20, fontWeight: 900, opacity: enter(18 + index * 9), translate: `${interpolate(frame, [start + 18 + index * 9, start + 46 + index * 9], [index < 2 ? -90 : 90, 0], {extrapolateLeft: "clamp", extrapolateRight: "clamp"})}px 0px`}}>{label}</div>)}<svg viewBox="0 0 1050 382" style={{position: "absolute", inset: 0, width: 1050, height: 382, pointerEvents: "none"}}>{[[190, 112, 407, 178], [210, 356, 407, 220], [820, 108, 631, 178], [800, 352, 631, 220]].map(([x1, y1, x2, y2], index) => <line key={index} x1={x1} y1={y1} x2={x2} y2={y2} stroke={COLORS.gold} strokeWidth="2" opacity={enter(16 + index * 7)} />)}</svg></div><div style={{color: COLORS.white, fontSize: 52, fontWeight: 950}}>{title}</div></div>;
+    const props = cue.effectProps ?? {};
+    const fallbackLabels = cueLines(cue, 4, ["iPhone", "iPad", "Mac", "AirPods"]);
+    const labels = [1, 2, 3, 4].map((n, i) => typeof props["productTitle" + String(n)] === "string" ? String(props["productTitle" + String(n)]).trim() : fallbackLabels[i]).filter(Boolean).slice(0, 4);
+    const centerLabel = typeof props.centerLabel === "string" ? props.centerLabel.trim() : "APPLE";
+    const centerImage = typeof props.centerImage === "string" ? props.centerImage : "";
+    const positions = [[130, 72], [790, 72], [130, 360], [790, 360]];
+    return <div style={{position: "absolute", left: 108, top: 170, width: 1050, height: 520}}><div style={{position: "absolute", left: 378, top: 154, width: 294, height: 190, borderRadius: 30, background: "linear-gradient(145deg, rgba(255,255,255,.96), rgba(207,218,232,.78))", border: "1px solid rgba(255,255,255,.84)", boxShadow: "0 24px 60px rgba(0,0,0,.36), 0 0 42px rgba(10,132,255,.22)", display: "grid", placeItems: "center", overflow: "hidden", opacity: enter(8), scale: enter(8)}}>{centerImage ? <img src={centerImage} style={{width: "100%", height: "100%", objectFit: "contain", padding: 30, boxSizing: "border-box"}} /> : <div style={{color: "#101826", fontSize: 34, fontWeight: 950, letterSpacing: 2}}>{centerLabel}</div>}</div>{labels.map((label, index) => { const [left, top] = positions[index]; const image = typeof props["productImage" + String(index + 1)] === "string" ? String(props["productImage" + String(index + 1)]) : ""; return <div key={label} style={{position: "absolute", left, top, width: 160, height: 160, borderRadius: "50%", background: localPanel, border: `2px solid ${index % 2 ? COLORS.gold : COLORS.blue}`, boxShadow: "0 0 28px rgba(10,132,255,.36)", color: COLORS.white, overflow: "hidden", opacity: enter(18 + index * 9), scale: enter(18 + index * 9), display: "grid", placeItems: "center"}}>{image ? <img src={image} style={{width: "100%", height: "100%", objectFit: "cover"}} /> : <b style={{fontSize: 25, textAlign: "center"}}>{label}</b>}<span style={{position: "absolute", left: 12, right: 12, bottom: 11, padding: "5px 8px", borderRadius: 99, background: "rgba(0,0,0,.62)", fontSize: 15, fontWeight: 900, textAlign: "center"}}>{label}</span></div>; })}</div>;
   }
 
   if (cue.layout === "newspaper-swap") {
@@ -1406,8 +1374,12 @@ export const V1NewEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
   }
 
   if (cue.layout === "clipboard-note") {
-    const boxColor = resolveCheckboxColor(cue, "green");
-    return <div style={{position: "absolute", left: 130, top: 164, width: 650, padding: "56px 50px 42px", background: "rgba(242,235,216,.94)", color: "#13202c", border: "2px solid rgba(255,255,255,.7)", rotate: "-3deg", opacity: enter()}}><div style={{position: "absolute", left: 242, top: -24, width: 165, height: 44, borderRadius: 7, background: "#53606d"}} /><div style={{fontSize: 17, fontWeight: 900, letterSpacing: 4}}>PRODUCT NOTE</div><div style={{marginTop: 20, fontSize: 45, lineHeight: "56px", fontWeight: 950}}>{title}</div>{cueLines(cue, 3, ["关键发现", "核心判断", "下一步"]).map((item, index) => <div key={item} style={{marginTop: 20, fontSize: 25, fontWeight: 900, opacity: enter(18 + index * 12)}}><span style={{display: "inline-block", width: 25, height: 25, marginRight: 14, border: `3px solid ${boxColor}`, color: boxColor, lineHeight: "18px", textAlign: "center"}}>✓</span>{item}</div>)}</div>;
+    const props = cue.effectProps ?? {};
+    const textProp = (key: string, fallback: string) => typeof props[key] === "string" ? String(props[key]).trim() : fallback;
+    const body = textProp("body", textProp("bodyText", textProp("effectText", cue.caption.zh || title)));
+    const subText = textProp("highlightQuote", textProp("subText", ""));
+    const label = textProp("label", "PRODUCT NOTE");
+    return <div style={{position: "absolute", left: 130, top: 164, width: 650, minHeight: 360, padding: "56px 50px 42px", background: "rgba(242,235,216,.94)", color: "#13202c", border: "2px solid rgba(255,255,255,.7)", rotate: "-3deg", opacity: enter()}}><div style={{position: "absolute", left: 242, top: -24, width: 165, height: 44, borderRadius: 7, background: "#53606d"}} /><div style={{fontSize: 17, fontWeight: 900, letterSpacing: 4}}>{label}</div><div style={{marginTop: 20, fontSize: 45, lineHeight: "56px", fontWeight: 950, overflowWrap: "break-word"}}>{body}</div>{subText ? <div style={{marginTop: 18, color: "rgba(19,32,44,.62)", fontSize: 24, lineHeight: "34px", fontWeight: 800, overflowWrap: "break-word"}}>{subText}</div> : null}</div>;
   }
 
   if (cue.layout === "closing-checklist") {
@@ -1417,7 +1389,7 @@ export const V1NewEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
 
   return <div style={{position: "absolute", left: 155, top: 186, width: 930, textAlign: "center"}}><div style={{position: "absolute", inset: -80, background: "radial-gradient(ellipse at center, rgba(0,0,0,.06), rgba(0,0,0,.58))", opacity: enter()}} /><div style={{position: "relative", color: COLORS.gold, fontSize: 19, fontWeight: 900, letterSpacing: 6, opacity: enter()}}>{cue.section.eyebrow || "KEY MOMENT"}</div><div style={{position: "relative", marginTop: 42, color: COLORS.white, fontSize: 76, lineHeight: "91px", fontWeight: 950, textShadow: "0 6px 24px rgba(0,0,0,.72)", opacity: enter(10), scale: interpolate(frame, [start + 10, start + 55], [.78, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: easeOut})}}>{title}</div><div style={{position: "relative", marginTop: 24, color: COLORS.white, fontSize: 30, fontWeight: 850, opacity: enter(30)}}>{cue.caption.zh}</div></div>;
 };
-const SceneModules: React.FC<{cue: JasonWuCue}> = ({cue}) => <LayoutEffectRenderer cue={cue} />;
+const SceneModules: React.FC<{cue: JasonWuCue; showStandardHeader?: boolean}> = ({cue, showStandardHeader = true}) => <LayoutEffectRenderer cue={cue} showStandardHeader={showStandardHeader} />;
 
 const EffectLayerStack: React.FC<{cue: JasonWuCue; autoContrastStroke?: boolean}> = ({cue, autoContrastStroke = true}) => {
   const {fps} = useVideoConfig();
@@ -1428,10 +1400,10 @@ const EffectLayerStack: React.FC<{cue: JasonWuCue; autoContrastStroke?: boolean}
     {normalizeCueLayers(cue).map((layer) => {
       const scopedCue = layerCue(cue, layer);
       const faceAware = resolveFaceAwareLayerForRender(layer.layout, layer.commonProps, cue.faceZone);
-      const effectiveCue = {...scopedCue, layout: faceAware.layout};
+      const effectiveCue = {...scopedCue, layout: faceAware.layout, effectProps: {...(scopedCue.effectProps ?? {}), designTokens: faceAware.tokens}};
       return <Sequence key={layer.layerId} from={beatStartFrame} durationInFrames={beatDuration} layout="none">
         <MotionWrapper commonProps={faceAware.commonProps} designTokens={faceAware.tokens} beatDuration={cue.end - cue.start} entranceDurationSeconds={getEntranceDurationSeconds(faceAware.layout, resolveContentItems(effectiveCue, layer.effectProps, ["items", "steps", "units", "comments", "nodes", "years"]).length, resolveContentText(effectiveCue, layer.effectProps, "text").length)} autoContrastStroke={autoContrastStroke}>
-          <SceneModules cue={effectiveCue} />
+          <SceneModules cue={effectiveCue} showStandardHeader={false} />
         </MotionWrapper>
       </Sequence>;
     })}
@@ -1459,13 +1431,25 @@ export const JasonWuTemplate: React.FC<JasonWuTemplateProps> = ({
   const cue = activeCueAtFrame(cues, frame, fps);
   const activeLayer = activeLayerAtTime(cue, Math.max(0, frame / fps - cue.start));
   const activeLayerProps = activeLayer.effectProps ?? {};
-  const sectionEyebrow = typeof activeLayerProps.eyebrow === "string" ? activeLayerProps.eyebrow : cue.section.eyebrow;
-  const sectionSubtitle = typeof activeLayerProps.headline === "string"
-    ? activeLayerProps.headline
-    : typeof activeLayerProps.title === "string"
-      ? activeLayerProps.title
-      : cue.section.subtitle;
-  const sectionEnterOffset = Number(activeLayer.commonProps?.enterOffset ?? activeLayer.enterOffset ?? 0);
+  const sectionEyebrow = typeof activeLayer.category === "string" && activeLayer.category.trim() ? activeLayer.category : typeof activeLayerProps.eyebrow === "string" ? activeLayerProps.eyebrow : cue.section.eyebrow;
+  const sectionSubtitle = typeof activeLayer.headline === "string" && activeLayer.headline.trim()
+    ? activeLayer.headline
+    : typeof activeLayerProps.headline === "string"
+      ? activeLayerProps.headline
+      : typeof activeLayerProps.title === "string"
+        ? activeLayerProps.title
+        : cue.section.subtitle;
+  const activeHeaderCue = layerCue(cue, {
+    ...activeLayer,
+    category: sectionEyebrow,
+    headline: sectionSubtitle,
+  });
+  const activeFaceAware = resolveFaceAwareLayerForRender(activeLayer.layout, activeLayer.commonProps, cue.faceZone);
+  const effectiveHeaderCue = {
+    ...activeHeaderCue,
+    layout: activeFaceAware.layout,
+    effectProps: {...(activeHeaderCue.effectProps ?? {}), designTokens: activeFaceAware.tokens},
+  };
   const settings = mergeGlobalSettings(globalSettings);
   const transcript = transcriptCues ? activeTranscriptAtFrame(transcriptCues, frame, fps) : undefined;
   const video = (
@@ -1495,7 +1479,7 @@ export const JasonWuTemplate: React.FC<JasonWuTemplateProps> = ({
       {loopVideoFrames ? <Loop durationInFrames={loopVideoFrames}>{video}</Loop> : video}
       <AbsoluteFill style={{backgroundColor: `rgba(0, 0, 0, ${settings.background.dimOpacity})`, backdropFilter: `blur(${settings.background.blurRadius}px)`}} />
       {settings.background.vignette ? <AbsoluteFill style={{background: "radial-gradient(circle, transparent 60%, rgba(0,0,0,0.6) 100%)"}} /> : null}
-      <SectionLabel key={activeLayer.layerId} cue={cue} eyebrow={sectionEyebrow} subtitle={sectionSubtitle} enterOffset={sectionEnterOffset} />
+      <LayoutEffectHeader key={activeLayer.layerId} cue={effectiveHeaderCue} />
       <EffectLayerStack cue={cue} autoContrastStroke={settings.theme.autoContrastStroke} />
       <Subtitle cue={cue} transcript={transcript} settings={settings} />
       {audioSrc ? <Audio src={staticFile(audioSrc)} /> : null}
@@ -1586,3 +1570,8 @@ export const ProjectEditorComposition: React.FC<VideoProject> = (project) => (
 );
 
 export const DefaultProjectEditorComposition: React.FC = () => <ProjectEditorComposition {...defaultProject} />;
+
+
+
+
+

@@ -14,4 +14,6 @@ for (const key of keys) {
 }
 assert.match(components, /interpolate/, "recovered layouts must use real Remotion animation");
 assert.match(registry, /圆形红色否定项/, "tradeoff component metadata must identify the reference visual");
+assert.match(components, /left:84,top:248,width:693/, "HUD glow rows must use the compact two-thirds width");
+assert.ok(components.includes("[-170,760]"), "HUD glow shine travel must stay inside the compact rows");
 console.log(JSON.stringify({result: "eight recovered effect components registered"}));

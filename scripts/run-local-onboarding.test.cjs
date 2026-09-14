@@ -70,7 +70,7 @@ test("stage 2 preserves merged caption review rows in the ready project", async 
   ];
   await fs.promises.writeFile(storage.captionsConfirmedFile, JSON.stringify(confirmed));
   const project = await stage2ProduceFromConfirmed({workspaceRoot, projectId});
-  assert.equal(project.captions[0].zh, "小创意赚大钱，有个女生花200美金在二手市场");
+  assert.equal(project.captions[0].zh, "小创意赚大钱，有个女生花200美金在二手市场淘了台贴纸机，");
   assert.ok(project.captions.length < confirmed.length);
 });
 test("stage 2 creates timed beats only from confirmed captions", async () => {
@@ -86,3 +86,23 @@ test("stage 2 creates timed beats only from confirmed captions", async () => {
 
 
 
+
+
+test("stage 2 uses the fixed 25-second dual-effect contract when target is 25", async () => {
+  const {workspaceRoot, projectId, storage} = await createReviewProject();
+  const shell = JSON.parse(await readFile(storage.projectFile, "utf8"));
+  shell.targetBeatDuration = 25;
+  shell.duration = 50;
+  await fs.promises.writeFile(storage.projectFile, JSON.stringify(shell, null, 2));
+  const confirmed = [
+    {id: "subtitle-001", start: 0, end: 12, zh: "接到陌生行业客户前，必须先厘清客户、产品和盈利模式。", en: ""},
+    {id: "subtitle-002", start: 12, end: 25, zh: "行业研究工具可以帮助建立基础认知和沟通问题。", en: ""},
+    {id: "subtitle-003", start: 25, end: 38, zh: "研究目标必须先说清，交付模式决定收入结构。", en: ""},
+    {id: "subtitle-004", start: 38, end: 50, zh: "证据链和统计口径决定报告是否可信。", en: ""},
+  ];
+  await fs.promises.writeFile(storage.captionsConfirmedFile, JSON.stringify(confirmed));
+  const project = await stage2ProduceFromConfirmed({workspaceRoot, projectId});
+  assert.equal(project.targetBeatDuration, 25);
+  assert.equal(project.beats[0].layers.length, 2);
+  assert.deepEqual(project.beats[0].layers.map((layer) => ({enter: layer.commonProps.enterOffset, duration: layer.commonProps.duration})), [{enter: 0, duration: 11}, {enter: 14, duration: 11}]);
+});

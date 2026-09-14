@@ -2,7 +2,7 @@ const assert = require("node:assert/strict");
 const test = require("node:test");
 const {existsSync, readFileSync} = require("node:fs");
 
-const layouts = ["person-rank","event-timeline","pivot-list","value-verdict","capital-dashboard","cook-machine","engineering-return","market-battlefield","finale-kinetic","reject-list","check-progress","diagonal-chips","floating-chips","bare-typography","chapter-card","logo-wordmark","ordered-sequence","org-chart","draw-line","progress-donut","avatar-handoff","bull-bear","opinion-hero","photo-wall","product-explosion","newspaper-swap","route-map","data-flow","screen-recording","zoom-statement","desktop-folders","time-rewind","clipboard-note","closing-checklist","spotlight-question"];
+const layouts = ["person-rank","event-timeline","pivot-list","capital-dashboard","cook-machine","engineering-return","market-battlefield","finale-kinetic","reject-list","check-progress","diagonal-chips","floating-chips","bare-typography","chapter-card","logo-wordmark","ordered-sequence","org-chart","draw-line","progress-donut","avatar-handoff","bull-bear","opinion-hero","photo-wall","product-explosion","route-map","data-flow","screen-recording","zoom-statement","desktop-folders","time-rewind","clipboard-note","closing-checklist","spotlight-question"];
 
 test("layout registry defines every supported layout", () => {
   const registryPath = "src/JasonWu/layoutRegistry.ts";

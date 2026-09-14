@@ -5,6 +5,7 @@ const {
   buildProjectFromWhisper,
   hydrateBeatDrafts,
   rebuildProjectText,
+  mergeShortCaptions,
   mergeWhisperCaptions,
   whisperToCaptions,
 } = require("./project-onboarding.cjs");
@@ -115,8 +116,8 @@ test("extracts concise effect copy without ellipses", () => {
   });
   assert.equal(/[.…]/.test(project.beats[0].zh), false);
   assert.equal(/[.…]/.test(project.beats[0].en), false);
-  assert.equal(project.beats[0].zh.length <= 22, true);
-  assert.equal(project.beats[0].en.length <= 72, true);
+  assert.match(project.beats[0].zh, /这是一个非常长的观点说明/);
+  assert.match(project.beats[0].en, /followed by details/);
 });
 
 test("cleans ellipses from a persisted effect headline", () => {
@@ -131,8 +132,9 @@ test("splits long Whisper rows into sequential two-line subtitle cues", () => {
   const captions = whisperToCaptions({transcription: [
     {offsets: {from: 0, to: 12000}, text: "她卖的根本不是贴纸，她卖的是活动现场的及时惊喜。同一台机器，换个场景就变成生意。"},
   ]});
-  assert.equal(captions.length > 2, true);
-  assert.equal(captions.every((caption) => caption.zh.length <= 22), true);
+  assert.equal(captions.length >= 2, true);
+  assert.equal(captions.map((caption) => caption.zh).join(""), "她卖的根本不是贴纸，她卖的是活动现场的及时惊喜。同一台机器，换个场景就变成生意。");
+  assert.equal(captions.every((caption) => /[，。！？；]$/.test(caption.zh)), true);
   assert.equal(captions[0].start, 0);
   assert.equal(captions.at(-1).end, 12);
   assert.equal(captions.every((caption, index) => index === 0 || caption.start >= captions[index - 1].end), true);
@@ -141,8 +143,8 @@ test("splits long Whisper rows into sequential two-line subtitle cues", () => {
 
 test("normalizes Whisper Chinese to simplified characters before captions are persisted", () => {
   const captions = whisperToCaptions({transcription: [{offsets: {from: 0, to: 2000}, text: "我們這個項目賺麻了，關注公眾號。"}]});
-  assert.equal(captions[0].zh, "我们这个项目赚麻了，");
-  assert.equal(captions[1].zh, "关注公众号。");
+  assert.equal(captions.length, 1);
+  assert.equal(captions[0].zh, "我们这个项目赚麻了，关注公众号。");
 });
 
 test("derives a semantic headline from the full beat instead of a spoken fragment", () => {
@@ -198,7 +200,7 @@ test("replaces incomplete ASR fragments with complete narrative titles", () => {
 });
 
 
-test("creates semantic 20-to-30-second windows from Whisper punctuation", () => {
+test("creates semantic 25-to-35-second windows from Whisper punctuation", () => {
   const project = buildProjectFromWhisper({
     projectId:"semantic-windows", name:"Semantic Windows", videoSrc:"semantic.mp4", audioSrc:"semantic.wav", duration:45,
     transcript:{transcription:[
@@ -210,7 +212,7 @@ test("creates semantic 20-to-30-second windows from Whisper punctuation", () => 
       {offsets:{from:33000,to:44000},text:"第二段完整结束。"},
     ]},
   });
-  assert.deepEqual(project.beats.map((beat) => ({start:beat.start,end:beat.end})), [{start:0,end:22.5},{start:22.5,end:45}]);
+  assert.deepEqual(project.beats.map((beat) => ({start:beat.start,end:beat.end})), [{start:0,end:33},{start:33,end:45}]);
   assert.equal(project.targetBeatDuration,30);
 });
 
@@ -249,6 +251,43 @@ test("caption confirmation tolerates a greeting-only opening layer", () => {
   });
   assert.ok(project.beats.length >= 1);
   assert.ok(project.beats[0].layers.length >= 1);
-  assert.match(project.beats[0].layers[0].effectProps.headline, /核心观点|项目|流量|内容|带货|资料/);
+  assert.match(project.beats[0].layers[0].headline, /核心观点|项目|流量|内容|带货|资料/);
 });
 
+
+
+test("persists the selected 25 to 35 second semantic target and rejects out-of-range values", () => {
+  const base = {projectId: "semantic-window", name: "Semantic Window", videoSrc: "semantic.mp4", audioSrc: "semantic.wav", duration: 35, transcript: {transcription: [{offsets: {from: 0, to: 35000}, text: "完整语义段落。"}]}};
+  assert.equal(buildProjectFromWhisper({...base, targetBeatDuration: 25}).targetBeatDuration, 25);
+  assert.equal(buildProjectFromWhisper({...base, projectId: "semantic-window-35", targetBeatDuration: 35}).targetBeatDuration, 35);
+  assert.throws(() => buildProjectFromWhisper({...base, projectId: "semantic-window-24", targetBeatDuration: 24}), /25.*35/);
+});
+
+
+test("merges Chinese subtitle cues into the 23 to 29 character display range", () => {
+  const captions = mergeShortCaptions([
+    {id: "subtitle-001", start: 0, end: 1, zh: "甲".repeat(10), en: ""},
+    {id: "subtitle-002", start: 1, end: 2, zh: "乙".repeat(13), en: ""},
+  ]);
+  assert.equal(captions.length, 1);
+  assert.equal(captions[0].zh.length, 23);
+});
+
+
+test("keeps a short terminal Chinese cue attached to the next cue", () => {
+  const captions = mergeShortCaptions([
+    {id: "subtitle-001", start: 0, end: 3, zh: "甲".repeat(14) + "。", en: ""},
+    {id: "subtitle-002", start: 3, end: 6, zh: "乙".repeat(12) + "。", en: ""},
+  ]);
+  assert.equal(captions.length, 1);
+  assert.equal(captions[0].zh.replace(/[。]/g, "").length, 26);
+});
+
+
+test("hydrates a fixed 10-second beat with a lightly overlapping boundary caption", () => {
+  const beats = hydrateBeatDrafts([{id: "beat-002", start: 10, end: 20, eyebrow: "CHAPTER 02", subtitle: "Key Point 2", zh: "文案要点 2", en: "Core point 2"}], [
+    {id: "subtitle-001", start: 5, end: 11, zh: "这些东西便宜到你买的时候，可能连价格都懒得比较。", en: ""},
+    {id: "subtitle-002", start: 11, end: 20, zh: "低价入口让购买更容易发生，后续交易才有机会建立。", en: ""},
+  ], {force: true, language: "zh"});
+  assert.equal(beats[0].subtitle, "超低客单绕过理性比价");
+});

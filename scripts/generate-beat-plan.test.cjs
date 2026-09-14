@@ -69,3 +69,24 @@ test("merges a semantic tail shorter than the minimum beat duration into its pre
   const beats = generateInitialBeats(33.5, 30, captions);
   assert.deepEqual(beats.map((beat) => ({start: beat.start, end: beat.end})), [{start: 0, end: 33.5}]);
 });
+
+
+test("a 25-second semantic target never closes before the 25-second lower boundary", () => {
+  const captions = [
+    {start: 0, end: 23, zh: "前半段结束。"},
+    {start: 23, end: 35, zh: "后半段结束。"},
+    {start: 35, end: 60, zh: "第三段完整结束。"},
+  ];
+  const beats = generateInitialBeats(60, 25, captions);
+  assert.equal(beats[0].end, 35);
+  assert.ok(beats[0].end - beats[0].start >= 25);
+});
+
+test("absorbs a 3-second terminal tail even when the preceding Beat crosses the normal 35-second cap", () => {
+  const captions = [
+    {start: 0, end: 32.73, zh: "上一段完整结束。"},
+    {start: 32.73, end: 35.67, zh: "最后一句结论。"},
+  ];
+  const beats = generateInitialBeats(35.67, 30, captions);
+  assert.deepEqual(beats.map((beat) => ({start: beat.start, end: beat.end})), [{start: 0, end: 35.67}]);
+});

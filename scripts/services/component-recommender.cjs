@@ -1,92 +1,95 @@
 "use strict";
 
-const componentRegistry = {
-  "capital-dashboard": {family: "F1_QUANTITATIVE", tags: ["metrics", "market", "growth"], data: ["number", "percentage"]},
-  "engineering-return": {family: "F1_QUANTITATIVE", tags: ["metrics", "hardware", "product"], data: ["number", "comparison"]},
-  "progress-donut": {family: "F1_QUANTITATIVE", tags: ["metrics", "confirmation", "progress"], data: ["percentage"]},
-  "recovery-progress-bars": {family: "F1_QUANTITATIVE", tags: ["metrics", "process", "progress"], data: ["list", "percentage"]},
-  "data-flow": {family: "F1_QUANTITATIVE", tags: ["metrics", "comparison", "market"], data: ["number", "comparison"]},
-  "platform-shift-line": {family: "F1_QUANTITATIVE", tags: ["metrics", "timeline", "product"], data: ["list", "number"]},
-  "hud-glow-stack": {family: "F1_QUANTITATIVE", tags: ["metrics", "product", "statement"], data: ["list", "number"]},
+const componentManifest = {
+  "engineering-return": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["工程","回归","打字机","观点"], visualWeight:"medium", family:"F3_ARGUMENT_CONFLICT", tags:["story","typewriter","product","statement"], data:["text"]},
+  "capital-dashboard": {intent:"metrics", capacity:{minItems:1,maxItems:2}, keywords:["数据","增长","市值","营收","百分比","指标"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","market","growth"], data:["number","percentage"]},
+  "progress-donut": {intent:"metrics", capacity:{minItems:1,maxItems:1}, keywords:["进度","完成度","百分比","转化率","%"], visualWeight:"light", family:"F1_QUANTITATIVE", tags:["metrics","confirmation","progress"], data:["percentage"]},
+  "recovery-progress-bars": {intent:"metrics", capacity:{minItems:2,maxItems:5}, keywords:["进度","恢复","完成","推进","百分比"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","process","progress"], data:["list","percentage"]},
+  "platform-shift-line": {intent:"system", capacity:{minItems:3,maxItems:5}, keywords:["产品线","平台","演进","扩展","链路"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","timeline","product","system"], data:["list","number"]},
+  "hud-glow-stack": {intent:"system", capacity:{minItems:2,maxItems:4}, keywords:["系统","信号","链路","模块","闭环"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","product","statement","system"], data:["list","number"]},
+  "copyopen-progress-bar": {intent:"metrics", capacity:{minItems:1,maxItems:1}, keywords:["进度","百分比","完成","%"], visualWeight:"light", family:"F1_QUANTITATIVE", tags:["metrics","process","progress"], data:["percentage"]},
+  "copyopen-comparison-card": {intent:"metrics", capacity:{minItems:2,maxItems:2}, keywords:["对比","差异","数值","增长"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","comparison","market"], data:["number","comparison"]},
+  "copyopen-bar-chart": {intent:"metrics", capacity:{minItems:3,maxItems:5}, keywords:["柱状","排名","数据","对比"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","market","growth"], data:["list","number"]},
+  "copyopen-line-chart": {intent:"metrics", capacity:{minItems:3,maxItems:5}, keywords:["趋势","增长","曲线","时间"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","timeline","growth"], data:["list","number"]},
+  "copyopen-pie-chart": {intent:"metrics", capacity:{minItems:3,maxItems:5}, keywords:["占比","比例","分布","份额"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","market","comparison"], data:["list","percentage"]},
+  "copyopen-kpi-grid": {intent:"metrics", capacity:{minItems:3,maxItems:6}, keywords:["KPI","指标","数据","增长"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","market","growth"], data:["list","number"]},
 
-  "ordered-sequence": {family: "F2_TIMELINE_PROCESS", tags: ["process", "steps"], data: ["list"]},
-  "event-timeline": {family: "F2_TIMELINE_PROCESS", tags: ["timeline", "process"], data: ["list", "time"]},
-  "rewind-milestones": {family: "F2_TIMELINE_PROCESS", tags: ["timeline", "process", "product"], data: ["list", "time"]},
-  "time-rewind": {family: "F2_TIMELINE_PROCESS", tags: ["timeline", "statement"], data: ["time"]},
-  "route-map": {family: "F2_TIMELINE_PROCESS", tags: ["process", "market"], data: ["list"]},
-  "check-progress": {family: "F2_TIMELINE_PROCESS", tags: ["process", "confirmation", "progress"], data: ["list", "percentage"]},
-  "org-chart": {family: "F2_TIMELINE_PROCESS", tags: ["process", "person", "organization"], data: ["list"]},
-  "draw-line": {family: "F2_TIMELINE_PROCESS", tags: ["process", "timeline", "statement"], data: ["time"]},
+  "ordered-sequence": {intent:"process", capacity:{minItems:2,maxItems:5}, keywords:["第一步","第二步","阶段","步骤","流程"], visualWeight:"medium", family:"F2_TIMELINE_PROCESS", tags:["process","steps"], data:["list"]},
+  "event-timeline": {intent:"process", capacity:{minItems:3,maxItems:5}, keywords:["时间线","阶段","演进","节点"], visualWeight:"medium", family:"F2_TIMELINE_PROCESS", tags:["timeline","process"], data:["list","time"]},
+  "rewind-milestones": {intent:"process", capacity:{minItems:4,maxItems:6}, keywords:["回溯","过去","演进","节点"], visualWeight:"medium", family:"F2_TIMELINE_PROCESS", tags:["timeline","process","product"], data:["list","time"]},
+  "time-rewind": {intent:"process", capacity:{minItems:1,maxItems:5}, keywords:["回溯","时间","过去","历史"], visualWeight:"light", family:"F2_TIMELINE_PROCESS", tags:["timeline","statement"], data:["time"]},
+  "route-map": {intent:"process", capacity:{minItems:3,maxItems:4}, keywords:["路线","路径","流程","地图"], visualWeight:"heavy", family:"F2_TIMELINE_PROCESS", tags:["process","market"], data:["list"]},
+  "check-progress": {intent:"process", capacity:{minItems:2,maxItems:5}, keywords:["确认","检查","完成","步骤"], visualWeight:"medium", family:"F2_TIMELINE_PROCESS", tags:["process","confirmation","progress"], data:["list","percentage"]},
+  "org-chart": {intent:"system", capacity:{minItems:3,maxItems:5}, keywords:["组织","部门","分工","架构"], visualWeight:"heavy", family:"F2_TIMELINE_PROCESS", tags:["process","person","organization","system"], data:["list"]},
+  "draw-line": {intent:"process", capacity:{minItems:1,maxItems:2}, keywords:["路径","推导","画线","论证"], visualWeight:"light", family:"F2_TIMELINE_PROCESS", tags:["process","timeline","statement"], data:["time"]},
+  "copyopen-terminal-scene": {intent:"process", capacity:{minItems:3,maxItems:6}, keywords:["命令","流程","执行","工作流"], visualWeight:"heavy", family:"F2_TIMELINE_PROCESS", tags:["process","steps","workflow"], data:["list"]},
 
-  "zoom-statement": {family: "F3_ARGUMENT_CONFLICT", tags: ["statement", "comparison", "verdict"], data: ["text"]},
-  "opinion-hero": {family: "F3_ARGUMENT_CONFLICT", tags: ["statement", "person", "verdict"], data: ["text"]},
-  "bare-typography": {family: "F3_ARGUMENT_CONFLICT", tags: ["statement", "verdict"], data: ["text"]},
-  "spotlight-question": {family: "F3_ARGUMENT_CONFLICT", tags: ["statement", "question", "comparison"], data: ["text"]},
-  "bull-bear": {family: "F3_ARGUMENT_CONFLICT", tags: ["comparison", "market", "risk"], data: ["comparison"]},
-  "market-battlefield": {family: "F3_ARGUMENT_CONFLICT", tags: ["comparison", "market", "competition"], data: ["comparison", "list"]},
-  "tradeoff-reject-round": {family: "F3_ARGUMENT_CONFLICT", tags: ["risk", "comparison", "warning"], data: ["list"]},
-  "reject-list": {family: "F3_ARGUMENT_CONFLICT", tags: ["risk", "warning", "process"], data: ["list"]},
+  "zoom-statement": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["观点","判断","结论","关键"], visualWeight:"light", family:"F3_ARGUMENT_CONFLICT", tags:["statement","comparison","verdict"], data:["text"]},
+  "opinion-hero": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["观点","核心","金句","主张"], visualWeight:"heavy", family:"F3_ARGUMENT_CONFLICT", tags:["statement","person","verdict"], data:["text"]},
+  "bare-typography": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["大字","判断","结论"], visualWeight:"light", family:"F3_ARGUMENT_CONFLICT", tags:["statement","verdict"], data:["text"]},
+  "spotlight-question": {intent:"narrative", capacity:{minItems:2,maxItems:3}, keywords:["问题","评论","为什么","互动"], visualWeight:"light", family:"F3_ARGUMENT_CONFLICT", tags:["statement","question","comparison"], data:["text"]},
+  "bull-bear": {intent:"contrast", capacity:{minItems:2,maxItems:2}, keywords:["看多","风险","对比","多空"], visualWeight:"heavy", family:"F3_ARGUMENT_CONFLICT", tags:["comparison","market","risk"], data:["comparison"]},
+  "market-battlefield": {intent:"contrast", capacity:{minItems:2,maxItems:4}, keywords:["竞争","对手","市场对垒","战场"], visualWeight:"heavy", family:"F3_ARGUMENT_CONFLICT", tags:["comparison","market","competition"], data:["comparison","list"]},
+  "tradeoff-reject-round": {intent:"contrast", capacity:{minItems:2,maxItems:4}, keywords:["风险","否定","排除","不要"], visualWeight:"medium", family:"F3_ARGUMENT_CONFLICT", tags:["risk","comparison","warning"], data:["list"]},
+  "reject-list": {intent:"contrast", capacity:{minItems:2,maxItems:5}, keywords:["错误","问题","风险","避坑"], visualWeight:"medium", family:"F3_ARGUMENT_CONFLICT", tags:["risk","warning","process"], data:["list"]},
 
-  "person-rank": {family: "F4_ENTITIES_HARDWARE", tags: ["person", "organization", "leadership"], data: ["person", "comparison"]},
-  "avatar-handoff": {family: "F4_ENTITIES_HARDWARE", tags: ["person", "leadership", "timeline"], data: ["person", "comparison"]},
-  "product-explosion": {family: "F4_ENTITIES_HARDWARE", tags: ["product", "hardware", "spec"], data: ["list"]},
-  "cook-machine": {family: "F4_ENTITIES_HARDWARE", tags: ["product", "hardware", "process"], data: ["list"]},
-  "photo-wall": {family: "F4_ENTITIES_HARDWARE", tags: ["person", "product", "market"], data: ["list"]},
-  "logo-wordmark": {family: "F4_ENTITIES_HARDWARE", tags: ["product", "market", "statement"], data: ["text"]},
+  "person-rank": {intent:"system", capacity:{minItems:2,maxItems:3}, keywords:["人物","团队","交接","组织"], visualWeight:"medium", family:"F4_ENTITIES_HARDWARE", tags:["person","organization","leadership","system"], data:["person","comparison"]},
+  "value-verdict": {intent:"narrative", capacity:{minItems:1,maxItems:2}, keywords:["价值","结论","判断","指标"], visualWeight:"medium", family:"F3_ARGUMENT_CONFLICT", tags:["statement","verdict","metrics"], data:["text","number"]},
+  "product-explosion": {intent:"system", capacity:{minItems:3,maxItems:5}, keywords:["产品","生态","硬件","系列"], visualWeight:"heavy", family:"F4_ENTITIES_HARDWARE", tags:["product","hardware","spec","system"], data:["list"]},
+  "cook-machine": {intent:"system", capacity:{minItems:2,maxItems:4}, keywords:["经营","机器","商业","闭环"], visualWeight:"medium", family:"F4_ENTITIES_HARDWARE", tags:["product","hardware","process","system"], data:["list"]},
+  "photo-wall": {intent:"narrative", capacity:{minItems:3,maxItems:4}, keywords:["照片","证据","案例","产品"], visualWeight:"heavy", family:"F4_ENTITIES_HARDWARE", tags:["person","product","market"], data:["list"]},
+  "logo-wordmark": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["品牌","标志","关键词"], visualWeight:"light", family:"F4_ENTITIES_HARDWARE", tags:["product","market","statement"], data:["text"]},
 
-  "diagonal-chips": {family: "F5_SPECS_MULTIDIM", tags: ["product", "hardware", "spec"], data: ["list"]},
-  "floating-chips": {family: "F5_SPECS_MULTIDIM", tags: ["product", "spec", "market"], data: ["list"]},
-  "desktop-folders": {family: "F5_SPECS_MULTIDIM", tags: ["process", "product", "spec"], data: ["list"]},
-  "clipboard-note": {family: "F5_SPECS_MULTIDIM", tags: ["process", "confirmation", "statement"], data: ["list"]},
-  "briefing-poster": {family: "F5_SPECS_MULTIDIM", tags: ["market", "statement", "product"], data: ["list", "text"]},
-  "screen-recording": {family: "F5_SPECS_MULTIDIM", tags: ["process", "product", "spec"], data: ["list"]},
-  "flying-paper-stack": {family: "F5_SPECS_MULTIDIM", tags: ["process", "statement", "market"], data: ["list"]},
+  "diagonal-chips": {intent:"system", capacity:{minItems:3,maxItems:5}, keywords:["规格","要点","参数","模块"], visualWeight:"light", family:"F5_SPECS_MULTIDIM", tags:["product","hardware","spec","system"], data:["list"]},
+  "floating-chips": {intent:"system", capacity:{minItems:2,maxItems:4}, keywords:["标签","要点","模块","信号"], visualWeight:"light", family:"F5_SPECS_MULTIDIM", tags:["product","spec","market","system"], data:["list"]},
+  "desktop-folders": {intent:"system", capacity:{minItems:3,maxItems:4}, keywords:["文件","分类","整理","系统"], visualWeight:"medium", family:"F5_SPECS_MULTIDIM", tags:["process","product","spec","system"], data:["list"]},
+  "clipboard-note": {intent:"narrative", capacity:{minItems:1,maxItems:3}, keywords:["便签","批注","结论","确认"], visualWeight:"medium", family:"F5_SPECS_MULTIDIM", tags:["process","confirmation","statement"], data:["list","text"]},
+  "briefing-poster": {intent:"narrative", capacity:{minItems:1,maxItems:4}, keywords:["简报","摘要","观点","案例"], visualWeight:"heavy", family:"F5_SPECS_MULTIDIM", tags:["market","statement","product"], data:["list","text"]},
+  "screen-recording": {intent:"system", capacity:{minItems:2,maxItems:4}, keywords:["界面","操作","产品","窗口"], visualWeight:"heavy", family:"F5_SPECS_MULTIDIM", tags:["process","product","spec","system"], data:["list"]},
+  "flying-paper-stack": {intent:"narrative", capacity:{minItems:1,maxItems:3}, keywords:["纸卡","资料","简报","观点"], visualWeight:"medium", family:"F5_SPECS_MULTIDIM", tags:["process","statement","market"], data:["list","text"]},
 
-  "chapter-card": {family: "F6_CHAPTER_VERDICT", tags: ["chapter", "statement", "verdict"], data: ["text"]},
-  "value-verdict": {family: "F6_CHAPTER_VERDICT", tags: ["metrics", "verdict", "statement"], data: ["number", "text"]},
-  "closing-checklist": {family: "F6_CHAPTER_VERDICT", tags: ["confirmation", "verdict", "checklist"], data: ["list"]},
-  "checklist-editorial": {family: "F6_CHAPTER_VERDICT", tags: ["confirmation", "statement", "checklist"], data: ["list"]},
-  "finale-kinetic": {family: "F6_CHAPTER_VERDICT", tags: ["chapter", "statement", "verdict"], data: ["text"]},
-  "pivot-list": {family: "F6_CHAPTER_VERDICT", tags: ["comparison", "statement", "verdict"], data: ["list", "text"]},
-  "newspaper-swap": {family: "F6_CHAPTER_VERDICT", tags: ["comparison", "market", "verdict"], data: ["comparison", "text"]},
+  "chapter-card": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["章节","开场","主题"], visualWeight:"heavy", family:"F6_CHAPTER_VERDICT", tags:["chapter","statement","verdict"], data:["text"], allowRepeat:true},
+  "closing-checklist": {intent:"process", capacity:{minItems:2,maxItems:5}, keywords:["收尾","清单","确认","总结"], visualWeight:"medium", family:"F6_CHAPTER_VERDICT", tags:["confirmation","verdict","checklist","process"], data:["list"]},
+  "checklist-editorial": {intent:"process", capacity:{minItems:2,maxItems:5}, keywords:["清单","确认","步骤","总结"], visualWeight:"medium", family:"F6_CHAPTER_VERDICT", tags:["confirmation","statement","checklist","process"], data:["list"]},
+  "finale-kinetic": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["结尾","冲击","总结"], visualWeight:"heavy", family:"F6_CHAPTER_VERDICT", tags:["chapter","statement","verdict"], data:["text"], allowRepeat:true},
+  "pivot-list": {intent:"narrative", capacity:{minItems:1,maxItems:4}, keywords:["打字机","观点","列表"], visualWeight:"medium", family:"F6_CHAPTER_VERDICT", tags:["comparison","statement","verdict"], data:["list","text"]},
+  "copyopen-hero-title": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["开场","标题","主视觉"], visualWeight:"heavy", family:"F6_CHAPTER_VERDICT", tags:["chapter","statement","opening"], data:["text"], manualFirst:true},
+  "copyopen-end-tag": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["结尾","标语","收束"], visualWeight:"light", family:"F6_CHAPTER_VERDICT", tags:["confirmation","verdict","closing"], data:["text"], manualFirst:true},
+};
+
+for (const [id, manifest] of Object.entries(componentManifest)) manifest.id = id;
+
+const componentRegistry = Object.fromEntries(Object.entries(componentManifest).map(([id, manifest]) => [id, {family: manifest.family, tags: manifest.tags, data: manifest.data}]));
+
+const intentKeywords = {
+  process: [/(?:第一|第二|第三|首先|其次|然后|最后|步骤|流程|路径|阶段|执行|操作|推进|沉淀|交付|复购)/i, /(?:first|second|third|step|phase|workflow|process|roadmap)/i],
+  metrics: [/(?:\d+(?:\.\d+)?%|%|百分比|转化率|增长率|飙到|翻倍|增长|下滑|提升|下降|营收|利润|客单价|复购率|市值|份额|ROI|KPI)/i, /(?:growth|revenue|margin|metric|percentage|conversion|\d+%)/i],
+  contrast: [/(?:风险|问题|错误|否定|不要|不能|避坑|隐患|但是|不过|相比|对比|多空|看多|空方|取舍|挑战)/i, /(?:risk|warning|versus|vs\.?|but|however|trade-?off|downside)/i],
+  system: [/(?:系统|架构|链路|闭环|底层|模块|组织|分工|平台|生态|中台|后端|前端|模型|结构|串起来)/i, /(?:system|architecture|pipeline|loop|platform|ecosystem|stack)/i],
+  narrative: [/(?:观点|判断|结论|核心|关键|本质|其实|意味着|价值|金句|故事|案例|摘要)/i, /(?:thesis|verdict|story|insight|key point|conclusion)/i],
 };
 
 const tagPatterns = [
   ["metrics", /(?:revenue|growth|margin|percentage|valuation|roi|metrics|\$\d|\d+%)/i],
-  ["growth", /(?:growth|expand|increase|scale|upside)/i],
-  ["comparison", /(?:however|contrary|versus|vs\.?|trade-?off|but|rather than)/i],
-  ["process", /(?:first|second|third|roadmap|phases|process|workflow|step|execution)/i],
-  ["steps", /(?:first|second|third|step \d|phase \d)/i],
-  ["timeline", /(?:roadmap|evolution|history|phase|timeline|next generation|next-gen)/i],
-  ["hardware", /(?:architecture|specs?|latency|bandwidth|hardware|silicon|chip)/i],
-  ["spec", /(?:architecture|specs?|latency|bandwidth|hardware|silicon)/i],
-  ["market", /(?:market|revenue|margin|valuation|demand|customer|competition)/i],
-  ["competition", /(?:competition|competitive|market share|race)/i],
-  ["risk", /(?:risk|critical|trade-?off|myth|warning|downside)/i],
-  ["statement", /(?:critical|key|thesis|verdict|breakthrough|strategy)/i],
+  ["growth", /(?:growth|expand|increase|scale|upside|增长|提升|上升|扩大|翻倍|爆发|增长率)/i],
+  ["comparison", /(?:however|contrary|versus|vs\.?|trade-?off|but|rather than|但是|不过|相比|对比|取舍|优于|不如|而不是|转向|放弃|逆转|差异)/i],
+  ["process", /(?:first|second|third|roadmap|phases|process|workflow|step|execution|首先|其次|然后|步骤|流程|路径|阶段|执行|如何|方法|操作|推进)/i],
+  ["steps", /(?:第[一二三四五六七八九十\d]|第一步|第二步|第三步|步骤|流程|phase \d|step \d)/i],
   ["metrics", /(?:\d+(?:\.\d+)?%|\d[\d,.]*\s*(?:亿|万|年|款|美元|元|倍)|[$￥]|增长|下降|市值|营收|估值|份额|排名|比例)/],
-  ["growth", /(?:增长|提升|上升|扩大|翻倍|爆发|增长率)/],
-  ["comparison", /(?:但是|不过|相比|对比|取舍|优于|不如|而不是|转向|放弃|逆转|差异)/],
-  ["process", /(?:首先|其次|然后|步骤|流程|路径|阶段|执行|如何|方法|操作|推进)/],
-  ["steps", /(?:第[一二三四五六七八九十\d]|第一步|第二步|第三步|步骤|流程)/],
   ["person", /(?:CEO|创始人|董事会|团队|高管|负责人|库克|特努斯|乔布斯|用户|消费者)/i],
   ["organization", /(?:组织|事业部|职能|部门|团队|董事会)/],
-  ["leadership", /(?:交接|接任|继任|管理层|CEO|董事会)/i],
   ["product", /(?:产品|功能|设备|手机|电脑|软件|硬件|平台|品牌|型号|产品线)/],
-  ["hardware", /(?:芯片|规格|性能|硬件|处理器|屏幕|镜头|电池|接口)/],
-  ["spec", /(?:规格|参数|配置|性能|功能|型号|芯片|接口)/],
-  ["market", /(?:市场|竞争|品牌|用户|消费|商业|销量|门店|行业|价格|客户|变现)/],
-  ["competition", /(?:竞争|红海|对手|抢占|份额|白热化)/],
-  ["risk", /(?:风险|问题|失败|缺陷|否定|不能|不该|隐患|挑战)/],
-  ["warning", /(?:风险|警惕|避免|不要|失败|问题|隐患)/],
+  ["hardware", /(?:芯片|规格|性能|硬件|处理器|屏幕|镜头|电池|接口|architecture|specs?|latency|bandwidth|silicon)/i],
+  ["market", /(?:市场|竞争|品牌|用户|消费|商业|销量|门店|行业|价格|客户|变现|market|demand|customer|competition)/i],
+  ["risk", /(?:风险|问题|失败|缺陷|否定|不能|不该|隐患|挑战|risk|warning|downside)/i],
   ["confirmation", /(?:完成|确认|验证|结论|总结|清单|检查|最终|下一步)/],
   ["progress", /(?:进度|完成|推进|恢复|达成|验证)/],
-  ["timeline", /(?:过去|现在|未来|之前|之后|当年|今年|明年|阶段|演进|回溯|历史|年份)/],
-  ["statement", /(?:观点|判断|结论|核心|关键|意味着|本质|其实|必须|应该)/],
-  ["verdict", /(?:结论|判断|价值|关键|本质|核心)/],
+  ["timeline", /(?:过去|现在|未来|之前|之后|当年|今年|明年|阶段|演进|回溯|历史|年份|timeline|history)/i],
+  ["statement", /(?:观点|判断|结论|核心|关键|意味着|本质|其实|必须|应该|critical|key|thesis|verdict|breakthrough|strategy)/i],
   ["question", /(?:为什么|如何|吗|？|\?)/],
-  ["chapter", /(?:开场|今天|本期|我们来|先说|总结)/],
+  ["chapter", /(?:开场|今天|本期|我们来|先说|总结|opening)/i],
   ["checklist", /(?:清单|检查|确认|完成|下一步)/],
+  ["system", /(?:系统|架构|链路|闭环|底层|模块|组织|分工|平台|生态|pipeline|architecture|system)/i],
 ];
 
 function buildBeatContext({text = "", captions = [], beatIndex = 0, totalBeats = 1, layerIndex = 0, layerCount = 1} = {}) {
@@ -95,85 +98,108 @@ function buildBeatContext({text = "", captions = [], beatIndex = 0, totalBeats =
   for (const [tag, pattern] of tagPatterns) if (pattern.test(source)) tags.add(tag);
   if (tags.has("steps")) tags.add("process");
   if (!tags.size) tags.add("statement");
-  const listCount = (captions || []).filter((caption) => String(caption?.zh || "").trim()).length;
-  return {
-    text: source,
-    tags: [...tags],
-    beatIndex,
-    totalBeats,
-    layerIndex,
-    hasNumber: tags.has("metrics"),
-    listCount,
-    isOpening: beatIndex === 0 && layerIndex === 0,
-    isClosing: beatIndex === totalBeats - 1 && layerIndex === layerCount - 1 && !(beatIndex === 0 && layerIndex === 0),
-  };
+  const listCount = Math.max((source.match(/[，,。！？!?；;、]/g) || []).length + 1, (captions || []).filter((caption) => String(caption?.zh || caption?.en || "").trim()).length);
+  return {text: source, tags: [...tags], beatIndex, totalBeats, layerIndex, hasNumber: tags.has("metrics"), listCount, isOpening: beatIndex === 0 && layerIndex === 0, isClosing: beatIndex === totalBeats - 1 && layerIndex === layerCount - 1 && !(beatIndex === 0 && layerIndex === 0)};
+}
+
+function classifyBeatIntent(context) {
+  const text = String(context.text || "");
+  const scores = Object.fromEntries(Object.keys(intentKeywords).map((intent) => [intent, 0]));
+  for (const [intent, patterns] of Object.entries(intentKeywords)) for (const pattern of patterns) if (pattern.test(text)) scores[intent] += 2;
+  for (const tag of context.tags || []) {
+    if (["steps", "process", "timeline", "checklist", "confirmation"].includes(tag)) scores.process += 1;
+    if (["metrics", "growth", "progress"].includes(tag)) scores.metrics += 1;
+    if (["comparison", "risk", "warning"].includes(tag)) scores.contrast += 1;
+    if (["system", "organization", "hardware", "product"].includes(tag)) scores.system += 1;
+    if (["statement", "verdict", "chapter", "question"].includes(tag)) scores.narrative += 1;
+  }
+  if (context.isOpening && Math.max(scores.process, scores.metrics, scores.contrast, scores.system) < 3) scores.narrative += 2;
+  if (context.isClosing) scores.process += 1;
+  const priority = ["metrics", "system", "contrast", "process", "narrative"];
+  const targetIntent = priority.sort((left, right) => scores[right] - scores[left] || priority.indexOf(left) - priority.indexOf(right))[0];
+  const slotType = context.hasNumber ? "single_stat" : context.listCount >= 2 ? "list" : "quote";
+  return {...context, targetIntent, intentScores: scores, payloadShape: {slotType, itemCount: Math.max(1, Math.min(8, context.listCount || 1)), hasMetric: Boolean(context.hasNumber)}};
+}
+
+const recentlyUsedLayouts = (history) => new Set((history || []).slice(-2).map((item) => item.layout));
+const usedLayouts = (history) => new Set((history || []).map((item) => item.layout));
+function candidateScore(manifest, classified, history = []) {
+  let score = 0;
+  if (manifest.intent === classified.targetIntent) score += 100;
+  const matchingKeywords = manifest.keywords.filter((keyword) => String(classified.text || "").toLowerCase().includes(keyword.toLowerCase()));
+  score += matchingKeywords.length * 16;
+  const matchingTags = manifest.tags.filter((tag) => (classified.tags || []).includes(tag));
+  score += matchingTags.length * 9;
+  const count = classified.payloadShape.itemCount;
+  if (count >= manifest.capacity.minItems && count <= manifest.capacity.maxItems) score += 14;
+  if (classified.payloadShape.hasMetric && manifest.data.some((kind) => ["number", "percentage"].includes(kind))) score += 18;
+  if (classified.payloadShape.slotType === "list" && manifest.data.includes("list")) score += 10;
+  if (classified.payloadShape.slotType === "quote" && manifest.data.includes("text")) score += 8;
+  if (classified.isOpening && manifest.id === "chapter-card" && classified.targetIntent === "narrative") score += 45;
+  if (classified.isClosing && manifest.id === "closing-checklist") score += 36;
+  if (manifest.manualFirst) score -= 60;
+  const previous = history.at(-1);
+  if (previous?.intent === manifest.intent) score -= 35;
+  if (classified.layerIndex > 0 && previous?.intent === "narrative" && ["metrics", "system"].includes(manifest.intent)) score += 42;
+  if (recentlyUsedLayouts(history).has(manifest.id)) score -= 100;
+  return {score, matchingTags, matchingKeywords};
+}
+
+function getCandidatePool(classifiedInput, history = [], limit = 5) {
+  const classified = classifiedInput.targetIntent ? classifiedInput : classifyBeatIntent(classifiedInput);
+  const used = usedLayouts(history);
+  const previous = history.at(-1);
+  const allCandidates = () => Object.entries(componentManifest)
+    .map(([id, manifest]) => ({id, ...manifest, ...candidateScore({id, ...manifest}, classified, history)}))
+    .filter((item) => item.allowRepeat || !used.has(item.id));
+
+  let candidates = allCandidates().filter((item) => item.intent === classified.targetIntent);
+
+  if (classified.layerIndex > 0 && previous?.intent === "narrative") {
+    const complement = allCandidates().filter((item) => ["metrics", "system"].includes(item.intent));
+    if (complement.length >= 3) candidates = complement;
+  } else if (previous?.intent && candidates.filter((item) => item.intent !== previous.intent).length >= 3) {
+    candidates = candidates.filter((item) => item.intent !== previous.intent);
+  }
+
+  if (candidates.length < 3) {
+    candidates = allCandidates().filter((item) => !previous?.intent || item.intent !== previous.intent);
+    if (candidates.length < 3) candidates = allCandidates();
+  }
+  candidates.sort((left, right) => right.score - left.score || left.visualWeight.localeCompare(right.visualWeight) || left.id.localeCompare(right.id));
+  return candidates.slice(0, Math.max(3, Math.min(limit, 5)));
 }
 
 function scoreComponent(componentId, context, history = []) {
-  const component = componentRegistry[componentId];
-  if (!component) return {componentId, score: Number.NEGATIVE_INFINITY, reasons: ["unregistered"]};
-  let score = 8;
+  const manifest = componentManifest[componentId];
+  if (!manifest) return {componentId, score: Number.NEGATIVE_INFINITY, reasons: ["unregistered"]};
+  const classified = classifyBeatIntent(context);
+  const raw = candidateScore({id: componentId, ...manifest}, classified, history);
   const reasons = [];
-  const matchingTags = component.tags.filter((tag) => context.tags.includes(tag));
-  score += matchingTags.length * 18;
-  if (matchingTags.length) reasons.push(`语义标签 ${matchingTags.join("、")}`);
-  if (context.hasNumber && component.data.some((kind) => ["number", "percentage"].includes(kind))) {
-    score += 14;
-    reasons.push("数值承载");
-  }
-  if (context.listCount >= 2 && component.data.includes("list")) score += 9;
-  if (context.tags.includes("steps") && componentId === "ordered-sequence") {
-    score += 24;
-    reasons.push("明确步骤结构");
-  }
-  if (componentId === "chapter-card" && !context.isOpening) {
-    score -= 100;
-    reasons.push("仅开场使用 -100");
-  }
-  if (componentId === "closing-checklist" && !context.isClosing) {
-    score -= 100;
-    reasons.push("仅收尾使用 -100");
-  }
-  if (context.isOpening && componentId === "chapter-card") score += 80;
-  if (context.isClosing && componentId === "closing-checklist") score += 80;
+  if (manifest.intent === classified.targetIntent) reasons.push("意图命中 " + classified.targetIntent);
+  if (raw.matchingTags.length) reasons.push(`语义标签 ${raw.matchingTags.join("、")}`);
+  if (classified.payloadShape.hasMetric && manifest.data.some((kind) => ["number", "percentage"].includes(kind))) reasons.push("数值承载");
+  if (history.at(-1)?.layout === componentId) reasons.push("上一层同组件 -100");
+  if ((history || []).some((item) => item.layout === componentId) && !manifest.allowRepeat) reasons.push("全片已使用，硬排除");
+  return {componentId, family: manifest.family, intent: manifest.intent, score: raw.score, matchingTags: raw.matchingTags, reasons};
+}
 
-  const previous = history.at(-1);
-  const recentFour = history.slice(-4);
-  const usage = history.filter((item) => item.layout === componentId).length;
-  if (previous?.layout === componentId) {
-    score -= 100;
-    reasons.push("上一层同组件 -100");
-  }
-  if (recentFour.some((item) => item.layout === componentId)) {
-    score -= 50;
-    reasons.push("最近四层重复 -50");
-  }
-  if (previous?.family === component.family) {
-    score -= 30;
-    reasons.push("连续同家族 -30");
-  }
-  if (usage) {
-    score -= usage * 12;
-    reasons.push(`全片使用 ${usage} 次 -${usage * 12}`);
-  } else {
-    score += 25;
-    reasons.push("未使用组件 +25");
-  }
-  return {componentId, family: component.family, score, matchingTags, reasons};
+function funnelPickComponent(beatContext, layerIndex = 0, history = []) {
+  const classified = classifyBeatIntent({...beatContext, layerIndex});
+  const candidatePool = getCandidatePool(classified, history, 5);
+  const ranked = candidatePool.map((item) => ({componentId: item.id, family: item.family, intent: item.intent, score: item.score, matchingTags: item.matchingTags, reasons: [`候选池意图 ${classified.targetIntent}`]})).sort((left, right) => right.score - left.score || left.componentId.localeCompare(right.componentId));
+  const best = ranked[0];
+  return {...best, classified, candidatePool, ranked};
 }
 
 function pickBestComponent(beatContext, layerIndex = 0, history = []) {
-  const context = {...beatContext, layerIndex};
-  const ranked = Object.keys(componentRegistry)
-    .map((componentId) => scoreComponent(componentId, context, history))
-    .sort((left, right) => right.score - left.score || left.componentId.localeCompare(right.componentId));
-  return {...ranked[0], ranked};
+  return funnelPickComponent(beatContext, layerIndex, history);
 }
 
 function summarizeComponentUsage(history = []) {
-  const summary = Object.fromEntries(Object.keys(componentRegistry).map((id) => [id, 0]));
+  const summary = Object.fromEntries(Object.keys(componentManifest).map((id) => [id, 0]));
   for (const item of history) if (summary[item.layout] !== undefined) summary[item.layout] += 1;
   return summary;
 }
 
-module.exports = {buildBeatContext, componentRegistry, pickBestComponent, scoreComponent, summarizeComponentUsage};
+module.exports = {buildBeatContext, classifyBeatIntent, componentManifest, componentRegistry, funnelPickComponent, getCandidatePool, pickBestComponent, scoreComponent, summarizeComponentUsage};

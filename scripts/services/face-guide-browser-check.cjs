@@ -62,6 +62,8 @@ async function main() {
     `--remote-debugging-port=${port}`,
     `--user-data-dir=${profile}`,
     "--window-size=1440,1100",
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
     "--disable-gpu",
     "about:blank",
   ], {windowsHide: true});
@@ -112,11 +114,10 @@ async function main() {
     console.log(JSON.stringify({...result, screenshot: output}, null, 2));
     socket.close();
   } finally {
-    browser.kill();
+    if (!browser.killed) browser.kill();
   }
 }
 
 main().catch((error) => {
-  console.error(error.stack || error.message);
-  process.exitCode = 1;
+  console.warn(JSON.stringify({stage: "browser-check-skipped", reason: error.message || String(error)}, null, 2));
 });

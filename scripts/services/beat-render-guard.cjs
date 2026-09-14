@@ -4,8 +4,9 @@ const MULTI_ITEM_LAYOUTS = new Set([
   "ordered-sequence", "diagonal-chips", "floating-chips", "closing-checklist",
   "checklist-editorial", "photo-wall", "platform-shift-line", "recovery-progress-bars",
   "briefing-poster", "rewind-milestones", "tradeoff-reject-round", "reject-list",
-  "check-progress", "clipboard-note", "event-timeline", "route-map", "org-chart"
+  "check-progress", "event-timeline", "route-map", "org-chart"
 ]);
+const NARRATIVE_BODY_LAYOUTS = new Set(["clipboard-note"]);
 const LIST_KEYS = ["items", "steps", "chips", "milestones", "years", "values", "badges", "specList"];
 const TEMPLATE_DEFAULTS = new Set([
   "核心判断", "核心价值", "产品路径", "下一步行动", "阶段观察",
@@ -31,7 +32,10 @@ function hasValidChineseOrMixedHeadline(value) {
 
 
 function getLayerProps(beat, layer) {
-  return layer && layer.effectProps || beat.effectProps || {};
+  const legacy = layer && layer.effectProps && typeof layer.effectProps === "object" ? layer.effectProps : {};
+  const payload = layer && layer.payload && typeof layer.payload === "object" ? layer.payload : {};
+  if (Object.keys(payload).length) return {...legacy, ...payload};
+  return Object.keys(legacy).length ? legacy : beat.effectProps || {};
 }
 
 function getHeadline(beat) {
@@ -99,7 +103,9 @@ function validateBeatIntegrity(beat, project = {}) {
     if (/[，,、:：;；]$/.test(headline)) errors.push(error("headline-zh-ending", "中文核心大标题不能以未闭合标点结尾。"));
   }
 
-  if (!Number.isFinite(beatDuration) || beatDuration < 18 || beatDuration > 35) errors.push(error("beat-duration", "单拍时长必须位于 18 至 35 秒的语义安全区间。", {duration: beatDuration}));
+  const isAbsorbedTerminalTail = Boolean(beat?.terminalTailAbsorbed) && Array.isArray(project?.beats) && project.beats.at(-1)?.id === beat.id;
+  const maxBeatDuration = isAbsorbedTerminalTail ? 38 : 35;
+  if (!Number.isFinite(beatDuration) || beatDuration < 18 || beatDuration > maxBeatDuration) errors.push(error("beat-duration", isAbsorbedTerminalTail ? "合并末尾短段后的最后一拍必须位于 18 至 38 秒。" : "单拍时长必须位于 18 至 35 秒的语义安全区间。", {duration: beatDuration, maxDuration: maxBeatDuration}));
 
   let previousEnd = null;
   for (let index = 0; index < layers.length; index += 1) {
@@ -109,6 +115,9 @@ function validateBeatIntegrity(beat, project = {}) {
     const values = getItemList(props);
     if (MULTI_ITEM_LAYOUTS.has(layout)) {
       if (!Array.isArray(values) || values.length < 2 || values.some((value) => !text(value) || isTemplateDefault(value))) errors.push(error("component-items", "组件 “" + layout + "” 需要至少两项真实且非空的内容。", {layerIndex: index, layout}));
+    } else if (NARRATIVE_BODY_LAYOUTS.has(layout)) {
+      const bodyText = firstText(props.bodyText, props.body, props.text, props.effectText, layer.effectText, beat.effectText, beat.zh, beat.en);
+      if (!bodyText || isTemplateDefault(bodyText)) errors.push(error("component-body", "组件 “" + layout + "” 需要一段真实且非空的正文内容。", {layerIndex: index, layout}));
     } else if (Array.isArray(values) && values.some((value) => !text(value) || isTemplateDefault(value))) {
       errors.push(error("component-template", "组件 “" + layout + "” 含有空项或未替换的模板默认值。", {layerIndex: index, layout}));
     }

@@ -53,8 +53,15 @@ const main = async () => {
   const projectFile = resolve(root, projectFileArg);
   const output = resolve(root, outputArg);
   let project = JSON.parse(await readFile(projectFile, "utf8"));
+  const bundleEntry = join(root, "build");
+  const remotionCli = join(root, "node_modules", "@remotion", "cli", "remotion-cli.js");
   const pending = project.beats.filter((beat) => beat.render?.status !== "ready" || !beat.render?.previewPath || !existsSync(join(root, beat.render.previewPath)));
   const reused = project.beats.length - pending.length;
+
+  if (pending.length > 0) {
+    console.log("FULL_RENDER_BUNDLE pending=" + pending.length);
+    await run(process.execPath, [remotionCli, "bundle", "src/index.ts"]);
+  }
   const base = {totalBeats: project.beats.length, cachedBeats: reused, pendingBeats: pending.length};
 
   emitProgress({...base, stage: "checking_cache", currentBeatIndex: 0, currentBeatId: null, currentBeatProgress: 0, overallProgress: cacheWeightedProgress(reused, project.beats.length), message: "正在检查单拍缓存：已复用 " + reused + " / " + project.beats.length});
@@ -73,7 +80,7 @@ const main = async () => {
     await mkdir(dirname(target), {recursive: true});
     running(0);
     console.log("FULL_RENDER_BEAT " + (index + 1) + "/" + pending.length + " " + beat.id);
-    await run(join(root, "node_modules", ".bin", "remotion.CMD"), ["render", "src/index.ts", "ProjectEditor", target, "--props=" + projectFile, "--frames=" + startFrame + "-" + endFrame, "--codec=h264", "--crf=20", "--pixel-format=yuv420p", "--concurrency=2", "--x264-preset=veryfast"], {
+    await run(process.execPath, [remotionCli, "render", bundleEntry, "ProjectEditor", target, "--props=" + projectFile, "--frames=" + startFrame + "-" + endFrame, "--codec=h264", "--crf=20", "--pixel-format=yuv420p", "--concurrency=2", "--x264-preset=veryfast"], {
       onStdout: (output) => {
         const frame = frameProgressFromOutput(output);
         if (!frame) return;
@@ -97,6 +104,8 @@ const main = async () => {
       if (output.includes("ASSEMBLY_STAGE injecting_audio_subs")) emitProgress({...base, stage: "injecting_audio_subs", currentBeatIndex: pending.length, currentBeatId: null, currentBeatProgress: 100, overallProgress: 96, message: "正在封装原始音频与字幕画面…"});
     },
   });
+  project.render = {...project.render, status: "ready", progress: 100, outputPath: outputArg, renderedAt: new Date().toISOString(), error: null};
+  await writeAtomic(projectFile, project);
   emitProgress({...base, stage: "done", currentBeatIndex: pending.length, currentBeatId: null, currentBeatProgress: 100, overallProgress: 100, message: "全片合成完成"});
 };
 

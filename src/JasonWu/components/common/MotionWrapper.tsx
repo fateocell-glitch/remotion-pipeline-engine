@@ -11,6 +11,9 @@ type MountTokens = {
   boundsY?: number;
   boundsWidth?: number;
   boundsHeight?: number;
+  presenterSafeMaxWidth?: number;
+  presenterSafeLogicalWidth?: number;
+  presenterSafeInset?: "left" | "right" | "bottom";
 };
 
 const anchors: Record<BaseLayerCommonProps["position"], [number, number]> = {
@@ -44,7 +47,7 @@ export const MotionWrapper: React.FC<{commonProps?: Partial<BaseLayerCommonProps
   const enterProgress = interpolate(frame, [enterFrames, enterFrames + entranceFrames], [0, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic)});
   const exitProgress = props.exitAnimation === "none" ? 0 : interpolate(frame, [exitStart, exitStart + 14], [0, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic)});
   const hiddenBeforeEnter = frame < enterFrames;
-  const [anchorX, anchorY] = anchors[props.position];
+  const [anchorX, anchorY] = anchors[props.position] ?? anchors.center;
   const mountMode = designTokens?.mountMode ?? "center";
   const mountX = Number.isFinite(designTokens?.mountX) ? Number(designTokens?.mountX) : 0;
   const mountY = Number.isFinite(designTokens?.mountY) ? Number(designTokens?.mountY) : 0;
@@ -52,25 +55,38 @@ export const MotionWrapper: React.FC<{commonProps?: Partial<BaseLayerCommonProps
   const boundsY = Number.isFinite(designTokens?.boundsY) ? Number(designTokens?.boundsY) : 0;
   const boundsWidth = Math.max(1, Number.isFinite(designTokens?.boundsWidth) ? Number(designTokens?.boundsWidth) : 1920);
   const boundsHeight = Math.max(1, Number.isFinite(designTokens?.boundsHeight) ? Number(designTokens?.boundsHeight) : 1080);
+  const presenterSafeMaxWidth = Number.isFinite(designTokens?.presenterSafeMaxWidth) ? Number(designTokens?.presenterSafeMaxWidth) : 0;
+  const presenterSafeLogicalWidth = presenterSafeMaxWidth > 0 ? Math.min(boundsWidth, Math.max(1, Number(designTokens?.presenterSafeLogicalWidth) || Math.round(presenterSafeMaxWidth / Math.max(.01, props.scale ?? 1)))) : 0;
+  const presenterSafeInset = designTokens?.presenterSafeInset;
+  const safeClipX = presenterSafeInset === "right" ? boundsX + Math.max(0, boundsWidth - presenterSafeLogicalWidth) : boundsX;
+  const safeClipRight = presenterSafeLogicalWidth > 0 ? Math.max(0, 1920 - safeClipX - presenterSafeLogicalWidth) : 0;
+  const safeClipPath = presenterSafeLogicalWidth > 0 ? "inset(" + Math.max(0, boundsY) + "px " + safeClipRight + "px " + Math.max(0, 1080 - boundsY - boundsHeight) + "px " + Math.max(0, safeClipX) + "px)" : undefined;
   const centeredOffsetX = 960 - (boundsX + boundsWidth / 2) + mountX;
   const centeredOffsetY = 540 - (boundsY + boundsHeight / 2) + mountY;
-  const mountOffsetX = mountMode === "top-left" ? 76 - boundsX + mountX : mountMode === "left" ? 96 - boundsX + mountX : mountMode === "right" ? 1824 - (boundsX + boundsWidth) + mountX : centeredOffsetX;
-  const mountOffsetY = mountMode === "top-left" ? 156 - boundsY + mountY : mountMode === "top" ? 216 - boundsY + mountY : mountMode === "bottom" ? 864 - (boundsY + boundsHeight) + mountY : centeredOffsetY;
+  const mountOffsetX = mountMode === "top-left" ? mountX : mountMode === "left" ? 96 - boundsX + mountX : mountMode === "right" ? 1824 - (boundsX + boundsWidth) + mountX : centeredOffsetX;
+  const mountOffsetY = mountMode === "top-left" ? mountY : mountMode === "top" ? 216 - boundsY + mountY : mountMode === "bottom" ? 864 - (boundsY + boundsHeight) + mountY : centeredOffsetY;
   const enterX = props.enterAnimation === "slide-left" ? interpolate(enterProgress, [0, 1], [-110, 0], {extrapolateLeft: "clamp", extrapolateRight: "clamp"}) : props.enterAnimation === "slide-right" ? interpolate(enterProgress, [0, 1], [110, 0], {extrapolateLeft: "clamp", extrapolateRight: "clamp"}) : 0;
   const enterY = props.enterAnimation === "spring-up" ? interpolate(enterProgress, [0, 1], [76, 0], {extrapolateLeft: "clamp", extrapolateRight: "clamp"}) : 0;
   const enterScale = props.enterAnimation === "fade-scale" ? interpolate(enterProgress, [0, 1], [0.86, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp"}) : props.enterAnimation === "glitch" ? 1 + Math.sin(frame * 2.2) * (frame < enterFrames + 10 ? 0.015 : 0) : 1;
   const exitY = props.exitAnimation === "slide-down" ? interpolate(exitProgress, [0, 1], [0, 96]) : 0;
   const exitScale = props.exitAnimation === "scale-down" ? interpolate(exitProgress, [0, 1], [1, 0.86]) : 1;
   const opacity = hiddenBeforeEnter ? 0 : props.exitAnimation === "fade-out" ? 1 - exitProgress : interpolate(enterProgress, [0, 1], [0, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp"});
-  const scale = Math.min(1.2, Math.max(0.8, props.scale ?? 1)) * enterScale * exitScale;
+  const scale = Math.min(1.2, Math.max(0.6, props.scale ?? 1)) * enterScale * exitScale;
 
   const whiteContrast = getContrastStyle("#FFFFFF", autoContrastStroke);
   const darkContrast = getContrastStyle("#000000", autoContrastStroke);
   const contrastCss = [
     ".motion-auto-contrast [style*=\"color: rgb(255, 255, 255)\"],",
+    ".motion-auto-contrast [style*=\"color: rgb(248, 250, 252)\"],",
+    ".motion-auto-contrast [style*=\"color: #F8FAFC\"],",
     ".motion-auto-contrast [style*=\"color: white\"],",
     ".motion-auto-contrast [style*=\"color: rgba(255, 255, 255\"] {",
     "-webkit-text-stroke:var(--contrast-white-stroke);text-shadow:var(--contrast-white-shadow);",
+    "}",
+    ".motion-auto-contrast svg text[fill=\"#F8FAFC\"],",
+    ".motion-auto-contrast svg text[fill=\"#FFFFFF\"],",
+    ".motion-auto-contrast svg text[fill=\"white\"] {",
+    "stroke:var(--contrast-white-stroke-color);stroke-width:2px;paint-order:stroke fill;text-shadow:var(--contrast-white-shadow);",
     "}",
     ".motion-auto-contrast [style*=\"color: rgb(0, 0, 0)\"],",
     ".motion-auto-contrast [style*=\"color: black\"],",
@@ -80,19 +96,28 @@ export const MotionWrapper: React.FC<{commonProps?: Partial<BaseLayerCommonProps
     "}",
   ].join("");
 
-  return <AbsoluteFill className="motion-auto-contrast" style={{
+  const presenterSafeCss = presenterSafeLogicalWidth > 0 ? [
+    ".presenter-safe-overlay .layout-effect-root{width:var(--presenter-safe-logical-width)!important;max-width:100%!important;overflow:hidden;}",
+    ".presenter-safe-overlay .layout-effect-root > *{width:100%;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;}",
+    ".presenter-safe-overlay .layout-effect-root [style]{max-width:100%!important;box-sizing:border-box!important;}",
+  ].join("") : "";
+
+  return <AbsoluteFill className={"motion-auto-contrast" + (presenterSafeLogicalWidth > 0 ? " presenter-safe-overlay" : "")} style={{
     pointerEvents: "none",
     opacity,
     transform: "translate(" + (mountOffsetX + anchorX + (props.offsetX ?? 0) + enterX) + "px," + (mountOffsetY + anchorY + (props.offsetY ?? 0) + enterY + exitY) + "px) scale(" + scale + ")",
-    transformOrigin: (boundsX + boundsWidth / 2) + "px " + (boundsY + boundsHeight / 2) + "px",
+    transformOrigin: (mountMode === "top-left" || presenterSafeInset === "left" ? boundsX : presenterSafeInset === "right" ? boundsX + boundsWidth : boundsX + boundsWidth / 2) + "px " + (mountMode === "top-left" ? boundsY : boundsY + boundsHeight / 2) + "px",
+    clipPath: safeClipPath,
+    "--presenter-safe-logical-width": presenterSafeLogicalWidth + "px",
     wordBreak: "keep-all",
     overflowWrap: "break-word",
     "--contrast-white-stroke": whiteContrast.WebkitTextStroke ?? "none",
+    "--contrast-white-stroke-color": "rgba(0,0,0,0.88)",
     "--contrast-white-shadow": whiteContrast.textShadow ?? "none",
     "--contrast-dark-stroke": darkContrast.WebkitTextStroke ?? "none",
     "--contrast-dark-shadow": darkContrast.textShadow ?? "none",
   } as React.CSSProperties}>
-    <style>{contrastCss}</style>
+    <style>{contrastCss + presenterSafeCss}</style>
     {children}
   </AbsoluteFill>;
 };

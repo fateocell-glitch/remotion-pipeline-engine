@@ -4,7 +4,7 @@ const isCjk = (value) => /[\u3400-\u9fff]/.test(value);
 const splitText = (value) => {
   const text = String(value ?? "").replace(/\s+/g, " ").trim();
   if (!text) return [];
-  const limit = isCjk(text) ? 22 : 72;
+  const limit = isCjk(text) ? 29 : 72;
   const chunks = [];
   let current = "";
   for (const character of text) {

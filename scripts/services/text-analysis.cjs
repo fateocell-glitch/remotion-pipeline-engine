@@ -50,9 +50,9 @@ function localHeadlineFor(text) {
   ];
   for (const [pattern, phrase] of rules) if (pattern.test(source)) return phrase;
   const clause = localClauses(source).find((item) => item.length >= 4 && item.length <= 15);
-  if (clause) return clause.slice(0, 15);
+  if (clause) return clause;
   const compact = source.replace(/[，,。！？；、\s]/g, "");
-  return compact.length >= 4 ? compact.slice(0, 15) : "";
+  return compact.length >= 4 ? compact : "";
 }
 
 function localEffectFor(text, headline) {
@@ -75,7 +75,7 @@ function localEffectFor(text, headline) {
   });
   if (clause) return clause;
   const compact = source.replace(/[，,。！？；、\s]/g, "");
-  if (compact && compact !== normalizedHeadline) return compact.slice(0, 16);
+  if (compact && compact !== normalizedHeadline) return compact;
   return "";
 }
 
@@ -152,7 +152,7 @@ function headlineFor(topic, text, index) {
 }
 
 function effectZhFor(topic, text, headline) {
-  return localEffectFor(text, headline) || (headline ? ("围绕" + headline + "展开").slice(0, 16) : "提炼当前片段核心信息");
+  return localEffectFor(text, headline) || (headline ? "围绕" + headline + "展开" : "提炼当前片段核心信息");
 }
 
 function effectEnFor(captions, topic) {

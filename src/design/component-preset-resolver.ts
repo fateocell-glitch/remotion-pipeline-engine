@@ -4,14 +4,14 @@ import registryJson from "./components.registry.json";
 
 const {resolveFaceAwareLayer} = require("../../scripts/services/face-aware-layout.cjs") as {resolveFaceAwareLayer: (input: Record<string, unknown>) => {layout: string; commonProps: Partial<BaseLayerCommonProps>; tokens: Record<string, unknown>; avoidance: Record<string, unknown>}};
 
-export type ComponentDesignTokens = {padding:number; gap:number; position:BaseLayerCommonProps["position"]; scale:number; spring:BaseLayerCommonProps["enterAnimation"]; sfx:BaseLayerCommonProps["sfx"]; accentColor:string; defaultItemCount:number; staggerFrames:number; mountMode:"center"|"left"|"right"|"top"|"bottom"|"top-left"; mountX:number; mountY:number; boundsX:number; boundsY:number; boundsWidth:number; boundsHeight:number};
+export type ComponentDesignTokens = {padding:number; gap:number; position:BaseLayerCommonProps["position"]; scale:number; headerScale:number; contentScale:number; spring:BaseLayerCommonProps["enterAnimation"]; sfx:BaseLayerCommonProps["sfx"]; accentColor:string; defaultItemCount:number; staggerFrames:number; mountMode:"center"|"left"|"right"|"top"|"bottom"|"top-left"; mountX:number; mountY:number; boundsX:number; boundsY:number; boundsWidth:number; boundsHeight:number; presenterSafeMaxWidth?:number; presenterSafeLogicalWidth?:number; presenterSafeInset?:"left"|"right"|"bottom"};
 type Tokens = ComponentDesignTokens;
-type ComponentPreset = {id:string; family?:string; version:number; occupancyScore?:number; faceAvoidanceEligible?:boolean; tokens:Tokens; sfx:{enter:string; exit:string; volume:number}; mockData:Record<string, unknown>};
+type ComponentPreset = {id:string; family?:string; displayIntent?:"side-overlay"|"fullscreen-modal"; version:number; occupancyScore?:number; faceAvoidanceEligible?:boolean; tokens:Tokens; sfx:{enter:string; exit:string; volume:number}; mockData:Record<string, unknown>};
 type Registry = {components:ComponentPreset[]};
 export type FaceZone = {faceX:number; faceY:number; faceW:number; faceH:number; safeX?:number; safeY?:number; safeW?:number; safeH?:number; faceArea:"left"|"center"|"right"; detectorVersion?:string; sourceFingerprint?:string};
 
 const registry = registryJson as unknown as Registry;
-const fallbackTokens: Tokens = {padding:48,gap:16,position:"center",scale:1,spring:"spring-up",sfx:"none",accentColor:"#00F2FE",defaultItemCount:1,staggerFrames:15,mountMode:"center",mountX:0,mountY:0,boundsX:0,boundsY:0,boundsWidth:1920,boundsHeight:1080};
+const fallbackTokens: Tokens = {padding:48,gap:16,position:"center",scale:1,headerScale:1,contentScale:1,spring:"spring-up",sfx:"none",accentColor:"#00F2FE",defaultItemCount:1,staggerFrames:15,mountMode:"center",mountX:0,mountY:0,boundsX:0,boundsY:0,boundsWidth:1920,boundsHeight:1080};
 
 export const getComponentPreset = (layout: JasonWuCue["layout"]): ComponentPreset | undefined => registry.components.find((component) => component.id === layout);
 export const getComponentTokens = (layout: JasonWuCue["layout"]): Tokens => ({...fallbackTokens, ...(getComponentPreset(layout)?.tokens ?? {})});
@@ -25,7 +25,7 @@ export const resolveMotionWithPreset = (layout: JasonWuCue["layout"], commonProp
 export const resolveFaceAwareLayerForRender = (layout: JasonWuCue["layout"], commonProps: Partial<BaseLayerCommonProps> | undefined, faceZone?: FaceZone | null) => {
   const sourceTokens = getComponentTokens(layout);
   const sourcePreset = getComponentPreset(layout);
-  const resolved = resolveFaceAwareLayer({layout, commonProps: resolveMotionWithPreset(layout, commonProps), tokens: sourceTokens, faceZone, family: sourcePreset?.family, candidates: registry.components});
+  const resolved = resolveFaceAwareLayer({layout, commonProps: resolveMotionWithPreset(layout, commonProps), tokens: sourceTokens, faceZone, family: sourcePreset?.family, displayIntent: sourcePreset?.displayIntent ?? "side-overlay", candidates: registry.components});
   const effectiveLayout = resolved.layout as JasonWuCue["layout"];
   const candidateTokens = getComponentTokens(effectiveLayout);
   return {layout: effectiveLayout, commonProps: resolveMotionWithPreset(effectiveLayout, resolved.commonProps), tokens: {...candidateTokens, ...resolved.tokens} as Tokens, avoidance: resolved.avoidance};

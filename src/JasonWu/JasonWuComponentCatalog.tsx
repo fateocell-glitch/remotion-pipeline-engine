@@ -15,7 +15,7 @@ const CatalogScene: React.FC<{index: number}> = ({index}) => {
     section: {eyebrow: item.en.toUpperCase(), subtitle: item.zh},
     caption: {zh: "Standard / visual component library", en: "JasonWu component catalog"},
     layout: item.layout,
-    effectProps: definition.defaultProps,
+    effectProps: {...definition.defaultProps, __externalSectionLabel: true},
     steps: [
       {index: "01", title: "Core Signal", subtitle: "KEY SIGNAL", active: true, tone: "blue"},
       {index: "02", title: "Action Path", subtitle: "FLOW SYSTEM", active: true, tone: "gold"},

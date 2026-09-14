@@ -2,6 +2,9 @@
 
 const {deriveBeatText, normalizeSimplifiedChinese} = require('./text-analysis.cjs');
 const {englishBeatContent} = require('./language-support.cjs');
+const {extractVisualCard, overlap} = require('./visual-card-extractor.cjs');
+const {VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT} = require('./beat-extractor-prompt.cjs');
+const {ensureCompleteVisualCopy} = require('./copy-completeness.cjs');
 
 const toSeconds = (value) => { const number = Number(value); if (!Number.isFinite(number)) return 0; return Math.abs(number) > 10000 ? number / 1000 : number; };
 const timeLabel = (seconds) => { const value = Math.max(0, Math.floor(toSeconds(seconds))); return String(Math.floor(value / 60)).padStart(2, '0') + ':' + String(value % 60).padStart(2, '0'); };
@@ -52,7 +55,7 @@ function topicPhrase(captions, fallback = "") {
   if (candidate.length >= 4 && candidate.length <= 15) return candidate;
   const clause = localClause(captions).replace(/^(?:随着|再加上|对于)/, "").trim();
   if (clause.length >= 4 && clause.length <= 15) return clause;
-  return candidate.slice(0, 15) || "核心观点";
+  return candidate || "核心观点";
 }
 
 function narrativePhrase(captions, headline, fallback = "") {
@@ -121,13 +124,15 @@ function extractBeatContent(beatId, windowCaptions, beatTimeRange, index = 0) {
   try {
     const derived = deriveBeatText(local, index);
     if (!derived?.headline || !derived?.effectZh) throw new Error("BeatExtractionError: derivation returned incomplete copy");
-    const separated = separateBeatText(derived, local);
-    return {chapter: derived.chapter, ...separated, effectEn: derived.effectEn || "", steps: local.map((caption) => caption.zh).filter(Boolean).slice(0, 4), source: "derived"};
+    const separated = {...ensureCompleteVisualCopy(separateBeatText(derived, local), local), trusted: true};
+    const card = extractVisualCard(local, separated);
+    return {chapter: derived.chapter, ...card, effectEn: derived.effectEn || "", source: "visual-card", prompt: VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT};
   } catch (error) {
-    const context = {beatId, start: beatTimeRange?.start, end: beatTimeRange?.end, localCaptionCount: local.length, localExcerpt: local.map((caption) => caption.zh).join("。").slice(0, 280)};
+    const context = {beatId, start: beatTimeRange?.start, end: beatTimeRange?.end, localCaptionCount: local.length, localExcerpt: local.map((caption) => caption.zh).join("。")};
     console.error("[beat-content-extraction] local derivation failed", context, error?.stack || error);
-    const fallback = localizedFallback(local, beatTimeRange);
-    return {chapter: String(index + 1).padStart(2, "0") + " · 字幕待补充", ...fallback, effectEn: "", source: "fallback"};
+    const fallback = {...ensureCompleteVisualCopy(localizedFallback(local, beatTimeRange), local), trusted: true};
+    const card = extractVisualCard(local, fallback);
+    return {chapter: String(index + 1).padStart(2, "0") + " · 字幕待补充", ...card, effectEn: "", source: "visual-card-fallback", prompt: VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT};
   }
 }
 
@@ -135,6 +140,7 @@ function enforceBeatTextSeparation(beats, captions, {onlyAuto = false} = {}) {
   const normalizedCaptions = (captions || []).map(normalizeCaption);
   return (beats || []).map((beat, index) => {
     if (onlyAuto && (beat.layoutLocked || beat.textSource === "manual" || beat.effectCopySource === "manual")) return beat;
+    if (beat.visualCard?.bodyText) return beat;
     const matched = matchWindowCaptions(normalizedCaptions, beat).captions;
     const separated = separateBeatText({headline: beat.subtitle, effectZh: beat.zh}, matched);
     const effectProps = {...(beat.effectProps || {}), headline: separated.headline, effectZh: separated.effectZh, body: separated.effectZh, title: separated.headline};
@@ -162,5 +168,5 @@ function enforceHeadlineDiversity(beats, captions) {
   return {beats: repairedBeats, ratio: new Set(repairedBeats.map((beat) => beat.subtitle)).size / repairedBeats.length, repaired: true};
 }
 
-module.exports = {enforceBeatTextSeparation, enforceHeadlineDiversity, extractBeatContent, matchWindowCaptions, normalizeCaption, separateBeatText, timeLabel};
+module.exports = {enforceBeatTextSeparation, enforceHeadlineDiversity, extractBeatContent, matchWindowCaptions, normalizeCaption, separateBeatText, timeLabel, overlap};
 

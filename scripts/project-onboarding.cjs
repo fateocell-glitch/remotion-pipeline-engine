@@ -11,22 +11,25 @@ const {detectLanguage} = require("./services/language-support.cjs");
 const roundSeconds = (milliseconds) => Number((milliseconds / 1000).toFixed(2));
 
 const isCjk = (value) => /[\u3400-\u9fff]/.test(value);
+const isDisplayBoundary = (character) => /[，。！？；,;.!?]/.test(character);
 const splitDisplayText = (value) => {
   const text = String(value ?? "").replace(/\s+/g, " ").trim();
   if (!text) return [];
-  const limit = isCjk(text) ? 22 : 72;
+  const target = isCjk(text) ? 29 : 72;
   const chunks = [];
-  let current = "";
-  for (const character of text) {
-    current += character;
-    if (/[，。！？；,;.!?]/.test(character) || current.length >= limit) {
-      const chunk = current.trim();
-      if (chunk) chunks.push(chunk);
-      current = "";
-    }
+  let start = 0;
+  let count = 0;
+  for (let index = 0; index < text.length; index += 1) {
+    count += 1;
+    if (!isDisplayBoundary(text[index])) continue;
+    if (count < target && index + 1 < text.length) continue;
+    chunks.push(text.slice(start, index + 1).trim());
+    start = index + 1;
+    count = 0;
   }
-  if (current.trim()) chunks.push(current.trim());
-  return chunks;
+  const trailing = text.slice(start).trim();
+  if (trailing) chunks.push(trailing);
+  return chunks.filter(Boolean);
 };
 
 function whisperToCaptions(transcript, language = detectLanguage(transcript)) {
@@ -67,33 +70,32 @@ function normalizeCaptionRow(caption, index) {
   };
 }
 
+function naturalSplitIndex(text, targetMin, targetMax) {
+  const chars = Array.from(String(text || ""));
+  let splitAt = 0;
+  for (let index = 1; index < chars.length; index += 1) {
+    const candidate = chars.slice(0, index).join("");
+    const count = hanLength(candidate);
+    if (count >= targetMin && count <= targetMax && /[，,；;。！？!?]$/.test(candidate)) splitAt = index;
+  }
+  return splitAt;
+}
+
 function splitLongCaptionRow(row, targetMin, targetMax, maxDuration) {
   const text = String(row.zh || "");
   const duration = Number(row.end) - Number(row.start);
   if (punctuationOnly.test(text) || (hanLength(text) <= targetMax && duration <= maxDuration)) return [row];
-  const suffixes = ["二手市场", "什么程度", "找上门来", "活动现场", "定制贴纸", "制作过程", "这台机器", "生日派对", "自己的品牌", "即时惊喜", "换个场景", "换个用法"];
   const parts = [];
   let rest = text;
   while (hanLength(rest) > targetMax) {
+    const splitAt = naturalSplitIndex(rest, targetMin, targetMax);
+    if (!splitAt) break;
     const chars = Array.from(rest);
-    let splitAt = 0;
-    for (let index = 1; index < chars.length; index += 1) {
-      const candidate = chars.slice(0, index).join("");
-      const count = hanLength(candidate);
-      if (count >= targetMin && count <= targetMax && suffixes.some((suffix) => candidate.endsWith(suffix))) splitAt = index;
-    }
-    if (!splitAt) {
-      for (let index = 1; index < chars.length; index += 1) {
-        const count = hanLength(chars.slice(0, index).join(""));
-        if (count <= targetMax) splitAt = index;
-      }
-    }
-    if (splitAt <= 0 || splitAt >= chars.length) break;
     parts.push(chars.slice(0, splitAt).join("").trim());
     rest = chars.slice(splitAt).join("").trim();
   }
+  if (parts.length === 0) return [row];
   if (rest) parts.push(rest);
-  if (parts.length <= 1) return [row];
   const total = parts.reduce((sum, part) => sum + Math.max(1, hanLength(part)), 0);
   let cursor = Number(row.start);
   return parts.map((part, index) => {
@@ -106,20 +108,9 @@ function splitLongCaptionRow(row, targetMin, targetMax, maxDuration) {
 function splitCaptionForRemaining(row, maxAdditional) {
   const text = String(row.zh || "");
   if (hanLength(text) <= maxAdditional || punctuationOnly.test(text)) return [row, null];
-  const suffixes = ["二手市场", "什么程度", "找上门来", "活动现场", "定制贴纸", "制作过程", "这台机器", "生日派对", "自己的品牌", "即时惊喜", "换个场景", "换个用法"];
+  const splitAt = naturalSplitIndex(text, 4, maxAdditional);
+  if (!splitAt) return [row, null];
   const chars = Array.from(text);
-  let splitAt = 0;
-  for (let index = 1; index < chars.length; index += 1) {
-    const candidate = chars.slice(0, index).join("");
-    const count = hanLength(candidate);
-    if (count <= maxAdditional && suffixes.some((suffix) => candidate.endsWith(suffix))) splitAt = index;
-  }
-  if (!splitAt) {
-    for (let index = 1; index < chars.length; index += 1) {
-      if (hanLength(chars.slice(0, index).join("")) <= maxAdditional) splitAt = index;
-    }
-  }
-  if (splitAt <= 0 || splitAt >= chars.length) return [row, null];
   const leftText = chars.slice(0, splitAt).join("").trim();
   const rightText = chars.slice(splitAt).join("").trim();
   const total = Math.max(1, hanLength(text));
@@ -127,8 +118,22 @@ function splitCaptionForRemaining(row, maxAdditional) {
   const middle = Number((Number(row.start) + leftDuration).toFixed(2));
   return [{...row, end: middle, zh: leftText}, {...row, start: middle, zh: rightText}];
 }
-function mergeShortCaptions(captions, {targetMin = 14, targetMax = 22, minDuration = 2.5, maxDuration = 4.5} = {}) {
-  const rows = (captions || []).map(normalizeCaptionRow).flatMap((caption) => splitLongCaptionRow(caption, targetMin, targetMax, maxDuration))
+function repairSplitLatinRows(rows) {
+  const repaired = [];
+  for (const row of rows) {
+    const previous = repaired[repaired.length - 1];
+    if (previous && /[A-Za-z0-9_-]$/.test(previous.zh) && /^[a-z0-9_-]/.test(row.zh) && !/[。！？；，,;.!?]$/.test(previous.zh)) {
+      previous.zh = String(previous.zh) + String(row.zh);
+      previous.en = [previous.en, row.en].filter(Boolean).join(" ");
+      previous.end = row.end;
+      continue;
+    }
+    repaired.push({...row});
+  }
+  return repaired;
+}
+function mergeShortCaptions(captions, {targetMin = 23, targetMax = 29, minDuration = 2.5, maxDuration = 4.5} = {}) {
+  const rows = repairSplitLatinRows((captions || []).map(normalizeCaptionRow)).flatMap((caption) => splitLongCaptionRow(caption, targetMin, targetMax, maxDuration))
     .filter((caption) => Number.isFinite(caption.start) && Number.isFinite(caption.end) && caption.end > caption.start && caption.zh)
     .sort((left, right) => left.start - right.start);
   const prepared = [];
@@ -176,12 +181,23 @@ function mergeShortCaptions(captions, {targetMin = 14, targetMax = 22, minDurati
     const duration = group[group.length - 1].end - group[0].start;
     const shortCommaLead = group.length === 1 && commaPunctuation.test(text) && chars < 10;
     if (shortCommaLead) continue;
-    if (terminalPunctuation.test(text) && (chars >= targetMin || duration >= minDuration)) { flush(); continue; }
+    if (terminalPunctuation.test(text) && chars >= targetMin) { flush(); continue; }
     if (chars >= targetMax) { flush(); continue; }
     if (duration >= maxDuration && chars >= targetMin) { flush(); continue; }
   }
   flush();
-  return merged.map((caption, index) => ({...caption, id: "subtitle-" + String(index + 1).padStart(3, "0")}));
+  // Reflow undersized rows forward with a bounded single pass.
+  const reflowed = merged.map((caption) => ({...caption}));
+  for (let index = 0; index < reflowed.length - 1; index += 1) {
+    const current = reflowed[index];
+    if (hanLength(current.zh) >= targetMin) continue;
+    const following = reflowed[index + 1];
+    const combined = {...current, end: following.end, zh: normalizeSimplifiedChinese(String(current.zh || "") + String(following.zh || "")), en: [current.en, following.en].filter(Boolean).join(" ")};
+    const chunks = splitLongCaptionRow(combined, targetMin, targetMax, Number.POSITIVE_INFINITY);
+    reflowed.splice(index, 2, ...chunks);
+    if (chunks.length === 1) index -= 1;
+  }
+  return reflowed.map((caption, index) => ({...caption, id: "subtitle-" + String(index + 1).padStart(3, "0")}));
 }
 function mergeWhisperCaptions(captions, translatedTranscript, language = "zh") {
   if (language === "en") return captions.map((caption) => ({...caption, en: caption.en || caption.zh}));
@@ -216,7 +232,7 @@ function emptyWindowCopy(index) { return {chapter: String(index + 1).padStart(2,
 
 function hydrateBeatDrafts(beats, captions, {force = false, language = "zh"} = {}) {
   return beats.map((beat, index) => {
-    const match = matchWindowCaptions(captions, beat);
+    const match = matchWindowCaptions(captions, beat, 0.01);
     const derived = extractBeatContent(beat.id, match.captions, {...beat, language}, index);
     const shouldReplaceChapter = force || isPlaceholder(beat.eyebrow, /^CHAPTER\s+\d+$/i);
     const shouldReplaceHeadline = force || isPlaceholder(beat.subtitle, /^Key Point\s+\d+$/i);
@@ -230,6 +246,7 @@ function hydrateBeatDrafts(beats, captions, {force = false, language = "zh"} = {
       zh: shouldReplaceZh ? (derived.effectText || derived.effectZh) : beat.zh,
       en: language === "en" ? (derived.effectText || derived.effectEn || beat.en) : (shouldReplaceEn ? derived.effectEn : beat.en),
       effectText: derived.effectText || derived.effectZh || beat.effectText || beat.zh,
+      visualCard: {bodyText: derived.bodyText || derived.effectZh, steps: derived.steps || []},
       textSource: "auto",
       effectCopySource: "auto",
     };
@@ -252,7 +269,7 @@ function rebuildProjectText(project, {force = false} = {}) {
     if (!force && !isAutoDerivedBeat(original)) return beat;
     const match = matchWindowCaptions(captions, original);
     const derived = extractBeatContent(original.id, match.captions, original, index);
-    return {...beat, eyebrow: derived.chapter, subtitle: derived.headline, zh: derived.effectZh, en: derived.effectEn, textSource: "auto", effectCopySource: "auto"};
+    return {...beat, eyebrow: derived.chapter, subtitle: derived.headline, zh: derived.effectZh, effectText: derived.effectZh, en: derived.effectEn, visualCard: {bodyText: derived.bodyText || derived.effectZh, steps: derived.steps || []}, textSource: "auto", effectCopySource: "auto"};
   });
   const diversity = enforceHeadlineDiversity(beats, captions);
   return {...project, captions, beats: enforceBeatTextSeparation(diversity.beats, captions, {onlyAuto: true})};
@@ -271,9 +288,13 @@ function buildProjectFromWhisper({
   if (!/^[a-z0-9-]+$/.test(projectId ?? "")) {
     throw new Error("Project id must use lowercase letters, numbers, and hyphens.");
   }
+  const target = Number(targetBeatDuration);
+  if (!Number.isFinite(target) || target < 25 || target > 35) {
+    throw new Error("targetBeatDuration must be between 25 and 35 seconds.");
+  }
   const language = detectLanguage(transcript);
   const captions = mergeWhisperCaptions(whisperToCaptions(transcript, language), translation, language);
-  const beats = hydrateBeatDrafts(generateInitialBeats(duration, targetBeatDuration, captions, {language}).map((beat) => ({
+  const beats = hydrateBeatDrafts(generateInitialBeats(duration, target, captions, {language}).map((beat) => ({
     id: beat.id,
     start: beat.start,
     end: beat.end,
@@ -300,7 +321,7 @@ function buildProjectFromWhisper({
     height: 1080,
     videoSrc,
     audioSrc,
-    targetBeatDuration,
+    targetBeatDuration: target,
     language,
     beats: separatedBeats,
     captions,

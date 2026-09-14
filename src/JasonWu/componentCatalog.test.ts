@@ -16,3 +16,4 @@ assert(
   componentCatalog.every((item) => item.seconds === COMPONENT_CATALOG_SECONDS),
   "Each catalog item must play for the configured five-second duration.",
 );
+

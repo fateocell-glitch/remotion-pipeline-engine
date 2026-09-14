@@ -54,7 +54,11 @@ export type BaseLayerCommonProps = {
 export type JasonWuEffectLayer = {
   layerId: string;
   layout: JasonWuCue["layout"];
-  effectProps?: Record<string, unknown>;
+  category?: string;
+  headline?: string;
+  effectText?: string;
+  payload?: Record<string, unknown>;
+  effectProps?: Record<string, unknown>; // Legacy project compatibility only.
   commonProps?: Partial<BaseLayerCommonProps>;
   enterOffset?: number;
 };
@@ -108,7 +112,16 @@ export type JasonWuCue = {
     | "briefing-poster"
     | "rewind-milestones"
     | "flying-paper-stack"
-    | "checklist-editorial";
+    | "checklist-editorial"
+    | "copyopen-hero-title"
+    | "copyopen-progress-bar"
+    | "copyopen-comparison-card"
+    | "copyopen-terminal-scene"
+    | "copyopen-end-tag"
+    | "copyopen-bar-chart"
+    | "copyopen-line-chart"
+    | "copyopen-pie-chart"
+    | "copyopen-kpi-grid";
   people?: JasonWuPerson[];
   steps?: JasonWuStep[];
   metric?: JasonWuMetric;

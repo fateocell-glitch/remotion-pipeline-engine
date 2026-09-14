@@ -1,6 +1,7 @@
-import {AbsoluteFill} from "remotion";
+import {AbsoluteFill, interpolate, useCurrentFrame} from "remotion";
 import {getLayoutDefinition, isLayoutKey} from "./layoutRegistry";
 import {getComponentTokens, resolveComponentProps} from "../design/component-preset-resolver";
+import {normalizeComponentContent, toRendererContentProps} from "../design/component-content";
 import {DemoAvatarFlip} from "./DemoEffectComponents";
 import type {JasonWuCue} from "./timeline";
 
@@ -12,22 +13,51 @@ const resolveLayout = (cue: JasonWuCue) => {
 };
 
 const strings = (value: unknown) => Array.isArray(value) ? value.filter((item): item is string => typeof item === "string" && !!item.trim()).map((item) => item.trim()) : [];
-const text = (props: Record<string, unknown>, key: string, fallback: string) => typeof props[key] === "string" && props[key].trim() ? props[key].trim() : fallback;
+const numberToken = (props: Record<string, unknown>, key: string, fallback: number) => Number.isFinite(Number(props[key])) ? Math.max(.6, Math.min(1.2, Number(props[key]))) : fallback;
+const text = (props: Record<string, unknown>, key: string, fallback: string) => typeof props[key] === "string" ? String(props[key]) : fallback;
 const controlledCue = (cue: JasonWuCue, props: Record<string, unknown>): JasonWuCue => {
-  const headline = text(props, "headline", cue.section.subtitle);
-  const eyebrow = text(props, "eyebrow", text(props, "categoryTag", cue.section.eyebrow));
-  const body = text(props, "body", text(props, "effectZh", cue.caption.zh));
-  const items = strings(props.steps).length ? strings(props.steps) : strings(props.items).length ? strings(props.items) : strings(props.units).length ? strings(props.units) : strings(props.comments).length ? strings(props.comments) : cue.steps?.map((step) => step.title) ?? [];
-  return {...cue, section: {...cue.section, subtitle: headline, eyebrow}, caption: {...cue.caption, zh: body}, steps: items.map((title, index) => ({index: (index + 1 < 10 ? "0" : "") + String(index + 1), title, subtitle: "", active: false, tone: "blue"}))};
+  const normalized = normalizeComponentContent(props);
+  const contentProps = toRendererContentProps(props);
+  const body = text(contentProps, "body", text(contentProps, "effectText", cue.caption.zh));
+  const values = strings(contentProps.steps).length ? strings(contentProps.steps) : strings(contentProps.items).length ? strings(contentProps.items) : strings(contentProps.units).length ? strings(contentProps.units) : strings(contentProps.comments).length ? strings(contentProps.comments) : cue.steps?.map((step) => step.title) ?? [];
+  return {...cue, section: {...cue.section, subtitle: normalized.headline, eyebrow: normalized.category}, caption: {...cue.caption, zh: body}, steps: values.map((title, index) => ({index: (index + 1 < 10 ? "0" : "") + String(index + 1), title, subtitle: "", active: false, tone: "blue"}))};
 };
 
-export const LayoutEffectRenderer: React.FC<{cue: JasonWuCue; layout?: JasonWuCue["layout"]}> = ({cue, layout}) => {
+export const StandardComponentHeader: React.FC<{category: string; headline: string}> = ({category, headline}) => { const frame = useCurrentFrame(); const headerFadeIn = interpolate(frame, [0, 15], [0, 1], {extrapolateLeft:"clamp", extrapolateRight:"clamp"}); return <div className="static-header-anchor" style={{position:"absolute",left:76,top:58,zIndex:50,maxWidth:860,pointerEvents:"none",opacity:headerFadeIn}}><div style={{color:"var(--primary-accent)",fontSize:26,fontWeight:950,letterSpacing:7,textTransform:"uppercase",textShadow:"0 0 20px rgba(0,132,255,.55)"}}>{category}</div><div style={{marginTop:8,color:"#FFFFFF",fontSize:46,lineHeight:1.16,fontWeight:950}}>{headline}</div></div>; };
+
+const resolveHeaderContent = (cue: JasonWuCue, layout?: JasonWuCue["layout"]) => {
+  const sourceProps = {...getLayoutDefinition(layout ?? cue.layout).defaultProps, ...resolveComponentProps(layout ?? cue.layout, cue.effectProps)};
+  const content = normalizeComponentContent(sourceProps);
+  return {...content, category: typeof cue.section?.eyebrow === "string" ? cue.section.eyebrow : content.category, headline: typeof cue.section?.subtitle === "string" ? cue.section.subtitle : content.headline};
+};
+export const LayoutEffectHeader: React.FC<{cue: JasonWuCue; layout?: JasonWuCue["layout"]}> = ({cue, layout}) => { const content = resolveHeaderContent(cue, layout); return <StandardComponentHeader category={content.category} headline={content.headline} />; };
+
+export const LayoutEffectRenderer: React.FC<{cue: JasonWuCue; layout?: JasonWuCue["layout"]; showStandardHeader?: boolean}> = ({cue, layout, showStandardHeader = true}) => {
   const definition = getLayoutDefinition(layout ?? cue.layout);
   const Component = definition.component;
-  const props = {...definition.defaultProps, ...resolveComponentProps(layout ?? cue.layout, cue.effectProps)};
+  const sourceProps = {...definition.defaultProps, ...resolveComponentProps(layout ?? cue.layout, cue.effectProps)};
+  const normalized = normalizeComponentContent(sourceProps);
+  const props: Record<string, unknown> = {...sourceProps, ...toRendererContentProps(sourceProps), __externalSectionLabel: true};
   const inheritedTokens = getComponentTokens(layout ?? cue.layout);
   const tokens = (props.designTokens && typeof props.designTokens === "object" ? props.designTokens : inheritedTokens) as typeof inheritedTokens;
-  return <AbsoluteFill style={{padding: tokens.padding, gap: tokens.gap, ["--component-accent" as string]: tokens.accentColor} as React.CSSProperties}><Component cue={controlledCue(cue, props)} props={props} /></AbsoluteFill>;
+  const contentScale = numberToken(props, "contentScale", 1);
+  const isCopyOpen = String(layout ?? cue.layout).startsWith("copyopen-");
+  const contentSlotStyle = isCopyOpen ? {
+    position: "absolute",
+    left: tokens.boundsX,
+    top: tokens.boundsY,
+    width: tokens.boundsWidth,
+    height: tokens.boundsHeight,
+    transform: "scale(" + contentScale + ")",
+    transformOrigin: "top left",
+    overflow: "visible",
+  } as React.CSSProperties : {
+    position: "absolute",
+    inset: 0,
+    transform: "scale(" + contentScale + ")",
+    transformOrigin: "top left",
+  } as React.CSSProperties;
+  return <AbsoluteFill className="layout-effect-root component-container" style={{padding: tokens.padding, gap: tokens.gap, ["--component-accent" as string]: tokens.accentColor} as React.CSSProperties}>{showStandardHeader ? <StandardComponentHeader category={normalized.category} headline={normalized.headline} /> : null}<div className="layout-effect-content animated-content-slot" style={contentSlotStyle}><Component cue={controlledCue(cue, props)} props={props} /></div></AbsoluteFill>;
 };
 
 export const DemoEffectAdditions: React.FC<{cue: JasonWuCue}> = ({cue}) => {
@@ -35,3 +65,4 @@ export const DemoEffectAdditions: React.FC<{cue: JasonWuCue}> = ({cue}) => {
   const definition = getLayoutDefinition(layout);
   return definition.renderLayer === "enhancement" ? <LayoutEffectRenderer cue={cue} layout={layout} /> : null;
 };
+

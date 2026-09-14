@@ -26,4 +26,11 @@ for (const source of [demo, incomplete]) {
   assert.match(source, /resolveContentItems|resolveContentText/, "each component module must use project-backed content resolution");
 }
 
+assert.match(incomplete, /export const RouteMap: React\.FC<LayoutEffectProps> = \(\{cue, props\}\)/, "route-map must receive renderer props");
+assert.match(incomplete, /listProp\(cue,\s*props,\s*"nodes"\)/, "route-map must render editable route nodes from props");
+assert.doesNotMatch(incomplete, /\[170,355,"ORIGIN"/, "route-map must not hardcode ORIGIN in node labels");
+assert.doesNotMatch(incomplete, /\[960,310,"PROCESS"/, "route-map must not hardcode PROCESS in node labels");
+assert.doesNotMatch(incomplete, /\[1270,190,"SIGNAL"/, "route-map must not hardcode SIGNAL in node labels");
 console.log(JSON.stringify({result: "layout motion and content contract verified"}));
+
+

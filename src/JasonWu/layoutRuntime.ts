@@ -11,12 +11,16 @@ const ARRAY_LAYOUTS = new Set<JasonWuCue["layout"]>([
 const TYPEWRITER_LAYOUTS = new Set<JasonWuCue["layout"]>(["pivot-list", "engineering-return"]);
 
 const clean = (value: unknown) => typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
+const cleanMissing = (value: unknown) => typeof value === "string" ? clean(value) : undefined;
 const textSegments = (value: unknown) => clean(value).split(/[。！？；;，,\n]+/).map((item) => item.trim()).filter(Boolean);
 const strings = (value: unknown) => Array.isArray(value) ? value.map(clean).filter(Boolean) : [];
 
 export const resolveContentText = (cue: JasonWuCue, props: Record<string, unknown> | undefined, key?: string): string => {
-  const direct = key ? clean(props?.[key]) : "";
-  return direct || clean(props?.effectZh) || clean(cue.caption.zh) || clean(cue.section.subtitle) || clean(cue.section.eyebrow);
+  const explicit = key ? cleanMissing(props?.[key]) : undefined;
+  if (explicit !== undefined) return explicit;
+  const effect = cleanMissing(props?.effectZh);
+  if (effect !== undefined) return effect;
+  return clean(cue.caption.zh) || clean(cue.section.subtitle) || clean(cue.section.eyebrow);
 };
 
 export const resolveContentItems = (cue: JasonWuCue, props: Record<string, unknown> | undefined, keys: string[] = ["items"]): string[] => {
@@ -46,3 +50,6 @@ export const getEntranceDurationSeconds = (layout: JasonWuCue["layout"], itemCou
 
 export const getEntranceDurationFrames = (layout: JasonWuCue["layout"], fps: number, itemCount = 1, textLength = 0): number => Math.max(1, Math.round(getEntranceDurationSeconds(layout, itemCount, textLength) * fps));
 export const getStaggerStartFrame = (fps: number, index: number): number => Math.round((0.5 + index * 0.5) * fps);
+
+
+
