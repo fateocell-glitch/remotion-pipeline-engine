@@ -1332,7 +1332,7 @@
           return dispatcher;
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var React17 = require_react(), Internals2 = {
+        var React22 = require_react(), Internals2 = {
           d: {
             f: noop,
             r: function() {
@@ -1350,7 +1350,7 @@
           },
           p: 0,
           findDOMNode: null
-        }, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React17.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+        }, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React22.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
         "function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error(
           "React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills"
         );
@@ -2074,9 +2074,9 @@
                     (Fake = fn()) && "function" === typeof Fake.catch && Fake.catch(function() {
                     });
                   }
-                } catch (sample) {
-                  if (sample && control && "string" === typeof sample.stack)
-                    return [sample.stack, control.stack];
+                } catch (sample2) {
+                  if (sample2 && control && "string" === typeof sample2.stack)
+                    return [sample2.stack, control.stack];
                 }
                 return [null, null];
               }
@@ -2885,7 +2885,7 @@
           "number" === type && getActiveElement(node2.ownerDocument) === node2 || node2.defaultValue === "" + value || (node2.defaultValue = "" + value);
         }
         function validateOptionProps(element, props) {
-          null == props.value && ("object" === typeof props.children && null !== props.children ? React17.Children.forEach(props.children, function(child) {
+          null == props.value && ("object" === typeof props.children && null !== props.children ? React22.Children.forEach(props.children, function(child) {
             null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = true, console.error(
               "Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."
             ));
@@ -18517,14 +18517,14 @@
           ));
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var Scheduler = require_scheduler(), React17 = require_react(), ReactDOM = require_react_dom(), assign = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy");
+        var Scheduler = require_scheduler(), React22 = require_react(), ReactDOM = require_react_dom(), assign = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy");
         Symbol.for("react.scope");
         var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
         Symbol.for("react.legacy_hidden");
         Symbol.for("react.tracing_marker");
         var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
         Symbol.for("react.view_transition");
-        var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React17.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+        var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React22.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
           pending: false,
           data: null,
           method: null,
@@ -21312,7 +21312,7 @@
           }
         };
         (function() {
-          var isomorphicReactPackageVersion = React17.version;
+          var isomorphicReactPackageVersion = React22.version;
           if ("19.2.3" !== isomorphicReactPackageVersion)
             throw Error(
               'Incompatible React versions: The "react" and "react-dom" packages must have the exact same version. Instead got:\n  - react:      ' + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.3\nLearn more: https://react.dev/warnings/version-mismatch")
@@ -21666,18 +21666,18 @@
         function isValidElement(object) {
           return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
         }
-        var React17 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React17.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+        var React22 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React22.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
           return null;
         };
-        React17 = {
+        React22 = {
           react_stack_bottom_frame: function(callStackForError) {
             return callStackForError();
           }
         };
         var specialPropKeyWarningShown;
         var didWarnAboutElementRef = {};
-        var unknownOwnerDebugStack = React17.react_stack_bottom_frame.bind(
-          React17,
+        var unknownOwnerDebugStack = React22.react_stack_bottom_frame.bind(
+          React22,
           UnknownOwner
         )();
         var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
@@ -21725,8 +21725,12 @@
   var require_face_aware_layout = __commonJS({
     "scripts/services/face-aware-layout.cjs"(exports, module) {
       "use strict";
-      var SAFE_ISLAND_WIDTH = Math.round(1920 * 0.42);
+      var SAFE_ISLAND_WIDTH = Math.round(1920 * 0.48);
       var SAFE_ISLAND_SCALE = 0.78;
+      var CINEMATIC_WIDE_WIDTH = Math.round(1920 * 0.6);
+      var CINEMATIC_WIDE_SCALE = 0.92;
+      var CINEMATIC_CENTER_CORRIDOR_PCT = 35;
+      var BOTTOM_SUBTITLE_SAFE_PCT2 = 22;
       var clamp = (value, min, max) => Math.max(min, Math.min(max, value));
       var copy2 = (value) => ({ ...value || {} });
       var area = (rect) => Math.max(0, rect.w) * Math.max(0, rect.h);
@@ -21756,45 +21760,92 @@
         y += Number(commonProps.offsetY || 0) / 1080;
         return { x: clamp(x, -1, 1), y: clamp(y, -1, 1), w, h };
       }
-      function applyPresenterSafeIsland(tokens, commonProps, faceZone) {
+      function normalizedFaceCenterX(faceZone) {
+        const x = Number(faceZone == null ? void 0 : faceZone.faceX);
+        const w = Number(faceZone == null ? void 0 : faceZone.faceW);
+        if (Number.isFinite(x) && Number.isFinite(w)) return clamp(x + w / 2, 0, 1);
+        return 0.5;
+      }
+      function detectSceneMode({ faceZone, sceneMode, beatIndex = 0, align } = {}) {
+        var _a2, _b, _c, _d, _e;
+        const explicitMode = sceneMode === "speaker_mode" || sceneMode === "cinematic_mode" ? sceneMode : null;
+        const face = safeRect(faceZone);
+        const faceAreaRatio = Number((_b = (_a2 = faceZone == null ? void 0 : faceZone.faceAreaRatio) != null ? _a2 : faceZone == null ? void 0 : faceZone.areaRatio) != null ? _b : face ? Number((faceZone == null ? void 0 : faceZone.faceW) || face.w) * Number((faceZone == null ? void 0 : faceZone.faceH) || face.h) : 0);
+        const facePresenceRatio = Number((_e = (_d = (_c = faceZone == null ? void 0 : faceZone.facePresenceRatio) != null ? _c : faceZone == null ? void 0 : faceZone.presenceRatio) != null ? _d : faceZone == null ? void 0 : faceZone.durationRatio) != null ? _e : face ? 1 : 0);
+        const isSpeaker = explicitMode ? explicitMode === "speaker_mode" : Boolean(face && faceAreaRatio > 0.1 && facePresenceRatio > 0.5);
+        const scene = isSpeaker ? "speaker_mode" : "cinematic_mode";
+        let nextAlign = align === "left" || align === "right" ? align : null;
+        if (!nextAlign && scene === "speaker_mode") {
+          const faceArea = (faceZone == null ? void 0 : faceZone.faceArea) || (normalizedFaceCenterX(faceZone) > 0.5 ? "right" : "left");
+          nextAlign = faceArea === "right" ? "left" : faceArea === "left" ? "right" : "left";
+        }
+        if (!nextAlign) nextAlign = Number(beatIndex || 0) % 2 === 0 ? "left" : "right";
+        return { sceneMode: scene, align: nextAlign, faceZone: face ? { ...faceZone, faceAreaRatio, facePresenceRatio } : null, faceAreaRatio, facePresenceRatio };
+      }
+      function applyPresenterSafeIsland(tokens, commonProps, faceZone, align) {
         var _a2, _b, _c, _d;
         const face = safeRect(faceZone);
         const inset = 96, gap = 32;
         const leftWidth = Math.max(0, Math.round(((_a2 = face == null ? void 0 : face.x) != null ? _a2 : 0.5) * 1920 - inset - gap));
         const rightWidth = Math.max(0, Math.round((1 - (((_b = face == null ? void 0 : face.x) != null ? _b : 0.5) + ((_c = face == null ? void 0 : face.w) != null ? _c : 0))) * 1920 - inset - gap));
         const faceArea = (faceZone == null ? void 0 : faceZone.faceArea) || "center";
-        const side = faceArea === "right" ? "left" : faceArea === "left" ? "right" : leftWidth >= rightWidth ? "left" : "right";
+        const side = align === "left" || align === "right" ? align : faceArea === "right" ? "left" : faceArea === "left" ? "right" : leftWidth >= rightWidth ? "left" : "right";
         const available = side === "left" ? leftWidth : rightWidth;
         const maxWidth = Math.max(280, Math.min(SAFE_ISLAND_WIDTH, available || SAFE_ISLAND_WIDTH));
         tokens.presenterSafeMaxWidth = maxWidth;
         tokens.presenterSafeLogicalWidth = Math.round(maxWidth / SAFE_ISLAND_SCALE);
         tokens.mountMode = side;
         tokens.presenterSafeInset = side;
+        tokens.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
         commonProps.scale = Math.min(Number((_d = commonProps.scale) != null ? _d : 1), SAFE_ISLAND_SCALE);
         if (side === "left") commonProps.offsetX = Math.min(Number(commonProps.offsetX || 0), 0);
         else commonProps.offsetX = Math.max(Number(commonProps.offsetX || 0), 0);
         return faceArea === "center" ? "presenter-safe-center-" + side : "presenter-safe-" + faceArea;
       }
-      function resolveFaceAwareLayer2({ layout, commonProps, tokens, faceZone, family, candidates, displayIntent = "side-overlay" }) {
-        var _a2, _b;
+      function applyCinematicWing(tokens, commonProps, align) {
+        var _a2;
+        const side = align === "right" ? "right" : "left";
+        tokens.mountMode = side;
+        tokens.presenterSafeInset = side;
+        tokens.presenterSafeMaxWidth = CINEMATIC_WIDE_WIDTH;
+        tokens.presenterSafeLogicalWidth = Math.round(CINEMATIC_WIDE_WIDTH / CINEMATIC_WIDE_SCALE);
+        tokens.cinematicCenterCorridorPct = CINEMATIC_CENTER_CORRIDOR_PCT;
+        tokens.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
+        commonProps.scale = Math.min(Number((_a2 = commonProps.scale) != null ? _a2 : 1), CINEMATIC_WIDE_SCALE);
+        commonProps.offsetX = side === "left" ? Math.min(Number(commonProps.offsetX || 0), 0) : Math.max(Number(commonProps.offsetX || 0), 0);
+        return "cinematic-wide-" + side;
+      }
+      function resolveFaceAwareLayer2({ layout, commonProps, tokens, faceZone, family, candidates, displayIntent = "side-overlay", sceneMode, beatIndex = 0 }) {
+        var _a2, _b, _c;
         const sourceCommon = copy2(commonProps);
         const sourceTokens = copy2(tokens);
-        const face = safeRect(faceZone);
-        const base = { layout, commonProps: sourceCommon, tokens: sourceTokens, avoidance: { applied: false, reason: "no-face", collision: 0, faceArea: (faceZone == null ? void 0 : faceZone.faceArea) || null, displayIntent } };
-        if (!face) return base;
+        const explicitSceneMode = sourceCommon.sceneModeOverride === "speaker_mode" || sourceCommon.sceneModeOverride === "cinematic_mode" ? sourceCommon.sceneModeOverride : sceneMode;
+        const explicitAlign = sourceCommon.alignOverride === "left" || sourceCommon.alignOverride === "right" ? sourceCommon.alignOverride : void 0;
+        const hasSceneLayoutOverride = Boolean(explicitSceneMode || explicitAlign);
+        if (hasSceneLayoutOverride) sourceCommon.position = "center";
+        const scene = detectSceneMode({ faceZone, sceneMode: explicitSceneMode, beatIndex, align: explicitAlign });
+        const face = safeRect(scene.faceZone);
+        const base = { layout, commonProps: sourceCommon, tokens: sourceTokens, avoidance: { applied: false, reason: scene.sceneMode === "cinematic_mode" ? "cinematic" : "no-face", collision: 0, faceArea: ((_a2 = scene.faceZone) == null ? void 0 : _a2.faceArea) || null, displayIntent, sceneMode: scene.sceneMode, align: scene.align } };
         if (displayIntent === "fullscreen-modal") return { ...base, avoidance: { ...base.avoidance, reason: "fullscreen-modal" } };
-        if (sourceCommon.faceAvoidanceMode === "manual") return { ...base, avoidance: { ...base.avoidance, reason: "manual" } };
+        if (sourceCommon.faceAvoidanceMode === "manual" && !explicitAlign && !explicitSceneMode) return { ...base, avoidance: { ...base.avoidance, reason: "manual" } };
+        if (scene.sceneMode === "cinematic_mode") {
+          const nextCommon2 = copy2(sourceCommon);
+          const nextTokens2 = copy2(sourceTokens);
+          const reason2 = applyCinematicWing(nextTokens2, nextCommon2, scene.align);
+          return { layout, commonProps: nextCommon2, tokens: nextTokens2, avoidance: { ...base.avoidance, applied: true, reason: reason2, maxWidth: nextTokens2.presenterSafeMaxWidth } };
+        }
+        if (!face) return base;
         const before = componentRect(sourceTokens, sourceCommon);
         const collision = area(face) ? overlapArea(before, face) / area(face) : 0;
         const nextCommon = copy2(sourceCommon);
         const nextTokens = copy2(sourceTokens);
-        const faceArea = faceZone.faceArea || "center";
-        const reason = applyPresenterSafeIsland(nextTokens, nextCommon, faceZone);
+        const faceArea = scene.faceZone.faceArea || "center";
+        const reason = applyPresenterSafeIsland(nextTokens, nextCommon, scene.faceZone, scene.align);
         const after = componentRect(nextTokens, nextCommon);
         const remaining = area(face) ? overlapArea(after, face) / area(face) : 0;
         let nextLayout = layout;
         if (remaining > 0.28 && Array.isArray(candidates)) {
-          const currentScore = Number((_b = (_a2 = candidates.find((item2) => item2.id === layout)) == null ? void 0 : _a2.occupancyScore) != null ? _b : 1);
+          const currentScore = Number((_c = (_b = candidates.find((item2) => item2.id === layout)) == null ? void 0 : _b.occupancyScore) != null ? _c : 1);
           const compact = candidates.filter((item2) => {
             var _a3;
             return item2.family === family && item2.id !== layout && item2.faceAvoidanceEligible !== false && Number((_a3 = item2.occupancyScore) != null ? _a3 : 1) < currentScore;
@@ -21804,14 +21855,14 @@
           })[0];
           if (compact) nextLayout = compact.id;
         }
-        return { layout: nextLayout, commonProps: nextCommon, tokens: nextTokens, avoidance: { applied: true, reason, collision, remainingCollision: remaining, faceArea, displayIntent, maxWidth: nextTokens.presenterSafeMaxWidth } };
+        return { layout: nextLayout, commonProps: nextCommon, tokens: nextTokens, avoidance: { applied: true, reason, collision, remainingCollision: remaining, faceArea, displayIntent, maxWidth: nextTokens.presenterSafeMaxWidth, sceneMode: scene.sceneMode, align: scene.align } };
       }
-      module.exports = { SAFE_ISLAND_SCALE, SAFE_ISLAND_WIDTH, componentRect, resolveFaceAwareLayer: resolveFaceAwareLayer2 };
+      module.exports = { BOTTOM_SUBTITLE_SAFE_PCT: BOTTOM_SUBTITLE_SAFE_PCT2, CINEMATIC_CENTER_CORRIDOR_PCT, CINEMATIC_WIDE_SCALE, CINEMATIC_WIDE_WIDTH, SAFE_ISLAND_SCALE, SAFE_ISLAND_WIDTH, componentRect, detectSceneMode, resolveFaceAwareLayer: resolveFaceAwareLayer2 };
     }
   });
 
   // src/design/admin-components-client.tsx
-  var import_react123 = __toESM(require_react());
+  var import_react130 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
   // node_modules/.pnpm/@remotion+player@4.0.522_re_3aa89c96c794c3c6f07a400220cdf8eb/node_modules/@remotion/player/dist/esm/index.mjs
@@ -23088,6 +23139,17 @@ ${stack}`;
     scope.remotion_renderReady = false;
     return handle;
   };
+  var delayRender = (label22, options) => {
+    if (typeof window === "undefined") {
+      return Math.random();
+    }
+    return delayRenderInternal({
+      scope: window,
+      environment: getRemotionEnvironment(),
+      label: label22 != null ? label22 : null,
+      options: options != null ? options : {}
+    });
+  };
   var continueRenderInternal = ({
     scope,
     handle,
@@ -23117,6 +23179,18 @@ ${stack}`;
     if (scope.remotion_delayRenderHandles.length === 0) {
       scope.remotion_renderReady = true;
     }
+  };
+  var continueRender = (handle) => {
+    var _a2;
+    if (typeof window === "undefined") {
+      return;
+    }
+    continueRenderInternal({
+      scope: window,
+      handle,
+      environment: getRemotionEnvironment(),
+      logLevel: (_a2 = window.remotion_logLevel) != null ? _a2 : "info"
+    });
   };
   var LogLevelContext = (0, import_react20.createContext)({
     logLevel: "info",
@@ -26016,12 +26090,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const xr = fx3 > epsilon ? fx3 : (116 * fx - 16) / kappa;
     const yr = L > kappa * epsilon ? ((L + 16) / 116) ** 3 : L / kappa;
     const zr = fz3 > epsilon ? fz3 : (116 * fz - 16) / kappa;
-    const X = xr * Xn;
+    const X2 = xr * Xn;
     const Y = yr * Yn;
     const Z = zr * Zn;
-    const rLin = 3.2404542 * X - 1.5371385 * Y - 0.4985314 * Z;
-    const gLin = -0.969266 * X + 1.8760108 * Y + 0.041556 * Z;
-    const bLin = 0.0556434 * X - 0.2040259 * Y + 1.0572252 * Z;
+    const rLin = 3.2404542 * X2 - 1.5371385 * Y - 0.4985314 * Z;
+    const gLin = -0.969266 * X2 + 1.8760108 * Y + 0.041556 * Z;
+    const bLin = 0.0556434 * X2 - 0.2040259 * Y + 1.0572252 * Z;
     return [linearToSrgb(rLin), linearToSrgb(gLin), linearToSrgb(bLin)];
   }
   function hwbToSrgb(h, w, bk) {
@@ -37444,12 +37518,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const xr = fx3 > epsilon ? fx3 : (116 * fx - 16) / kappa;
     const yr = L > kappa * epsilon ? ((L + 16) / 116) ** 3 : L / kappa;
     const zr = fz3 > epsilon ? fz3 : (116 * fz - 16) / kappa;
-    const X = xr * Xn;
+    const X2 = xr * Xn;
     const Y = yr * Yn;
     const Z = zr * Zn;
-    const rLin = 3.2404542 * X - 1.5371385 * Y - 0.4985314 * Z;
-    const gLin = -0.969266 * X + 1.8760108 * Y + 0.041556 * Z;
-    const bLin = 0.0556434 * X - 0.2040259 * Y + 1.0572252 * Z;
+    const rLin = 3.2404542 * X2 - 1.5371385 * Y - 0.4985314 * Z;
+    const gLin = -0.969266 * X2 + 1.8760108 * Y + 0.041556 * Z;
+    const bLin = 0.0556434 * X2 - 0.2040259 * Y + 1.0572252 * Z;
     return [linearToSrgb2(rLin), linearToSrgb2(gLin), linearToSrgb2(bLin)];
   }
   function hwbToSrgb2(h, w, bk) {
@@ -41681,7 +41755,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     "flying-paper-stack",
     "checklist-editorial"
   ]);
-  var TYPEWRITER_LAYOUTS = /* @__PURE__ */ new Set(["pivot-list", "engineering-return"]);
+  var TYPEWRITER_LAYOUTS = /* @__PURE__ */ new Set(["pivot-list"]);
   var clean = (value) => typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
   var cleanMissing = (value) => typeof value === "string" ? clean(value) : void 0;
   var textSegments = (value) => clean(value).split(/[。！？；;，,\n]+/).map((item2) => item2.trim()).filter(Boolean);
@@ -41905,7 +41979,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
 
   // src/JasonWu/IncompleteEffectComponents.tsx
   var import_jsx_runtime59 = __toESM(require_jsx_runtime());
-  var C = { blue: "var(--primary-accent)", gold: "#FFD166", green: "#36D399", red: "#FF5B6E", white: "#FFFFFF", dim: "rgba(255,255,255,.58)", panel: "var(--card-panel)" };
+  var C = { blue: "#0A84FF", gold: "#FFD166", green: "#38D7A6", red: "#FF5B5B", white: "#FFFFFF", dim: "rgba(255,255,255,.58)", panel: "var(--card-panel)" };
   var ease = Easing.bezier(0.16, 1, 0.3, 1);
   var BODY_TOP2 = 300;
   var startFrame = (cue, fps) => Math.round(cue.start * fps) + 8;
@@ -42078,21 +42152,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
       ] }, unit))
     ] });
   };
-  var DrawLine = ({ cue }) => {
+  var DrawLine = ({ cue, props }) => {
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const len = interpolate(f, [s + 20, s + 130], [0, 1e3], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
+    const bodyText = textProp(props, "bodyText", textProp(props, "body", textProp(props, "effectText", textProp(props, "text", cue.section.subtitle))));
+    const subText = textProp(props, "highlightQuote", textProp(props, "annotation", textProp(props, "subLabel", cue.caption.zh)));
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 100, top: BODY_TOP2, width: 1220, ...enter(f, s) }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 68, fontWeight: 950 }, children: cue.section.subtitle }),
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 68, fontWeight: 950, overflowWrap: "break-word" }, children: bodyText }),
       /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("svg", { viewBox: "0 0 1200 260", style: { marginTop: 35, width: 1200, height: 260 }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("path", { d: "M40 190 C220 100 360 220 520 140 S830 68 1140 104", fill: "none", stroke: C.blue, strokeWidth: "8", strokeLinecap: "round", strokeDasharray: "1200", strokeDashoffset: 1200 - len }),
         /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("circle", { cx: "1140", cy: "104", r: len > 950 ? 10 : 0, fill: C.gold })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { color: C.gold, fontSize: 24, fontWeight: 950, letterSpacing: 3 }, children: [
-        "DRAWN ARGUMENT \xB7 ",
-        cue.caption.zh
-      ] })
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.blue, fontSize: 24, fontWeight: 950, letterSpacing: 3, overflowWrap: "break-word" }, children: subText })
     ] });
   };
   var ProgressDonut = ({ cue, props }) => {
@@ -42212,19 +42285,25 @@ Check that all your Remotion packages are on the same version. If your dependenc
       })
     ] });
   };
-  var RouteMap = ({ cue }) => {
+  var RouteMap = ({ cue, props }) => {
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const draw = interpolate(f, [s + 22, s + 116], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
-    const nodes = [[170, 355, "ORIGIN", C.gold], [960, 310, "PROCESS", C.blue], [1270, 190, "SIGNAL", C.green]];
+    const labels = listProp(cue, props, "nodes").slice(0, 3);
+    const points = [[170, 355, C.gold], [960, 310, C.blue], [1270, 190, C.green]];
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 150, top: BODY_TOP2, width: 1400, height: 650, ...enter(f, s) }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("svg", { viewBox: "0 0 1400 650", style: { width: 1400, height: 650 }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("path", { d: "M170 355 C410 100 720 135 960 310 S1180 470 1270 190", stroke: C.blue, strokeWidth: "7", fill: "none", strokeDasharray: "1500", strokeDashoffset: 1500 - draw * 1500 }),
-        nodes.map(([x, y, label3, color]) => /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("g", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("circle", { cx: x, cy: y, r: "18", fill: color }),
-          /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("text", { x: x + 27, y: y + 8, fill: "white", fontSize: "26", fontWeight: "900", children: label3 })
-        ] }, label3))
+        labels.map((label3, index) => {
+          const point = points[index];
+          if (!point) return null;
+          const [x, y, color] = point;
+          return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("g", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("circle", { cx: x, cy: y, r: "18", fill: color }),
+            /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("text", { x: x + 27, y: y + 8, fill: "white", fontSize: "26", fontWeight: "900", children: label3 })
+          ] }, label3 + "-" + index);
+        })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { position: "absolute", left: 80, top: 65, color: C.white, fontSize: 48, fontWeight: 950 }, children: cue.section.subtitle })
     ] });
@@ -42332,10 +42411,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
 
   // src/JasonWu/RecoveredEffectComponents.tsx
   var import_jsx_runtime60 = __toESM(require_jsx_runtime());
-  var BLUE = "var(--primary-accent)";
+  var BLUE = "#0A84FF";
   var GOLD = "#FFD166";
   var GREEN = "#38D7A6";
-  var RED = "#FF6170";
+  var RED = "#FF5B5B";
   var WHITE = "#FFFFFF";
   var DIM = "rgba(255,255,255,.62)";
   var ease2 = Easing.bezier(0.16, 1, 0.3, 1);
@@ -42469,19 +42548,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
       /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 84, top: BODY_TOP3, width: 693, display: "grid", gap: 20 }, children: rows3.map((row, i) => {
         var _a2;
         const p = spring({ frame: f - s - 14 - i * 17, fps, config: { damping: 14, stiffness: 150 } });
-        const accent = i === 1 ? GOLD : BLUE;
+        const hudPalette = [BLUE, GOLD, GREEN, "#B26BFF"];
+        const accent = hudPalette[i % hudPalette.length];
         const shine = interpolate(f, [s + 25 + i * 17, s + 55 + i * 17], [-170, 760], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.linear });
         const subtitle = hasExplicitSubtitles ? (_a2 = subtitles[i]) != null ? _a2 : "" : text(cue, props, "subLabel", cue.section.eyebrow);
-        return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { height: 122, padding: "22px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid " + (i === 1 ? GOLD : BLUE), borderRadius: 18, overflow: "hidden", background: "rgba(3,9,18,.9)", boxShadow: "0 0 28px " + (i === 1 ? GOLD : BLUE) + "44", opacity: Math.min(1, p), transform: "translateX(" + interpolate(p, [0, 1], [-80, 0]) + "px)" }, children: [
+        return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { height: 122, padding: "22px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid " + accent, borderRadius: 18, overflow: "hidden", background: "rgba(3,9,18,.9)", boxShadow: "0 0 28px " + accent + "44", opacity: Math.min(1, p), transform: "translateX(" + interpolate(p, [0, 1], [-80, 0]) + "px)" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: shine, top: -32, width: 118, height: 190, transform: "rotate(18deg)", pointerEvents: "none", background: "linear-gradient(90deg, transparent, " + accent + "66, rgba(255,255,255,.62), transparent)", mixBlendMode: "screen" } }),
           /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { width: 52, height: 52, borderRadius: "50%", background: i === 1 ? GOLD : BLUE, color: "#06111c", display: "grid", placeItems: "center", fontSize: 21 }, children: (i + 1 < 10 ? "0" : "") + String(i + 1) }),
+            /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { width: 52, height: 52, borderRadius: "50%", background: accent, color: "#06111c", display: "grid", placeItems: "center", fontSize: 21 }, children: (i + 1 < 10 ? "0" : "") + String(i + 1) }),
             /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { children: [
               /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 37, fontWeight: 950, color: WHITE }, children: row }),
-              subtitle ? /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 5, color: i === 1 ? GOLD : BLUE, fontSize: 18, fontWeight: 900, letterSpacing: 4 }, children: subtitle }) : null
+              subtitle ? /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 5, color: accent, fontSize: 18, fontWeight: 900, letterSpacing: 4 }, children: subtitle }) : null
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: i === 1 ? GOLD : BLUE, value: "" })
+          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: accent, value: "" })
         ] }, row + i);
       }) })
     ] });
@@ -42538,7 +42618,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const cards = [[-90, -45, BLUE], [0, 0, BLUE], [90, 45, RED]];
+    const cards = [[-90, -45, GOLD], [0, 0, GOLD], [90, 45, GOLD]];
     return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
       /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 190, top: BODY_TOP3, width: 1050, height: 470 }, children: cards.map(([x, y, color], i) => {
@@ -44844,10 +44924,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(KPIGrid, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, columns: Math.min(3, Math.max(2, data.length)), animationStyle: "cascade", metrics: data.map((item2, index) => ({ label: item2.label, value: item2.value, suffix: index === 1 ? "%" : void 0, change: [12.4, 5.2, 18.1][index % 3] })) });
   };
 
+  // src/design/tokens.ts
+  var ACCENT_THEMES = {
+    blue: { primary: "#38BDF8", bg: "rgba(56,189,248,.14)", glow: "rgba(37,99,235,.58)", deep: "#2563EB" },
+    green: { primary: "#34D399", bg: "rgba(52,211,153,.14)", glow: "rgba(5,150,105,.58)", deep: "#059669" },
+    yellow: { primary: "#FBBF24", bg: "rgba(251,191,36,.14)", glow: "rgba(217,119,6,.58)", deep: "#D97706" },
+    red: { primary: "#F87171", bg: "rgba(248,113,113,.14)", glow: "rgba(220,38,38,.58)", deep: "#DC2626" }
+  };
+  var getAccentTheme = (accent = "blue") => {
+    var _a2;
+    return (_a2 = ACCENT_THEMES[accent]) != null ? _a2 : ACCENT_THEMES.blue;
+  };
+
   // src/JasonWu/ValueVerdict.tsx
   var import_jsx_runtime71 = __toESM(require_jsx_runtime());
   var clean3 = (value, fallback = "") => typeof value === "string" ? value : fallback;
   var metricText = (value) => value === void 0 || value === null ? "" : String(value).trim();
+  var accentOf = (value) => ["blue", "green", "yellow", "red"].includes(String(value)) ? String(value) : "blue";
   var ValueVerdict = ({ cue, props }) => {
     var _a2, _b, _c, _d, _e, _f, _g;
     const frame = useCurrentFrame();
@@ -44859,888 +44952,25 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const label3 = clean3(props == null ? void 0 : props.metricLabel, clean3(props == null ? void 0 : props.label, (_e = (_d = cue.metric) == null ? void 0 : _d.label) != null ? _e : "KEY SIGNAL"));
     const unit = clean3(props == null ? void 0 : props.metricUnit, clean3(props == null ? void 0 : props.unit, (_g = (_f = cue.metric) == null ? void 0 : _f.suffix) != null ? _g : ""));
     const hasMetric = Boolean(value);
+    const theme = getAccentTheme(accentOf(props == null ? void 0 : props.accent));
     const opacity2 = interpolate(frame, [start2, start2 + 18], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
     const translateX = interpolate(frame, [start2, start2 + 24], [-42, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", left: 86, top: 300, width: hasMetric ? 760 : 620, padding: "26px 30px 24px", borderRadius: 14, color: "#FFFFFF", background: "rgba(5,12,21,.76)", border: "1px solid rgba(10,132,255,.68)", boxShadow: "0 12px 34px rgba(0,0,0,.32), 0 0 26px rgba(10,132,255,.18)", opacity: opacity2, transform: "translateX(" + translateX + "px)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { color: "var(--primary-accent)", fontSize: 17, fontWeight: 950, letterSpacing: 4 }, children: "VALUE VERDICT" }),
+    return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", left: 86, top: 300, width: hasMetric ? 760 : 620, padding: "26px 30px 24px", borderRadius: 14, color: "#FFFFFF", background: "rgba(5,12,21,.76)", border: "1px solid " + theme.primary, boxShadow: "0 12px 34px rgba(0,0,0,.32), 0 0 26px " + theme.glow, opacity: opacity2, transform: "translateX(" + translateX + "px)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { color: theme.primary, fontSize: 17, fontWeight: 950, letterSpacing: 4 }, children: "VALUE VERDICT" }),
       /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 10, maxWidth: hasMetric ? 430 : 560, fontSize: 42, lineHeight: "52px", fontWeight: 950, overflowWrap: "break-word" }, children: title }),
       body ? /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 12, maxWidth: hasMetric ? 430 : 560, color: "rgba(255,255,255,.78)", fontSize: 25, lineHeight: "34px", fontWeight: 750, overflowWrap: "break-word" }, children: body }) : null,
-      hasMetric ? /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", right: 24, top: 24, minWidth: 210, padding: "16px 18px", borderRadius: 12, background: "rgba(10,132,255,.14)", border: "1px solid rgba(10,132,255,.56)", textAlign: "right", opacity: interpolate(frame, [start2 + 12, start2 + 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }), transform: "scale(" + interpolate(frame, [start2 + 12, start2 + 28], [0.9, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + ")" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 14, fontWeight: 950, letterSpacing: 2, color: "var(--primary-accent)" }, children: label3 }),
+      hasMetric ? /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", right: 24, top: 24, minWidth: 210, padding: "16px 18px", borderRadius: 12, background: theme.bg, border: "1px solid " + theme.primary, textAlign: "right", opacity: interpolate(frame, [start2 + 12, start2 + 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }), transform: "scale(" + interpolate(frame, [start2 + 12, start2 + 28], [0.9, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + ")" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 14, fontWeight: 950, letterSpacing: 2, color: theme.primary }, children: label3 }),
         /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 2, fontSize: 52, lineHeight: "58px", fontWeight: 950 }, children: value }),
         unit ? /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 21, fontWeight: 900, color: "rgba(255,255,255,.8)" }, children: unit }) : null
       ] }) : null
     ] });
   };
 
-  // src/JasonWu/layoutRegistry.ts
-  var copy = [{ key: "headline", label: "\u4E3B\u6807\u9898", type: "text" }];
-  var checkboxColorField = { key: "boxColor", label: "\u786E\u8BA4\u6846\u989C\u8272", type: "select", options: [{ label: "\u81EA\u52A8", value: "auto" }, { label: "\u7D2B\u8272", value: "purple" }, { label: "\u84DD\u8272", value: "blue" }, { label: "\u91D1\u8272", value: "gold" }, { label: "\u767D\u8272", value: "white" }, { label: "\u7EFF\u8272", value: "green" }, { label: "\u7EA2\u8272", value: "red" }] };
-  var text2 = (key, label3) => ({ key, label: label3, type: "text" });
-  var prose = (key, label3) => ({ key, label: label3, type: "textarea" });
-  var list2 = (key, label3, description) => ({ key, label: label3, type: "string-list", description });
-  var CONTROLLED_FIELDS = {
-    "person-rank": [text2("leftName", "\u5DE6\u4FA7\u4EBA\u7269"), text2("leftRole", "\u5DE6\u4FA7\u5934\u8854"), text2("rightName", "\u53F3\u4FA7\u4EBA\u7269"), text2("rightRole", "\u53F3\u4FA7\u5934\u8854")],
-    "event-timeline": [list2("years", "\u65F6\u95F4\u8282\u70B9", "\u6A2A\u7EBF\u4F9D\u6B21\u63A8\u8FDB\u81F3\u6BCF\u4E2A\u8282\u70B9")],
-    "pivot-list": [prose("text", "\u6253\u5B57\u673A\u6587\u672C")],
-    "capital-dashboard": [text2("marketLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "marketTo", label: "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("marketSuffix", "\u6570\u5B57\u5355\u4F4D"), text2("engineeringLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "engineeringTo", label: "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("engineeringSuffix", "\u6570\u5B57\u5355\u4F4D")],
-    "cook-machine": [text2("title", "\u9876\u7AEF\u6807\u7B7E"), text2("leftLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), text2("leftValue", "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011"), text2("rightLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), text2("rightValue", "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011"), { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }],
-    "engineering-return": [prose("text", "\u6253\u5B57\u673A\u6587\u672C")],
-    "market-battlefield": [text2("headline", "\u5730\u56FE\u6807\u9898"), list2("nodes", "\u8DEF\u7EBF\u8282\u70B9")],
-    "finale-kinetic": [text2("headline", "\u51B2\u51FB\u5927\u5B57"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
-    "reject-list": [text2("title", "\u6E05\u5355\u6807\u9898"), list2("items", "\u6B63\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u53C9\u53F7\uFF0C\u53EF\u914D\u5408\u526F\u6807\u9898\u663E\u793A"), text2("subLabel", "\u9ED8\u8BA4\u526F\u6807\u9898"), checkboxColorField],
-    "check-progress": [text2("bodyText", "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number" }, list2("items", "\u6B63\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u6253\u52FE\u7684\u7070\u8272\u6587\u5B57\u5217\u8868"), checkboxColorField],
-    "diagonal-chips": [list2("items", "Chip \u6587\u6848", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u659C\u5165\u6807\u7B7E")],
-    "floating-chips": [list2("items", "\u6D6E\u52A8 Chip \u6587\u6848")],
-    "bare-typography": [text2("headline", "\u5927\u6807\u9898"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E"), prose("body", "\u8BF4\u660E\u6587\u6848")],
-    "chapter-card": [text2("chapterLabel", "\u7AE0\u8282\u6807\u7B7E"), text2("headline", "\u7AE0\u8282\u6807\u9898"), prose("body", "\u7AE0\u8282\u8BF4\u660E")],
-    "logo-wordmark": [text2("mark", "\u6807\u5FD7\u5B57\u6BCD"), text2("headline", "\u6807\u5FD7\u6807\u9898"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
-    "ordered-sequence": [text2("categoryTag", "\u9636\u6BB5\u6807\u7B7E"), list2("steps", "\u6B65\u9AA4\u5217\u8868", "\u6B65\u9AA4\u6309\u987A\u5E8F\u9010\u4E00\u5F39\u51FA")],
-    "org-chart": [text2("leader", "\u6838\u5FC3\u8282\u70B9"), text2("leaderRole", "\u6838\u5FC3\u8282\u70B9\u8BF4\u660E"), list2("units", "\u7EC4\u7EC7\u5355\u5143")],
-    "draw-line": [text2("headline", "\u8BBA\u70B9\u6807\u9898"), prose("annotation", "\u753B\u7EBF\u6CE8\u91CA")],
-    "progress-donut": [text2("label", "\u5C0F\u6807\u9898"), { key: "value", label: "\u6570\u503C", type: "number" }, text2("bodyText", "\u6B63\u6587\u5185\u5BB9")],
-    "avatar-handoff": [text2("leftName", "\u4EA4\u51FA\u65B9"), text2("leftRole", "\u4EA4\u51FA\u65B9\u5934\u8854"), text2("rightName", "\u63A5\u4EFB\u65B9"), text2("rightRole", "\u63A5\u4EFB\u65B9\u5934\u8854")],
-    "bull-bear": [text2("bullLabel", "\u591A\u65B9\u89C2\u70B9\u6807\u7B7E"), prose("bullText", "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011"), text2("bearLabel", "\u7A7A\u65B9\u89C2\u70B9\u6807\u7B7E"), prose("bearText", "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011"), prose("highlightQuote", "\u5E95\u90E8\u91D1\u8272\u5F3A\u8C03\u6587\u5B57")],
-    "opinion-hero": [text2("label", "\u89C2\u70B9\u6807\u7B7E"), text2("headline", "\u89C2\u70B9\u5927\u5B57"), prose("body", "\u89C2\u70B9\u8BF4\u660E")],
-    "photo-wall": [text2("photoTitle1", "\u7167\u72471\u6807\u9898"), text2("photoSubtitle1", "\u7167\u72471\u526F\u6807\u9898"), text2("photo1", "\u7167\u72471\u56FE\u7247URL"), text2("photoTitle2", "\u7167\u72472\u6807\u9898"), text2("photoSubtitle2", "\u7167\u72472\u526F\u6807\u9898"), text2("photo2", "\u7167\u72472\u56FE\u7247URL"), text2("photoTitle3", "\u7167\u72473\u6807\u9898"), text2("photoSubtitle3", "\u7167\u72473\u526F\u6807\u9898"), text2("photo3", "\u7167\u72473\u56FE\u7247URL"), text2("photoTitle4", "\u7167\u72474\u6807\u9898"), text2("photoSubtitle4", "\u7167\u72474\u526F\u6807\u9898"), text2("photo4", "\u7167\u72474\u56FE\u7247URL")],
-    "product-explosion": [text2("centerLabel", "\u4E2D\u5FC3\u4EA7\u54C1\u6807\u9898"), text2("centerImage", "\u4E2D\u5FC3\u4EA7\u54C1\u56FE\u7247"), text2("productTitle1", "\u4EA7\u54C11\u540D\u79F0"), text2("productImage1", "\u4EA7\u54C11\u56FE\u7247"), text2("productTitle2", "\u4EA7\u54C12\u540D\u79F0"), text2("productImage2", "\u4EA7\u54C12\u56FE\u7247"), text2("productTitle3", "\u4EA7\u54C13\u540D\u79F0"), text2("productImage3", "\u4EA7\u54C13\u56FE\u7247"), text2("productTitle4", "\u4EA7\u54C14\u540D\u79F0"), text2("productImage4", "\u4EA7\u54C14\u56FE\u7247")],
-    "route-map": [text2("headline", "\u5730\u56FE\u6807\u9898"), list2("nodes", "\u8DEF\u7EBF\u8282\u70B9")],
-    "data-flow": [text2("title", "\u9876\u7AEF\u6807\u7B7E"), text2("leftLabel", "\u5DE6\u4FA7\u6807\u7B7E"), text2("leftValue", "\u5DE6\u4FA7\u6570\u503C"), text2("rightLabel", "\u53F3\u4FA7\u6807\u7B7E"), text2("rightValue", "\u53F3\u4FA7\u6570\u503C"), { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }],
-    "screen-recording": [text2("headline", "\u7A97\u53E3\u6807\u9898"), list2("items", "\u7A97\u53E3\u6570\u636E\u5361")],
-    "zoom-statement": [text2("headline", "\u63A8\u62C9\u5927\u5B57"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
-    "desktop-folders": [list2("items", "\u6587\u4EF6\u5939\u540D\u79F0")],
-    "time-rewind": [text2("headline", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u65F6\u95F4\u8282\u70B9"), prose("bodyText", "\u65F6\u95F4\u56DE\u6EAF\u5185\u5BB9\u6B63\u6587")],
-    "clipboard-note": [text2("label", "\u4FBF\u7B7E\u6807\u7B7E"), prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField],
-    "closing-checklist": [text2("title", "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846"), checkboxColorField],
-    "platform-shift-line": [text2("metricLabel", "\u589E\u957F\u6307\u6807\u6807\u7B7E"), { key: "count", label: "\u589E\u957F\u6570\u91CF", type: "number" }, prose("summary", "\u589E\u957F\u8BF4\u660E"), list2("milestones", "\u4EA7\u54C1\u7EBF\u8282\u70B9"), text2("startLabel", "\u8D77\u70B9\u6807\u7B7E"), text2("endLabel", "\u7EC8\u70B9\u6807\u7B7E")],
-    "tradeoff-reject-round": [text2("label", "\u5426\u5B9A\u9879\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u5426\u5B9A\u9879", "\u4E09\u9879\u4F1A\u663E\u793A\u5728\u98CE\u9669\u6392\u9664\u4E0B\u65B9\u7684\u7EA2\u8272\u53C9\u53F7\u5217\u8868\u4E2D")],
-    "recovery-progress-bars": [text2("label", "\u8FDB\u5EA6\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u8FDB\u5EA6\u9879\u76EE"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number", description: "\u6BCF\u6761\u8FDB\u5EA6\u4F1A\u5728\u8BE5\u6570\u5B57\u6B63\u8D1F 15% \u5185\u7A33\u5B9A\u6D6E\u52A8" }],
-    "hud-glow-stack": [text2("subLabel", "\u5361\u7247\u8F85\u52A9\u6807\u7B7E"), list2("items", "HUD \u5361\u7247\u5185\u5BB9")],
-    "briefing-poster": [text2("label", "\u7B80\u62A5\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u526F\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A checkbox \u52FE\u9009\u9879")],
-    "rewind-milestones": [text2("label", "\u56DE\u6EAF\u6807\u7B7E"), text2("title", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u5E74\u4EFD\u8282\u70B9"), text2("milestoneLabel", "\u8282\u70B9\u8BF4\u660E")],
-    "flying-paper-stack": [text2("headline", "\u4E3B\u5361\u6807\u9898"), text2("ghostTitle", "\u80CC\u666F\u5361\u6807\u9898"), prose("body", "\u5361\u7247\u6B63\u6587")],
-    "checklist-editorial": [text2("label", "\u6E05\u5355\u6807\u7B7E"), text2("title", "\u6E05\u5355\u6807\u9898"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u65B9\u5F62\u786E\u8BA4\u6846")],
-    "spotlight-question": [list2("comments", "\u8BC4\u8BBA\u5185\u5BB9")],
-    "copyopen-hero-title": [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9")],
-    "copyopen-progress-bar": [{ key: "progress", label: "\u8FDB\u5EA6\u6570\u503C", type: "number" }, prose("body", "\u8FDB\u5EA6\u8BF4\u660E")],
-    "copyopen-comparison-card": [text2("leftLabel", "\u5DE6\u4FA7\u6807\u7B7E"), text2("leftValue", "\u5DE6\u4FA7\u6570\u503C"), text2("rightLabel", "\u53F3\u4FA7\u6807\u7B7E"), text2("rightValue", "\u53F3\u4FA7\u6570\u503C"), prose("body", "\u4E2D\u95F4\u53D8\u5316\u8BF4\u660E")],
-    "copyopen-terminal-scene": [list2("steps", "\u7EC8\u7AEF\u547D\u4EE4\u4E0E\u8F93\u51FA")],
-    "copyopen-end-tag": [prose("body", "\u7ED3\u5C3E\u6807\u8BED")],
-    "copyopen-bar-chart": [list2("items", "\u67F1\u72B6\u6807\u7B7E"), { key: "values", label: "\u67F1\u72B6\u6570\u503C", type: "string-list" }],
-    "copyopen-line-chart": [list2("items", "\u6298\u7EBF\u6A2A\u8F74"), { key: "values", label: "\u6298\u7EBF\u6570\u503C", type: "string-list" }],
-    "copyopen-pie-chart": [list2("items", "\u5206\u533A\u6807\u7B7E"), { key: "values", label: "\u5206\u533A\u6570\u503C", type: "string-list" }],
-    "copyopen-kpi-grid": [list2("items", "\u6307\u6807\u6807\u7B7E"), { key: "values", label: "\u6307\u6807\u6570\u503C", type: "string-list" }]
-  };
-  var LAYOUT_MANIFEST = {
-    "engineering-return": {
-      "id": "engineering-return",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u5DE5\u7A0B",
-        "\u56DE\u5F52",
-        "\u6253\u5B57\u673A",
-        "\u89C2\u70B9"
-      ],
-      "visualWeight": "medium"
-    },
-    "capital-dashboard": {
-      "id": "capital-dashboard",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 2
-      },
-      "keywords": [
-        "\u6570\u636E",
-        "\u589E\u957F",
-        "\u5E02\u503C",
-        "\u8425\u6536",
-        "\u767E\u5206\u6BD4",
-        "\u6307\u6807"
-      ],
-      "visualWeight": "medium"
-    },
-    "progress-donut": {
-      "id": "progress-donut",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u8FDB\u5EA6",
-        "\u5B8C\u6210\u5EA6",
-        "\u767E\u5206\u6BD4",
-        "\u8F6C\u5316\u7387",
-        "%"
-      ],
-      "visualWeight": "light"
-    },
-    "recovery-progress-bars": {
-      "id": "recovery-progress-bars",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u8FDB\u5EA6",
-        "\u6062\u590D",
-        "\u5B8C\u6210",
-        "\u63A8\u8FDB",
-        "\u767E\u5206\u6BD4"
-      ],
-      "visualWeight": "medium"
-    },
-    "platform-shift-line": {
-      "id": "platform-shift-line",
-      "intent": "system",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u4EA7\u54C1\u7EBF",
-        "\u5E73\u53F0",
-        "\u6F14\u8FDB",
-        "\u6269\u5C55",
-        "\u94FE\u8DEF"
-      ],
-      "visualWeight": "medium"
-    },
-    "hud-glow-stack": {
-      "id": "hud-glow-stack",
-      "intent": "system",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u7CFB\u7EDF",
-        "\u4FE1\u53F7",
-        "\u94FE\u8DEF",
-        "\u6A21\u5757",
-        "\u95ED\u73AF"
-      ],
-      "visualWeight": "medium"
-    },
-    "copyopen-progress-bar": {
-      "id": "copyopen-progress-bar",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u8FDB\u5EA6",
-        "\u767E\u5206\u6BD4",
-        "\u5B8C\u6210",
-        "%"
-      ],
-      "visualWeight": "light"
-    },
-    "copyopen-comparison-card": {
-      "id": "copyopen-comparison-card",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 2
-      },
-      "keywords": [
-        "\u5BF9\u6BD4",
-        "\u5DEE\u5F02",
-        "\u6570\u503C",
-        "\u589E\u957F"
-      ],
-      "visualWeight": "medium"
-    },
-    "copyopen-bar-chart": {
-      "id": "copyopen-bar-chart",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u67F1\u72B6",
-        "\u6392\u540D",
-        "\u6570\u636E",
-        "\u5BF9\u6BD4"
-      ],
-      "visualWeight": "medium"
-    },
-    "copyopen-line-chart": {
-      "id": "copyopen-line-chart",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u8D8B\u52BF",
-        "\u589E\u957F",
-        "\u66F2\u7EBF",
-        "\u65F6\u95F4"
-      ],
-      "visualWeight": "medium"
-    },
-    "copyopen-pie-chart": {
-      "id": "copyopen-pie-chart",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u5360\u6BD4",
-        "\u6BD4\u4F8B",
-        "\u5206\u5E03",
-        "\u4EFD\u989D"
-      ],
-      "visualWeight": "medium"
-    },
-    "copyopen-kpi-grid": {
-      "id": "copyopen-kpi-grid",
-      "intent": "metrics",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 6
-      },
-      "keywords": [
-        "KPI",
-        "\u6307\u6807",
-        "\u6570\u636E",
-        "\u589E\u957F"
-      ],
-      "visualWeight": "medium"
-    },
-    "ordered-sequence": {
-      "id": "ordered-sequence",
-      "intent": "process",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u7B2C\u4E00\u6B65",
-        "\u7B2C\u4E8C\u6B65",
-        "\u9636\u6BB5",
-        "\u6B65\u9AA4",
-        "\u6D41\u7A0B"
-      ],
-      "visualWeight": "medium"
-    },
-    "event-timeline": {
-      "id": "event-timeline",
-      "intent": "process",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u65F6\u95F4\u7EBF",
-        "\u9636\u6BB5",
-        "\u6F14\u8FDB",
-        "\u8282\u70B9"
-      ],
-      "visualWeight": "medium"
-    },
-    "rewind-milestones": {
-      "id": "rewind-milestones",
-      "intent": "process",
-      "capacity": {
-        "minItems": 4,
-        "maxItems": 6
-      },
-      "keywords": [
-        "\u56DE\u6EAF",
-        "\u8FC7\u53BB",
-        "\u6F14\u8FDB",
-        "\u8282\u70B9"
-      ],
-      "visualWeight": "medium"
-    },
-    "time-rewind": {
-      "id": "time-rewind",
-      "intent": "process",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u56DE\u6EAF",
-        "\u65F6\u95F4",
-        "\u8FC7\u53BB",
-        "\u5386\u53F2"
-      ],
-      "visualWeight": "light"
-    },
-    "route-map": {
-      "id": "route-map",
-      "intent": "process",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u8DEF\u7EBF",
-        "\u8DEF\u5F84",
-        "\u6D41\u7A0B",
-        "\u5730\u56FE"
-      ],
-      "visualWeight": "heavy"
-    },
-    "check-progress": {
-      "id": "check-progress",
-      "intent": "process",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u786E\u8BA4",
-        "\u68C0\u67E5",
-        "\u5B8C\u6210",
-        "\u6B65\u9AA4"
-      ],
-      "visualWeight": "medium"
-    },
-    "org-chart": {
-      "id": "org-chart",
-      "intent": "system",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u7EC4\u7EC7",
-        "\u90E8\u95E8",
-        "\u5206\u5DE5",
-        "\u67B6\u6784"
-      ],
-      "visualWeight": "heavy"
-    },
-    "draw-line": {
-      "id": "draw-line",
-      "intent": "process",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 2
-      },
-      "keywords": [
-        "\u8DEF\u5F84",
-        "\u63A8\u5BFC",
-        "\u753B\u7EBF",
-        "\u8BBA\u8BC1"
-      ],
-      "visualWeight": "light"
-    },
-    "copyopen-terminal-scene": {
-      "id": "copyopen-terminal-scene",
-      "intent": "process",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 6
-      },
-      "keywords": [
-        "\u547D\u4EE4",
-        "\u6D41\u7A0B",
-        "\u6267\u884C",
-        "\u5DE5\u4F5C\u6D41"
-      ],
-      "visualWeight": "heavy"
-    },
-    "zoom-statement": {
-      "id": "zoom-statement",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u89C2\u70B9",
-        "\u5224\u65AD",
-        "\u7ED3\u8BBA",
-        "\u5173\u952E"
-      ],
-      "visualWeight": "light"
-    },
-    "opinion-hero": {
-      "id": "opinion-hero",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u89C2\u70B9",
-        "\u6838\u5FC3",
-        "\u91D1\u53E5",
-        "\u4E3B\u5F20"
-      ],
-      "visualWeight": "heavy"
-    },
-    "bare-typography": {
-      "id": "bare-typography",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u5927\u5B57",
-        "\u5224\u65AD",
-        "\u7ED3\u8BBA"
-      ],
-      "visualWeight": "light"
-    },
-    "spotlight-question": {
-      "id": "spotlight-question",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 3
-      },
-      "keywords": [
-        "\u95EE\u9898",
-        "\u8BC4\u8BBA",
-        "\u4E3A\u4EC0\u4E48",
-        "\u4E92\u52A8"
-      ],
-      "visualWeight": "light"
-    },
-    "bull-bear": {
-      "id": "bull-bear",
-      "intent": "contrast",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 2
-      },
-      "keywords": [
-        "\u770B\u591A",
-        "\u98CE\u9669",
-        "\u5BF9\u6BD4",
-        "\u591A\u7A7A"
-      ],
-      "visualWeight": "heavy"
-    },
-    "market-battlefield": {
-      "id": "market-battlefield",
-      "intent": "contrast",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u7ADE\u4E89",
-        "\u5BF9\u624B",
-        "\u5E02\u573A\u5BF9\u5792",
-        "\u6218\u573A"
-      ],
-      "visualWeight": "heavy"
-    },
-    "tradeoff-reject-round": {
-      "id": "tradeoff-reject-round",
-      "intent": "contrast",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u98CE\u9669",
-        "\u5426\u5B9A",
-        "\u6392\u9664",
-        "\u4E0D\u8981"
-      ],
-      "visualWeight": "medium"
-    },
-    "reject-list": {
-      "id": "reject-list",
-      "intent": "contrast",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u9519\u8BEF",
-        "\u95EE\u9898",
-        "\u98CE\u9669",
-        "\u907F\u5751"
-      ],
-      "visualWeight": "medium"
-    },
-    "person-rank": {
-      "id": "person-rank",
-      "intent": "system",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 3
-      },
-      "keywords": [
-        "\u4EBA\u7269",
-        "\u56E2\u961F",
-        "\u4EA4\u63A5",
-        "\u7EC4\u7EC7"
-      ],
-      "visualWeight": "medium"
-    },
-    "value-verdict": {
-      "id": "value-verdict",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 2
-      },
-      "keywords": [
-        "\u4EF7\u503C",
-        "\u7ED3\u8BBA",
-        "\u5224\u65AD",
-        "\u6307\u6807"
-      ],
-      "visualWeight": "medium"
-    },
-    "product-explosion": {
-      "id": "product-explosion",
-      "intent": "system",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u4EA7\u54C1",
-        "\u751F\u6001",
-        "\u786C\u4EF6",
-        "\u7CFB\u5217"
-      ],
-      "visualWeight": "heavy"
-    },
-    "cook-machine": {
-      "id": "cook-machine",
-      "intent": "system",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u7ECF\u8425",
-        "\u673A\u5668",
-        "\u5546\u4E1A",
-        "\u95ED\u73AF"
-      ],
-      "visualWeight": "medium"
-    },
-    "photo-wall": {
-      "id": "photo-wall",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u7167\u7247",
-        "\u8BC1\u636E",
-        "\u6848\u4F8B",
-        "\u4EA7\u54C1"
-      ],
-      "visualWeight": "heavy"
-    },
-    "logo-wordmark": {
-      "id": "logo-wordmark",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u54C1\u724C",
-        "\u6807\u5FD7",
-        "\u5173\u952E\u8BCD"
-      ],
-      "visualWeight": "light"
-    },
-    "diagonal-chips": {
-      "id": "diagonal-chips",
-      "intent": "system",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u89C4\u683C",
-        "\u8981\u70B9",
-        "\u53C2\u6570",
-        "\u6A21\u5757"
-      ],
-      "visualWeight": "light"
-    },
-    "floating-chips": {
-      "id": "floating-chips",
-      "intent": "system",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u6807\u7B7E",
-        "\u8981\u70B9",
-        "\u6A21\u5757",
-        "\u4FE1\u53F7"
-      ],
-      "visualWeight": "light"
-    },
-    "desktop-folders": {
-      "id": "desktop-folders",
-      "intent": "system",
-      "capacity": {
-        "minItems": 3,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u6587\u4EF6",
-        "\u5206\u7C7B",
-        "\u6574\u7406",
-        "\u7CFB\u7EDF"
-      ],
-      "visualWeight": "medium"
-    },
-    "clipboard-note": {
-      "id": "clipboard-note",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 3
-      },
-      "keywords": [
-        "\u4FBF\u7B7E",
-        "\u6279\u6CE8",
-        "\u7ED3\u8BBA",
-        "\u786E\u8BA4"
-      ],
-      "visualWeight": "medium"
-    },
-    "briefing-poster": {
-      "id": "briefing-poster",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u7B80\u62A5",
-        "\u6458\u8981",
-        "\u89C2\u70B9",
-        "\u6848\u4F8B"
-      ],
-      "visualWeight": "heavy"
-    },
-    "screen-recording": {
-      "id": "screen-recording",
-      "intent": "system",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u754C\u9762",
-        "\u64CD\u4F5C",
-        "\u4EA7\u54C1",
-        "\u7A97\u53E3"
-      ],
-      "visualWeight": "heavy"
-    },
-    "flying-paper-stack": {
-      "id": "flying-paper-stack",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 3
-      },
-      "keywords": [
-        "\u7EB8\u5361",
-        "\u8D44\u6599",
-        "\u7B80\u62A5",
-        "\u89C2\u70B9"
-      ],
-      "visualWeight": "medium"
-    },
-    "chapter-card": {
-      "id": "chapter-card",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u7AE0\u8282",
-        "\u5F00\u573A",
-        "\u4E3B\u9898"
-      ],
-      "visualWeight": "heavy"
-    },
-    "closing-checklist": {
-      "id": "closing-checklist",
-      "intent": "process",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u6536\u5C3E",
-        "\u6E05\u5355",
-        "\u786E\u8BA4",
-        "\u603B\u7ED3"
-      ],
-      "visualWeight": "medium"
-    },
-    "checklist-editorial": {
-      "id": "checklist-editorial",
-      "intent": "process",
-      "capacity": {
-        "minItems": 2,
-        "maxItems": 5
-      },
-      "keywords": [
-        "\u6E05\u5355",
-        "\u786E\u8BA4",
-        "\u6B65\u9AA4",
-        "\u603B\u7ED3"
-      ],
-      "visualWeight": "medium"
-    },
-    "finale-kinetic": {
-      "id": "finale-kinetic",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u7ED3\u5C3E",
-        "\u51B2\u51FB",
-        "\u603B\u7ED3"
-      ],
-      "visualWeight": "heavy"
-    },
-    "pivot-list": {
-      "id": "pivot-list",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 4
-      },
-      "keywords": [
-        "\u6253\u5B57\u673A",
-        "\u89C2\u70B9",
-        "\u5217\u8868"
-      ],
-      "visualWeight": "medium"
-    },
-    "copyopen-hero-title": {
-      "id": "copyopen-hero-title",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u5F00\u573A",
-        "\u6807\u9898",
-        "\u4E3B\u89C6\u89C9"
-      ],
-      "visualWeight": "heavy"
-    },
-    "copyopen-end-tag": {
-      "id": "copyopen-end-tag",
-      "intent": "narrative",
-      "capacity": {
-        "minItems": 1,
-        "maxItems": 1
-      },
-      "keywords": [
-        "\u7ED3\u5C3E",
-        "\u6807\u8BED",
-        "\u6536\u675F"
-      ],
-      "visualWeight": "light"
-    }
-  };
-  var mergeFields = (key, editableFields) => {
-    var _a2;
-    const merged = [...(_a2 = CONTROLLED_FIELDS[key]) != null ? _a2 : [], ...editableFields];
-    return merged.filter((field, index) => merged.findIndex((candidate) => candidate.key === field.key) === index);
-  };
-  var item = (key, component, label3, description, category, renderLayer = "primary", editableFields = copy, defaultProps = {}) => {
-    var _a2;
-    return { key, component, editableFields: mergeFields(key, editableFields), defaultProps, meta: { category, label: label3, description }, renderLayer, manifest: (_a2 = LAYOUT_MANIFEST[key]) != null ? _a2 : { id: key, intent: "narrative", capacity: { minItems: 1, maxItems: 1 }, keywords: [label3, description, category], visualWeight: "medium" } };
-  };
-  var LAYOUT_DEFINITIONS = [
-    item("person-rank", DemoAvatarFlip, "\u4EBA\u7269\u4EA4\u63A5", "\u53CC\u4EBA\u7269\u4EA4\u63A5\u4E0E\u6743\u529B\u8F6C\u6362", "story", "primary", [{ key: "leftName", label: "\u5DE6\u4FA7\u4EBA\u7269", type: "text" }, { key: "rightName", label: "\u53F3\u4FA7\u4EBA\u7269", type: "text" }], { leftName: "\u4EBA\u7269 A", rightName: "\u4EBA\u7269 B" }),
-    item("event-timeline", GrowthTimelineLine, "\u589E\u957F\u65F6\u95F4\u8F74", "\u6A2A\u5411\u8282\u70B9\u7EBF\u4E0E\u5149\u70B9\u63A8\u8FDB", "data", "enhancement", [list2("years", "\u65F6\u95F4\u8282\u70B9")], { years: ["\u8D77\u6B65", "\u8FED\u4EE3", "\u89C4\u6A21\u5316", "\u76EE\u6807"] }),
-    item("value-verdict", ValueVerdict, "\u4EF7\u503C\u7ED3\u8BBA", "\u7ED3\u8BBA\u4E0E\u5173\u952E\u6307\u6807\u5361", "story", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("metricLabel", "\u6307\u6807\u6807\u7B7E"), text2("metricValue", "\u6570\u503C"), text2("metricUnit", "\u5355\u4F4D")], { metricLabel: "KEY SIGNAL" }),
-    item("pivot-list", SpecBadgeAndTypewriter, "\u89C4\u683C\u6253\u5B57\u673A", "\u7EFF\u8272\u7EC8\u7AEF\u9010\u5B57\u51FA\u73B0", "interactive", "enhancement", [{ key: "text", label: "\u6253\u5B57\u673A\u6587\u672C", type: "textarea" }], {}),
-    item("capital-dashboard", CapitalDashboardNumbers, "\u8D44\u672C\u4EEA\u8868\u76D8", "\u53CC\u6570\u5B57\u5361\u6EDA\u52A8\u589E\u957F", "data", "primary", [text2("marketLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "marketTo", label: "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("marketSuffix", "\u6570\u5B57\u5355\u4F4D"), text2("engineeringLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "engineeringTo", label: "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("engineeringSuffix", "\u6570\u5B57\u5355\u4F4D")], { marketLabel: "\u5E02\u573A\u89C4\u6A21", marketTo: 4600, marketSuffix: "\u4EBF", engineeringLabel: "\u589E\u957F\u7387", engineeringTo: 25, engineeringSuffix: "%" }),
-    item("cook-machine", SplitScreenAccent, "\u7ECF\u8425\u673A\u5668", "\u8FD0\u8425\u6548\u7387\u548C\u5229\u6DA6\u5BF9\u7167", "story", "primary", copy, { leftLabel: "PROFIT", rightLabel: "SHIPMENT", from: 20, to: 85 }),
-    item("engineering-return", SpecBadgeAndTypewriter, "\u5DE5\u7A0B\u56DE\u5F52", "\u5DE5\u7A0B\u89C4\u683C\u4E0E\u6253\u5B57\u673A\u53C2\u6570", "story", "primary", copy, { text: "\u5173\u952E\u8DEF\u5F84 / \u6838\u5FC3\u52A8\u4F5C / \u4E0B\u4E00\u6B65" }),
-    item("market-battlefield", RouteMap, "\u5E02\u573A\u5BF9\u5792", "\u4F9B\u5E94\u94FE\u8DEF\u7EBF\u548C\u533A\u57DF\u8282\u70B9", "data"),
-    item("finale-kinetic", KineticTypographyAccent, "\u7ED3\u5C3E\u51B2\u51FB", "\u7ED3\u8BBA\u578B\u5927\u5B57\u8282\u594F", "typography", "primary"),
-    item("reject-list", RejectList, "\u9519\u8BEF\u6E05\u5355", "\u53C9\u53F7\u5426\u5B9A\u4E0E\u7EA0\u9519\u5217\u8868", "story", "primary", [checkboxColorField], { boxColor: "auto", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"], itemSubtitles: ["CUT FROM THE PRODUCT PATH", "REMOVE FROM THE FLOW", "BLOCK BEFORE RELEASE"] }),
-    item("check-progress", CheckProgress, "\u8FDB\u5EA6\u786E\u8BA4", "\u8FDB\u5EA6\u6761\u548C\u52FE\u9009\u786E\u8BA4", "interactive", "primary", [checkboxColorField], { boxColor: "auto" }),
-    item("diagonal-chips", DiagonalChips, "\u659C\u5165\u6807\u7B7E", "\u659C\u5411\u98DE\u5165\u7684\u89C4\u683C\u6807\u7B7E", "interactive", "primary", [{ key: "items", label: "Chip \u6587\u6848", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u659C\u5165\u6807\u7B7E" }], {}),
-    item("floating-chips", FloatingChips, "\u53D1\u5149\u6D6E\u52A8\u6807\u7B7E", "\u53D1\u5149\u6F02\u6D6E\u7684 Chip \u6807\u7B7E", "interactive"),
-    item("bare-typography", BareTypography, "\u7EAF\u6587\u5B57\u6392\u7248", "\u65E0\u6846\u5927\u5B57\u4FE1\u606F\u5C42", "typography"),
-    item("chapter-card", ChapterCard, "\u7AE0\u8282\u5361", "\u7AE0\u8282\u6807\u9898\u4E0E\u4FE1\u606F\u6458\u8981", "story"),
-    item("logo-wordmark", LogoWordmark, "\u6807\u5FD7\u6587\u5B57", "\u56FE\u5F62\u6807\u5FD7\u4E0E\u6587\u5B57\u7EC4\u5408", "story"),
-    item("ordered-sequence", OrderedSequence, "\u987A\u5E8F\u6B65\u9AA4", "\u7F16\u53F7\u4FE1\u606F\u9010\u9879\u51FA\u73B0", "story", "primary", [{ key: "categoryTag", label: "\u9636\u6BB5\u6807\u7B7E", type: "text" }, { key: "steps", label: "\u6B65\u9AA4\u5217\u8868", type: "string-list", description: "\u6B65\u9AA4\u6309\u987A\u5E8F\u9010\u4E00\u5F39\u51FA" }], {}),
-    item("org-chart", OrgChart, "\u7EC4\u7EC7\u67B6\u6784", "\u7EC4\u7EC7\u5173\u7CFB\u4E0E\u4E2D\u8F74\u7EBF\u52A8\u753B", "story"),
-    item("draw-line", DrawLine, "\u753B\u7EBF\u5F3A\u8C03", "\u66F2\u7EBF\u7ED8\u5236\u548C\u91CD\u70B9\u6807\u8BB0", "interactive"),
-    item("progress-donut", ProgressDonut, "\u73AF\u5F62\u8FDB\u5EA6", "\u73AF\u5F62\u8FDB\u5EA6\u4E0E\u5B8C\u6210\u5EA6", "data"),
-    item("avatar-handoff", DemoAvatarFlip, "\u5934\u50CF\u4EA4\u63A5", "\u53CC\u5934\u50CF\u5207\u6362\u4E0E\u63A5\u4EFB", "story", "primary", [{ key: "leftName", label: "\u4EA4\u51FA\u65B9", type: "text" }, { key: "rightName", label: "\u63A5\u4EFB\u65B9", type: "text" }], { leftName: "\u4EBA\u7269 A", leftRole: "\u8D77\u59CB\u89D2\u8272", rightName: "\u4EBA\u7269 B", rightRole: "\u76EE\u6807\u89D2\u8272" }),
-    item("bull-bear", BullBear, "\u591A\u7A7A\u5BF9\u6BD4", "\u5DE6\u53F3\u89C2\u70B9\u4E0E\u4E2D\u7EBF\u5BF9\u7167", "data", "primary", [{ key: "bullLabel", label: "\u591A\u65B9\u89C2\u70B9\u6807\u7B7E", type: "text" }, { key: "bullText", label: "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011", type: "textarea" }, { key: "bearLabel", label: "\u7A7A\u65B9\u89C2\u70B9\u6807\u7B7E", type: "text" }, { key: "bearText", label: "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011", type: "textarea" }, { key: "highlightQuote", label: "\u5E95\u90E8\u91D1\u8272\u5F3A\u8C03\u6587\u5B57", type: "textarea" }], { bullLabel: "\u770B\u591A\u89C2\u70B9", bearLabel: "\u98CE\u9669\u63D0\u793A", highlightQuote: "\u5173\u952E\u5206\u6B67\u51B3\u5B9A\u6700\u7EC8\u8D70\u52BF" }),
-    item("opinion-hero", OpinionHero, "\u89C2\u70B9\u4E3B\u89C6\u89C9", "\u91CD\u70B9\u89C2\u70B9\u5927\u5B57\u5F3A\u8C03", "typography"),
-    item("photo-wall", PhotoWall, "\u7167\u7247\u5899", "\u591A\u5C42\u4EA7\u54C1\u56FE\u7247\u5361\u7247\u7EC4\u5408", "story", "primary", [], { photoTitle1: "\u6838\u5FC3\u4FE1\u606F", photoSubtitle1: "PRODUCT HISTORY", photo1: "", photoTitle2: "\u89C6\u89C9\u8282\u594F", photoSubtitle2: "VISUAL RHYTHM", photo2: "", photoTitle3: "\u884C\u52A8\u7ED3\u8BBA", photoSubtitle3: "ACTION SIGNAL", photo3: "", photoTitle4: "\u8865\u5145\u8BC1\u636E", photoSubtitle4: "EXTRA PROOF", photo4: "" }),
-    item("product-explosion", ProductExplosion, "\u4EA7\u54C1\u7206\u70B8\u56FE", "\u4EA7\u54C1\u751F\u6001\u7206\u70B8\u5C55\u793A", "data", "primary", [], { centerLabel: "APPLE", productTitle1: "iPhone", productTitle2: "iPad", productTitle3: "Mac", productTitle4: "AirPods", items: ["iPhone", "iPad", "Mac", "AirPods"] }),
-    item("route-map", RouteMap, "\u4E8C\u7EF4\u5730\u56FE", "\u8DEF\u7EBF\u548C\u533A\u57DF\u8BF4\u660E", "data"),
-    item("data-flow", SplitScreenAccent, "\u6570\u636E\u5206\u5C4F", "\u8F6F\u4EF6\u786C\u4EF6\u5206\u5C4F\u6570\u636E\u5BF9\u7167", "data", "enhancement", [{ key: "leftLabel", label: "\u5DE6\u4FA7\u6807\u7B7E", type: "text" }, { key: "leftValue", label: "\u5DE6\u4FA7\u6570\u503C", type: "text" }, { key: "rightLabel", label: "\u53F3\u4FA7\u6807\u7B7E", type: "text" }, { key: "rightValue", label: "\u53F3\u4FA7\u6570\u503C", type: "text" }, { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }], {}),
-    item("screen-recording", ScreenRecording, "\u5C4F\u5E55\u5F55\u5236\u6846", "\u4EA7\u54C1\u754C\u9762\u4E0E\u64CD\u4F5C\u7A97\u53E3", "interactive"),
-    item("zoom-statement", KineticTypographyAccent, "\u955C\u5934\u63A8\u62C9\u5927\u5B57", "\u955C\u5934\u63A8\u62C9\u4E0E\u5927\u5B57\u51B2\u51FB", "typography", "enhancement"),
-    item("desktop-folders", DesktopFolders, "\u684C\u9762\u6587\u4EF6\u5939", "\u684C\u9762\u6587\u4EF6\u4E0E\u5185\u5BB9\u6574\u7406", "interactive"),
-    item("time-rewind", TimeRewind, "\u65F6\u95F4\u56DE\u6EAF", "\u9006\u5411\u65F6\u95F4\u7EBF\u53D9\u4E8B", "story", "primary", [], { bodyText: "\u65F6\u95F4\u56DE\u5F52" }),
-    item("clipboard-note", ClipboardNote, "\u526A\u8D34\u677F\u6279\u6CE8", "\u4FBF\u7B7E\u4E0E\u6279\u6CE8\u4FE1\u606F", "interactive", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField], { boxColor: "auto", body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E" }),
-    item("closing-checklist", ClosingChecklist, "\u7ED3\u5C3E\u6E05\u5355", "\u7ED3\u8BBA\u9879\u76EE\u9010\u9879\u786E\u8BA4", "story", "primary", [{ key: "title", label: "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09", type: "text" }, { key: "items", label: "\u6E05\u5355\u5185\u5BB9", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846" }, checkboxColorField], { title: "\u6838\u5FC3\u7ED3\u8BBA", boxColor: "auto" }),
-    item("platform-shift-line", PlatformShiftLine, "\u4EA7\u54C1\u7EBF\u589E\u957F", "\u84DD\u8272\u589E\u957F\u6570\u5B57\u4E0E\u4EA7\u54C1\u7EBF\u8282\u70B9", "data", "primary", [], { count: 3, metricLabel: "\u4EA7\u54C1\u7EBF", milestones: ["\u57FA\u7840\u80FD\u529B", "\u4EA7\u54C1\u6269\u5C55", "\u89C4\u6A21\u589E\u957F"], startLabel: "\u8D77\u70B9", endLabel: "\u76EE\u6807\u9636\u6BB5" }),
-    item("tradeoff-reject-round", TradeoffRejectRound, "\u5706\u5F62\u7EA2\u8272\u5426\u5B9A\u9879", "\u65E0\u8FB9\u6846\u7EA2\u8272\u5706\u53C9\u7684\u98CE\u9669\u6E05\u5355", "story", "primary", [{ key: "label", label: "\u5426\u5B9A\u9879\u6807\u7B7E", type: "text" }, { key: "bodyText", label: "\u6B63\u6587\u5185\u5BB9", type: "textarea" }, { key: "items", label: "\u5426\u5B9A\u9879", type: "string-list" }], { label: "\u98CE\u9669\u6392\u9664", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"] }),
-    item("recovery-progress-bars", RecoveryProgressBars, "\u8FDB\u5EA6\u786E\u8BA4\u6761", "\u8FDB\u5EA6\u6761\u4E0E\u53F3\u4FA7\u786E\u8BA4\u6807\u8BB0", "data", "primary", [], { label: "\u6267\u884C\u8FDB\u5EA6", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u9700\u6C42\u786E\u8BA4", "\u80FD\u529B\u5EFA\u8BBE", "\u7ED3\u679C\u9A8C\u8BC1"], progress: 76 }),
-    item("hud-glow-stack", HudGlowStack, "HUD \u6D6E\u52A8\u53D1\u5149", "\u53E0\u653E\u7684\u9AD8\u4EAE HUD \u4FE1\u606F\u5361", "interactive", "primary", [], { subLabel: "LIVE SIGNAL", items: ["\u6838\u5FC3\u4FE1\u53F7", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65\u52A8\u4F5C"] }),
-    item("briefing-poster", BriefingPoster, "\u62A5\u7EB8\u7B80\u62A5\u4E8C\u53F7", "\u5939\u677F\u5F0F\u79D1\u6280\u7B80\u62A5\u6D77\u62A5", "story", "primary", [prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u526F\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A checkbox \u52FE\u9009\u9879")], { label: "\u7B80\u62A5\u6458\u8981", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u5224\u65AD", "\u4EA7\u54C1\u8DEF\u5F84", "\u4E0B\u4E00\u6B65\u884C\u52A8"] }),
-    item("rewind-milestones", RewindMilestones, "\u65F6\u95F4\u56DE\u6EAF\u5BBD\u7248", "\u5BBD\u5E45\u65F6\u95F4\u7EBF\u4E0E\u56DE\u6EAF\u8282\u70B9", "story", "primary", [], { label: "\u65F6\u95F4\u56DE\u6EAF", years: ["\u8D77\u70B9", "\u63A2\u7D22", "\u8FED\u4EE3", "\u73B0\u5728", "\u4E0B\u4E00\u6B65"], milestoneLabel: "\u80FD\u529B\u6F14\u8FDB" }),
-    item("flying-paper-stack", FlyingPaperStack, "\u98DE\u5165\u7EB8\u5361\u4E8C\u53F7", "\u4E09\u5C42\u91CD\u53E0\u98DE\u5165\u7684\u7B80\u62A5\u7EB8\u5361", "story", "primary", [], { ghostTitle: "\u9636\u6BB5\u89C2\u5BDF", body: "\u63D0\u70BC\u5F53\u524D\u62CD\u7684\u6838\u5FC3\u89C2\u70B9\u4E0E\u884C\u52A8\u4FE1\u606F\u3002" }),
-    item("checklist-editorial", ChecklistEditorial, "\u7F16\u8F91\u6E05\u5355\u4E8C\u53F7", "\u7559\u767D\u66F4\u5F3A\u7684\u84DD\u8272\u65B9\u6846\u786E\u8BA4\u6E05\u5355", "story", "primary", [], { label: "\u6700\u7EC8\u786E\u8BA4", items: ["\u6838\u5FC3\u4EF7\u503C", "\u6267\u884C\u8DEF\u5F84", "\u7ED3\u679C\u9A8C\u8BC1"] }),
-    item("spotlight-question", FloatingCommentCards, "\u6D6E\u52A8\u8BC4\u8BBA", "\u4E92\u52A8\u8BC4\u8BBA\u5361", "interactive", "enhancement", [{ key: "comments", label: "\u8BC4\u8BBA\u5185\u5BB9", type: "string-list", description: "\u4E09\u9879\u5206\u522B\u5BF9\u5E94\u4E09\u4E2A\u53D1\u5149\u4E92\u52A8\u6309\u94AE" }], { comments: ["\u6838\u5FC3\u89C2\u70B9", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65"] }),
-    item("copyopen-hero-title", CopyOpenHeroTitle, "CopyOpen HeroTitle", "CopyOpen \u539F\u7248\u9010\u5B57\u5F39\u7C27\u4E3B\u6807\u9898", "typography", "primary", [], { body: "clip factory" }),
-    item("copyopen-progress-bar", CopyOpenProgressBar, "CopyOpen ProgressBar", "CopyOpen \u539F\u7248\u8109\u51B2\u8FDB\u5EA6\u6761", "data", "primary", [], { progress: 76, body: "Highlight extraction" }),
-    item("copyopen-comparison-card", CopyOpenComparisonCard, "CopyOpen ComparisonCard", "CopyOpen \u539F\u7248\u5DE6\u53F3\u6307\u6807\u5BF9\u6BD4\u5361", "data", "primary", [], { leftLabel: "Long video", rightLabel: "Short clips", leftValue: "58 min", rightValue: "8 clips", body: "ready" }),
-    item("copyopen-terminal-scene", CopyOpenTerminalScene, "CopyOpen TerminalScene", "CopyOpen \u539F\u7248\u7EC8\u7AEF\u547D\u4EE4\u56DE\u653E", "interactive", "primary", [], { steps: ["openmontage clip input.mp4", "transcribing audio...", "ranking highlight candidates...", "8 clips ready", "remotion render JcMotionCards", "done -> out/shorts"] }),
-    item("copyopen-end-tag", CopyOpenEndTag, "CopyOpen EndTag", "CopyOpen \u539F\u7248\u7ED3\u5C3E\u95EA\u5149\u6807\u8BED", "typography", "primary", [], { body: "Make the clip worth watching" }),
-    item("copyopen-bar-chart", CopyOpenBarChart, "CopyOpen BarChart", "CopyOpen \u539F\u7248\u52A8\u753B\u67F1\u72B6\u56FE", "data", "primary", [], { items: ["Hook", "Value", "Pace", "Share"], values: [94, 82, 76, 69] }),
-    item("copyopen-line-chart", CopyOpenLineChart, "CopyOpen LineChart", "CopyOpen \u539F\u7248\u6298\u7EBF\u7ED8\u5236\u56FE", "data", "primary", [], { items: ["0", "10", "20", "30"], values: [100, 91, 86, 78] }),
-    item("copyopen-pie-chart", CopyOpenPieChart, "CopyOpen PieChart", "CopyOpen \u539F\u7248\u73AF\u5F62\u5206\u5E03\u56FE", "data", "primary", [], { items: ["Hook", "Proof", "Story", "CTA"], values: [35, 30, 20, 15], value: 8, label: "clips" }),
-    item("copyopen-kpi-grid", CopyOpenKPIGrid, "CopyOpen KPIGrid", "CopyOpen \u539F\u7248 KPI \u4EEA\u8868\u7F51\u683C", "data", "primary", [], { items: ["clips", "avg score", "minutes saved"], values: [8, 86, 74] })
-  ];
-  var LAYOUT_BY_KEY = new Map(LAYOUT_DEFINITIONS.map((definition) => [definition.key, definition]));
-  var getLayoutDefinition = (layout) => {
-    var _a2;
-    return (_a2 = LAYOUT_BY_KEY.get(layout)) != null ? _a2 : LAYOUT_DEFINITIONS[0];
-  };
-  var LAYOUT_METADATA = LAYOUT_DEFINITIONS.map(({ key, editableFields, defaultProps, meta, renderLayer, manifest }) => ({ key, editableFields, defaultProps, meta, renderLayer, manifest }));
-
   // src/design/components.registry.json
   var components_registry_default = {
     schemaVersion: 4,
-    updatedAt: "2026-09-14T01:15:28.297Z",
+    updatedAt: "2026-09-15T01:37:09.883Z",
     families: [
       {
         id: "metrics",
@@ -45761,6 +44991,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
       {
         id: "entities",
         name: "\u4EBA\u7269\u4E0E\u4EA7\u54C1"
+      },
+      {
+        id: "process",
+        name: "\u6D41\u7A0B\u4E0E\u65F6\u5E8F"
+      },
+      {
+        id: "contrast",
+        name: "\u5BF9\u6BD4\u4E0E\u98CE\u9669"
+      },
+      {
+        id: "system",
+        name: "\u7CFB\u7EDF\u4E0E\u7ED3\u6784"
       }
     ],
     components: [
@@ -45778,7 +45020,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 14,
+        version: 18,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
@@ -45793,7 +45035,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           scale: 0.9,
           spring: "spring-up",
           sfx: "none",
-          accentColor: "#00F2FE",
+          accentColor: "#1877F2",
           defaultItemCount: 3,
           staggerFrames: 15,
           headerScale: 1,
@@ -45861,7 +45103,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           metricLabel: "\u6838\u5FC3\u4FE1\u606F",
           unit: "%"
         },
-        updatedAt: "2026-09-13T21:16:13.040Z",
+        updatedAt: "2026-09-14T20:58:35.002Z",
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
@@ -45910,136 +45152,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
             "\u8425\u6536",
             "\u767E\u5206\u6BD4",
             "\u6307\u6807"
-          ],
-          visualWeight: "medium"
-        }
-      },
-      {
-        id: "engineering-return",
-        name: "\u5DE5\u7A0B\u56DE\u5F52",
-        family: "narrative",
-        description: "story \xB7 typewriter \xB7 product",
-        tags: [
-          "story",
-          "typewriter",
-          "product"
-        ],
-        data: [
-          "text"
-        ],
-        version: 11,
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 1120,
-          boundsY: 300,
-          boundsWidth: 700,
-          boundsHeight: 130,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 0.86,
-          spring: "spring-up",
-          sfx: "none",
-          accentColor: "#00F2FE",
-          defaultItemCount: 1,
-          staggerFrames: 15,
-          headerScale: 1,
-          contentScale: 1
-        },
-        sfx: {
-          enter: "none",
-          exit: "none",
-          volume: 0.65
-        },
-        mockData: {
-          headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          eyebrow: "DESIGN SYSTEM",
-          effectText: "Design tokens update the live component preview.",
-          text: "Design tokens update the live component preview.",
-          items: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          steps: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          years: [
-            "\u8D77\u70B9",
-            "\u73B0\u5728",
-            "\u4E0B\u4E00\u6B65"
-          ],
-          nodes: [
-            "\u8F93\u5165",
-            "\u5904\u7406",
-            "\u8F93\u51FA"
-          ],
-          comments: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          category: "DESIGN SYSTEM",
-          contentPayload: {
-            type: "narrative",
-            bodyText: "Design tokens update the live component preview.",
-            highlightQuote: ""
-          },
-          categoryTag: "DESIGN SYSTEM",
-          label: "\u6838\u5FC3\u4FE1\u606F",
-          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          value: 71,
-          progress: 71,
-          values: [
-            71,
-            71,
-            71
-          ],
-          metric: "\u6838\u5FC3\u4FE1\u606F",
-          marketTo: 71,
-          marketLabel: "\u6838\u5FC3\u4FE1\u606F",
-          metricLabel: "\u6838\u5FC3\u4FE1\u606F",
-          unit: "\u89C6\u89C9\u8282\u594F",
-          marketSuffix: "\u89C6\u89C9\u8282\u594F",
-          body: "Design tokens update the live component preview.",
-          effectZh: "Design tokens update the live component preview."
-        },
-        updatedAt: "2026-09-12T22:11:52.655Z",
-        occupancyScore: 0.32,
-        faceAvoidanceEligible: true,
-        displayIntent: "side-overlay",
-        editorSchema: {
-          version: 1,
-          kind: "narrative",
-          fields: [
-            {
-              key: "bodyText",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "textarea"
-            },
-            {
-              key: "highlightQuote",
-              label: "\u526F\u6587\u5185\u5BB9",
-              control: "text"
-            }
-          ]
-        },
-        manifest: {
-          id: "engineering-return",
-          intent: "narrative",
-          capacity: {
-            minItems: 1,
-            maxItems: 1
-          },
-          keywords: [
-            "\u5DE5\u7A0B",
-            "\u56DE\u5F52",
-            "\u6253\u5B57\u673A",
-            "\u89C2\u70B9"
           ],
           visualWeight: "medium"
         }
@@ -46117,7 +45229,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
             type: "metrics",
             value: 92,
             label: "\u7EA2\u8272",
-            bodyText: "GOODS"
+            bodyText: "GOODS",
+            detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
           },
           categoryTag: "DESIGNRENEW",
           label: "\u7EA2\u8272",
@@ -46138,7 +45251,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           engineeringTo: 9,
           engineeringSuffix: "SAFASDFAS",
           bodyText: "GOODS",
-          unit: "GOODS"
+          unit: "GOODS",
+          detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
         },
         occupancyScore: 0.56,
         faceAvoidanceEligible: true,
@@ -47690,7 +46804,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u6838\u5FC3\u4FE1\u606Fggg",
           effectZh: "\u6838\u5FC3\u4FE1\u606Fggg",
-          highlightQuote: "\u89C6\u89C9\u8282\u594F"
+          highlightQuote: "\u89C6\u89C9\u8282\u594F",
+          bodyText: "\u6838\u5FC3\u4FE1\u606Fggg"
         },
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
@@ -47807,7 +46922,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u6838\u5FC3\u4FE1\u606F",
           effectZh: "\u6838\u5FC3\u4FE1\u606F",
-          highlightQuote: "\u89C6\u89C9\u8282\u594F"
+          highlightQuote: "\u89C6\u89C9\u8282\u594F",
+          bodyText: "\u6838\u5FC3\u4FE1\u606F"
         },
         updatedAt: "2026-09-12T22:12:22.921Z",
         occupancyScore: 0.56,
@@ -47924,7 +47040,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u8FD9\u4E2A\u662F\u6B63\u6587\u7684\u5185\u5BB9",
           effectZh: "\u8FD9\u4E2A\u662F\u6B63\u6587\u7684\u5185\u5BB9",
-          highlightQuote: "\u8FD9\u4E2A\u662F\u6B63\u6587\u4E0B\u9762\u7684\u526F\u6587"
+          highlightQuote: "\u8FD9\u4E2A\u662F\u6B63\u6587\u4E0B\u9762\u7684\u526F\u6587",
+          bodyText: "\u8FD9\u4E2A\u662F\u6B63\u6587\u7684\u5185\u5BB9"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
@@ -48040,7 +47157,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u6838\u5FC3\u4FE1\u606F",
           effectZh: "\u6838\u5FC3\u4FE1\u606F",
-          highlightQuote: "\u89C6\u89C9\u8282\u594F"
+          highlightQuote: "\u89C6\u89C9\u8282\u594F",
+          bodyText: "\u6838\u5FC3\u4FE1\u606F"
         },
         updatedAt: "2026-09-12T22:05:15.409Z",
         occupancyScore: 0.82,
@@ -48306,12 +47424,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "DESIGN SYSTEM",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
+          effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T23:46:04.810Z",
+        updatedAt: "2026-09-13T23:46:04.81Z",
         editorSchema: {
           version: 1,
           kind: "narrative",
@@ -48422,7 +47541,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentPayload: {
             type: "narrative",
             bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
-          }
+          },
+          bodyText: "Signal confirmed. Visual system ready.",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
@@ -48905,7 +48026,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
             type: "narrative",
             bodyText: "\u964D\u4F4E\u7B2C\u4E00\u6B21\u8D2D\u4E70\u7684\u5FC3\u7406\u95E8\u69DB\uFF0C\u624D\u80FD\u4E3A\u540E\u7EED\u4EA4\u6613\u5EFA\u7ACB\u4FE1\u4EFB\u3002",
             highlightQuote: "\u7528\u4F4E\u95E8\u69DB\u6253\u5F00\u6301\u7EED\u5173\u7CFB"
-          }
+          },
+          bodyText: "\u964D\u4F4E\u7B2C\u4E00\u6B21\u8D2D\u4E70\u7684\u5FC3\u7406\u95E8\u69DB\uFF0C\u624D\u80FD\u4E3A\u540E\u7EED\u4EA4\u6613\u5EFA\u7ACB\u4FE1\u4EFB\u3002",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         editorSchema: {
           version: 1,
@@ -49497,12 +48620,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "DESIGN SYSTEM",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           effectZh: "\u6807\u5FD7\u6587\u5B57\u7684\u6B63\u6587\u5927\u5B57",
-          bullText: "\u6807\u5FD7\u6587\u5B57\u7684\u6B63\u6587\u5927\u5B57"
+          bullText: "\u6807\u5FD7\u6587\u5B57\u7684\u6B63\u6587\u5927\u5B57",
+          bodyText: "\u6807\u5FD7\u6587\u5B57\u7684\u6B63\u6587\u5927\u5B57"
         },
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T21:09:27.910Z",
+        updatedAt: "2026-09-13T21:09:27.91Z",
         editorSchema: {
           version: 1,
           kind: "narrative",
@@ -50042,7 +49166,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "DESIGN SYSTEM",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u6492\u65E6\u98DE\u6D12",
-          bullText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u6492\u65E6\u98DE\u6D12"
+          bullText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u6492\u65E6\u98DE\u6D12",
+          bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u6492\u65E6\u98DE\u6D12"
         },
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
@@ -50417,7 +49542,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentPayload: {
             type: "narrative",
             bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
-          }
+          },
+          bodyText: "Signal confirmed. Visual system ready.",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
@@ -50535,7 +49662,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           body: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n",
           effectZh: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n",
           highlightQuote: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u526F\u6587",
-          bullText: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n"
+          bullText: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n",
+          bodyText: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
@@ -50813,122 +49941,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        id: "finale-kinetic",
-        name: "\u7ED3\u5C3E\u51B2\u51FB",
-        family: "narrative",
-        description: "chapter \xB7 statement \xB7 verdict",
-        tags: [
-          "chapter",
-          "statement",
-          "verdict"
-        ],
-        data: [
-          "text"
-        ],
-        version: 7,
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 1,
-          spring: "spring-up",
-          sfx: "none",
-          accentColor: "#00F2FE",
-          defaultItemCount: 1,
-          staggerFrames: 15,
-          headerScale: 1,
-          contentScale: 1
-        },
-        sfx: {
-          enter: "none",
-          exit: "none",
-          volume: 0.65
-        },
-        mockData: {
-          headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          eyebrow: "DESIGN SYSTEM",
-          effectText: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-          text: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-          items: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          steps: [
-            "\u5B9A\u4E49\u76EE\u6807",
-            "\u7EC4\u7EC7\u4FE1\u606F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
-          ],
-          years: [
-            "\u8D77\u70B9",
-            "\u73B0\u5728",
-            "\u4E0B\u4E00\u6B65"
-          ],
-          nodes: [
-            "\u8F93\u5165",
-            "\u5904\u7406",
-            "\u8F93\u51FA"
-          ],
-          comments: [
-            "\u91CD\u70B9\u4FE1\u606F",
-            "\u6301\u7EED\u89C2\u5BDF"
-          ],
-          category: "DESIGN SYSTEM",
-          contentPayload: {
-            type: "narrative",
-            bodyText: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-            highlightQuote: "\u767E\u5E74\u6811\u4EBA1324"
-          },
-          categoryTag: "DESIGN SYSTEM",
-          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          body: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-          effectZh: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-          highlightQuote: "\u767E\u5E74\u6811\u4EBA1324",
-          bullText: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5"
-        },
-        occupancyScore: 0.82,
-        faceAvoidanceEligible: true,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T22:47:54.597Z",
-        editorSchema: {
-          version: 1,
-          kind: "narrative",
-          fields: [
-            {
-              key: "bodyText",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "textarea"
-            },
-            {
-              key: "highlightQuote",
-              label: "\u526F\u6587\u5185\u5BB9",
-              control: "text"
-            }
-          ]
-        },
-        manifest: {
-          id: "finale-kinetic",
-          intent: "narrative",
-          capacity: {
-            minItems: 1,
-            maxItems: 1
-          },
-          keywords: [
-            "\u7ED3\u5C3E",
-            "\u51B2\u51FB",
-            "\u603B\u7ED3"
-          ],
-          visualWeight: "heavy"
-        }
-      },
-      {
         id: "pivot-list",
         name: "\u89C4\u683C\u6253\u5B57\u673A",
         family: "narrative",
@@ -51001,7 +50013,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentPayload: {
             type: "narrative",
             bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
-          }
+          },
+          bodyText: "Design tokens update the live component preview.",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
@@ -51048,7 +50062,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00.000Z",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-hero-title",
         name: "CopyOpen HeroTitle",
         family: "narrative",
@@ -51097,7 +50111,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "COPYOPEN",
           title: "OpenMontage",
           effectZh: "\u84DD\u767D\u76F8\u95F4\u7684\u6B63\u6587\u5185\u5BB9",
-          bullText: "\u84DD\u767D\u76F8\u95F4\u7684\u6B63\u6587\u5185\u5BB9"
+          bullText: "\u84DD\u767D\u76F8\u95F4\u7684\u6B63\u6587\u5185\u5BB9",
+          bodyText: "\u84DD\u767D\u76F8\u95F4\u7684\u6B63\u6587\u5185\u5BB9"
         },
         editorSchema: {
           version: 1,
@@ -51131,7 +50146,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        version: 11,
+        version: 12,
         sfx: {
           enter: "none",
           exit: "none",
@@ -51140,7 +50155,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00.000Z",
+        updatedAt: "2026-09-15T01:13:08.106Z",
         id: "copyopen-progress-bar",
         name: "\u8FDB\u5EA6\u67612",
         family: "metrics",
@@ -51174,11 +50189,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentScale: 0.76
         },
         mockData: {
-          category: "COPYOPEN",
-          headline: "Highlight extraction",
+          category: "COPYOPEN 001",
+          headline: "Highlight extraction 002",
           progress: 86,
           value: 86,
-          label: "Highlight",
+          label: "COPYOPEN 001",
           body: "Highlight extraction",
           effectText: "Highlight extraction",
           contentPayload: {
@@ -51189,9 +50204,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
             bodyText: "%",
             detailText: "Highlight extraction"
           },
-          eyebrow: "COPYOPEN",
-          categoryTag: "COPYOPEN",
-          title: "Highlight extraction",
+          eyebrow: "COPYOPEN 001",
+          categoryTag: "COPYOPEN 001",
+          title: "Highlight extraction 002",
           values: [],
           metric: "Highlight",
           metricLabel: "Highlight",
@@ -51261,7 +50276,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00.000Z",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-comparison-card",
         name: "\u524D\u540E\u5BF9\u6BD4\u5361",
         family: "metrics",
@@ -51310,7 +50325,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
             unit: "clips",
             label: "Short clips",
             detailText: "ready"
-          }
+          },
+          label: "Before / After",
+          value: 76,
+          unit: "Before / After",
+          detailText: "Before / After"
         },
         editorSchema: {
           version: 1,
@@ -51364,7 +50383,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00.000Z",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-terminal-scene",
         name: "CopyOpen TerminalScene",
         family: "chips",
@@ -51484,7 +50503,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00.000Z",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-end-tag",
         name: "EndTag",
         family: "narrative",
@@ -51501,8 +50520,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 1277,
-          boundsY: 300,
+          boundsX: 686,
+          boundsY: 418,
           boundsWidth: 720,
           boundsHeight: 320,
           padding: 48,
@@ -51531,7 +50550,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "COPYOPEN",
           title: "Closing Tag",
           effectZh: "Make the clip worth watching yourself\n",
-          bullText: "Make the clip worth watching yourself\n"
+          bullText: "Make the clip worth watching yourself\n",
+          bodyText: "Make the clip worth watching yourself\n",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         editorSchema: {
           version: 1,
@@ -51574,7 +50595,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00.000Z",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-bar-chart",
         name: "\u67F1\u72B6\u56FE\u663E\u793A",
         family: "metrics",
@@ -51712,7 +50733,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00.000Z",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-line-chart",
         name: "\u6298\u7EBF\u56FE-2",
         family: "metrics",
@@ -51822,7 +50843,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        version: 7,
+        version: 8,
         sfx: {
           enter: "none",
           exit: "none",
@@ -51831,7 +50852,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T01:15:28.297Z",
+        updatedAt: "2026-09-15T01:13:41.484Z",
         id: "copyopen-pie-chart",
         name: "\u591A\u5F69\u73AF\u5F62\u56FE",
         family: "metrics",
@@ -51867,7 +50888,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         mockData: {
           category: "\u7AE0\u828209",
-          headline: "Clip mix",
+          headline: "\u591A\u5F69\u73AF\u5F62\u56FE",
           items: [
             "Hook",
             "Proof",
@@ -51910,7 +50931,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
             ]
           },
           eyebrow: "\u7AE0\u828209",
-          categoryTag: "\u7AE0\u828209"
+          categoryTag: "\u7AE0\u828209",
+          title: "\u591A\u5F69\u73AF\u5F62\u56FE"
         },
         editorSchema: {
           version: 1,
@@ -51950,7 +50972,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00.000Z",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-kpi-grid",
         name: "KPI\u56FE",
         family: "metrics",
@@ -52047,6 +51069,4475 @@ Check that all your Remotion packages are on the same version. If your dependenc
           ],
           visualWeight: "medium"
         }
+      },
+      {
+        id: "avatar-handoff",
+        name: "\u5934\u50CF\u4EA4\u63A5",
+        family: "system",
+        description: "\u8FD0\u884C\u65F6\u5DF2\u6709\u7684\u53CC\u4EBA\u7269\u4EA4\u63A5\u6548\u679C",
+        tags: [
+          "person",
+          "handoff",
+          "system"
+        ],
+        data: [
+          "person",
+          "comparison"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 76,
+          boundsY: 250,
+          boundsWidth: 860,
+          boundsHeight: 620,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 0.76
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "TEAM",
+          headline: "\u5173\u952E\u89D2\u8272\u4EA4\u63A5",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u524D\u5E8F\u89D2\u8272",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u76EE\u6807\u89D2\u8272",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            {
+              title: "\u524D\u5E8F\u89D2\u8272",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u76EE\u6807\u89D2\u8272",
+              subtitle: ""
+            }
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u524D\u5E8F\u89D2\u8272",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u76EE\u6807\u89D2\u8272",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u89D2\u8272\u4FE1\u606F",
+              control: "string-list",
+              capacity: 2
+            }
+          ]
+        },
+        manifest: {
+          id: "avatar-handoff",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 2
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u4EA4\u63A5",
+            "\u56E2\u961F",
+            "\u89D2\u8272"
+          ],
+          visualWeight: "medium"
+        }
+      },
+      {
+        id: "data-flow",
+        name: "\u6570\u636E\u5206\u5C4F",
+        family: "system",
+        description: "\u8FD0\u884C\u65F6\u5DF2\u6709\u7684\u5DE6\u53F3\u6570\u636E\u5206\u5C4F\u6548\u679C",
+        tags: [
+          "data",
+          "system",
+          "comparison"
+        ],
+        data: [
+          "number",
+          "comparison"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 76,
+          boundsY: 250,
+          boundsWidth: 920,
+          boundsHeight: 620,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 0.76
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.42,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "DATA FLOW",
+          headline: "\u4E24\u4FA7\u6570\u636E\u5BF9\u7167",
+          contentPayload: {
+            type: "metrics",
+            value: 72,
+            unit: "%",
+            label: "\u8F6C\u5316\u63D0\u5347",
+            detailText: "\u6838\u5FC3\u6307\u6807\u5F62\u6210\u660E\u786E\u5206\u5DEE\u3002"
+          },
+          label: "\u8F6C\u5316\u63D0\u5347",
+          value: 72,
+          unit: "%",
+          detailText: "\u6838\u5FC3\u6307\u6807\u5F62\u6210\u660E\u786E\u5206\u5DEE\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 72,
+          unit: "%",
+          label: "\u8F6C\u5316\u63D0\u5347",
+          detailText: "\u6838\u5FC3\u6307\u6807\u5F62\u6210\u660E\u786E\u5206\u5DEE\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "data-flow",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 2
+          },
+          keywords: [
+            "\u6570\u636E",
+            "\u5BF9\u7167",
+            "\u7CFB\u7EDF",
+            "\u94FE\u8DEF"
+          ],
+          visualWeight: "medium"
+        }
+      },
+      {
+        id: "jc-narrative-badge-card",
+        name: "[JC] \u5FBD\u7AE0\u7ED3\u8BBA\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u5FBD\u7AE0\u7ED3\u8BBA\u5361",
+          effectText: "\u7528\u4E00\u4E2A\u660E\u786E\u7ED3\u8BBA\u6536\u675F\u5F53\u524D\u5546\u4E1A\u5224\u65AD\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u7528\u4E00\u4E2A\u660E\u786E\u7ED3\u8BBA\u6536\u675F\u5F53\u524D\u5546\u4E1A\u5224\u65AD\u3002",
+            highlightQuote: "TIER ONE"
+          },
+          bodyText: "\u7528\u4E00\u4E2A\u660E\u786E\u7ED3\u8BBA\u6536\u675F\u5F53\u524D\u5546\u4E1A\u5224\u65AD\u3002",
+          highlightQuote: "TIER ONE"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u7528\u4E00\u4E2A\u660E\u786E\u7ED3\u8BBA\u6536\u675F\u5F53\u524D\u5546\u4E1A\u5224\u65AD\u3002",
+          highlightQuote: "TIER ONE"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-badge-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u7ED3\u8BBA",
+            "\u5224\u65AD",
+            "\u5B9A\u4F4D",
+            "\u7B2C\u4E00"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BadgeCard",
+          adapter: "jc-narrative-badge-card"
+        }
+      },
+      {
+        id: "jc-metrics-bar-chart",
+        name: "[JC] \u52A8\u6001\u67F1\u72B6\u56FE",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "list"
+        ],
+        version: 2,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u52A8\u6001\u67F1\u72B6\u56FE",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u91C7\u8D2D\u6210\u672C001"
+              },
+              {
+                stepNumber: 2,
+                text: "\u5C65\u7EA6\u6210\u672C002"
+              },
+              {
+                stepNumber: 3,
+                text: "\u6BDB\u5229\u7A7A\u95F4003"
+              }
+            ],
+            progress: 72
+          },
+          steps: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          items: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          progress: 72,
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u52A8\u6001\u67F1\u72B6\u56FE",
+          years: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          nodes: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          units: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          comments: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          label: "METRICS",
+          body: "",
+          bodyText: "",
+          effectZh: "",
+          text: "",
+          value: 72,
+          values: [
+            72,
+            72,
+            72
+          ]
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u91C7\u8D2D\u6210\u672C"
+            },
+            {
+              stepNumber: 2,
+              text: "\u5C65\u7EA6\u6210\u672C"
+            },
+            {
+              stepNumber: 3,
+              text: "\u6BDB\u5229\u7A7A\u95F4"
+            }
+          ],
+          progress: 72
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-bar-chart",
+          intent: "metrics",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u6570\u636E",
+            "\u5BF9\u6BD4",
+            "\u6392\u540D",
+            "\u589E\u957F"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BarChart",
+          adapter: "jc-metrics-bar-chart"
+        },
+        updatedAt: "2026-09-15T01:15:25.214Z"
+      },
+      {
+        id: "jc-metrics-big-number",
+        name: "[JC] \u5927\u6570\u5B57\u8BA1\u6570",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u5927\u6570\u5B57\u8BA1\u6570",
+          effectText: "",
+          contentPayload: {
+            type: "metrics",
+            value: 72,
+            unit: "%",
+            label: "\u8F6C\u5316\u63D0\u5347",
+            detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+          },
+          label: "\u8F6C\u5316\u63D0\u5347",
+          value: 72,
+          unit: "%",
+          detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 72,
+          unit: "%",
+          label: "\u8F6C\u5316\u63D0\u5347",
+          detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-big-number",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u6570\u636E",
+            "\u6570\u5B57",
+            "\u589E\u957F",
+            "\u767E\u5206\u6BD4"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BigNumber",
+          adapter: "jc-metrics-big-number"
+        }
+      },
+      {
+        id: "jc-narrative-bilingual-sub",
+        name: "[JC] \u53CC\u8BED\u5B57\u5E55\u6761",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u53CC\u8BED\u5B57\u5E55\u6761",
+          effectText: "\u5148\u7ED9\u89C2\u70B9\uFF0C\u518D\u7ED9\u8BC1\u636E\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u5148\u7ED9\u89C2\u70B9\uFF0C\u518D\u7ED9\u8BC1\u636E\u3002",
+            highlightQuote: "POINT THEN PROOF"
+          },
+          bodyText: "\u5148\u7ED9\u89C2\u70B9\uFF0C\u518D\u7ED9\u8BC1\u636E\u3002",
+          highlightQuote: "POINT THEN PROOF"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u5148\u7ED9\u89C2\u70B9\uFF0C\u518D\u7ED9\u8BC1\u636E\u3002",
+          highlightQuote: "POINT THEN PROOF"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-bilingual-sub",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u5B57\u5E55",
+            "\u89C2\u70B9",
+            "\u8BF4\u660E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BilingualSub",
+          adapter: "jc-narrative-bilingual-sub"
+        }
+      },
+      {
+        id: "jc-narrative-breathe",
+        name: "[JC] \u547C\u5438\u5F3A\u8C03",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u547C\u5438\u5F3A\u8C03",
+          effectText: "\u6838\u5FC3\u4FE1\u606F\u4FDD\u6301\u6301\u7EED\u547C\u5438\u611F\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u6838\u5FC3\u4FE1\u606F\u4FDD\u6301\u6301\u7EED\u547C\u5438\u611F\u3002"
+          },
+          bodyText: "\u6838\u5FC3\u4FE1\u606F\u4FDD\u6301\u6301\u7EED\u547C\u5438\u611F\u3002",
+          highlightQuote: ""
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u6838\u5FC3\u4FE1\u606F\u4FDD\u6301\u6301\u7EED\u547C\u5438\u611F\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-breathe",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u5F3A\u8C03",
+            "\u547C\u5438",
+            "\u89C2\u70B9"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Breathe",
+          adapter: "jc-narrative-breathe"
+        }
+      },
+      {
+        id: "jc-system-brick-wall",
+        name: "[JC] \u7816\u5899\u7EA6\u675F",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u7816\u5899\u7EA6\u675F",
+          effectText: "\u4F9B\u7ED9\u7EA6\u675F\u51B3\u5B9A\u4E86\u6269\u5F20\u4E0A\u9650\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4F9B\u7ED9\u7EA6\u675F\u51B3\u5B9A\u4E86\u6269\u5F20\u4E0A\u9650\u3002",
+            highlightQuote: "HARD WALL"
+          },
+          bodyText: "\u4F9B\u7ED9\u7EA6\u675F\u51B3\u5B9A\u4E86\u6269\u5F20\u4E0A\u9650\u3002",
+          highlightQuote: "HARD WALL"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4F9B\u7ED9\u7EA6\u675F\u51B3\u5B9A\u4E86\u6269\u5F20\u4E0A\u9650\u3002",
+          highlightQuote: "HARD WALL"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-brick-wall",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u58C1\u5792",
+            "\u7EA6\u675F",
+            "\u4F9B\u7ED9",
+            "\u98CE\u9669"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BrickWall",
+          adapter: "jc-system-brick-wall"
+        }
+      },
+      {
+        id: "jc-system-card-wall",
+        name: "[JC] \u4FE1\u606F\u5361\u5899",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 6,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u4FE1\u606F\u5361\u5899",
+          effectText: "",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u6E20\u9053\u7ED3\u6784",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u4F9B\u7ED9\u80FD\u529B",
+                subtitle: ""
+              },
+              {
+                title: "\u590D\u8D2D\u8868\u73B0",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            "\u6E20\u9053\u7ED3\u6784",
+            "\u4F9B\u7ED9\u80FD\u529B",
+            "\u590D\u8D2D\u8868\u73B0"
+          ],
+          itemSubtitles: [
+            "KEY SIGNAL",
+            "",
+            ""
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u6E20\u9053\u7ED3\u6784",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u4F9B\u7ED9\u80FD\u529B",
+              subtitle: ""
+            },
+            {
+              title: "\u590D\u8D2D\u8868\u73B0",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u6807\u7B7E\u9879",
+              control: "chip-list",
+              capacity: 3,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-card-wall",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 6
+          },
+          keywords: [
+            "\u7ED3\u6784",
+            "\u6A21\u5757",
+            "\u4FE1\u606F",
+            "\u7CFB\u7EDF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "CardWall",
+          adapter: "jc-system-card-wall"
+        }
+      },
+      {
+        id: "jc-process-checklist",
+        name: "[JC] \u9010\u9879\u6E05\u5355",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u9010\u9879\u6E05\u5355",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u660E\u786E\u91C7\u8D2D\u5E95\u4EF7"
+              },
+              {
+                stepNumber: 2,
+                text: "\u9501\u5B9A\u5C65\u7EA6\u6210\u672C"
+              },
+              {
+                stepNumber: 3,
+                text: "\u9A8C\u8BC1\u590D\u8D2D\u8DEF\u5F84"
+              }
+            ],
+            progress: 78
+          },
+          steps: [
+            "\u660E\u786E\u91C7\u8D2D\u5E95\u4EF7",
+            "\u9501\u5B9A\u5C65\u7EA6\u6210\u672C",
+            "\u9A8C\u8BC1\u590D\u8D2D\u8DEF\u5F84"
+          ],
+          items: [
+            "\u660E\u786E\u91C7\u8D2D\u5E95\u4EF7",
+            "\u9501\u5B9A\u5C65\u7EA6\u6210\u672C",
+            "\u9A8C\u8BC1\u590D\u8D2D\u8DEF\u5F84"
+          ],
+          progress: 78
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u660E\u786E\u91C7\u8D2D\u5E95\u4EF7"
+            },
+            {
+              stepNumber: 2,
+              text: "\u9501\u5B9A\u5C65\u7EA6\u6210\u672C"
+            },
+            {
+              stepNumber: 3,
+              text: "\u9A8C\u8BC1\u590D\u8D2D\u8DEF\u5F84"
+            }
+          ],
+          progress: 78
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-checklist",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u6E05\u5355",
+            "\u6B65\u9AA4",
+            "\u6267\u884C",
+            "\u786E\u8BA4"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Checklist",
+          adapter: "jc-process-checklist"
+        }
+      },
+      {
+        id: "jc-system-chip",
+        name: "[JC] \u8BED\u4E49\u6807\u7B7E",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u8BED\u4E49\u6807\u7B7E",
+          effectText: "",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u4F4E\u4EF7\u5165\u53E3",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u9AD8\u9891\u590D\u8D2D",
+                subtitle: ""
+              },
+              {
+                title: "\u5C65\u7EA6\u95ED\u73AF",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            "\u4F4E\u4EF7\u5165\u53E3",
+            "\u9AD8\u9891\u590D\u8D2D",
+            "\u5C65\u7EA6\u95ED\u73AF"
+          ],
+          itemSubtitles: [
+            "KEY SIGNAL",
+            "",
+            ""
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u4F4E\u4EF7\u5165\u53E3",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u9AD8\u9891\u590D\u8D2D",
+              subtitle: ""
+            },
+            {
+              title: "\u5C65\u7EA6\u95ED\u73AF",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u6807\u7B7E\u9879",
+              control: "chip-list",
+              capacity: 3,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-chip",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u6807\u7B7E",
+            "\u6A21\u5757",
+            "\u8981\u70B9",
+            "\u94FE\u8DEF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Chip",
+          adapter: "jc-system-chip"
+        }
+      },
+      {
+        id: "jc-contrast-clone-cascade",
+        name: "[JC] \u514B\u9686\u98CE\u9669\u7EA7\u8054",
+        family: "contrast",
+        description: "JC imported contrast visual component",
+        tags: [
+          "jc",
+          "contrast"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "CONTRAST",
+          headline: "\u514B\u9686\u98CE\u9669\u7EA7\u8054",
+          effectText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+            highlightQuote: "COPY RISK"
+          },
+          bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+          highlightQuote: "COPY RISK"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+          highlightQuote: "COPY RISK"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-contrast-clone-cascade",
+          intent: "contrast",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u98CE\u9669",
+            "\u590D\u5236",
+            "\u540C\u8D28\u5316",
+            "\u7ADE\u4E89"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "CloneCascade",
+          adapter: "jc-contrast-clone-cascade"
+        }
+      },
+      {
+        id: "jc-contrast-compare-card",
+        name: "[JC] \u5BF9\u7167\u4FE1\u606F\u5361",
+        family: "contrast",
+        description: "JC imported contrast visual component",
+        tags: [
+          "jc",
+          "contrast"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 4,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "CONTRAST",
+          headline: "\u5BF9\u7167\u4FE1\u606F\u5361",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u4F20\u7EDF\u9AD8\u6BDB\u5229"
+              },
+              {
+                stepNumber: 2,
+                text: "\u4F4E\u4EF7\u9AD8\u5468\u8F6C"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u9A71\u52A8"
+              }
+            ],
+            progress: 68
+          },
+          steps: [
+            "\u4F20\u7EDF\u9AD8\u6BDB\u5229",
+            "\u4F4E\u4EF7\u9AD8\u5468\u8F6C",
+            "\u590D\u8D2D\u9A71\u52A8"
+          ],
+          items: [
+            "\u4F20\u7EDF\u9AD8\u6BDB\u5229",
+            "\u4F4E\u4EF7\u9AD8\u5468\u8F6C",
+            "\u590D\u8D2D\u9A71\u52A8"
+          ],
+          progress: 68
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u4F20\u7EDF\u9AD8\u6BDB\u5229"
+            },
+            {
+              stepNumber: 2,
+              text: "\u4F4E\u4EF7\u9AD8\u5468\u8F6C"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u9A71\u52A8"
+            }
+          ],
+          progress: 68
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-contrast-compare-card",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u5BF9\u6BD4",
+            "\u5DEE\u5F02",
+            "\u53D6\u820D",
+            "\u53D8\u5316"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "CompareCard",
+          adapter: "jc-contrast-compare-card"
+        }
+      },
+      {
+        id: "jc-metrics-curve-overlay",
+        name: "[JC] \u589E\u957F\u66F2\u7EBF",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u589E\u957F\u66F2\u7EBF",
+          effectText: "",
+          contentPayload: {
+            type: "metrics",
+            value: 74,
+            unit: "%",
+            label: "\u589E\u957F\u66F2\u7EBF",
+            detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+          },
+          label: "\u589E\u957F\u66F2\u7EBF",
+          value: 74,
+          unit: "%",
+          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 74,
+          unit: "%",
+          label: "\u589E\u957F\u66F2\u7EBF",
+          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-curve-overlay",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u8D8B\u52BF",
+            "\u66F2\u7EBF",
+            "\u589E\u957F",
+            "\u6570\u636E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "CurveOverlay",
+          adapter: "jc-metrics-curve-overlay"
+        }
+      },
+      {
+        id: "jc-narrative-dm-card-stack",
+        name: "[JC] \u5BF9\u8BDD\u5361\u53E0\u5C42",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 4,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u5BF9\u8BDD\u5361\u53E0\u5C42",
+          effectText: "",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u5148\u964D\u4F4E\u51B3\u7B56\u963B\u529B",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u518D\u5EFA\u7ACB\u590D\u8D2D\u7406\u7531",
+                subtitle: ""
+              },
+              {
+                title: "\u6700\u540E\u6269\u5F20\u6E20\u9053",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            "\u5148\u964D\u4F4E\u51B3\u7B56\u963B\u529B",
+            "\u518D\u5EFA\u7ACB\u590D\u8D2D\u7406\u7531",
+            "\u6700\u540E\u6269\u5F20\u6E20\u9053"
+          ],
+          itemSubtitles: [
+            "KEY SIGNAL",
+            "",
+            ""
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u5148\u964D\u4F4E\u51B3\u7B56\u963B\u529B",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u518D\u5EFA\u7ACB\u590D\u8D2D\u7406\u7531",
+              subtitle: ""
+            },
+            {
+              title: "\u6700\u540E\u6269\u5F20\u6E20\u9053",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u6807\u7B7E\u9879",
+              control: "chip-list",
+              capacity: 3,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-dm-card-stack",
+          intent: "narrative",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u5BF9\u8BDD",
+            "\u53D9\u4E8B",
+            "\u89C2\u70B9",
+            "\u7528\u6237"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "DMCardStack",
+          adapter: "jc-narrative-dm-card-stack"
+        }
+      },
+      {
+        id: "jc-process-flow-chain",
+        name: "[JC] \u5546\u4E1A\u94FE\u8DEF",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u5546\u4E1A\u94FE\u8DEF",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u4F4E\u4EF7\u5165\u53E3"
+              },
+              {
+                stepNumber: 2,
+                text: "\u8BD5\u7528\u8F6C\u5316"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u56DE\u6D41"
+              }
+            ],
+            progress: 76
+          },
+          steps: [
+            "\u4F4E\u4EF7\u5165\u53E3",
+            "\u8BD5\u7528\u8F6C\u5316",
+            "\u590D\u8D2D\u56DE\u6D41"
+          ],
+          items: [
+            "\u4F4E\u4EF7\u5165\u53E3",
+            "\u8BD5\u7528\u8F6C\u5316",
+            "\u590D\u8D2D\u56DE\u6D41"
+          ],
+          progress: 76
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u4F4E\u4EF7\u5165\u53E3"
+            },
+            {
+              stepNumber: 2,
+              text: "\u8BD5\u7528\u8F6C\u5316"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u56DE\u6D41"
+            }
+          ],
+          progress: 76
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-flow-chain",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u94FE\u8DEF",
+            "\u6D41\u7A0B",
+            "\u95ED\u73AF",
+            "\u4F20\u5BFC"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "FlowChain",
+          adapter: "jc-process-flow-chain"
+        }
+      },
+      {
+        id: "jc-system-flywheel",
+        name: "[JC] \u589E\u957F\u98DE\u8F6E",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u589E\u957F\u98DE\u8F6E",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u4F9B\u7ED9\u7A33\u5B9A"
+              },
+              {
+                stepNumber: 2,
+                text: "\u6210\u672C\u4E0B\u964D"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u589E\u957F"
+              }
+            ],
+            progress: 80
+          },
+          steps: [
+            "\u4F9B\u7ED9\u7A33\u5B9A",
+            "\u6210\u672C\u4E0B\u964D",
+            "\u590D\u8D2D\u589E\u957F"
+          ],
+          items: [
+            "\u4F9B\u7ED9\u7A33\u5B9A",
+            "\u6210\u672C\u4E0B\u964D",
+            "\u590D\u8D2D\u589E\u957F"
+          ],
+          progress: 80
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u4F9B\u7ED9\u7A33\u5B9A"
+            },
+            {
+              stepNumber: 2,
+              text: "\u6210\u672C\u4E0B\u964D"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u589E\u957F"
+            }
+          ],
+          progress: 80
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-flywheel",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u98DE\u8F6E",
+            "\u5FAA\u73AF",
+            "\u589E\u957F",
+            "\u7CFB\u7EDF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Flywheel",
+          adapter: "jc-system-flywheel"
+        }
+      },
+      {
+        id: "jc-narrative-hero-text",
+        name: "[JC] \u4E3B\u89C6\u89C9\u65AD\u8A00",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.88,
+        faceAvoidanceEligible: false,
+        displayIntent: "fullscreen-modal",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4E3B\u89C6\u89C9\u65AD\u8A00",
+          effectText: "\u4F4E\u4EF7\u4E0D\u662F\u4F18\u52BF\uFF0C\u662F\u51B3\u7B56\u963B\u529B\u5F52\u96F6\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4F4E\u4EF7\u4E0D\u662F\u4F18\u52BF\uFF0C\u662F\u51B3\u7B56\u963B\u529B\u5F52\u96F6\u3002",
+            highlightQuote: "BUSINESS THESIS"
+          },
+          bodyText: "\u4F4E\u4EF7\u4E0D\u662F\u4F18\u52BF\uFF0C\u662F\u51B3\u7B56\u963B\u529B\u5F52\u96F6\u3002",
+          highlightQuote: "BUSINESS THESIS"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4F4E\u4EF7\u4E0D\u662F\u4F18\u52BF\uFF0C\u662F\u51B3\u7B56\u963B\u529B\u5F52\u96F6\u3002",
+          highlightQuote: "BUSINESS THESIS"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-hero-text",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u89C2\u70B9",
+            "\u5224\u65AD",
+            "\u7ED3\u8BBA",
+            "\u4E3B\u89C6\u89C9"
+          ],
+          visualWeight: "heavy"
+        },
+        runtime: {
+          exportName: "HeroText",
+          adapter: "jc-narrative-hero-text"
+        }
+      },
+      {
+        id: "jc-narrative-info-card",
+        name: "[JC] \u4FE1\u606F\u8BF4\u660E\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4FE1\u606F\u8BF4\u660E\u5361",
+          effectText: "\u4EF7\u683C\u4F4E\u5230\u7ED5\u8FC7\u7406\u6027\u6BD4\u4EF7\uFF0C\u76F4\u63A5\u89E6\u53D1\u5373\u65F6\u8D2D\u4E70\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4EF7\u683C\u4F4E\u5230\u7ED5\u8FC7\u7406\u6027\u6BD4\u4EF7\uFF0C\u76F4\u63A5\u89E6\u53D1\u5373\u65F6\u8D2D\u4E70\u3002",
+            highlightQuote: "KEY INSIGHT"
+          },
+          bodyText: "\u4EF7\u683C\u4F4E\u5230\u7ED5\u8FC7\u7406\u6027\u6BD4\u4EF7\uFF0C\u76F4\u63A5\u89E6\u53D1\u5373\u65F6\u8D2D\u4E70\u3002",
+          highlightQuote: "KEY INSIGHT"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4EF7\u683C\u4F4E\u5230\u7ED5\u8FC7\u7406\u6027\u6BD4\u4EF7\uFF0C\u76F4\u63A5\u89E6\u53D1\u5373\u65F6\u8D2D\u4E70\u3002",
+          highlightQuote: "KEY INSIGHT"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-info-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u8BF4\u660E",
+            "\u89C2\u70B9",
+            "\u6D1E\u5BDF",
+            "\u4FE1\u606F"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "InfoCard",
+          adapter: "jc-narrative-info-card"
+        }
+      },
+      {
+        id: "jc-narrative-info-scrim",
+        name: "[JC] \u4FE1\u606F\u906E\u7F69",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4FE1\u606F\u906E\u7F69",
+          effectText: "\u7528\u7559\u767D\u7A81\u51FA\u5173\u952E\u4FE1\u606F\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u7528\u7559\u767D\u7A81\u51FA\u5173\u952E\u4FE1\u606F\u3002"
+          },
+          bodyText: "\u7528\u7559\u767D\u7A81\u51FA\u5173\u952E\u4FE1\u606F\u3002",
+          highlightQuote: ""
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u7528\u7559\u767D\u7A81\u51FA\u5173\u952E\u4FE1\u606F\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-info-scrim",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u906E\u7F69",
+            "\u4FE1\u606F",
+            "\u7559\u767D"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "InfoScrim",
+          adapter: "jc-narrative-info-scrim"
+        }
+      },
+      {
+        id: "jc-system-loop-diagram",
+        name: "[JC] \u95ED\u73AF\u56FE\u89E3",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u95ED\u73AF\u56FE\u89E3",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u6D41\u91CF\u5165\u53E3"
+              },
+              {
+                stepNumber: 2,
+                text: "\u6210\u4EA4\u8F6C\u5316"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u6C89\u6DC0"
+              }
+            ],
+            progress: 82
+          },
+          steps: [
+            "\u6D41\u91CF\u5165\u53E3",
+            "\u6210\u4EA4\u8F6C\u5316",
+            "\u590D\u8D2D\u6C89\u6DC0"
+          ],
+          items: [
+            "\u6D41\u91CF\u5165\u53E3",
+            "\u6210\u4EA4\u8F6C\u5316",
+            "\u590D\u8D2D\u6C89\u6DC0"
+          ],
+          progress: 82
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u6D41\u91CF\u5165\u53E3"
+            },
+            {
+              stepNumber: 2,
+              text: "\u6210\u4EA4\u8F6C\u5316"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u6C89\u6DC0"
+            }
+          ],
+          progress: 82
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-loop-diagram",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u95ED\u73AF",
+            "\u7CFB\u7EDF",
+            "\u5FAA\u73AF",
+            "\u94FE\u8DEF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "LoopDiagram",
+          adapter: "jc-system-loop-diagram"
+        }
+      },
+      {
+        id: "jc-system-matrix-icon",
+        name: "[JC] \u77E9\u9635\u56FE\u6807",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u77E9\u9635\u56FE\u6807",
+          effectText: "",
+          contentPayload: {
+            type: "metrics",
+            value: 75,
+            unit: "%",
+            label: "\u80FD\u529B\u77E9\u9635",
+            detailText: "\u7528\u77E9\u9635\u5F3A\u8C03\u80FD\u529B\u5BC6\u5EA6\u4E0E\u534F\u540C\u3002"
+          },
+          label: "\u80FD\u529B\u77E9\u9635",
+          value: 75,
+          unit: "%",
+          detailText: "\u7528\u77E9\u9635\u5F3A\u8C03\u80FD\u529B\u5BC6\u5EA6\u4E0E\u534F\u540C\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 75,
+          unit: "%",
+          label: "\u80FD\u529B\u77E9\u9635",
+          detailText: "\u7528\u77E9\u9635\u5F3A\u8C03\u80FD\u529B\u5BC6\u5EA6\u4E0E\u534F\u540C\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-matrix-icon",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u77E9\u9635",
+            "\u80FD\u529B",
+            "\u7CFB\u7EDF",
+            "\u6A21\u5757"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "MatrixIcon",
+          adapter: "jc-system-matrix-icon"
+        }
+      },
+      {
+        id: "jc-narrative-name-plate",
+        name: "[JC] \u4EBA\u7269\u540D\u724C",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4EBA\u7269\u540D\u724C",
+          effectText: "\u5173\u952E\u89D2\u8272\u51B3\u5B9A\u4E86\u6267\u884C\u4E0A\u9650\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u5173\u952E\u89D2\u8272\u51B3\u5B9A\u4E86\u6267\u884C\u4E0A\u9650\u3002",
+            highlightQuote: "KEY OPERATOR"
+          },
+          bodyText: "\u5173\u952E\u89D2\u8272\u51B3\u5B9A\u4E86\u6267\u884C\u4E0A\u9650\u3002",
+          highlightQuote: "KEY OPERATOR"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u5173\u952E\u89D2\u8272\u51B3\u5B9A\u4E86\u6267\u884C\u4E0A\u9650\u3002",
+          highlightQuote: "KEY OPERATOR"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-name-plate",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u89D2\u8272",
+            "\u8D1F\u8D23\u4EBA",
+            "\u540D\u724C"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "NamePlate",
+          adapter: "jc-narrative-name-plate"
+        }
+      },
+      {
+        id: "jc-narrative-person-badge",
+        name: "[JC] \u4EBA\u7269\u5FBD\u7AE0",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4EBA\u7269\u5FBD\u7AE0",
+          effectText: "\u64CD\u76D8\u624B\u7684\u9009\u62E9\u4F1A\u6539\u53D8\u6574\u6761\u94FE\u8DEF\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u64CD\u76D8\u624B\u7684\u9009\u62E9\u4F1A\u6539\u53D8\u6574\u6761\u94FE\u8DEF\u3002",
+            highlightQuote: "OPERATOR"
+          },
+          bodyText: "\u64CD\u76D8\u624B\u7684\u9009\u62E9\u4F1A\u6539\u53D8\u6574\u6761\u94FE\u8DEF\u3002",
+          highlightQuote: "OPERATOR"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u64CD\u76D8\u624B\u7684\u9009\u62E9\u4F1A\u6539\u53D8\u6574\u6761\u94FE\u8DEF\u3002",
+          highlightQuote: "OPERATOR"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-person-badge",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u89D2\u8272",
+            "\u56E2\u961F",
+            "\u8D1F\u8D23\u4EBA"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "PersonBadge",
+          adapter: "jc-narrative-person-badge"
+        }
+      },
+      {
+        id: "jc-narrative-person-card",
+        name: "[JC] \u4EBA\u7269\u4FE1\u606F\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4EBA\u7269\u4FE1\u606F\u5361",
+          effectText: "\u89D2\u8272\u5206\u5DE5\u8981\u4E0E\u5546\u4E1A\u76EE\u6807\u4FDD\u6301\u4E00\u81F4\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u89D2\u8272\u5206\u5DE5\u8981\u4E0E\u5546\u4E1A\u76EE\u6807\u4FDD\u6301\u4E00\u81F4\u3002",
+            highlightQuote: "ROLE FIT"
+          },
+          bodyText: "\u89D2\u8272\u5206\u5DE5\u8981\u4E0E\u5546\u4E1A\u76EE\u6807\u4FDD\u6301\u4E00\u81F4\u3002",
+          highlightQuote: "ROLE FIT"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u89D2\u8272\u5206\u5DE5\u8981\u4E0E\u5546\u4E1A\u76EE\u6807\u4FDD\u6301\u4E00\u81F4\u3002",
+          highlightQuote: "ROLE FIT"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-person-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u56E2\u961F",
+            "\u89D2\u8272",
+            "\u5206\u5DE5"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "PersonCard",
+          adapter: "jc-narrative-person-card"
+        }
+      },
+      {
+        id: "jc-system-phone-mockup",
+        name: "[JC] \u624B\u673A\u754C\u9762\u6846",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u624B\u673A\u754C\u9762\u6846",
+          effectText: "\u4EA7\u54C1\u4F53\u9A8C\u5FC5\u987B\u628A\u8DEF\u5F84\u538B\u7F29\u5230\u6700\u77ED\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4EA7\u54C1\u4F53\u9A8C\u5FC5\u987B\u628A\u8DEF\u5F84\u538B\u7F29\u5230\u6700\u77ED\u3002",
+            highlightQuote: "MOBILE FLOW"
+          },
+          bodyText: "\u4EA7\u54C1\u4F53\u9A8C\u5FC5\u987B\u628A\u8DEF\u5F84\u538B\u7F29\u5230\u6700\u77ED\u3002",
+          highlightQuote: "MOBILE FLOW"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4EA7\u54C1\u4F53\u9A8C\u5FC5\u987B\u628A\u8DEF\u5F84\u538B\u7F29\u5230\u6700\u77ED\u3002",
+          highlightQuote: "MOBILE FLOW"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-phone-mockup",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EA7\u54C1",
+            "\u624B\u673A",
+            "\u754C\u9762",
+            "\u4F53\u9A8C"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "PhoneMockup",
+          adapter: "jc-system-phone-mockup"
+        }
+      },
+      {
+        id: "jc-narrative-quote-doc",
+        name: "[JC] \u5F15\u6587\u8D44\u6599\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u5F15\u6587\u8D44\u6599\u5361",
+          effectText: "\u5173\u952E\u539F\u8BDD\u80FD\u4E3A\u5224\u65AD\u63D0\u4F9B\u6700\u76F4\u63A5\u7684\u8BC1\u636E\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u5173\u952E\u539F\u8BDD\u80FD\u4E3A\u5224\u65AD\u63D0\u4F9B\u6700\u76F4\u63A5\u7684\u8BC1\u636E\u3002",
+            highlightQuote: "SOURCE NOTE"
+          },
+          bodyText: "\u5173\u952E\u539F\u8BDD\u80FD\u4E3A\u5224\u65AD\u63D0\u4F9B\u6700\u76F4\u63A5\u7684\u8BC1\u636E\u3002",
+          highlightQuote: "SOURCE NOTE"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u5173\u952E\u539F\u8BDD\u80FD\u4E3A\u5224\u65AD\u63D0\u4F9B\u6700\u76F4\u63A5\u7684\u8BC1\u636E\u3002",
+          highlightQuote: "SOURCE NOTE"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-quote-doc",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u5F15\u6587",
+            "\u8D44\u6599",
+            "\u8BC1\u636E",
+            "\u89C2\u70B9"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "QuoteDoc",
+          adapter: "jc-narrative-quote-doc"
+        }
+      },
+      {
+        id: "jc-contrast-score-board",
+        name: "[JC] \u5BF9\u6BD4\u8BB0\u5206\u724C",
+        family: "contrast",
+        description: "JC imported contrast visual component",
+        tags: [
+          "jc",
+          "contrast"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "CONTRAST",
+          headline: "\u5BF9\u6BD4\u8BB0\u5206\u724C",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u6210\u672C\u66F4\u4F4E"
+              },
+              {
+                stepNumber: 2,
+                text: "\u5C65\u7EA6\u66F4\u5FEB"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u66F4\u7A33"
+              }
+            ],
+            progress: 83
+          },
+          steps: [
+            "\u6210\u672C\u66F4\u4F4E",
+            "\u5C65\u7EA6\u66F4\u5FEB",
+            "\u590D\u8D2D\u66F4\u7A33"
+          ],
+          items: [
+            "\u6210\u672C\u66F4\u4F4E",
+            "\u5C65\u7EA6\u66F4\u5FEB",
+            "\u590D\u8D2D\u66F4\u7A33"
+          ],
+          progress: 83
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u6210\u672C\u66F4\u4F4E"
+            },
+            {
+              stepNumber: 2,
+              text: "\u5C65\u7EA6\u66F4\u5FEB"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u66F4\u7A33"
+            }
+          ],
+          progress: 83
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-contrast-score-board",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u8BC4\u5206",
+            "\u5BF9\u6BD4",
+            "\u7ADE\u4E89",
+            "\u4F18\u52BF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "ScoreBoard",
+          adapter: "jc-contrast-score-board"
+        }
+      },
+      {
+        id: "jc-narrative-shot-card",
+        name: "[JC] \u622A\u56FE\u6CE8\u91CA\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u622A\u56FE\u6CE8\u91CA\u5361",
+          effectText: "\u753B\u9762\u8BC1\u636E\u8981\u670D\u52A1\u4E8E\u5F53\u524D\u5224\u65AD\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u753B\u9762\u8BC1\u636E\u8981\u670D\u52A1\u4E8E\u5F53\u524D\u5224\u65AD\u3002",
+            highlightQuote: "VISUAL PROOF"
+          },
+          bodyText: "\u753B\u9762\u8BC1\u636E\u8981\u670D\u52A1\u4E8E\u5F53\u524D\u5224\u65AD\u3002",
+          highlightQuote: "VISUAL PROOF"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u753B\u9762\u8BC1\u636E\u8981\u670D\u52A1\u4E8E\u5F53\u524D\u5224\u65AD\u3002",
+          highlightQuote: "VISUAL PROOF"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-shot-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u622A\u56FE",
+            "\u8BC1\u636E",
+            "\u753B\u9762",
+            "\u8BF4\u660E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "ShotCard",
+          adapter: "jc-narrative-shot-card"
+        }
+      },
+      {
+        id: "jc-narrative-side-label",
+        name: "[JC] \u4FA7\u8FB9\u6807\u7B7E",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4FA7\u8FB9\u6807\u7B7E",
+          effectText: "\u628A\u5173\u952E\u5224\u65AD\u56FA\u5B9A\u5728\u5B89\u5168\u4FA7\u8FB9\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u628A\u5173\u952E\u5224\u65AD\u56FA\u5B9A\u5728\u5B89\u5168\u4FA7\u8FB9\u3002",
+            highlightQuote: "SIDE SIGNAL"
+          },
+          bodyText: "\u628A\u5173\u952E\u5224\u65AD\u56FA\u5B9A\u5728\u5B89\u5168\u4FA7\u8FB9\u3002",
+          highlightQuote: "SIDE SIGNAL"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u628A\u5173\u952E\u5224\u65AD\u56FA\u5B9A\u5728\u5B89\u5168\u4FA7\u8FB9\u3002",
+          highlightQuote: "SIDE SIGNAL"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-side-label",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u6807\u7B7E",
+            "\u4FA7\u8FB9",
+            "\u5224\u65AD",
+            "\u5F3A\u8C03"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "SideLabel",
+          adapter: "jc-narrative-side-label"
+        }
+      },
+      {
+        id: "jc-system-solvent-tank",
+        name: "[JC] \u6EB6\u5242\u53CD\u5E94\u69FD",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u6EB6\u5242\u53CD\u5E94\u69FD",
+          effectText: "\u6548\u7387\u63D0\u5347\u6765\u81EA\u7ED3\u6784\u6027\u6EB6\u89E3\u6210\u672C\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u6548\u7387\u63D0\u5347\u6765\u81EA\u7ED3\u6784\u6027\u6EB6\u89E3\u6210\u672C\u3002",
+            highlightQuote: "COST REACTION"
+          },
+          bodyText: "\u6548\u7387\u63D0\u5347\u6765\u81EA\u7ED3\u6784\u6027\u6EB6\u89E3\u6210\u672C\u3002",
+          highlightQuote: "COST REACTION"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u6548\u7387\u63D0\u5347\u6765\u81EA\u7ED3\u6784\u6027\u6EB6\u89E3\u6210\u672C\u3002",
+          highlightQuote: "COST REACTION"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-solvent-tank",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u6210\u672C",
+            "\u6548\u7387",
+            "\u7CFB\u7EDF",
+            "\u53D8\u5316"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "SolventTank",
+          adapter: "jc-system-solvent-tank"
+        }
+      },
+      {
+        id: "jc-narrative-stamp",
+        name: "[JC] \u7ED3\u8BBA\u5370\u7AE0",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u7ED3\u8BBA\u5370\u7AE0",
+          effectText: "\u7ED3\u8BBA\u6210\u7ACB\uFF0C\u8FDB\u5165\u4E0B\u4E00\u6B65\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u7ED3\u8BBA\u6210\u7ACB\uFF0C\u8FDB\u5165\u4E0B\u4E00\u6B65\u3002",
+            highlightQuote: "VERDICT"
+          },
+          bodyText: "\u7ED3\u8BBA\u6210\u7ACB\uFF0C\u8FDB\u5165\u4E0B\u4E00\u6B65\u3002",
+          highlightQuote: "VERDICT"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u7ED3\u8BBA\u6210\u7ACB\uFF0C\u8FDB\u5165\u4E0B\u4E00\u6B65\u3002",
+          highlightQuote: "VERDICT"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-stamp",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u7ED3\u8BBA",
+            "\u5370\u7AE0",
+            "\u786E\u8BA4",
+            "\u5224\u65AD"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Stamp",
+          adapter: "jc-narrative-stamp"
+        }
+      },
+      {
+        id: "jc-process-step-list",
+        name: "[JC] \u6B65\u9AA4\u6E05\u5355",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u6B65\u9AA4\u6E05\u5355",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u786E\u5B9A\u76EE\u6807\u4EBA\u7FA4"
+              },
+              {
+                stepNumber: 2,
+                text: "\u9A8C\u8BC1\u5355\u6B21\u5229\u6DA6"
+              },
+              {
+                stepNumber: 3,
+                text: "\u653E\u5927\u590D\u8D2D\u6548\u7387"
+              }
+            ],
+            progress: 78
+          },
+          steps: [
+            "\u786E\u5B9A\u76EE\u6807\u4EBA\u7FA4",
+            "\u9A8C\u8BC1\u5355\u6B21\u5229\u6DA6",
+            "\u653E\u5927\u590D\u8D2D\u6548\u7387"
+          ],
+          items: [
+            "\u786E\u5B9A\u76EE\u6807\u4EBA\u7FA4",
+            "\u9A8C\u8BC1\u5355\u6B21\u5229\u6DA6",
+            "\u653E\u5927\u590D\u8D2D\u6548\u7387"
+          ],
+          progress: 78
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u786E\u5B9A\u76EE\u6807\u4EBA\u7FA4"
+            },
+            {
+              stepNumber: 2,
+              text: "\u9A8C\u8BC1\u5355\u6B21\u5229\u6DA6"
+            },
+            {
+              stepNumber: 3,
+              text: "\u653E\u5927\u590D\u8D2D\u6548\u7387"
+            }
+          ],
+          progress: 78
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-step-list",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u6B65\u9AA4",
+            "\u6D41\u7A0B",
+            "\u6267\u884C",
+            "\u884C\u52A8"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "StepList",
+          adapter: "jc-process-step-list"
+        }
+      },
+      {
+        id: "jc-process-timeline-card",
+        name: "[JC] \u65F6\u95F4\u5361\u7247",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 4,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u65F6\u95F4\u5361\u7247",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u4F4E\u4EF7\u8BD5\u63A2"
+              },
+              {
+                stepNumber: 2,
+                text: "\u590D\u8D2D\u9A8C\u8BC1"
+              },
+              {
+                stepNumber: 3,
+                text: "\u6E20\u9053\u653E\u5927"
+              }
+            ],
+            progress: 74
+          },
+          steps: [
+            "\u4F4E\u4EF7\u8BD5\u63A2",
+            "\u590D\u8D2D\u9A8C\u8BC1",
+            "\u6E20\u9053\u653E\u5927"
+          ],
+          items: [
+            "\u4F4E\u4EF7\u8BD5\u63A2",
+            "\u590D\u8D2D\u9A8C\u8BC1",
+            "\u6E20\u9053\u653E\u5927"
+          ],
+          progress: 74
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u4F4E\u4EF7\u8BD5\u63A2"
+            },
+            {
+              stepNumber: 2,
+              text: "\u590D\u8D2D\u9A8C\u8BC1"
+            },
+            {
+              stepNumber: 3,
+              text: "\u6E20\u9053\u653E\u5927"
+            }
+          ],
+          progress: 74
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-timeline-card",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u65F6\u95F4",
+            "\u9636\u6BB5",
+            "\u6F14\u8FDB",
+            "\u8282\u70B9"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "TimelineCard",
+          adapter: "jc-process-timeline-card"
+        }
+      },
+      {
+        id: "jc-process-timeline-events",
+        name: "[JC] \u65F6\u95F4\u4E8B\u4EF6\u8F74",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u65F6\u95F4\u4E8B\u4EF6\u8F74",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u8D77\u6B65"
+              },
+              {
+                stepNumber: 2,
+                text: "\u4F18\u5316"
+              },
+              {
+                stepNumber: 3,
+                text: "\u6269\u5F20"
+              }
+            ],
+            progress: 70
+          },
+          steps: [
+            "\u8D77\u6B65",
+            "\u4F18\u5316",
+            "\u6269\u5F20"
+          ],
+          items: [
+            "\u8D77\u6B65",
+            "\u4F18\u5316",
+            "\u6269\u5F20"
+          ],
+          progress: 70
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u8D77\u6B65"
+            },
+            {
+              stepNumber: 2,
+              text: "\u4F18\u5316"
+            },
+            {
+              stepNumber: 3,
+              text: "\u6269\u5F20"
+            }
+          ],
+          progress: 70
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-timeline-events",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u65F6\u95F4\u7EBF",
+            "\u4E8B\u4EF6",
+            "\u9636\u6BB5",
+            "\u8282\u70B9"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "TimelineEvents",
+          adapter: "jc-process-timeline-events"
+        }
+      },
+      {
+        id: "jc-narrative-tweet-card",
+        name: "[JC] \u89C2\u70B9\u5F15\u7528\u5E16",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 3,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "\u89C2\u70B9\u4F5C\u8005ID",
+          headline: "\u606D\u559CTesla CyberCab",
+          effectText: "\u4E00\u6761\u89C2\u70B9\u5FC5\u987B\u843D\u5230\u53EF\u4EE5\u9A8C\u8BC1\u7684\u5546\u4E1A\u4E8B\u5B9E\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4E00\u6761\u89C2\u70B9\u5FC5\u987B\u843D\u5230\u53EF\u4EE5\u9A8C\u8BC1\u7684\u5546\u4E1A\u4E8B\u5B9E\u3002",
+            highlightQuote: "PUBLIC TAKE"
+          },
+          bodyText: "\u4E00\u6761\u89C2\u70B9\u5FC5\u987B\u843D\u5230\u53EF\u4EE5\u9A8C\u8BC1\u7684\u5546\u4E1A\u4E8B\u5B9E\u3002",
+          highlightQuote: "PUBLIC TAKE",
+          eyebrow: "\u89C2\u70B9\u4F5C\u8005ID",
+          categoryTag: "\u89C2\u70B9\u4F5C\u8005ID",
+          label: "\u89C2\u70B9\u4F5C\u8005ID",
+          title: "\u606D\u559CTesla CyberCab"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4E00\u6761\u89C2\u70B9\u5FC5\u987B\u843D\u5230\u53EF\u4EE5\u9A8C\u8BC1\u7684\u5546\u4E1A\u4E8B\u5B9E\u3002",
+          highlightQuote: "PUBLIC TAKE"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-tweet-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u89C2\u70B9",
+            "\u5F15\u7528",
+            "\u8BC4\u8BBA",
+            "\u5224\u65AD"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "TweetCard",
+          adapter: "jc-narrative-tweet-card"
+        },
+        updatedAt: "2026-09-15T01:37:09.883Z"
+      },
+      {
+        id: "jc-metrics-unit-matrix",
+        name: "[JC] \u5355\u5143\u77E9\u9635",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u5355\u5143\u77E9\u9635",
+          effectText: "",
+          contentPayload: {
+            type: "metrics",
+            value: 68,
+            unit: "%",
+            label: "\u7ED3\u6784\u5360\u6BD4",
+            detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
+          },
+          label: "\u7ED3\u6784\u5360\u6BD4",
+          value: 68,
+          unit: "%",
+          detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 68,
+          unit: "%",
+          label: "\u7ED3\u6784\u5360\u6BD4",
+          detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-unit-matrix",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u77E9\u9635",
+            "\u5360\u6BD4",
+            "\u89C4\u6A21",
+            "\u6570\u636E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "UnitMatrix",
+          adapter: "jc-metrics-unit-matrix"
+        }
+      },
+      {
+        id: "jc-contrast-verdict-box",
+        name: "[JC] \u98CE\u9669\u88C1\u51B3\u6846",
+        family: "contrast",
+        description: "JC imported contrast visual component",
+        tags: [
+          "jc",
+          "contrast"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 4,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "CONTRAST",
+          headline: "\u98CE\u9669\u88C1\u51B3\u6846",
+          effectText: "",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u4F9B\u7ED9\u4E0D\u7A33",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u5C65\u7EA6\u5931\u63A7",
+                subtitle: ""
+              },
+              {
+                title: "\u590D\u8D2D\u4E0D\u8DB3",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            "\u4F9B\u7ED9\u4E0D\u7A33",
+            "\u5C65\u7EA6\u5931\u63A7",
+            "\u590D\u8D2D\u4E0D\u8DB3"
+          ],
+          itemSubtitles: [
+            "KEY SIGNAL",
+            "",
+            ""
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u4F9B\u7ED9\u4E0D\u7A33",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u5C65\u7EA6\u5931\u63A7",
+              subtitle: ""
+            },
+            {
+              title: "\u590D\u8D2D\u4E0D\u8DB3",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u6807\u7B7E\u9879",
+              control: "chip-list",
+              capacity: 3,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-contrast-verdict-box",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u98CE\u9669",
+            "\u88C1\u51B3",
+            "\u5BF9\u6BD4",
+            "\u53D6\u820D"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "VerdictBox",
+          adapter: "jc-contrast-verdict-box"
+        }
+      },
+      {
+        id: "jc-metrics-views-badge",
+        name: "[JC] \u89C2\u770B\u91CF\u5FBD\u7AE0",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 3,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u89C2\u770B\u91CF\u5FBD\u7AE0",
+          effectText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          contentPayload: {
+            type: "metrics",
+            value: 80,
+            unit: "M+",
+            label: "\u7F8E\u5143\u57FA\u91D1",
+            bodyText: "M+",
+            detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002"
+          },
+          label: "\u7F8E\u5143\u57FA\u91D1",
+          value: 80,
+          unit: "M+",
+          detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u89C2\u770B\u91CF\u5FBD\u7AE0",
+          progress: 80,
+          values: [],
+          metric: "\u7F8E\u5143\u57FA\u91D1",
+          metricLabel: "\u7F8E\u5143\u57FA\u91D1",
+          marketLabel: "\u89E6\u8FBE\u89C4\u6A21",
+          marketTo: 8,
+          marketSuffix: "M+",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 8,
+          engineeringSuffix: "M+",
+          bodyText: "M+",
+          body: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          effectZh: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          items: [],
+          steps: [],
+          comments: []
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 20,
+          unit: "M+",
+          label: "\u89E6\u8FBE\u89C4\u6A21",
+          detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-views-badge",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u64AD\u653E",
+            "\u89C2\u770B",
+            "\u89C4\u6A21",
+            "\u6570\u636E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "ViewsBadge",
+          adapter: "jc-metrics-views-badge"
+        },
+        updatedAt: "2026-09-15T01:17:42.023Z"
+      },
+      {
+        id: "jc-system-window-card",
+        name: "[JC] \u4EA7\u54C1\u7A97\u53E3\u5361",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u4EA7\u54C1\u7A97\u53E3\u5361",
+          effectText: "\u754C\u9762\u6BCF\u4E00\u6B65\u90FD\u8981\u7F29\u77ED\u7528\u6237\u51B3\u7B56\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u754C\u9762\u6BCF\u4E00\u6B65\u90FD\u8981\u7F29\u77ED\u7528\u6237\u51B3\u7B56\u3002",
+            highlightQuote: "PRODUCT WINDOW"
+          },
+          bodyText: "\u754C\u9762\u6BCF\u4E00\u6B65\u90FD\u8981\u7F29\u77ED\u7528\u6237\u51B3\u7B56\u3002",
+          highlightQuote: "PRODUCT WINDOW"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u754C\u9762\u6BCF\u4E00\u6B65\u90FD\u8981\u7F29\u77ED\u7528\u6237\u51B3\u7B56\u3002",
+          highlightQuote: "PRODUCT WINDOW"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-window-card",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EA7\u54C1",
+            "\u7A97\u53E3",
+            "\u754C\u9762",
+            "\u7CFB\u7EDF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "WindowCard",
+          adapter: "jc-system-window-card"
+        }
       }
     ],
     subtitleAssets: [
@@ -52072,20 +55563,676 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]
   };
 
-  // src/design/component-preset-resolver.ts
-  var { resolveFaceAwareLayer } = require_face_aware_layout();
-  var registry = components_registry_default;
-  var fallbackTokens = { padding: 48, gap: 16, position: "center", scale: 1, headerScale: 1, contentScale: 1, spring: "spring-up", sfx: "none", accentColor: "#00F2FE", defaultItemCount: 1, staggerFrames: 15, mountMode: "center", mountX: 0, mountY: 0, boundsX: 0, boundsY: 0, boundsWidth: 1920, boundsHeight: 1080 };
-  var getComponentPreset = (layout) => registry.components.find((component) => component.id === layout);
-  var getComponentTokens = (layout) => {
-    var _a2, _b;
-    return { ...fallbackTokens, ...(_b = (_a2 = getComponentPreset(layout)) == null ? void 0 : _a2.tokens) != null ? _b : {} };
+  // src/JasonWu/components/common/MotionWrapper.tsx
+  var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+  var BOTTOM_SUBTITLE_SAFE_PCT = 22;
+  var anchors = {
+    center: [0, 0],
+    "bottom-left": [-470, 260],
+    "bottom-right": [470, 260],
+    "top-right": [470, -245],
+    "center-right": [520, 0]
   };
-  var isTokenObject = (value) => !!value && typeof value === "object" && !Array.isArray(value);
-  var resolveComponentProps = (layout, effectProps) => {
-    var _a2, _b;
-    return { ...effectProps != null ? effectProps : {}, designTokens: { ...getComponentTokens(layout), ...isTokenObject(effectProps == null ? void 0 : effectProps.designTokens) ? effectProps.designTokens : {} }, designPresetVersion: (_b = (_a2 = getComponentPreset(layout)) == null ? void 0 : _a2.version) != null ? _b : 0 };
+  var DEFAULT_COMMON_PROPS = {
+    enterOffset: 0,
+    exitOffset: 0,
+    position: "center",
+    offsetX: 0,
+    offsetY: 0,
+    scale: 1,
+    enterAnimation: "spring-up",
+    exitAnimation: "none",
+    sfx: "none"
   };
+  var MotionWrapper = ({ commonProps, designTokens, beatDuration, entranceDurationSeconds = 2.2, textRole, preserveNativeMotion = false, children }) => {
+    var _a2, _b, _c, _d, _e, _f, _g, _h, _i;
+    const frame = useCurrentFrame();
+    const { fps } = useVideoConfig();
+    const props = { ...DEFAULT_COMMON_PROPS, ...commonProps != null ? commonProps : {} };
+    const enterFrames = Math.max(0, Math.round(props.enterOffset * fps));
+    const fixedFrames = props.duration ? Math.max(1, Math.round(props.duration * fps)) : Math.max(1, Math.round(beatDuration * fps) - enterFrames - Math.round(((_a2 = props.exitOffset) != null ? _a2 : 0) * fps));
+    const exitStart = Math.min(Math.max(enterFrames + 1, Math.round(beatDuration * fps) - Math.round(((_b = props.exitOffset) != null ? _b : 0) * fps)), enterFrames + fixedFrames);
+    const entranceFrames = Math.max(1, Math.round(entranceDurationSeconds * fps));
+    const enterProgress = preserveNativeMotion ? 1 : interpolate(frame, [enterFrames, enterFrames + entranceFrames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+    const exitProgress = props.exitAnimation === "none" ? 0 : interpolate(frame, [exitStart, exitStart + 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+    const hiddenBeforeEnter = !preserveNativeMotion && frame < enterFrames;
+    const [anchorX, anchorY] = (_c = anchors[props.position]) != null ? _c : anchors.center;
+    const mountMode = (_d = designTokens == null ? void 0 : designTokens.mountMode) != null ? _d : "center";
+    const mountX = Number.isFinite(designTokens == null ? void 0 : designTokens.mountX) ? Number(designTokens == null ? void 0 : designTokens.mountX) : 0;
+    const mountY = Number.isFinite(designTokens == null ? void 0 : designTokens.mountY) ? Number(designTokens == null ? void 0 : designTokens.mountY) : 0;
+    const boundsX = Number.isFinite(designTokens == null ? void 0 : designTokens.boundsX) ? Number(designTokens == null ? void 0 : designTokens.boundsX) : 0;
+    const boundsY = Number.isFinite(designTokens == null ? void 0 : designTokens.boundsY) ? Number(designTokens == null ? void 0 : designTokens.boundsY) : 0;
+    const boundsWidth = Math.max(1, Number.isFinite(designTokens == null ? void 0 : designTokens.boundsWidth) ? Number(designTokens == null ? void 0 : designTokens.boundsWidth) : 1920);
+    const boundsHeight = Math.max(1, Number.isFinite(designTokens == null ? void 0 : designTokens.boundsHeight) ? Number(designTokens == null ? void 0 : designTokens.boundsHeight) : 1080);
+    const presenterSafeMaxWidth = Number.isFinite(designTokens == null ? void 0 : designTokens.presenterSafeMaxWidth) ? Number(designTokens == null ? void 0 : designTokens.presenterSafeMaxWidth) : 0;
+    const presenterSafeLogicalWidth = presenterSafeMaxWidth > 0 ? Math.min(boundsWidth, Math.max(1, Number(designTokens == null ? void 0 : designTokens.presenterSafeLogicalWidth) || Math.round(presenterSafeMaxWidth / Math.max(0.01, (_e = props.scale) != null ? _e : 1)))) : 0;
+    const presenterSafeInset = designTokens == null ? void 0 : designTokens.presenterSafeInset;
+    const safeClipX = presenterSafeInset === "right" ? boundsX + Math.max(0, boundsWidth - presenterSafeLogicalWidth) : boundsX;
+    const safeClipRight = presenterSafeLogicalWidth > 0 ? Math.max(0, 1920 - safeClipX - presenterSafeLogicalWidth) : 0;
+    const safeClipPath = presenterSafeLogicalWidth > 0 ? "inset(" + Math.max(0, boundsY) + "px " + safeClipRight + "px " + Math.max(0, 1080 - boundsY - boundsHeight) + "px " + Math.max(0, safeClipX) + "px)" : void 0;
+    const centeredOffsetX = 960 - (boundsX + boundsWidth / 2) + mountX;
+    const centeredOffsetY = 540 - (boundsY + boundsHeight / 2) + mountY;
+    const mountOffsetX = mountMode === "top-left" ? mountX : mountMode === "left" ? 96 - boundsX + mountX : mountMode === "right" ? 1824 - (boundsX + boundsWidth) + mountX : centeredOffsetX;
+    const rawMountOffsetY = mountMode === "top-left" ? mountY : mountMode === "top" ? 216 - boundsY + mountY : mountMode === "bottom" ? 864 - (boundsY + boundsHeight) + mountY : centeredOffsetY;
+    const bottomSubtitleSafePx = 1080 * ((Number.isFinite(designTokens == null ? void 0 : designTokens.bottomSubtitleSafePct) ? Number(designTokens == null ? void 0 : designTokens.bottomSubtitleSafePct) : BOTTOM_SUBTITLE_SAFE_PCT) / 100);
+    const maxSafeBottomY = 1080 - bottomSubtitleSafePx;
+    const maxMountOffsetY = maxSafeBottomY - boundsY - boundsHeight;
+    const isFullCanvasBounds = boundsX === 0 && boundsY === 0 && boundsWidth >= 1920 && boundsHeight >= 1080;
+    const clampedMountOffsetY = isFullCanvasBounds ? rawMountOffsetY : Math.min(rawMountOffsetY, maxMountOffsetY);
+    const enterX = props.enterAnimation === "slide-left" ? interpolate(enterProgress, [0, 1], [-110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "slide-right" ? interpolate(enterProgress, [0, 1], [110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
+    const enterY = props.enterAnimation === "spring-up" ? interpolate(enterProgress, [0, 1], [76, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
+    const enterScale = props.enterAnimation === "fade-scale" ? interpolate(enterProgress, [0, 1], [0.86, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "glitch" ? 1 + Math.sin(frame * 2.2) * (frame < enterFrames + 10 ? 0.015 : 0) : 1;
+    const exitY = props.exitAnimation === "slide-down" ? interpolate(exitProgress, [0, 1], [0, 96]) : 0;
+    const exitScale = props.exitAnimation === "scale-down" ? interpolate(exitProgress, [0, 1], [1, 0.86]) : 1;
+    const opacity2 = hiddenBeforeEnter ? 0 : props.exitAnimation === "fade-out" ? 1 - exitProgress : interpolate(enterProgress, [0, 1], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    const scale = Math.min(1.2, Math.max(0.6, (_f = props.scale) != null ? _f : 1)) * enterScale * exitScale;
+    const presenterSafeCss = presenterSafeLogicalWidth > 0 ? [
+      ".presenter-safe-overlay .layout-effect-root{width:var(--presenter-safe-logical-width)!important;max-width:100%!important;overflow:hidden;}",
+      ".presenter-safe-overlay .layout-effect-root > *{width:100%;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;}",
+      ".presenter-safe-overlay .layout-effect-root [style]{max-width:100%!important;box-sizing:border-box!important;}"
+    ].join("") : "";
+    const commercialTextCss = !textRole ? "" : [
+      ".motion-commercial-analysis [style*='color: rgb(255, 255, 255)'],.motion-commercial-analysis [style*='color: rgb(248, 250, 252)'],.motion-commercial-analysis [style*='color: #F8FAFC'],.motion-commercial-analysis [style*='color: white']{",
+      "-webkit-text-stroke:none!important;text-shadow:0 5px 18px rgba(0,0,0,0.52)!important;",
+      "}",
+      ".motion-text-role-risk [style*='color: rgb(255, 107, 107)'],.motion-text-role-risk [style*='color: #FF6B6B']{",
+      "background:rgba(162,36,48,0.92);padding:4px 10px;border-radius:5px;-webkit-text-stroke:none!important;",
+      "}"
+    ].join("");
+    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(AbsoluteFill, { className: [textRole ? "motion-commercial-analysis motion-text-role-" + textRole : "", presenterSafeLogicalWidth > 0 ? "presenter-safe-overlay" : ""].filter(Boolean).join(" "), style: {
+      pointerEvents: "none",
+      opacity: opacity2,
+      transform: "translate(" + (mountOffsetX + anchorX + ((_g = props.offsetX) != null ? _g : 0) + enterX) + "px," + (clampedMountOffsetY + anchorY + ((_h = props.offsetY) != null ? _h : 0) + enterY + exitY) + "px) scale(" + scale + ")",
+      transformOrigin: (mountMode === "top-left" || presenterSafeInset === "left" ? boundsX : presenterSafeInset === "right" ? boundsX + boundsWidth : boundsX + boundsWidth / 2) + "px " + (mountMode === "top-left" ? boundsY : boundsY + boundsHeight / 2) + "px",
+      clipPath: safeClipPath,
+      "--presenter-safe-logical-width": presenterSafeLogicalWidth + "px",
+      "--cinematic-center-corridor-pct": String((_i = designTokens == null ? void 0 : designTokens.cinematicCenterCorridorPct) != null ? _i : 0),
+      wordBreak: "keep-all",
+      overflowWrap: "break-word"
+    }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("style", { children: presenterSafeCss + commercialTextCss }),
+      children
+    ] });
+  };
+
+  // src/JasonWu/JcNativeRecipes.tsx
+  var import_react129 = __toESM(require_react());
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/createLucideIcon.mjs
+  var import_react125 = __toESM(require_react(), 1);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs
+  var toKebabCase = (string) => string == null ? void 0 : string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs
+  function toLucideIconData(iconName, iconNode, aliases = []) {
+    if (iconNode == null) {
+      throw new Error("[lucide]: iconNode is required when icon name is used");
+    }
+    return {
+      name: toKebabCase(iconName),
+      size: 24,
+      node: iconNode,
+      ...aliases.length > 0 ? { aliases } : {}
+    };
+  }
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs
+  var toCamelCase = (string) => {
+    let out = "";
+    let upperNext = false;
+    for (const ch of string) {
+      if (ch === "-" || ch === "_" || ch <= " ") {
+        upperNext = out.length > 0;
+        continue;
+      }
+      if (out.length === 0) {
+        out += ch.toLowerCase();
+      } else {
+        out += upperNext ? ch.toUpperCase() : ch;
+      }
+      upperNext = false;
+    }
+    return out;
+  };
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs
+  var toPascalCase = (string) => {
+    const camelCase = toCamelCase(string);
+    return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
+  };
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/Icon.mjs
+  var import_react124 = __toESM(require_react(), 1);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs
+  var mergeClasses = (...classes) => classes.filter((className2, index, array) => {
+    return Boolean(className2) && className2.trim() !== "" && array.indexOf(className2) === index;
+  }).join(" ").trim();
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/build/defaultAttributes.mjs
+  var defaultAttributes = {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 24,
+    height: 24,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    "stroke-width": 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round"
+  };
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs
+  function isDefined(value) {
+    return value !== null && value !== void 0;
+  }
+  function buildLucideIconNode(icon, params = {}) {
+    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
+    const attributeNames = (_a2 = params.attributeNames) != null ? _a2 : {};
+    const getAttributeName = (attributeName) => {
+      var _a3;
+      return (_a3 = attributeNames[attributeName]) != null ? _a3 : attributeName;
+    };
+    const viewBoxWidth = (_c = (_b = icon.size) != null ? _b : icon.width) != null ? _c : defaultAttributes["width"];
+    const viewBoxHeight = (_e = (_d = icon.size) != null ? _d : icon.height) != null ? _e : defaultAttributes["height"];
+    const aliasClassNames = (_g = (_f = icon.aliases) == null ? void 0 : _f.filter((alias) => typeof alias === "string" && alias.trim() !== "").map((alias) => `lucide-${alias}`)) != null ? _g : [];
+    const iconClassNames = [...icon.name ? [`lucide-${icon.name}`] : [], ...aliasClassNames];
+    const classNamesFromClassName = (_i = (_h = params.className) == null ? void 0 : _h.split(" ").filter(Boolean)) != null ? _i : [];
+    const className2 = params.includeDefaultClasses === false ? mergeClasses(...classNamesFromClassName) : mergeClasses("lucide", ...iconClassNames, ...classNamesFromClassName);
+    const calculatedStrokeWidth = params.absoluteStrokeWidth ? Number((_j = params.strokeWidth) != null ? _j : defaultAttributes["stroke-width"]) * Number((_l = (_k = icon.size) != null ? _k : icon.width) != null ? _l : defaultAttributes["width"]) / Number((_n = (_m = params.size) != null ? _m : params.width) != null ? _n : defaultAttributes["width"]) : (_o = params.strokeWidth) != null ? _o : defaultAttributes["stroke-width"];
+    const attributes = {
+      ...Object.entries(defaultAttributes).reduce((attrs, [attrName, value]) => {
+        attrs[getAttributeName(attrName)] = value;
+        return attrs;
+      }, {}),
+      ..."color" in params && params.color && {
+        [getAttributeName("stroke")]: params.color
+      },
+      ..."size" in params && isDefined(params.size) && {
+        [getAttributeName("width")]: params.size,
+        [getAttributeName("height")]: params.size
+      },
+      ..."width" in params && isDefined(params.width) && {
+        [getAttributeName("width")]: params.width
+      },
+      ..."height" in params && isDefined(params.height) && {
+        [getAttributeName("height")]: params.height
+      },
+      [getAttributeName("stroke-width")]: calculatedStrokeWidth,
+      ...className2 && {
+        [getAttributeName("class")]: className2
+      },
+      [getAttributeName("viewBox")]: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
+      ...params.hasA11yProp === false ? {
+        [getAttributeName("aria-hidden")]: "true"
+      } : {},
+      ..."attributes" in params && params.attributes
+    };
+    return [
+      "svg",
+      attributes,
+      icon.node.map((child) => {
+        const [name, attrs, children] = child;
+        const nextAttrs = params.nonScalingStroke ? { [getAttributeName("vector-effect")]: "non-scaling-stroke", ...attrs } : attrs;
+        return children ? [name, nextAttrs, children] : [name, nextAttrs];
+      })
+    ];
+  }
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconForReact.mjs
+  function buildLucideIconForReact(icon, params = {}) {
+    return buildLucideIconNode(icon, {
+      ...params,
+      attributeNames: {
+        ...params.attributeNames,
+        class: "className",
+        "stroke-width": "strokeWidth",
+        "stroke-linecap": "strokeLinecap",
+        "stroke-linejoin": "strokeLinejoin",
+        "vector-effect": "vectorEffect"
+      }
+    });
+  }
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs
+  var hasA11yProp = (props) => {
+    for (const prop in props) {
+      if (prop.startsWith("aria-") || prop === "role" || prop === "title") {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/context.mjs
+  var import_react123 = __toESM(require_react(), 1);
+  var LucideContext = (0, import_react123.createContext)({});
+  var useLucideContext = () => (0, import_react123.useContext)(LucideContext);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/Icon.mjs
+  var Icon = (0, import_react124.forwardRef)(
+    ({
+      color,
+      size,
+      width,
+      height,
+      strokeWidth,
+      absoluteStrokeWidth,
+      nonScalingStroke,
+      className: className2 = "",
+      children,
+      iconNode = [],
+      icon = {
+        node: iconNode,
+        aliases: [],
+        size: 24
+      },
+      ...rest
+    }, ref) => {
+      var _a2, _b, _c;
+      const {
+        size: contextSize = 24,
+        strokeWidth: contextStrokeWidth = 2,
+        absoluteStrokeWidth: contextAbsoluteStrokeWidth = false,
+        nonScalingStroke: contextNonScalingStroke = false,
+        color: contextColor = "currentColor",
+        className: contextClass = ""
+      } = (_a2 = useLucideContext()) != null ? _a2 : {};
+      const hasAccessibleProp = Boolean(children) || hasA11yProp(rest);
+      const [name, svgAttributes, builtIconNode = []] = buildLucideIconForReact(icon, {
+        color: color != null ? color : contextColor,
+        width: (_b = width != null ? width : size) != null ? _b : contextSize,
+        height: (_c = height != null ? height : size) != null ? _c : contextSize,
+        strokeWidth: strokeWidth != null ? strokeWidth : contextStrokeWidth,
+        absoluteStrokeWidth: absoluteStrokeWidth != null ? absoluteStrokeWidth : contextAbsoluteStrokeWidth,
+        nonScalingStroke: nonScalingStroke != null ? nonScalingStroke : contextNonScalingStroke,
+        className: mergeClasses(contextClass, className2),
+        hasA11yProp: hasAccessibleProp,
+        attributes: rest
+      });
+      return (0, import_react124.createElement)(
+        name,
+        {
+          ref,
+          ...svgAttributes
+        },
+        [
+          ...builtIconNode.map(([tag, attrs]) => (0, import_react124.createElement)(tag, attrs)),
+          ...Array.isArray(children) ? children : [children]
+        ]
+      );
+    }
+  );
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/createLucideIcon.mjs
+  function createLucideIcon(iconDataOrName, iconNode = [], aliases = []) {
+    const iconData = typeof iconDataOrName === "string" ? toLucideIconData(iconDataOrName, iconNode, aliases) : iconDataOrName;
+    const Component = (0, import_react125.forwardRef)(
+      ({ className: className2, ...props }, ref) => (0, import_react125.createElement)(Icon, {
+        ref,
+        icon: iconData,
+        className: className2,
+        ...props
+      })
+    );
+    if (iconData.name) {
+      Component.displayName = toPascalCase(iconData.name);
+    }
+    return Component;
+  }
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/arrow-down.mjs
+  var __iconData = {
+    name: "arrow-down",
+    size: 24,
+    node: [
+      ["path", { d: "M12 5v14", key: "s699le" }],
+      ["path", { d: "m19 12-7 7-7-7", key: "1idqje" }]
+    ]
+  };
+  __iconData.node;
+  var ArrowDown = createLucideIcon(__iconData);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/badge-check.mjs
+  var __iconData2 = {
+    name: "badge-check",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z",
+          key: "3c2336"
+        }
+      ],
+      ["path", { d: "m16 9-5.5 5.5L8 12", key: "xofnsj" }]
+    ],
+    aliases: ["verified"]
+  };
+  __iconData2.node;
+  var BadgeCheck = createLucideIcon(__iconData2);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/bot.mjs
+  var __iconData3 = {
+    name: "bot",
+    size: 24,
+    node: [
+      ["path", { d: "M12 8V4H8", key: "hb8ula" }],
+      ["rect", { width: "16", height: "12", x: "4", y: "8", rx: "2", key: "enze0r" }],
+      ["path", { d: "M2 14h2", key: "vft8re" }],
+      ["path", { d: "M20 14h2", key: "4cs60a" }],
+      ["path", { d: "M15 13v2", key: "1xurst" }],
+      ["path", { d: "M9 13v2", key: "rq6x2g" }]
+    ]
+  };
+  __iconData3.node;
+  var Bot = createLucideIcon(__iconData3);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/check.mjs
+  var __iconData4 = {
+    name: "check",
+    size: 24,
+    node: [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]]
+  };
+  __iconData4.node;
+  var Check = createLucideIcon(__iconData4);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/code-xml.mjs
+  var __iconData5 = {
+    name: "code-xml",
+    size: 24,
+    node: [
+      ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
+      ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
+      ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
+    ],
+    aliases: ["code-2"]
+  };
+  __iconData5.node;
+  var CodeXml = createLucideIcon(__iconData5);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/crown.mjs
+  var __iconData6 = {
+    name: "crown",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z",
+          key: "1vdc57"
+        }
+      ],
+      ["path", { d: "M5 21h14", key: "11awu3" }]
+    ]
+  };
+  __iconData6.node;
+  var Crown = createLucideIcon(__iconData6);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/eye.mjs
+  var __iconData7 = {
+    name: "eye",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
+          key: "1nclc0"
+        }
+      ],
+      ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+    ]
+  };
+  __iconData7.node;
+  var Eye = createLucideIcon(__iconData7);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/file-text.mjs
+  var __iconData8 = {
+    name: "file-text",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+          key: "1oefj6"
+        }
+      ],
+      ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
+      ["path", { d: "M10 9H8", key: "b1mrlr" }],
+      ["path", { d: "M16 13H8", key: "t4e002" }],
+      ["path", { d: "M16 17H8", key: "z1uh3a" }]
+    ]
+  };
+  __iconData8.node;
+  var FileText = createLucideIcon(__iconData8);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/flame.mjs
+  var __iconData9 = {
+    name: "flame",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4",
+          key: "1slcih"
+        }
+      ]
+    ]
+  };
+  __iconData9.node;
+  var Flame = createLucideIcon(__iconData9);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/git-branch.mjs
+  var __iconData10 = {
+    name: "git-branch",
+    size: 24,
+    node: [
+      ["path", { d: "M15 6a9 9 0 0 0-9 9V3", key: "1cii5b" }],
+      ["circle", { cx: "18", cy: "6", r: "3", key: "1h7g24" }],
+      ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }]
+    ]
+  };
+  __iconData10.node;
+  var GitBranch = createLucideIcon(__iconData10);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/lightbulb.mjs
+  var __iconData11 = {
+    name: "lightbulb",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5",
+          key: "1gvzjb"
+        }
+      ],
+      ["path", { d: "M9 18h6", key: "x1upvd" }],
+      ["path", { d: "M10 22h4", key: "ceow96" }]
+    ]
+  };
+  __iconData11.node;
+  var Lightbulb = createLucideIcon(__iconData11);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/package.mjs
+  var __iconData12 = {
+    name: "package",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z",
+          key: "1a0edw"
+        }
+      ],
+      ["path", { d: "M12 22V12", key: "d0xqtd" }],
+      ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
+      ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
+    ]
+  };
+  __iconData12.node;
+  var Package = createLucideIcon(__iconData12);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/play.mjs
+  var __iconData13 = {
+    name: "play",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z",
+          key: "10ikf1"
+        }
+      ]
+    ]
+  };
+  __iconData13.node;
+  var Play = createLucideIcon(__iconData13);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/scale.mjs
+  var __iconData14 = {
+    name: "scale",
+    size: 24,
+    node: [
+      ["path", { d: "M12 3v18", key: "108xh3" }],
+      ["path", { d: "m19 8 3 8a5 5 0 0 1-6 0zV7", key: "zcdpyk" }],
+      ["path", { d: "M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1", key: "1yorad" }],
+      ["path", { d: "m5 8 3 8a5 5 0 0 1-6 0zV7", key: "eua70x" }],
+      ["path", { d: "M7 21h10", key: "1b0cd5" }]
+    ]
+  };
+  __iconData14.node;
+  var Scale = createLucideIcon(__iconData14);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/shield-check.mjs
+  var __iconData15 = {
+    name: "shield-check",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+          key: "oel41y"
+        }
+      ],
+      ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+    ]
+  };
+  __iconData15.node;
+  var ShieldCheck = createLucideIcon(__iconData15);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/sparkles.mjs
+  var __iconData16 = {
+    name: "sparkles",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
+          key: "1s2grr"
+        }
+      ],
+      ["path", { d: "M20 2v4", key: "1rf3ol" }],
+      ["path", { d: "M22 4h-4", key: "gwowj6" }],
+      ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
+    ],
+    aliases: ["stars"]
+  };
+  __iconData16.node;
+  var Sparkles = createLucideIcon(__iconData16);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/square-terminal.mjs
+  var __iconData17 = {
+    name: "square-terminal",
+    size: 24,
+    node: [
+      ["path", { d: "m7 11 2-2-2-2", key: "1lz0vl" }],
+      ["path", { d: "M11 13h4", key: "1p7l4v" }],
+      ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }]
+    ],
+    aliases: ["terminal-square"]
+  };
+  __iconData17.node;
+  var SquareTerminal = createLucideIcon(__iconData17);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/star.mjs
+  var __iconData18 = {
+    name: "star",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
+          key: "r04s7s"
+        }
+      ]
+    ]
+  };
+  __iconData18.node;
+  var Star = createLucideIcon(__iconData18);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/wand-sparkles.mjs
+  var __iconData19 = {
+    name: "wand-sparkles",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72",
+          key: "ul74o6"
+        }
+      ],
+      ["path", { d: "m14 7 3 3", key: "1r5n42" }],
+      ["path", { d: "M5 6v4", key: "ilb8ba" }],
+      ["path", { d: "M19 14v4", key: "blhpug" }],
+      ["path", { d: "M10 2v2", key: "7u0qdc" }],
+      ["path", { d: "M7 8H3", key: "zfb6yr" }],
+      ["path", { d: "M21 16h-4", key: "1cnmox" }],
+      ["path", { d: "M11 3H9", key: "1obp7u" }]
+    ],
+    aliases: ["wand-2"]
+  };
+  __iconData19.node;
+  var WandSparkles = createLucideIcon(__iconData19);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/x.mjs
+  var __iconData20 = {
+    name: "x",
+    size: 24,
+    node: [
+      ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+      ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
+    ]
+  };
+  __iconData20.node;
+  var X = createLucideIcon(__iconData20);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/zap.mjs
+  var __iconData21 = {
+    name: "zap",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z",
+          key: "1v7up4"
+        }
+      ]
+    ]
+  };
+  __iconData21.node;
+  var Zap = createLucideIcon(__iconData21);
 
   // src/design/component-content.ts
   var stringValue = (value, fallback = "") => typeof value === "string" ? value : fallback;
@@ -52095,13 +56242,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var normalizeComponentContent = (source) => {
     var _a2, _b, _c;
     const input = source != null ? source : {};
-    const category = stringValue(input.category, stringValue(input.eyebrow, stringValue(input.categoryTag, "DESIGN SYSTEM")));
-    const headline = stringValue(input.headline, stringValue(input.title, "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7"));
+    const projectLayer = input.__projectLayer === true;
+    const category = stringValue(input.category, stringValue(input.eyebrow, stringValue(input.categoryTag, projectLayer ? "" : "DESIGN SYSTEM")));
+    const headline = stringValue(input.headline, stringValue(input.title, projectLayer ? "" : "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7"));
     const payload = input.contentPayload;
     if (isPayload(payload)) {
-      if (payload.type === "narrative") return { category, headline, contentPayload: { type: "narrative", bodyText: stringValue(payload.bodyText, stringValue(input.bullText, stringValue(input.body, stringValue(input.effectText, stringValue(input.text, "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))))), ...typeof payload.bearText === "string" || stringValue(input.bearText) ? { bearText: typeof payload.bearText === "string" ? payload.bearText : stringValue(input.bearText) } : {}, ...typeof payload.highlightQuote === "string" || stringValue(input.highlightQuote) ? { highlightQuote: typeof payload.highlightQuote === "string" ? payload.highlightQuote : stringValue(input.highlightQuote) } : {} } };
+      if (payload.type === "narrative") return { category, headline, contentPayload: { type: "narrative", bodyText: stringValue(payload.bodyText, stringValue(input.bullText, stringValue(input.body, stringValue(input.effectText, stringValue(input.text, projectLayer ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))))), ...typeof payload.bearText === "string" || stringValue(input.bearText) ? { bearText: typeof payload.bearText === "string" ? payload.bearText : stringValue(input.bearText) } : {}, ...typeof payload.highlightQuote === "string" || stringValue(input.highlightQuote) ? { highlightQuote: typeof payload.highlightQuote === "string" ? payload.highlightQuote : stringValue(input.highlightQuote) } : {} } };
       if (payload.type === "chips") return { category, headline, contentPayload: { type: "chips", items: (Array.isArray(payload.items) ? payload.items : []).map((item2) => ({ title: stringValue(item2 == null ? void 0 : item2.title), subtitle: typeof (item2 == null ? void 0 : item2.subtitle) === "string" ? item2.subtitle : "" })) } };
-      if (payload.type === "metrics") return { category, headline, contentPayload: { type: "metrics", value: (_c = (_b = (_a2 = payload.value) != null ? _a2 : input.value) != null ? _b : input.progress) != null ? _c : 71, unit: stringValue(payload.unit), label: stringValue(payload.label, stringValue(input.label, stringValue(input.metric, "\u5173\u952E\u6307\u6807"))), ...typeof payload.bodyText === "string" || typeof input.bodyText === "string" || typeof input.unit === "string" ? { bodyText: stringValue(payload.bodyText, stringValue(input.bodyText, stringValue(input.unit))) } : {}, ...typeof payload.detailText === "string" || typeof input.detailText === "string" || typeof input.body === "string" || typeof input.effectText === "string" ? { detailText: stringValue(payload.detailText, stringValue(input.detailText, stringValue(input.body, stringValue(input.effectText)))) } : {} } };
+      if (payload.type === "metrics") return { category, headline, contentPayload: { type: "metrics", value: (_c = (_b = (_a2 = payload.value) != null ? _a2 : input.value) != null ? _b : input.progress) != null ? _c : projectLayer ? "" : 71, unit: stringValue(payload.unit), label: stringValue(payload.label, stringValue(input.label, stringValue(input.metric, projectLayer ? "" : "\u5173\u952E\u6307\u6807"))), ...typeof payload.bodyText === "string" || typeof input.bodyText === "string" || typeof input.unit === "string" ? { bodyText: stringValue(payload.bodyText, stringValue(input.bodyText, stringValue(input.unit))) } : {}, ...typeof payload.detailText === "string" || typeof input.detailText === "string" || typeof input.body === "string" || typeof input.effectText === "string" ? { detailText: stringValue(payload.detailText, stringValue(input.detailText, stringValue(input.body, stringValue(input.effectText)))) } : {} } };
       return { category, headline, contentPayload: { type: "steps", steps: (Array.isArray(payload.steps) ? payload.steps : []).map((item2, index) => ({ stepNumber: Number(item2 == null ? void 0 : item2.stepNumber) || index + 1, text: stringValue(item2 == null ? void 0 : item2.text) })), ...Number.isFinite(Number(payload.progress)) ? { progress: Number(payload.progress) } : {}, ...typeof payload.bodyText === "string" ? { bodyText: payload.bodyText } : {} } };
     }
     const list3 = rows2(input.steps).length ? rows2(input.steps) : rows2(input.items).length ? rows2(input.items) : rows2(input.years).length ? rows2(input.years) : rows2(input.nodes).length ? rows2(input.nodes) : rows2(input.units);
@@ -52122,16 +56270,4496 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const list3 = rows2(source == null ? void 0 : source.items).length ? rows2(source == null ? void 0 : source.items) : rows2(source == null ? void 0 : source.steps);
       const numeric = Number(payload.value);
       const bodyText2 = stringValue(payload.bodyText, stringValue(payload.unit, normalized.headline));
-      const detailText = stringValue(payload.detailText, stringValue(source == null ? void 0 : source.body, stringValue(source == null ? void 0 : source.effectText, "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE")));
-      return { ...base, value: payload.value, progress: payload.value, values: list3.length && Number.isFinite(numeric) ? list3.map(() => numeric) : numbers(source == null ? void 0 : source.values), metric: payload.label, label: payload.label, metricLabel: payload.label, unit: payload.unit, marketLabel: stringValue(source == null ? void 0 : source.marketLabel, payload.label), marketTo: (_a2 = source == null ? void 0 : source.marketTo) != null ? _a2 : payload.value, marketSuffix: stringValue(source == null ? void 0 : source.marketSuffix, payload.unit), engineeringLabel: stringValue(source == null ? void 0 : source.engineeringLabel, "\u589E\u957F\u6307\u6807"), engineeringTo: (_c = (_b = source == null ? void 0 : source.engineeringTo) != null ? _b : source == null ? void 0 : source.value2) != null ? _c : payload.value, engineeringSuffix: stringValue(source == null ? void 0 : source.engineeringSuffix, payload.unit), bodyText: bodyText2, detailText, body: detailText, effectText: detailText, effectZh: detailText, items: list3, steps: list3, comments: list3 };
+      const detailText = stringValue(payload.detailText, stringValue(source == null ? void 0 : source.body, stringValue(source == null ? void 0 : source.effectText, (source == null ? void 0 : source.__projectLayer) === true ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE")));
+      return { ...base, value: payload.value, progress: payload.value, values: list3.length && Number.isFinite(numeric) ? list3.map(() => numeric) : numbers(source == null ? void 0 : source.values), metric: payload.label, label: payload.label, metricLabel: payload.label, unit: payload.unit, marketLabel: stringValue(source == null ? void 0 : source.marketLabel, payload.label), marketTo: (_a2 = source == null ? void 0 : source.marketTo) != null ? _a2 : payload.value, marketSuffix: stringValue(source == null ? void 0 : source.marketSuffix, payload.unit), engineeringLabel: stringValue(source == null ? void 0 : source.engineeringLabel, (source == null ? void 0 : source.__projectLayer) === true ? "" : "\u589E\u957F\u6307\u6807"), engineeringTo: (_c = (_b = source == null ? void 0 : source.engineeringTo) != null ? _b : source == null ? void 0 : source.value2) != null ? _c : payload.value, engineeringSuffix: stringValue(source == null ? void 0 : source.engineeringSuffix, payload.unit), bodyText: bodyText2, detailText, body: detailText, effectText: detailText, effectZh: detailText, items: list3, steps: list3, comments: list3 };
     }
     const values2 = payload.steps.map((item2) => item2.text);
     const bodyText = typeof payload.bodyText === "string" ? payload.bodyText : stringValue(source == null ? void 0 : source.body, stringValue(source == null ? void 0 : source.effectText, stringValue(source == null ? void 0 : source.text)));
     return { ...base, steps: values2, items: values2, years: values2, nodes: values2, units: values2, comments: values2, label: stringValue(source == null ? void 0 : source.label, normalized.category), title: stringValue(source == null ? void 0 : source.title, normalized.headline), body: bodyText, bodyText, effectText: bodyText, effectZh: bodyText, text: bodyText, ...typeof payload.progress === "number" ? { progress: payload.progress, value: payload.progress, values: values2.map(() => payload.progress) } : { values: numbers(source == null ? void 0 : source.values) } };
   };
 
+  // src/JasonWu/JcFontGate.tsx
+  var import_react126 = __toESM(require_react());
+  var specs = [
+    ...["500", "700", "900"].map((weight) => `${weight} 32px "Noto Sans SC"`),
+    ...["300", "600", "700", "800"].map((weight) => `${weight} 32px "Inter"`),
+    '400 32px "Archivo Black"'
+  ];
+  var sample = "JC font verification AI0123456789";
+  var JcFontGate = () => {
+    const [handle] = (0, import_react126.useState)(() => delayRender("Waiting for JC design fonts"));
+    (0, import_react126.useEffect)(() => {
+      let cancelled = false;
+      const waitForFonts = async () => {
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        for (let attempt = 0; attempt < 60; attempt += 1) {
+          await Promise.all(specs.map((spec) => document.fonts.load(spec, sample).catch(() => {
+          })));
+          await document.fonts.ready;
+          if (specs.every((spec) => document.fonts.check(spec, sample))) {
+            if (!cancelled) continueRender(handle);
+            return;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 200));
+        }
+        cancelRender(new Error("JC fonts did not become ready"));
+      };
+      void waitForFonts().catch((error2) => cancelRender(error2));
+      return () => {
+        cancelled = true;
+      };
+    }, [handle]);
+    return null;
+  };
+
+  // src/JasonWu/components/jc/tokens.ts
+  var COLOR = {
+    // 四色语义（唯一允许的强调色）
+    blue: "#4D9EFF",
+    // 定义 / 方法 / 中性推进
+    green: "#3DDC84",
+    // 正面 / 低门槛 / 已生效
+    yellow: "#FFC53D",
+    // 机会 / 警示 / 争议 / 转折
+    red: "#FF4D4D",
+    // 负面 / 陷阱 / 危机
+    // 基础
+    white: "#FFFFFF",
+    grey: "#B7BDC6",
+    // 次要文字
+    greyDim: "#7A8089",
+    // 更弱的说明文字
+    cardBg: "rgba(12,14,18,0.78)",
+    cardStroke: "rgba(255,255,255,0.10)"
+  };
+  var SURFACE = {
+    light: {
+      bg: "rgba(255,255,255,0.92)",
+      fg: "#1A1D24",
+      stroke: "rgba(0,0,0,0.12)",
+      shadow: "0 6px 20px rgba(0,0,0,0.18)"
+    },
+    darkPlate: "rgba(10,10,12,0.72)"
+  };
+  var FONT = {
+    zh: '"Noto Sans SC"',
+    // 思源黑体
+    en: '"Inter"',
+    // 英文 kicker / 正文 / 数字
+    enTitle: '"Archivo Black"',
+    // 英文标题与大字结论（CRUSHED / 人名），窄方超黑，weight 一律 400
+    // 底部字幕专用字族（2026-07-26 裁定，唯一例外）：字幕是跟读层不是包装层，用 PingFang SC
+    // Regular 取苹果字幕的细体气质；MG 包装层仍一律 FONT.zh。PingFang 为 macOS 系统字体，
+    // 不走 @fontsource 打包 —— Windows/Linux 渲染时回退到打包的 Noto Sans SC 400（fonts.ts
+    // 已引入 400 细档，近似但非同款；跨机器交付前先渲一帧确认字幕观感）。
+    subZh: '"PingFang SC", "Noto Sans SC"',
+    subEn: '"Inter"',
+    // 字幕英文行必须用比例西文字体：用中文字体渲英文，字宽字距全错
+    zhHeavy: 900,
+    zhMedium: 500,
+    enBold: 700,
+    subZhWeight: 400,
+    subEnWeight: 300
+  };
+  var GRADIENT = {
+    blue: ["#6FB4FF", "#2F7FE0"],
+    green: ["#5CE89A", "#1FA85D"],
+    yellow: ["#FFD666", "#E8A81E"],
+    red: ["#FF6B6B", "#E22D2D"]
+  };
+  var SIZE = {
+    kicker: 22,
+    // 英文 kicker / 侧标英文
+    subSmall: 20,
+    // 侧标第二行等最小说明字
+    chip: 30,
+    // ⚠ 已废弃（2026-07-25）：30 落 typography §7.7 空档带 26-31。存量片沿用，新片改用下方 T 档
+    // ---- T 档字阶（2026-07-25 基准片八维实测，typography §7.7 唯一真源）----
+    // 五档 + 空档带：T1 106-138 / [91-105 禁] / T2 51-71 / [43-50 禁] / T3 32-42 / [26-31 禁] / T4 17-25 / [13-16 禁] / T5 10-12
+    // 现有 token 归档：h1=108→T1｜h2=64 & subZh=52→T2｜card=40→T3｜kicker=22 & subSmall=20→T4｜mega=180 独立冲击档
+    navTitle: 52,
+    // 章节侧标 title 变体的中文大标（导航层）。2026-07-27 新增：旧值 SIZE.kicker*2=44
+    // 落 typography §7.7 的 43-50 禁用空档带；52 落 T2 档 51-71 内，与 kicker 22 成 2.36:1。
+    // 独立成 token 而非复用 subZh（同为 52）——subZh 是底部字幕跟读层专用，两者语义无关，
+    // 合用会让「调字幕字号」连带动侧标（impl-S08 提出）。
+    t3: 32,
+    // 清单条目 / 小标题（取代 chip 30）
+    t4Lg: 25,
+    // 贴行 / 徽章标签 / 次级 chip（T4 上沿）
+    t4Sm: 17,
+    // 条目级 EN 小标（T4 下沿，取代 16）
+    subZh: 52,
+    // 底部字幕中文（2026-07-16 裁决：对齐基准片 ≈53px、屏高 4.9%）
+    subEn: 28,
+    // 底部字幕英文（与中文行比例对齐基准片）
+    card: 40,
+    // 卡片标题
+    h2: 64,
+    // 段落 hero
+    h1: 108,
+    // 章节 hero / 大数字（2026-07-16 裁决：88→108，对齐基准片单字 100-110px）
+    mega: 180
+    // 全屏冲击数字
+  };
+  var GRID2 = 8;
+  var RADIUS = { chip: 12, card: 20, phone: 56 };
+  var SAFE = {
+    sideLabel: { x: 72, y: 88 },
+    // 章节侧标锚点（竖线左缘 / kicker 基线区顶）
+    stackX: 72,
+    // 左侧信息卡堆栈左缘
+    subtitleBottom: 30,
+    // 字幕距底（2026-07-16 规格表：基准片英文箱底距画底 26-30px，旧值 84 偏高约 50px）
+    faceZoneXPct: 0.55,
+    // x > 55% 不放常驻卡
+    subtitleZoneYPct: 0.82
+    // y > 82% 不放卡片
+  };
+  var MOTION = {
+    // 合成是 30fps（勿按 60fps 写帧数——2026-07-16 校准：旧值 18/14 是 60fps 口径，
+    // 在 30fps 下所有入场慢一倍、stagger 拖 0.47s，是「PPT 感」的系统性来源）。
+    popInFrames: 9,
+    // 入场时长（30fps ≈ 0.3s）
+    popInShift: 40,
+    // 入场位移 px（明显的滑入感）
+    stagger: 7,
+    // 先后入场的默认间隔帧数（≈0.23s）
+    dimOpacity: 0.35
+    // 旧信息常驻透明度
+  };
+
+  // src/JasonWu/components/jc/motion.ts
+  var useEnter = (enterAt = 0, dir = "left") => {
+    const frame = useCurrentFrame();
+    const local = frame - enterAt;
+    const move = interpolate(local, [0, MOTION.popInFrames], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const opacity2 = interpolate(local, [0, MOTION.popInFrames * 0.7], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.quad)
+    });
+    const shift = (1 - move) * MOTION.popInShift;
+    return {
+      opacity: opacity2,
+      transform: dir === "left" ? `translateX(${-shift}px)` : `translateY(${shift}px)`
+    };
+  };
+  var usePop = (enterAt = 0, durFrames = 13) => {
+    const frame = useCurrentFrame();
+    const local = frame - enterAt;
+    const t = interpolate(local, [0, durFrames], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    return {
+      opacity: t,
+      transform: `scale(${0.95 + t * 0.05})`
+    };
+  };
+
+  // src/JasonWu/components/jc/BadgeCard.tsx
+  var import_jsx_runtime73 = __toESM(require_jsx_runtime());
+  var BadgeCard = ({ icon, zhTitle, zhResult, enKicker, accent = "yellow", enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const c3 = COLOR[accent];
+    return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 12,
+          padding: "26px 34px",
+          background: "rgba(10,12,16,0.88)",
+          border: `2px solid ${c3}`,
+          borderRadius: 18,
+          boxShadow: `0 0 30px ${c3}33, 0 14px 40px rgba(0,0,0,0.5), inset 0 0 26px ${c3}14`,
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: zhTitle }),
+          /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(ArrowDown, { size: 22, strokeWidth: 2.8, color: c3 }),
+            /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: c3 }, children: zhResult })
+          ] }),
+          enKicker ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.3em", color: `${c3}CC` }, children: enKicker.toUpperCase() }) : null
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/BarChart.tsx
+  var import_jsx_runtime74 = __toESM(require_jsx_runtime());
+  var BarChart2 = ({ items: items2, accent = "yellow", width = 420, enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const max = Math.max(...items2.map((i) => i.value));
+    return /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 2 }, children: items2.map((item2, i) => {
+      const start2 = enterAt + i * MOTION.stagger;
+      const t = interpolate(frame, [start2, start2 + 24], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.cubic)
+      });
+      const barW = item2.value / max * width * t;
+      return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 14, opacity: t === 0 ? 0 : 1 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+          "div",
+          {
+            style: {
+              width: 120,
+              textAlign: "right",
+              fontFamily: FONT.en,
+              fontWeight: 700,
+              fontSize: SIZE.subSmall,
+              color: COLOR.grey,
+              whiteSpace: "nowrap"
+            },
+            children: item2.label
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+          "div",
+          {
+            style: {
+              width: barW,
+              height: 16,
+              borderRadius: 8,
+              background: item2.highlight ? COLOR[accent] : "rgba(255,255,255,0.22)"
+            }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+          "div",
+          {
+            style: {
+              fontFamily: FONT.en,
+              fontWeight: 800,
+              fontSize: SIZE.subSmall,
+              color: item2.highlight ? COLOR[accent] : COLOR.grey,
+              opacity: t
+            },
+            children: item2.display
+          }
+        )
+      ] }, i);
+    }) });
+  };
+
+  // src/JasonWu/components/jc/BigNumber.tsx
+  var import_jsx_runtime75 = __toESM(require_jsx_runtime());
+  var BigNumber = ({
+    value,
+    countFrom = 0,
+    prefix = "",
+    suffix = "",
+    decimals = 0,
+    color = "white",
+    enKicker,
+    zhSub,
+    size = "h1",
+    enterAt = 0,
+    countFrames = 45,
+    grouping = true
+  }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "up");
+    const v = interpolate(frame, [enterAt, enterAt + countFrames], [countFrom, value], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const text4 = grouping ? v.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) : v.toFixed(decimals);
+    const c3 = color === "white" ? COLOR.white : COLOR[color];
+    return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
+        "div",
+        {
+          style: {
+            fontFamily: FONT.en,
+            fontWeight: 800,
+            fontSize: SIZE[size],
+            color: c3,
+            lineHeight: 1.05,
+            fontVariantNumeric: "tabular-nums"
+          },
+          children: [
+            prefix,
+            text4,
+            suffix
+          ]
+        }
+      ),
+      enKicker ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+        "div",
+        {
+          style: {
+            marginTop: 8,
+            fontFamily: FONT.en,
+            fontWeight: 800,
+            fontSize: SIZE.kicker,
+            letterSpacing: "0.3em",
+            color: COLOR.grey
+          },
+          children: enKicker.toUpperCase()
+        }
+      ) : null,
+      zhSub ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+        "div",
+        {
+          style: {
+            marginTop: 6,
+            fontFamily: FONT.zh,
+            fontWeight: 700,
+            fontSize: 24,
+            // 双语层级：白色粗体中文 > 灰色英文——中文是观众读的行（报告排印 sev2/zoom zhu-125m）
+            color: COLOR.white
+          },
+          children: zhSub
+        }
+      ) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/BilingualSub.tsx
+  var import_jsx_runtime76 = __toESM(require_jsx_runtime());
+  var SUB_ZH_SIZE = SIZE.subZh;
+  var SUB_EN_SIZE = SIZE.subEn;
+  var SUB_PLATE = "rgba(4,6,8,0.84)";
+  var SUB_PLATE_SHADOW = "0 4px 15px rgba(0,0,0,0.22)";
+  var BilingualSub = ({
+    zh,
+    en,
+    zhSize = SUB_ZH_SIZE,
+    bottom = SAFE.subtitleBottom
+  }) => {
+    const { height } = useVideoConfig();
+    return /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          height,
+          pointerEvents: "none"
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              // 两行箱子各自按内容宽度居中
+              rowGap: 9
+              // 两行箱子分离，间距 8-10px（specs.md 字幕行）
+            },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  "data-qc": "subtitle",
+                  "data-qc-id": "sub-zh",
+                  style: {
+                    display: "inline-block",
+                    background: SUB_PLATE,
+                    // 略深于旧 0.72：细体要靠底板补对比，不靠加粗
+                    borderRadius: 12,
+                    padding: "12px 27px 15px",
+                    // 底比顶多 3px：细体视觉重心偏上，等距会显得贴底
+                    fontFamily: FONT.subZh,
+                    fontWeight: FONT.subZhWeight,
+                    fontSize: zhSize,
+                    lineHeight: 1.08,
+                    color: COLOR.white,
+                    textShadow: "0 1px 2px rgba(0,0,0,0.30)",
+                    // 弱化：底衬箱已保证对比度
+                    boxShadow: SUB_PLATE_SHADOW,
+                    letterSpacing: "0.008em",
+                    textAlign: "center"
+                  },
+                  children: zh
+                }
+              ),
+              en ? /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  style: {
+                    display: "inline-block",
+                    background: SUB_PLATE,
+                    borderRadius: 10,
+                    padding: "6px 20px 9px",
+                    // 英文行底衬箱更窄
+                    fontFamily: FONT.subEn,
+                    // 比例西文字体；用中文字体渲英文是旧版「不好看」的主因
+                    fontWeight: FONT.subEnWeight,
+                    // 有底衬箱后不靠加粗补对比（specs.md）
+                    fontSize: SUB_EN_SIZE,
+                    lineHeight: 1.08,
+                    color: COLOR.white,
+                    // 纯白：#E8EAED 在成片里发灰（字幕 sev3）
+                    textShadow: "0 1px 2px rgba(0,0,0,0.30)",
+                    // 弱化：底衬箱已保证对比度
+                    boxShadow: SUB_PLATE_SHADOW,
+                    letterSpacing: "0.004em",
+                    textAlign: "center"
+                  },
+                  children: en
+                }
+              ) : null
+            ]
+          }
+        )
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Breathe.tsx
+  var import_jsx_runtime77 = __toESM(require_jsx_runtime());
+  var Breathe = ({ children, phase = 0, amp = 1 }) => {
+    const frame = useCurrentFrame();
+    const s = 1 + 6e-3 * amp * Math.sin((frame + phase) / 22);
+    const y = 3 * amp * Math.sin((frame + phase) / 28);
+    return /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { transform: `translateY(${y}px) scale(${s})`, transformOrigin: "center" }, children });
+  };
+
+  // src/JasonWu/components/jc/BrickWall.tsx
+  var import_jsx_runtime78 = __toESM(require_jsx_runtime());
+  var BRICK_W = 150;
+  var BRICK_H = 56;
+  var GAP = GRID2;
+  var GLOW_YELLOW = "rgba(255,197,61,0.4)";
+  var BrickWall = ({ label: label3, enLabel, rows: rows3 = 2, width = 620, enterAt }) => {
+    const frame = useCurrentFrame();
+    const cols = Math.max(2, Math.round((width + GAP) / (BRICK_W + GAP)));
+    const W = cols * BRICK_W + (cols - 1) * GAP;
+    const H = rows3 * BRICK_H + (rows3 - 1) * GAP;
+    const totalBricks = rows3 * cols;
+    const [g0, g1] = GRADIENT.yellow;
+    const chipEnter = useEnter(enterAt + totalBricks * 3 + 6, "up");
+    return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW_YELLOW})` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { position: "absolute", inset: 0, overflow: "hidden", borderRadius: GRID2 * 0.75 }, children: Array.from({ length: rows3 }).map((_, row) => {
+        const offset = row % 2 === 1;
+        const rowCols = offset ? cols + 1 : cols;
+        return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              bottom: row * (BRICK_H + GAP),
+              left: offset ? -(BRICK_W + GAP) / 2 : 0,
+              display: "flex",
+              gap: GAP
+            },
+            children: Array.from({ length: rowCols }).map((_2, col) => {
+              const idx = row * cols + col;
+              const p = interpolate(frame, [enterAt + idx * 3, enterAt + idx * 3 + 10], [0, 1], {
+                extrapolateLeft: "clamp",
+                extrapolateRight: "clamp",
+                easing: Easing.out(Easing.cubic)
+              });
+              return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+                "div",
+                {
+                  style: {
+                    width: BRICK_W,
+                    height: BRICK_H,
+                    borderRadius: GRID2 * 0.75,
+                    background: `linear-gradient(160deg, ${g0} 0%, ${g1} 100%)`,
+                    boxShadow: "inset 0 1.5px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.25)",
+                    opacity: p,
+                    transform: `translateY(${(1 - p) * 24}px)`
+                  }
+                },
+                col
+              );
+            })
+          },
+          row
+        );
+      }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: `translate(-50%, -50%) ${chipEnter.transform}`,
+            opacity: chipEnter.opacity,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 4,
+            padding: `${GRID2}px ${GRID2 * 3}px`,
+            background: COLOR.cardBg,
+            border: `1.5px solid ${COLOR.yellow}`,
+            borderRadius: RADIUS.chip,
+            boxShadow: "0 6px 20px rgba(0,0,0,0.45)",
+            whiteSpace: "nowrap"
+          },
+          children: [
+            enLabel ? /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.en,
+                  fontWeight: FONT.enBold,
+                  fontSize: SIZE.kicker,
+                  letterSpacing: 3,
+                  textTransform: "uppercase",
+                  color: COLOR.yellow
+                },
+                children: enLabel
+              }
+            ) : null,
+            /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: SIZE.chip, color: COLOR.white }, children: label3 })
+          ]
+        }
+      )
+    ] });
+  };
+
+  // src/JasonWu/components/jc/CardWall.tsx
+  var import_jsx_runtime79 = __toESM(require_jsx_runtime());
+  var AVATAR_COLORS = ["#3B82F6", "#F59E0B", "#22C55E", "#EF4444", "#8B5CF6", "#F97316"];
+  var CardWall = ({ items: items2, cols = 4, cardWidth = 424, gap = 18, enterAt = 0, staggerFrames = 4 }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+      "div",
+      {
+        style: {
+          display: "grid",
+          gridTemplateColumns: `repeat(${cols}, ${cardWidth}px)`,
+          gap
+        },
+        children: items2.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(WallCardView, { card: c3, index: i, enterAt: enterAt + i * staggerFrames }, i))
+      }
+    );
+  };
+  var WallCardView = ({ card, index, enterAt }) => {
+    var _a2;
+    const enter3 = useEnter(enterAt, "up");
+    const color = (_a2 = card.avatarColor) != null ? _a2 : AVATAR_COLORS[index % AVATAR_COLORS.length];
+    const initial = /[a-zA-Z]/.test(card.name[0]) ? card.name[0].toUpperCase() : card.name[0];
+    return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(
+      "div",
+      {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          background: "#FBFBFA",
+          borderRadius: 12,
+          padding: "16px 18px",
+          boxShadow: "0 10px 28px rgba(0,0,0,0.4)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+            "div",
+            {
+              style: {
+                width: 52,
+                height: 52,
+                borderRadius: 12,
+                background: color,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhHeavy,
+                fontSize: 24,
+                color: "#fff",
+                flexShrink: 0
+              },
+              children: initial
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { style: { minWidth: 0 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 500, fontSize: 17, color: "#8B9098" }, children: card.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+              "div",
+              {
+                style: {
+                  marginTop: 2,
+                  fontFamily: FONT.zh,
+                  fontWeight: 700,
+                  fontSize: 22,
+                  color: "#16181D",
+                  whiteSpace: "nowrap"
+                },
+                children: card.text
+              }
+            )
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Chip.tsx
+  var import_jsx_runtime80 = __toESM(require_jsx_runtime());
+  var Chip = ({ segments, icon, accent = "blue", outlined = false, dimmed = false, surface = "dark", enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "left");
+    const isLight = surface === "light";
+    return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 12,
+          padding: "10px 18px",
+          background: isLight ? SURFACE.light.bg : COLOR.cardBg,
+          border: `1.5px solid ${outlined ? COLOR[accent] : isLight ? SURFACE.light.stroke : COLOR.cardStroke}`,
+          borderRadius: RADIUS.chip,
+          opacity: (dimmed ? MOTION.dimOpacity : 1) * enter3.opacity,
+          transform: enter3.transform,
+          boxShadow: isLight ? SURFACE.light.shadow : "0 4px 18px rgba(0,0,0,0.35)"
+        },
+        children: [
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { fontSize: SIZE.chip - 4, color: COLOR[accent], lineHeight: 1, display: "inline-flex", alignItems: "center" }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { whiteSpace: "nowrap" }, children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: 700,
+                fontSize: SIZE.chip,
+                color: s.color ? COLOR[s.color] : isLight ? SURFACE.light.fg : COLOR.white
+              },
+              children: s.t
+            },
+            i
+          )) })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Checklist.tsx
+  var import_jsx_runtime81 = __toESM(require_jsx_runtime());
+  var Checklist = ({ items: items2, accent = "blue", outlined = false, top = 200, staggerFrames = MOTION.stagger }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: SAFE.stackX,
+          top,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: GRID2 * 2
+        },
+        children: items2.map((item2, i) => {
+          var _a2;
+          return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+            Chip,
+            {
+              segments: item2.segments,
+              icon: item2.icon,
+              accent,
+              outlined,
+              dimmed: item2.dimmed,
+              enterAt: (_a2 = item2.enterAt) != null ? _a2 : i * staggerFrames
+            },
+            i
+          );
+        })
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/CloneCascade.tsx
+  var import_jsx_runtime82 = __toESM(require_jsx_runtime());
+  var CARD2 = GRID2 * 15;
+  var SourceCard = ({
+    icon,
+    label: label3,
+    enterAt
+  }) => {
+    const enter3 = useEnter(enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: GRID2,
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "div",
+            {
+              style: {
+                width: CARD2,
+                height: CARD2,
+                borderRadius: RADIUS.card,
+                background: "linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92))",
+                border: "2.5px solid rgba(255,255,255,0.92)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: COLOR.white,
+                boxShadow: "0 14px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.18)"
+              },
+              children: icon
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhHeavy,
+                fontSize: SIZE.chip,
+                color: COLOR.white,
+                whiteSpace: "nowrap"
+              },
+              children: label3
+            }
+          )
+        ]
+      }
+    );
+  };
+  var CloneCard = ({
+    icon,
+    index,
+    fade,
+    enterAt
+  }) => {
+    const enter3 = useEnter(enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: GRID2,
+          opacity: enter3.opacity * fade,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "div",
+            {
+              style: {
+                width: CARD2,
+                height: CARD2,
+                borderRadius: RADIUS.card,
+                background: COLOR.cardBg,
+                border: `2px dashed ${COLOR.cardStroke}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: COLOR.grey,
+                boxShadow: "0 8px 24px rgba(0,0,0,0.4)"
+              },
+              children: icon
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhMedium,
+                fontSize: SIZE.subSmall,
+                color: COLOR.greyDim,
+                whiteSpace: "nowrap"
+              },
+              children: `\u4EFF\u54C1 ${index + 1}`
+            }
+          )
+        ]
+      }
+    );
+  };
+  var CloneCascade = ({ icon, label: label3, cloneCount = 3, warnText = "\u7B2C\u4E8C\u5929 \xB7 \u5168\u662F\u4EFF\u54C1", accent = "red", enterAt }) => {
+    const warnAt = enterAt + MOTION.stagger * (cloneCount + 1);
+    const warnEnter = useEnter(warnAt, "left");
+    const arrowEnter = useEnter(enterAt + MOTION.stagger, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: GRID2 * 2 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(SourceCard, { icon, label: label3, enterAt }),
+      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+        "span",
+        {
+          style: {
+            fontFamily: FONT.en,
+            fontWeight: FONT.enBold,
+            fontSize: SIZE.chip,
+            color: COLOR.grey,
+            opacity: arrowEnter.opacity,
+            marginBottom: GRID2 * 4
+            // 对齐卡片中心（仿品有下方小字）
+          },
+          children: "\u2192"
+        }
+      ),
+      Array.from({ length: cloneCount }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+        CloneCard,
+        {
+          icon,
+          index: i,
+          fade: Math.max(0.4, 0.85 - i * 0.15),
+          enterAt: enterAt + MOTION.stagger * (i + 1)
+        },
+        i
+      )),
+      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+        "div",
+        {
+          style: {
+            display: "inline-flex",
+            alignItems: "center",
+            padding: `${GRID2}px ${GRID2 * 2}px`,
+            background: COLOR.cardBg,
+            border: `1.5px solid ${COLOR[accent]}`,
+            borderRadius: RADIUS.chip,
+            boxShadow: "0 4px 18px rgba(0,0,0,0.35)",
+            opacity: warnEnter.opacity,
+            transform: warnEnter.transform,
+            marginBottom: GRID2 * 4
+          },
+          children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: 700,
+                fontSize: SIZE.chip,
+                color: COLOR[accent],
+                whiteSpace: "nowrap"
+              },
+              children: warnText
+            }
+          )
+        }
+      )
+    ] });
+  };
+
+  // src/JasonWu/components/jc/CompareCard.tsx
+  var import_jsx_runtime83 = __toESM(require_jsx_runtime());
+  var CompareCard = ({ items: items2, width = 700, enterAt = 0, staggerFrames = MOTION.stagger }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 20 }, children: items2.map((it, i) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(ItemView, { item: it, width, enterAt: enterAt + i * staggerFrames }, i)) });
+  };
+  var ItemView = ({ item: item2, width, enterAt }) => {
+    var _a2;
+    const enter3 = useEnter(enterAt, "left");
+    const strong = COLOR[(_a2 = item2.strongColor) != null ? _a2 : "blue"];
+    return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+      "div",
+      {
+        style: {
+          width,
+          display: "flex",
+          alignItems: "center",
+          gap: 20,
+          padding: "18px 22px",
+          background: "rgba(14,16,20,0.88)",
+          border: `1.5px solid ${COLOR.cardStroke}`,
+          borderRadius: 16,
+          boxShadow: "0 12px 36px rgba(0,0,0,0.45)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+            "div",
+            {
+              style: {
+                width: 68,
+                height: 68,
+                borderRadius: 15,
+                background: "#FFFFFF",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#16181D",
+                flexShrink: 0,
+                overflow: "hidden"
+              },
+              children: item2.logo
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: item2.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { style: { display: "flex", gap: 12, marginTop: 10 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 7,
+                    border: "1.5px solid rgba(255,255,255,0.22)",
+                    borderRadius: 999,
+                    padding: "4px 14px",
+                    fontFamily: FONT.zh,
+                    fontWeight: 700,
+                    fontSize: 20,
+                    color: COLOR.grey
+                  },
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(X, { size: 17, strokeWidth: 3 }),
+                    item2.weak
+                  ]
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 7,
+                    border: `1.5px solid ${strong}`,
+                    borderRadius: 999,
+                    padding: "4px 14px",
+                    fontFamily: FONT.zh,
+                    fontWeight: 700,
+                    fontSize: 20,
+                    color: COLOR.white
+                  },
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Check, { size: 17, strokeWidth: 3, color: strong }),
+                    item2.strong
+                  ]
+                }
+              )
+            ] })
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/CurveOverlay.tsx
+  var import_jsx_runtime84 = __toESM(require_jsx_runtime());
+  var CurveOverlay = ({ width, height, color = "yellow", strokeWidth = 6, exponent = 2.2, growFrames = 70, enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const p = interpolate(frame, [enterAt, enterAt + growFrames], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.inOut(Easing.cubic)
+    });
+    const N2 = 48;
+    const pts = Array.from({ length: N2 + 1 }, (_, i) => {
+      const x = i / N2;
+      const y = Math.pow(x, exponent);
+      return `${(x * width).toFixed(1)},${(height * (0.96 - 0.9 * y)).toFixed(1)}`;
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("svg", { width, height, style: { display: "block" }, children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+      "polyline",
+      {
+        points: pts.join(" "),
+        fill: "none",
+        stroke: COLOR[color],
+        strokeWidth,
+        strokeLinecap: "round",
+        pathLength: 1,
+        strokeDasharray: 1,
+        strokeDashoffset: 1 - p
+      }
+    ) });
+  };
+
+  // src/JasonWu/components/jc/DMCardStack.tsx
+  var import_jsx_runtime85 = __toESM(require_jsx_runtime());
+  var DMCardStack = ({ cards, enterAt = 0, staggerFrames = MOTION.stagger }) => {
+    const rots = [-3, 2.5, -1.5, 2];
+    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { position: "relative" }, children: cards.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+      DMCardView,
+      {
+        card: c3,
+        rotate: rots[i % rots.length],
+        offsetX: i * 46,
+        offsetY: i * 92,
+        enterAt: enterAt + i * staggerFrames
+      },
+      i
+    )) });
+  };
+  var DMCardView = ({ card, rotate: rotate2, offsetX, offsetY, enterAt }) => {
+    var _a2, _b, _c;
+    const enter3 = useEnter(enterAt, "up");
+    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: offsetX,
+          top: offsetY,
+          width: (_a2 = card.width) != null ? _a2 : 440,
+          opacity: enter3.opacity,
+          transform: `${enter3.transform} rotate(${rotate2}deg)`
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+          "div",
+          {
+            style: {
+              position: "relative",
+              background: "#FFFFFF",
+              borderRadius: 14,
+              padding: "18px 20px",
+              boxShadow: "0 18px 50px rgba(0,0,0,0.55)",
+              display: "flex",
+              gap: 14,
+              alignItems: "flex-start"
+            },
+            children: [
+              card.chip ? /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    top: -16,
+                    left: -12,
+                    background: COLOR[(_b = card.chip.color) != null ? _b : "blue"],
+                    borderRadius: 999,
+                    padding: "5px 16px",
+                    fontFamily: FONT.zh,
+                    fontWeight: FONT.zhHeavy,
+                    fontSize: 19,
+                    color: "#fff",
+                    boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
+                    whiteSpace: "nowrap"
+                  },
+                  children: card.chip.text
+                }
+              ) : null,
+              card.avatarSrc ? /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                Img,
+                {
+                  src: card.avatarSrc,
+                  style: { width: 44, height: 44, borderRadius: 8, objectFit: "cover", flexShrink: 0 }
+                }
+              ) : /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                "div",
+                {
+                  style: {
+                    width: 44,
+                    height: 44,
+                    borderRadius: 8,
+                    background: (_c = card.avatarColor) != null ? _c : "#31363E",
+                    flexShrink: 0
+                  }
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                "div",
+                {
+                  style: {
+                    fontFamily: FONT.zh,
+                    fontWeight: FONT.zhMedium,
+                    fontSize: 21,
+                    lineHeight: 1.55,
+                    color: "#16181D"
+                  },
+                  children: card.text
+                }
+              )
+            ]
+          }
+        )
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/FlowChain.tsx
+  var import_react127 = __toESM(require_react());
+  var import_jsx_runtime86 = __toESM(require_jsx_runtime());
+  var FlowChain = ({ nodes, nodeWidth = 190, surface = "dark", enterAt = 0, staggerFrames = MOTION.stagger }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: nodes.map((nd, i) => /* @__PURE__ */ (0, import_jsx_runtime86.jsxs)(import_react127.default.Fragment, { children: [
+      i > 0 ? /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(Arrow, { enterAt: enterAt + i * staggerFrames }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(NodeView, { node: nd, width: nodeWidth, surface, enterAt: enterAt + i * staggerFrames })
+    ] }, i)) });
+  };
+  var Arrow = ({ enterAt }) => {
+    const enter3 = useEnter(enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(
+      "span",
+      {
+        style: {
+          fontFamily: FONT.en,
+          fontWeight: 700,
+          fontSize: 34,
+          color: COLOR.greyDim,
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: "\u2192"
+      }
+    );
+  };
+  var NodeView = ({
+    node: node2,
+    width,
+    surface,
+    enterAt
+  }) => {
+    var _a2;
+    const enter3 = useEnter(enterAt, "up");
+    const c3 = COLOR[(_a2 = node2.accent) != null ? _a2 : "blue"];
+    const isLight = surface === "light";
+    return /* @__PURE__ */ (0, import_jsx_runtime86.jsxs)(
+      "div",
+      {
+        style: {
+          width,
+          minHeight: width * 0.86,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 14,
+          padding: "18px 14px",
+          background: isLight ? SURFACE.light.bg : "rgba(12,14,18,0.85)",
+          border: `1.5px solid ${isLight ? SURFACE.light.stroke : `${c3}66`}`,
+          borderRadius: 14,
+          boxShadow: isLight ? SURFACE.light.shadow : "0 10px 30px rgba(0,0,0,0.45)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          node2.icon ? /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: node2.icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { textAlign: "center" }, children: node2.lines.map((l, i) => /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 24, lineHeight: 1.5, color: isLight ? SURFACE.light.fg : COLOR.white }, children: l }, i)) })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Flywheel.tsx
+  var import_jsx_runtime87 = __toESM(require_jsx_runtime());
+  var Flywheel = ({
+    size = 340,
+    color = "green",
+    icon,
+    enterAt = 0
+  }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "up");
+    const accent = COLOR[color];
+    const radius = size * 0.39;
+    const circumference = Math.PI * 2 * radius;
+    const segment = circumference * (39 / 360);
+    return /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
+      "div",
+      {
+        style: {
+          position: "relative",
+          width: size,
+          height: size,
+          opacity: enter3.opacity,
+          transform: enter3.transform,
+          filter: `drop-shadow(0 0 26px ${color === "green" ? "rgba(61,220,132,0.4)" : `${accent}66`})`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
+            "svg",
+            {
+              width: size,
+              height: size,
+              viewBox: `0 0 ${size} ${size}`,
+              style: { transform: `rotate(${frame * 1}deg)` },
+              children: [
+                Array.from({ length: 8 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                  "circle",
+                  {
+                    cx: size / 2,
+                    cy: size / 2,
+                    r: radius,
+                    fill: "none",
+                    stroke: accent,
+                    strokeWidth: 4,
+                    strokeOpacity: 0.85,
+                    strokeLinecap: "round",
+                    strokeDasharray: `${segment} ${circumference - segment}`,
+                    transform: `rotate(${index * 45 - 90} ${size / 2} ${size / 2})`
+                  },
+                  index
+                )),
+                Array.from({ length: 8 }, (_, index) => {
+                  const a3 = (index * 45 - 90) * Math.PI / 180;
+                  const cx = size / 2, cy = size / 2;
+                  const r0 = size * 0.19, r1 = radius - GRID2;
+                  return /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)("g", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                      "line",
+                      {
+                        x1: cx + r0 * Math.cos(a3),
+                        y1: cy + r0 * Math.sin(a3),
+                        x2: cx + r1 * Math.cos(a3),
+                        y2: cy + r1 * Math.sin(a3),
+                        stroke: accent,
+                        strokeWidth: 1.5,
+                        opacity: 0.75
+                      }
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                      "circle",
+                      {
+                        cx: cx + radius * Math.cos(a3 + 0.28),
+                        cy: cy + radius * Math.sin(a3 + 0.28),
+                        r: index === 0 ? 8 : 4,
+                        fill: index === 0 ? COLOR.white : accent
+                      }
+                    )
+                  ] }, `s${index}`);
+                })
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                width: size * 0.34,
+                height: size * 0.34,
+                transform: "translate(-50%, -50%)",
+                borderRadius: "50%",
+                background: COLOR.cardBg,
+                border: `2px solid ${COLOR.white}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: COLOR.white,
+                boxShadow: "0 14px 40px rgba(0,0,0,0.55)"
+              },
+              children: icon
+            }
+          )
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/HeroText.tsx
+  var import_jsx_runtime88 = __toESM(require_jsx_runtime());
+  var scaleShift = (e, shiftPx) => {
+    if (shiftPx === MOTION.popInShift) return e;
+    const k = shiftPx / MOTION.popInShift;
+    return {
+      opacity: e.opacity,
+      transform: e.transform.replace(/-?[\d.]+(?=px)/g, (m) => `${parseFloat(m) * k}`)
+    };
+  };
+  var HeroText = ({
+    kicker,
+    segments,
+    size = "h2",
+    top = 200,
+    enterAt = 0,
+    kickerEnterAt,
+    echo,
+    zhSub,
+    shiftPx = MOTION.popInShift
+  }) => {
+    const frame = useCurrentFrame();
+    const { fps } = useVideoConfig();
+    const kickerAt = kickerEnterAt != null ? kickerEnterAt : Math.max(0, enterAt - 10);
+    const kickerEnter = scaleShift(useEnter(kickerAt, "up"), shiftPx);
+    const mainEnter = scaleShift(useEnter(enterAt, "up"), shiftPx);
+    const tailEnter = scaleShift(useEnter(enterAt + 8, "up"), shiftPx);
+    const strikeT = spring({
+      frame: frame - enterAt - 8,
+      fps,
+      config: { damping: 200 },
+      durationInFrames: 12
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
+      "div",
+      {
+        "data-qc": "text",
+        "data-qc-id": `Hero:${segments.map((s) => s.t).join("").slice(0, 8)}`,
+        style: {
+          position: "absolute",
+          left: SAFE.stackX,
+          top,
+          textShadow: "0 2px 12px rgba(0,0,0,0.6)"
+        },
+        children: [
+          kicker ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+            "div",
+            {
+              style: {
+                fontFamily: `${FONT.en}, ${FONT.zh}`,
+                fontWeight: 800,
+                fontSize: SIZE.kicker,
+                letterSpacing: "0.34em",
+                color: COLOR.greyDim,
+                marginBottom: 10,
+                opacity: kickerEnter.opacity,
+                transform: kickerEnter.transform
+              },
+              children: typeof kicker === "string" ? kicker.toUpperCase() : kicker.map((k, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+                "span",
+                {
+                  style: { color: k.color ? COLOR[k.color] : COLOR.white },
+                  children: k.t.toUpperCase()
+                },
+                i
+              ))
+            }
+          ) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+            "div",
+            {
+              style: {
+                whiteSpace: "nowrap",
+                opacity: mainEnter.opacity,
+                transform: mainEnter.transform
+              },
+              children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
+                "span",
+                {
+                  style: {
+                    position: "relative",
+                    fontFamily: FONT.zh,
+                    fontWeight: FONT.zhHeavy,
+                    fontSize: SIZE[size],
+                    color: s.color ? COLOR[s.color] : s.dim ? COLOR.greyDim : COLOR.white,
+                    display: "inline-block"
+                  },
+                  children: [
+                    s.t,
+                    s.strike ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+                      "span",
+                      {
+                        style: {
+                          position: "absolute",
+                          left: "-2%",
+                          top: "52%",
+                          height: Math.max(6, SIZE[size] * 0.07),
+                          width: `${strikeT * 104}%`,
+                          background: COLOR.red,
+                          borderRadius: 4
+                        }
+                      }
+                    ) : null
+                  ]
+                },
+                i
+              ))
+            }
+          ),
+          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+            "div",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhMedium,
+                fontSize: SIZE.chip,
+                color: COLOR.grey,
+                marginTop: 10,
+                opacity: tailEnter.opacity,
+                transform: tailEnter.transform
+              },
+              children: zhSub
+            }
+          ) : null,
+          echo ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+            "div",
+            {
+              style: {
+                fontFamily: FONT.en,
+                fontWeight: FONT.enBold,
+                fontSize: SIZE.kicker,
+                letterSpacing: "0.3em",
+                color: COLOR.grey,
+                marginTop: 12,
+                opacity: tailEnter.opacity,
+                transform: tailEnter.transform
+              },
+              children: echo.toUpperCase()
+            }
+          ) : null
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/InfoCard.tsx
+  var import_jsx_runtime89 = __toESM(require_jsx_runtime());
+  var InfoCard = ({ icon, en, zh, accent = "blue", surface = "dark", enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "left");
+    const c3 = COLOR[accent];
+    const isLight = surface === "light";
+    return /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 16,
+          padding: "16px 24px",
+          background: isLight ? SURFACE.light.bg : "rgba(12,14,18,0.82)",
+          border: `1.5px solid ${isLight ? SURFACE.light.stroke : `${c3}88`}`,
+          borderRadius: 14,
+          boxShadow: isLight ? SURFACE.light.shadow : `0 10px 30px rgba(0,0,0,0.45), inset 0 0 26px ${c3}14`,
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("span", { style: { color: c3, display: "inline-flex", flexShrink: 0 }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.kicker, letterSpacing: "0.26em", color: c3 }, children: en.toUpperCase() }),
+            /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("div", { style: { marginTop: 5, fontFamily: FONT.zh, fontWeight: 700, fontSize: 26, color: isLight ? SURFACE.light.fg : COLOR.white }, children: zh })
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/InfoScrim.tsx
+  var import_jsx_runtime90 = __toESM(require_jsx_runtime());
+  var InfoScrim = ({
+    strength = 1,
+    side = "right"
+  }) => {
+    const deg = side === "right" ? 90 : 270;
+    return /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
+      AbsoluteFill,
+      {
+        style: {
+          background: `linear-gradient(${deg}deg, transparent 40%, rgba(4,6,9,${0.5 * strength}) 58%, rgba(4,6,9,${0.8 * strength}) 100%)`,
+          pointerEvents: "none"
+        }
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/LoopDiagram.tsx
+  var import_jsx_runtime91 = __toESM(require_jsx_runtime());
+  var LoopNode = ({ label: label3, index, size, enterAt }) => {
+    const frame = useCurrentFrame();
+    const angle = -Math.PI / 2 + index * (Math.PI / 2);
+    const radius = size * 0.39;
+    const nodeWidth = size * 0.3;
+    const nodeHeight = size * 0.12;
+    const progress = interpolate(
+      frame,
+      [enterAt + index * (MOTION.stagger / 2), enterAt + index * (MOTION.stagger / 2) + MOTION.popInFrames],
+      [0, 1],
+      {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.cubic)
+      }
+    );
+    return /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: size / 2 + Math.cos(angle) * radius - nodeWidth / 2,
+          top: size / 2 + Math.sin(angle) * radius - nodeHeight / 2,
+          width: nodeWidth,
+          height: nodeHeight,
+          borderRadius: GRID2,
+          background: COLOR.cardBg,
+          border: `1px solid ${COLOR.cardStroke}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: FONT.en,
+          fontWeight: FONT.enBold,
+          fontSize: SIZE.subSmall,
+          color: COLOR.white,
+          opacity: progress,
+          transform: `scale(${0.72 + progress * 0.28})`,
+          boxShadow: "0 8px 24px rgba(0,0,0,0.42)"
+        },
+        children: label3
+      }
+    );
+  };
+  var LoopDiagram = ({
+    size = 320,
+    labels = ["GOAL", "WORK", "CHECK", "STOP"],
+    color = "blue",
+    enterAt = 0
+  }) => {
+    const frame = useCurrentFrame();
+    const accent = COLOR[color];
+    const ringSize = size * 0.68;
+    const ringOffset = (size - ringSize) / 2;
+    const bodyOpacity = interpolate(frame, [enterAt, enterAt + MOTION.popInFrames], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.quad)
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime91.jsxs)("div", { style: { position: "relative", width: size, height: size, opacity: bodyOpacity }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+        "svg",
+        {
+          width: ringSize,
+          height: ringSize,
+          viewBox: `0 0 ${ringSize} ${ringSize}`,
+          style: {
+            position: "absolute",
+            left: ringOffset,
+            top: ringOffset,
+            overflow: "visible",
+            transform: `rotate(${frame * 0.25}deg)`,
+            filter: `drop-shadow(0 0 18px ${accent}66)`
+          },
+          children: /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+            "circle",
+            {
+              cx: ringSize / 2,
+              cy: ringSize / 2,
+              r: ringSize * 0.43,
+              fill: "none",
+              stroke: accent,
+              strokeWidth: GRID2 / 2,
+              strokeDasharray: `${GRID2 * 2} ${GRID2}`,
+              strokeLinecap: "round"
+            }
+          )
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            border: `2px solid ${accent}`,
+            borderRadius: GRID2 * 3,
+            padding: `${GRID2}px ${GRID2 * 2}px`,
+            background: COLOR.cardBg,
+            fontFamily: FONT.en,
+            fontWeight: FONT.enBold,
+            fontSize: SIZE.subSmall,
+            letterSpacing: "0.16em",
+            color: accent,
+            boxShadow: `0 0 24px ${accent}44`
+          },
+          children: "LOOP"
+        }
+      ),
+      labels.slice(0, 4).map((label3, index) => /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(LoopNode, { label: label3, index, size, enterAt }, `${label3}-${index}`))
+    ] });
+  };
+
+  // src/JasonWu/components/jc/MatrixIcon.tsx
+  var import_jsx_runtime92 = __toESM(require_jsx_runtime());
+  var CELL_GRADIENT = {
+    green: ["#55E698", "#1FA85D"],
+    red: ["#FF6B6B", "#D92B35"],
+    blue: ["#6FB4FF", "#2F7FE0"],
+    yellow: ["#FFD666", "#E8A81E"]
+  };
+  var GLOW = {
+    green: "rgba(61,220,132,0.4)",
+    red: "rgba(255,77,77,0.4)",
+    blue: "rgba(77,158,255,0.4)",
+    yellow: "rgba(255,197,61,0.4)"
+  };
+  var MatrixIcon = ({ color = "green", rows: rows3 = 5, cols = 5, cell = 46, gap = 9, icon, enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const [g0, g1] = CELL_GRADIENT[color];
+    const W = cols * cell + (cols - 1) * gap;
+    const H = rows3 * cell + (rows3 - 1) * gap;
+    return /* @__PURE__ */ (0, import_jsx_runtime92.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW[color]})` }, children: [
+      Array.from({ length: rows3 * cols }, (_, i) => {
+        const t = interpolate(frame, [enterAt + i * 1.4, enterAt + i * 1.4 + 12], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: Easing.out(Easing.cubic)
+        });
+        return /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: i % cols * (cell + gap),
+              top: Math.floor(i / cols) * (cell + gap),
+              width: cell,
+              height: cell,
+              borderRadius: cell * 0.26,
+              background: `linear-gradient(160deg, ${g0} 0%, ${g1} 100%)`,
+              boxShadow: "inset 0 1.5px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.25)",
+              opacity: t * (0.78 + i * 37 % 22 / 100),
+              transform: `scale(${0.5 + 0.5 * t})`
+            }
+          },
+          i
+        );
+      }),
+      icon ? /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            width: cell * 2.6,
+            height: cell * 2.6,
+            borderRadius: cell * 0.6,
+            background: "linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92))",
+            border: "2.5px solid rgba(255,255,255,0.92)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            boxShadow: "0 14px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.18)"
+          },
+          children: icon
+        }
+      ) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/NamePlate.tsx
+  var import_react128 = __toESM(require_react());
+  var import_jsx_runtime93 = __toESM(require_jsx_runtime());
+  var GOLD2 = "#C9A227";
+  var NamePlate = ({ name, slug, avatarText, avatarSrc: avatarSrc2, avatarImgStyle, enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const [imgFailed, setImgFailed] = import_react128.default.useState(false);
+    const showImg = Boolean(avatarSrc2) && !imgFailed;
+    return /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 16,
+          minWidth: 285,
+          height: 88,
+          padding: "0 22px",
+          borderRadius: 16,
+          background: "rgba(14,16,21,0.9)",
+          border: `1px solid ${COLOR.cardStroke}`,
+          boxShadow: "0 14px 40px rgba(0,0,0,0.5)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+            "div",
+            {
+              style: {
+                position: "relative",
+                width: 52,
+                height: 52,
+                flexShrink: 0,
+                borderRadius: 26,
+                overflow: "hidden",
+                border: `2px solid ${GOLD2}`,
+                background: "linear-gradient(160deg, #2A2E38, #14161A)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhHeavy,
+                fontSize: 26,
+                color: GOLD2
+              },
+              children: showImg ? /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+                Img,
+                {
+                  src: avatarSrc2,
+                  onError: () => setImgFailed(true),
+                  style: {
+                    position: "absolute",
+                    width: "135%",
+                    height: "135%",
+                    left: "-13%",
+                    top: "-3%",
+                    objectFit: "cover",
+                    // 低分辨率源图的轻度补偿（别过度）
+                    filter: "contrast(1.06) saturate(1.05)",
+                    ...avatarImgStyle
+                  }
+                }
+              ) : avatarText
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime93.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.t3, color: COLOR.white, lineHeight: 1 }, children: name }),
+            /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.en,
+                  fontWeight: 700,
+                  fontSize: 17,
+                  color: GOLD2,
+                  fontVariant: "small-caps",
+                  letterSpacing: "0.14em",
+                  lineHeight: 1
+                },
+                children: slug
+              }
+            )
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/PersonBadge.tsx
+  var import_jsx_runtime94 = __toESM(require_jsx_runtime());
+  var PersonBadge = ({ avatarSrc: avatarSrc2, name, zhSub, accent = "blue", enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "left");
+    if (frame < enterAt) return null;
+    return /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 12,
+          padding: "8px 14px 8px 10px",
+          borderRadius: 14,
+          background: "rgba(14,16,21,0.88)",
+          border: `1px solid ${COLOR.cardStroke}`,
+          boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(Img, { src: avatarSrc2, style: { width: 44, height: 44, borderRadius: 22, objectFit: "cover", display: "block" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime94.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.08em", color: COLOR.white, lineHeight: 1.1 }, children: name.toUpperCase() }),
+              /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(BadgeCheck, { size: 20, color: COLOR[accent], strokeWidth: 2.4 })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime94.jsx)("div", { style: { marginTop: 3, fontFamily: FONT.zh, fontWeight: 700, fontSize: 18, color: COLOR.grey, lineHeight: 1.1 }, children: zhSub })
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/PersonCard.tsx
+  var import_jsx_runtime95 = __toESM(require_jsx_runtime());
+  var PersonCard = ({ name, zhRole, avatarSrc: avatarSrc2, avatarText, avatarColor = "#3E6FB0", ringColor = COLOR.blue, orgChip, kickerNote, enterAt = 0 }) => {
+    var _a2;
+    const enter3 = useEnter(enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 12px rgba(0,0,0,0.55)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: [
+        avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
+          Img,
+          {
+            src: avatarSrc2,
+            style: {
+              width: 110,
+              height: 110,
+              borderRadius: 55,
+              objectFit: "cover",
+              border: `3px solid ${ringColor}`,
+              flexShrink: 0
+            }
+          }
+        ) : /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
+          "div",
+          {
+            style: {
+              width: 84,
+              height: 84,
+              borderRadius: 42,
+              background: avatarColor,
+              border: `3px solid ${ringColor}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: FONT.en,
+              fontWeight: 800,
+              fontSize: 32,
+              color: "#fff",
+              flexShrink: 0
+            },
+            children: avatarText != null ? avatarText : name.slice(0, 1)
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: SIZE.card - 4, color: COLOR.white, letterSpacing: "0.02em" }, children: name.toUpperCase() }),
+          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: zhRole })
+        ] })
+      ] }),
+      orgChip || kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 16, marginTop: 14, marginLeft: (avatarSrc2 ? 110 : 84) + 18 }, children: [
+        orgChip ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(Chip, { segments: [{ t: orgChip.text }], accent: (_a2 = orgChip.color) != null ? _a2 : "blue", outlined: true, enterAt: enterAt + 8 }) : null,
+        kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.22em", color: COLOR.greyDim }, children: kickerNote.toUpperCase() }) : null
+      ] }) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/PhoneMockup.tsx
+  var import_jsx_runtime96 = __toESM(require_jsx_runtime());
+  var PhoneMockup = ({
+    children,
+    header: header2,
+    width = 340,
+    glow = "purple",
+    scrollFrom = 0,
+    scrollTo = 0,
+    scrollStart = 30,
+    scrollFrames = 120,
+    enterAt = 0
+  }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "up");
+    const height = width * 2.05;
+    const glowColor = glow === "purple" ? "#B26BFF" : COLOR[glow];
+    const y = interpolate(frame, [scrollStart, scrollStart + scrollFrames], [scrollFrom, scrollTo], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.inOut(Easing.cubic)
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
+      "div",
+      {
+        style: {
+          width,
+          height,
+          borderRadius: RADIUS.phone,
+          padding: 10,
+          background: "#0B0D11",
+          border: "2.5px solid rgba(255,255,255,0.25)",
+          boxShadow: `0 0 34px ${glowColor}66, 0 0 90px ${glowColor}33`,
+          opacity: enter3.opacity,
+          transform: enter3.transform,
+          position: "relative"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime96.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                top: 18,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: width * 0.32,
+                height: 22,
+                borderRadius: 12,
+                background: "#000",
+                zIndex: 2
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
+            "div",
+            {
+              style: {
+                width: "100%",
+                height: "100%",
+                borderRadius: RADIUS.phone - 12,
+                overflow: "hidden",
+                background: "#F5F6F7",
+                position: "relative"
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { transform: `translateY(${y}px)` }, children }),
+                header2 ? /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }, children: header2 }) : null
+              ]
+            }
+          )
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/QuoteDoc.tsx
+  var import_jsx_runtime97 = __toESM(require_jsx_runtime());
+  var QuoteDoc = ({ title, blocks, zhNote, zhNoteYPct, zhNoteX = -18, source, width = 1100, enterAt = 0, highlightAt, noteAt }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const frame = useCurrentFrame();
+    const hlT = highlightAt === void 0 ? 1 : interpolate(frame, [highlightAt, highlightAt + 12], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const noteT = noteAt === void 0 ? 1 : interpolate(frame, [noteAt + 4, noteAt + 16], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { position: "relative", width, opacity: enter3.opacity, transform: enter3.transform }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)(
+        "div",
+        {
+          style: {
+            background: "#FDFDFB",
+            borderRadius: 14,
+            padding: "38px 44px 44px",
+            boxShadow: "0 24px 80px rgba(0,0,0,0.6)"
+          },
+          children: [
+            title ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+              "div",
+              {
+                style: {
+                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontWeight: 700,
+                  fontSize: 32,
+                  color: "#1F3E62",
+                  lineHeight: 1.25,
+                  marginBottom: 22
+                },
+                children: title
+              }
+            ) : null,
+            /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16 }, children: blocks.map(
+              (b3, i) => b3.heading ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                "div",
+                {
+                  style: {
+                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontWeight: 700,
+                    fontSize: 26,
+                    color: "#1F3E62",
+                    marginTop: 10
+                  },
+                  children: b3.t
+                },
+                i
+              ) : b3.hl ? (
+                // 高亮段：黄底层 scaleX 扫过（origin 左），文字随扫过变深
+                /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { position: "relative", padding: "10px 12px" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                    "div",
+                    {
+                      style: {
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: 4,
+                        background: "#F9E27A",
+                        transformOrigin: "left center",
+                        transform: `scaleX(${hlT})`,
+                        opacity: hlT > 0 ? 1 : 0
+                      }
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                    "div",
+                    {
+                      style: {
+                        position: "relative",
+                        fontFamily: FONT.en,
+                        fontWeight: 500,
+                        fontSize: 20,
+                        lineHeight: 1.55,
+                        color: hlT > 0.05 ? "#16181D" : "#4A505A"
+                      },
+                      children: b3.t
+                    }
+                  )
+                ] }, i)
+              ) : /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                "div",
+                {
+                  style: {
+                    fontFamily: FONT.en,
+                    fontWeight: 500,
+                    fontSize: 20,
+                    lineHeight: 1.55,
+                    color: "#4A505A"
+                  },
+                  children: b3.t
+                },
+                i
+              )
+            ) }),
+            source ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { marginTop: 24, fontFamily: FONT.en, fontWeight: 700, fontSize: 17, color: "#9AA0A8" }, children: source }) : null
+          ]
+        }
+      ),
+      zhNote && noteT > 0 ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+        "div",
+        {
+          style: {
+            opacity: noteT,
+            transform: `translateY(${(1 - noteT) * 10}px) scale(${0.96 + noteT * 0.04})`,
+            position: "absolute",
+            left: zhNoteX,
+            top: zhNoteYPct !== void 0 ? `${zhNoteYPct}%` : void 0,
+            bottom: zhNoteYPct === void 0 ? -24 : void 0,
+            maxWidth: width * 0.82,
+            background: "rgba(10,12,15,0.94)",
+            borderRadius: 10,
+            padding: "14px 22px",
+            fontFamily: FONT.zh,
+            fontWeight: FONT.zhHeavy,
+            fontSize: SIZE.chip,
+            lineHeight: 1.55,
+            color: COLOR.white,
+            boxShadow: "0 10px 34px rgba(0,0,0,0.55)"
+          },
+          children: zhNote
+        }
+      ) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/ScoreBoard.tsx
+  var import_jsx_runtime98 = __toESM(require_jsx_runtime());
+  var ScoreRowView = ({ row, start: start2 }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(start2, "up");
+    const t = interpolate(frame, [start2, start2 + 36], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const l = Math.round(row.left * t);
+    const r = Math.round(row.right * t);
+    return /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
+          "span",
+          {
+            style: {
+              fontFamily: FONT.en,
+              fontWeight: 800,
+              fontSize: SIZE.kicker,
+              letterSpacing: "0.3em",
+              color: COLOR.grey
+            },
+            children: row.enKicker.toUpperCase()
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: row.zhLabel })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "baseline",
+            gap: 16,
+            fontFamily: FONT.en,
+            fontWeight: 800,
+            fontSize: SIZE.h1,
+            lineHeight: 1,
+            fontVariantNumeric: "tabular-nums",
+            textShadow: "0 2px 14px rgba(0,0,0,0.6)"
+          },
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.green }, children: l }),
+            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.grey, fontSize: SIZE.h2 }, children: ":" }),
+            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.red }, children: r })
+          ]
+        }
+      ),
+      row.note ? /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
+        "div",
+        {
+          style: {
+            marginTop: 8,
+            fontFamily: FONT.zh,
+            fontWeight: 700,
+            fontSize: SIZE.subSmall,
+            color: COLOR.greyDim
+          },
+          children: row.note
+        }
+      ) : null
+    ] });
+  };
+  var ScoreBoard = ({ rows: rows3, enterAt = 0 }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 4 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(ScoreRowView, { row, start: enterAt + i * (MOTION.stagger * 2) }, i)) });
+  };
+
+  // src/JasonWu/components/jc/ShotCard.tsx
+  var import_jsx_runtime99 = __toESM(require_jsx_runtime());
+  var ShotCard = ({
+    src,
+    children,
+    width,
+    radius = 18,
+    stroke,
+    strokeWidth = 0,
+    glow = "none",
+    rotate: rotate2 = 0,
+    highlight,
+    zhBar,
+    highlights,
+    zhBars,
+    punch,
+    enterAt = 0
+  }) => {
+    var _a2, _b, _c, _d;
+    const frame = useCurrentFrame();
+    const enter3 = usePop(enterAt);
+    const glowColor = glow === "none" ? void 0 : glow === "purple" ? "#B26BFF" : COLOR[glow];
+    const punchT = punch ? interpolate(frame, [punch.at, punch.at + ((_a2 = punch.durFrames) != null ? _a2 : 15)], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.inOut(Easing.cubic)
+    }) : 0;
+    const punchScale = 1 + punchT * (((_b = punch == null ? void 0 : punch.scale) != null ? _b : 1.6) - 1);
+    return /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
+      "div",
+      {
+        style: {
+          position: "relative",
+          width,
+          opacity: enter3.opacity,
+          transform: `${enter3.transform} rotate(${rotate2}deg)`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+            "div",
+            {
+              style: {
+                borderRadius: radius,
+                overflow: "hidden",
+                border: strokeWidth ? `${strokeWidth}px solid ${stroke != null ? stroke : "rgba(255,255,255,0.9)"}` : void 0,
+                boxShadow: glowColor ? `0 0 30px ${glowColor}66, 0 0 80px ${glowColor}33, 0 24px 70px rgba(0,0,0,0.6)` : "0 24px 70px rgba(0,0,0,0.6)",
+                lineHeight: 0,
+                background: "#fff"
+              },
+              children: /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
+                "div",
+                {
+                  style: {
+                    position: "relative",
+                    transform: punch ? `scale(${punchScale})` : void 0,
+                    transformOrigin: punch ? `${(_c = punch.originX) != null ? _c : "0%"} ${(_d = punch.originY) != null ? _d : "0%"}` : void 0
+                  },
+                  children: [
+                    src ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(Img, { src, style: { width: "100%", display: "block" } }) : children,
+                    (highlights != null ? highlights : []).map((h, i) => {
+                      var _a3, _b2;
+                      const sweep = interpolate(frame, [(_a3 = h.at) != null ? _a3 : 0, ((_b2 = h.at) != null ? _b2 : 0) + 12], [0, 1], {
+                        extrapolateLeft: "clamp",
+                        extrapolateRight: "clamp",
+                        easing: Easing.out(Easing.cubic)
+                      });
+                      if (sweep <= 0) return null;
+                      return /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                        "div",
+                        {
+                          style: {
+                            position: "absolute",
+                            left: `${h.xPct}%`,
+                            top: `${h.yPct}%`,
+                            width: `${h.wPct}%`,
+                            height: `${h.hPct}%`,
+                            background: "#F9E27A",
+                            opacity: 0.55 * sweep,
+                            transform: `scaleX(${sweep})`,
+                            transformOrigin: "left center",
+                            mixBlendMode: "multiply",
+                            borderRadius: 4
+                          }
+                        },
+                        `hl${i}`
+                      );
+                    }),
+                    (zhBars != null ? zhBars : []).map((b3, i) => {
+                      var _a3, _b2, _c2, _d2;
+                      const t = interpolate(frame, [(_a3 = b3.at) != null ? _a3 : 0, ((_b2 = b3.at) != null ? _b2 : 0) + MOTION.popInFrames], [0, 1], {
+                        extrapolateLeft: "clamp",
+                        extrapolateRight: "clamp",
+                        easing: Easing.out(Easing.cubic)
+                      });
+                      if (t <= 0) return null;
+                      return /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                        "div",
+                        {
+                          style: {
+                            position: "absolute",
+                            left: `${(_c2 = b3.xPct) != null ? _c2 : 2}%`,
+                            top: `${(_d2 = b3.yPct) != null ? _d2 : 80}%`,
+                            maxWidth: "86%",
+                            background: "rgba(10,12,15,0.92)",
+                            borderRadius: 8,
+                            padding: "10px 16px",
+                            fontFamily: FONT.zh,
+                            fontWeight: FONT.zhHeavy,
+                            fontSize: SIZE.subSmall + 2,
+                            lineHeight: 1.5,
+                            color: COLOR.white,
+                            boxShadow: "0 8px 26px rgba(0,0,0,0.5)",
+                            opacity: t,
+                            transform: `translateY(${(1 - t) * 10}px)`
+                          },
+                          children: b3.text
+                        },
+                        `bar${i}`
+                      );
+                    }),
+                    highlight ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                      "div",
+                      {
+                        style: {
+                          position: "absolute",
+                          left: `${highlight.xPct}%`,
+                          top: `${highlight.yPct}%`,
+                          width: `${highlight.wPct}%`,
+                          height: `${highlight.hPct}%`,
+                          background: "#F9E27A",
+                          opacity: 0.55,
+                          mixBlendMode: "multiply",
+                          borderRadius: 4
+                        }
+                      }
+                    ) : null
+                  ]
+                }
+              )
+            }
+          ),
+          zhBar ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 24,
+                top: zhBar.yPct !== void 0 ? `${zhBar.yPct}%` : void 0,
+                bottom: zhBar.yPct === void 0 ? 26 : void 0,
+                maxWidth: width - 80,
+                background: "rgba(10,12,15,0.92)",
+                borderRadius: 8,
+                padding: "10px 16px",
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhHeavy,
+                fontSize: SIZE.subSmall + 2,
+                lineHeight: 1.5,
+                color: COLOR.white,
+                boxShadow: "0 8px 26px rgba(0,0,0,0.5)"
+              },
+              children: zhBar.text
+            }
+          ) : null
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/SideLabel.tsx
+  var import_jsx_runtime100 = __toESM(require_jsx_runtime());
+  var SideLabel = ({ color, en, zh, sub, icon, side = "left", enterAt = 0, variant = "label" }) => {
+    const accent = COLOR[color];
+    const enter3 = useEnter(enterAt, "left");
+    const kickerRow = /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
+      "div",
+      {
+        style: {
+          display: "flex",
+          alignItems: "baseline",
+          whiteSpace: "nowrap",
+          textShadow: "0 1px 8px rgba(0,0,0,0.55)"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.en,
+                fontWeight: 800,
+                fontSize: SIZE.kicker,
+                letterSpacing: "0.34em",
+                color: accent
+              },
+              children: en.toUpperCase()
+            }
+          ),
+          variant === "label" ? /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(import_jsx_runtime100.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.en,
+                  fontWeight: FONT.enBold,
+                  fontSize: SIZE.kicker,
+                  color: accent,
+                  margin: "0 16px"
+                },
+                children: "\xB7"
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.zh,
+                  fontWeight: FONT.zhHeavy,
+                  fontSize: SIZE.kicker,
+                  letterSpacing: "0.30em",
+                  color: accent
+                },
+                children: zh
+              }
+            )
+          ] }) : null
+        ]
+      }
+    );
+    const subRow = sub ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+      "div",
+      {
+        style: {
+          marginTop: 8,
+          fontFamily: FONT.zh,
+          fontWeight: 700,
+          fontSize: SIZE.subSmall,
+          color: "#E8EAED",
+          textShadow: "0 1px 6px rgba(0,0,0,0.55)"
+        },
+        children: sub
+      }
+    ) : null;
+    return /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
+      "div",
+      {
+        "data-qc": "text",
+        "data-qc-id": `SideLabel:${en}`,
+        style: {
+          position: "absolute",
+          ...side === "left" ? { left: SAFE.sideLabel.x } : { right: SAFE.sideLabel.x },
+          top: SAFE.sideLabel.y,
+          opacity: enter3.opacity,
+          transform: enter3.transform,
+          display: "flex",
+          gap: 14
+        },
+        children: [
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+            "span",
+            {
+              style: {
+                color: accent,
+                display: "inline-flex",
+                alignItems: "flex-start",
+                marginTop: variant === "title" ? 8 : 1
+              },
+              children: icon
+            }
+          ) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+            "div",
+            {
+              style: {
+                width: 4,
+                borderRadius: 2,
+                background: accent,
+                alignSelf: "stretch",
+                marginBottom: variant === "label" && sub ? 30 : 0,
+                marginTop: 2
+                // label：竖线只陪第一行；title：竖线贯穿大标+kicker
+              }
+            }
+          ),
+          variant === "title" ? /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+              "div",
+              {
+                style: {
+                  fontFamily: FONT.zh,
+                  fontWeight: FONT.zhHeavy,
+                  // 2026-07-27 勘误：旧值 SIZE.kicker*2 = 44，正落 typography §7.7 的 43-50 禁用空档带
+                  // （§7.7 是 07-25 逐帧实测定的五档字阶，自称优先于规则 8；§2 与 specs §3 里记录的
+                  // 「title 中文 44」是它之前的旧口径，未勘误 —— 0727-01 四个段独立撞上同一冲突）。
+                  // 改取 SIZE.navTitle(52) 落 T2 档 51-71 内；两层比 52:22 = 2.36:1，仍在 §2 说的「约 2:1」。
+                  // 存量片（0715/0721/0722/0724）已交付定稿不重渲，故直接改默认值而非并存两套
+                  // —— 与 motion.ts 的 useExit 15→9 帧同一处理方式。
+                  fontSize: SIZE.navTitle,
+                  lineHeight: 1.15,
+                  color: COLOR.white,
+                  whiteSpace: "nowrap",
+                  textShadow: "0 2px 10px rgba(0,0,0,0.55)"
+                },
+                children: zh
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("div", { style: { marginTop: 10 }, children: kickerRow }),
+            subRow
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { children: [
+            kickerRow,
+            subRow
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/SolventTank.tsx
+  var import_jsx_runtime101 = __toESM(require_jsx_runtime());
+  var CUBE = 62;
+  var CGAP = 14;
+  var GLASS_L = 48;
+  var GLASS_W = 464;
+  var GLASS_TOP = 96;
+  var GLASS_BOTTOM = 548;
+  var ROW_Y = 292;
+  var N = 6;
+  var ROW_W = N * CUBE + (N - 1) * CGAP;
+  var START_X = GLASS_L + (GLASS_W - ROW_W) / 2;
+  var GRAD = {
+    grey: "linear-gradient(160deg,#8A929E 0%,#565E6A 100%)",
+    red: "linear-gradient(160deg,#FF6B6B 0%,#D92B35 100%)",
+    green: "linear-gradient(160deg,#55E698 0%,#1FA85D 100%)"
+  };
+  var Cube = ({ i, pourAt, dissolveAt, resistAt }) => {
+    const frame = useCurrentFrame();
+    const soluble = i < 3;
+    const baseX = START_X + i * (CUBE + CGAP);
+    const drop = interpolate(frame, [pourAt + i * 3, pourAt + i * 3 + 15], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    if (drop <= 0) return null;
+    const dropY = (1 - drop) * -150;
+    const act = soluble ? dissolveAt : resistAt;
+    const tint = interpolate(frame, [act - 6, act + 4], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    const bg = tint <= 0 ? GRAD.grey : soluble ? GRAD.red : GRAD.green;
+    let extraY = 0;
+    let scale = 0.55 + 0.45 * drop;
+    let opacity2 = 1;
+    let outline = "transparent";
+    let outlineW = 0;
+    if (soluble) {
+      const dt = interpolate(frame, [dissolveAt + i * 5, dissolveAt + i * 5 + 26], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.in(Easing.quad)
+      });
+      extraY = -dt * 120;
+      scale = (0.55 + 0.45 * drop) * (1 - dt * 0.85);
+      opacity2 = 1 - dt;
+    } else {
+      const rt = interpolate(frame, [resistAt + (i - 3) * 5, resistAt + (i - 3) * 5 + 20], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.cubic)
+      });
+      const settle = Math.sin(rt * Math.PI) * 6;
+      extraY = rt * (GLASS_BOTTOM - CUBE - 22 - ROW_Y) - settle;
+      outline = COLOR.green;
+      outlineW = rt * 3;
+    }
+    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(import_jsx_runtime101.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: baseX,
+            top: ROW_Y + dropY + extraY,
+            width: CUBE,
+            height: CUBE,
+            borderRadius: CUBE * 0.26,
+            background: bg,
+            border: outlineW > 0 ? `${outlineW}px solid ${outline}` : void 0,
+            boxSizing: "border-box",
+            boxShadow: `inset 0 1.5px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.28)${!soluble && outlineW > 1 ? `, 0 0 22px ${COLOR.green}55` : ""}`,
+            transform: `scale(${scale})`,
+            opacity: opacity2
+          }
+        }
+      ),
+      soluble ? [0, 1, 2].map((b3) => {
+        const bt = interpolate(frame, [dissolveAt + i * 5 + b3 * 5, dissolveAt + i * 5 + b3 * 5 + 24], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp"
+        });
+        if (bt <= 0 || bt >= 1) return null;
+        const bs = 7 + b3 * 3;
+        return /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: baseX + CUBE * 0.5 + (b3 - 1) * 14,
+              top: ROW_Y + dropY - bt * 150,
+              width: bs,
+              height: bs,
+              borderRadius: bs,
+              border: `1.5px solid ${COLOR.red}`,
+              background: "rgba(255,77,77,0.18)",
+              opacity: (1 - bt) * 0.9
+            }
+          },
+          b3
+        );
+      }) : null
+    ] });
+  };
+  var CampTag = ({
+    zh,
+    en,
+    color,
+    at,
+    row
+  }) => {
+    const frame = useCurrentFrame();
+    const t = interpolate(frame, [at, at + 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+    if (t <= 0) return null;
+    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: GLASS_L + 6,
+          top: GLASS_BOTTOM + 16 + row * 46 + (1 - t) * 10,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "8px 16px",
+          borderRadius: 10,
+          border: `2px solid ${COLOR[color]}`,
+          background: color === "red" ? "rgba(255,77,77,0.16)" : "rgba(61,220,132,0.16)",
+          opacity: t
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { width: 14, height: 14, borderRadius: 4, background: GRAD[color], flexShrink: 0 } }),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 900, fontSize: 24, color: COLOR[color], whiteSpace: "nowrap" }, children: zh }),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.16em", color: COLOR[color], opacity: 0.85 }, children: en })
+        ]
+      }
+    );
+  };
+  var SolventTank = ({ enterAt, pourAt, dissolveAt, resistAt }) => {
+    const frame = useCurrentFrame();
+    const glassT = interpolate(frame, [enterAt, enterAt + 13], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const level = interpolate(frame, [pourAt, pourAt + 30], [GLASS_BOTTOM - 8, 168], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const wave = Math.sin(frame / 9) * 3;
+    const stream = interpolate(frame, [pourAt - 2, pourAt + 12], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
+      "div",
+      {
+        style: {
+          position: "relative",
+          width: 560,
+          height: 664,
+          opacity: glassT,
+          transform: `scale(${0.94 + glassT * 0.06})`,
+          transformOrigin: "center 60%"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: GLASS_L + 3,
+                right: 560 - (GLASS_L + GLASS_W) + 3,
+                top: level + wave,
+                bottom: 664 - GLASS_BOTTOM + 6,
+                borderRadius: "6px 6px 34px 34px",
+                background: "linear-gradient(180deg, rgba(77,158,255,0.30) 0%, rgba(47,127,224,0.16) 100%)",
+                boxShadow: `inset 0 2px 0 ${COLOR.blue}66`
+              }
+            }
+          ),
+          stream > 0.02 ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 560 / 2 - 3,
+                top: GLASS_TOP - 70,
+                width: 6,
+                height: 90,
+                borderRadius: 3,
+                background: `linear-gradient(180deg, transparent, ${COLOR.blue}cc)`,
+                opacity: stream
+              }
+            }
+          ) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: GLASS_L,
+                top: GLASS_TOP,
+                width: GLASS_W,
+                height: GLASS_BOTTOM - GLASS_TOP,
+                borderLeft: "3px solid rgba(255,255,255,0.55)",
+                borderRight: "3px solid rgba(255,255,255,0.55)",
+                borderBottom: "3px solid rgba(255,255,255,0.55)",
+                borderRadius: "4px 4px 40px 40px",
+                background: "linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))",
+                boxShadow: "0 24px 60px rgba(0,0,0,0.45)"
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("div", { style: { position: "absolute", left: GLASS_L - 8, top: GLASS_TOP - 2, width: GLASS_W + 16, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.62)" } }),
+          [0.28, 0.46, 0.64, 0.82].map((p) => /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: GLASS_L + 4,
+                top: GLASS_TOP + (GLASS_BOTTOM - GLASS_TOP) * p,
+                width: 22,
+                height: 2,
+                background: "rgba(255,255,255,0.32)"
+              }
+            },
+            p
+          )),
+          Array.from({ length: N }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(Cube, { i, pourAt, dissolveAt, resistAt }, i)),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(CampTag, { zh: "\u80FD\u88AB\u6EB6\u89E3", en: "DISSOLVED", color: "red", at: dissolveAt + 6, row: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(CampTag, { zh: "\u4E0D\u80FD\u88AB\u6EB6\u89E3", en: "RESISTANT", color: "green", at: resistAt + 6, row: 1 })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Stamp.tsx
+  var import_jsx_runtime102 = __toESM(require_jsx_runtime());
+  var plateBg = (color) => {
+    const hex = GRADIENT[color][1].replace("#", "");
+    const r = Math.round(parseInt(hex.slice(0, 2), 16) * 0.35);
+    const g = Math.round(parseInt(hex.slice(2, 4), 16) * 0.35);
+    const b3 = Math.round(parseInt(hex.slice(4, 6), 16) * 0.35);
+    return `rgba(${r},${g},${b3},0.88)`;
+  };
+  var Stamp = ({
+    text: text4,
+    color = "green",
+    rotate: rotate2 = -7,
+    fontSize = 48,
+    enterAt = 0,
+    icon,
+    enSub
+  }) => {
+    const frame = useCurrentFrame();
+    const t = interpolate(frame, [enterAt, enterAt + 10], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const settle = frame - (enterAt + 10);
+    const shake = settle > 0 && settle < 12 ? Math.sin(settle * 1.3) * Math.exp(-settle * 0.35) * 1.2 : 0;
+    const accent = COLOR[color];
+    return /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: enSub ? Math.round(fontSize * 0.14) : 0,
+          border: `2px solid ${accent}`,
+          borderRadius: RADIUS.chip,
+          padding: "12px 28px",
+          background: plateBg(color),
+          fontFamily: FONT.zh,
+          fontWeight: FONT.zhHeavy,
+          fontSize,
+          color: accent,
+          opacity: Math.min(1, t * 2.5) * 0.95,
+          transform: `rotate(${rotate2 + shake}deg) scale(${1.3 - 0.3 * t})`,
+          textShadow: `0 0 12px ${accent}44`,
+          boxShadow: `0 0 14px ${accent}22, inset 0 0 12px ${accent}14`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
+            "div",
+            {
+              style: {
+                display: "flex",
+                alignItems: "center",
+                gap: Math.round(fontSize * 0.3),
+                letterSpacing: "0.18em"
+              },
+              children: [
+                icon ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("span", { style: { display: "inline-flex", alignItems: "center" }, children: icon }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("span", { children: text4 })
+              ]
+            }
+          ),
+          enSub ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
+            "div",
+            {
+              style: {
+                fontFamily: FONT.en,
+                fontWeight: FONT.enBold,
+                fontSize: Math.round(fontSize * 0.3),
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                color: `${accent}B3`
+              },
+              children: enSub
+            }
+          ) : null
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/StepList.tsx
+  var import_jsx_runtime103 = __toESM(require_jsx_runtime());
+  var StepList = ({ steps, accent = "blue", enterAt = 0, staggerFrames = MOTION.stagger }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }, children: steps.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(StepView, { step: s, n: i + 1, accent, enterAt: enterAt + i * staggerFrames }, i)) });
+  };
+  var StepView = ({
+    step,
+    n,
+    accent,
+    enterAt
+  }) => {
+    const enter3 = useEnter(enterAt, "left");
+    const c3 = COLOR[accent];
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 16,
+          padding: "13px 22px",
+          background: COLOR.cardBg,
+          border: `1.5px solid ${COLOR.cardStroke}`,
+          borderRadius: RADIUS.chip,
+          boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
+            "span",
+            {
+              style: {
+                width: 34,
+                height: 34,
+                borderRadius: 17,
+                border: `2px solid ${c3}`,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT.en,
+                fontWeight: 800,
+                fontSize: 19,
+                color: c3,
+                flexShrink: 0
+              },
+              children: n
+            }
+          ),
+          step.icon ? /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center" }, children: step.icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 28, color: COLOR.white, whiteSpace: "nowrap" }, children: step.text })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/TimelineCard.tsx
+  var import_jsx_runtime104 = __toESM(require_jsx_runtime());
+  var TimelineCard = ({ title = "THE DEAL", subtitle = "\u7ED3\u5C40", nodes, enterAt, stagger = 10, width = 340 }) => {
+    const frame = useCurrentFrame();
+    const card = useEnter(enterAt, "up");
+    const rows3 = nodes.slice(0, 4);
+    return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
+      "div",
+      {
+        "data-qc": "box",
+        "data-qc-id": "timeline-card",
+        style: {
+          width,
+          padding: "22px 26px",
+          background: "rgba(12,12,15,0.92)",
+          // 黑半透（规格实测值）
+          border: `1px solid ${COLOR.cardStroke}`,
+          borderRadius: RADIUS.card,
+          // 20
+          boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+          opacity: card.opacity,
+          transform: card.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 10, marginBottom: 16 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.en,
+                  fontWeight: 800,
+                  fontSize: 24,
+                  letterSpacing: "0.16em",
+                  color: COLOR.white
+                },
+                children: title
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.grey }, children: [
+              "\xB7 ",
+              subtitle
+            ] })
+          ] }),
+          rows3.map((n, i) => {
+            var _a2;
+            const local = frame - (enterAt + 6 + i * stagger);
+            const t = interpolate(local, [0, MOTION.popInFrames], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+              easing: Easing.out(Easing.cubic)
+            });
+            const op = interpolate(local, [0, MOTION.popInFrames * 0.7], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp"
+            });
+            const shift = (1 - t) * 24;
+            const c3 = COLOR[(_a2 = n.color) != null ? _a2 : "red"];
+            return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 14,
+                  height: 52,
+                  marginBottom: i < rows3.length - 1 ? 20 : 0,
+                  // 行距 ~72
+                  opacity: op,
+                  transform: `translateY(${shift}px)`
+                },
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
+                    "span",
+                    {
+                      style: {
+                        fontFamily: FONT.en,
+                        fontWeight: 800,
+                        fontSize: 20,
+                        color: c3,
+                        minWidth: 40,
+                        fontVariantNumeric: "tabular-nums"
+                      },
+                      children: n.date
+                    }
+                  ),
+                  n.icon ? /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center", flexShrink: 0 }, children: n.icon }) : null,
+                  /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.white, whiteSpace: "nowrap" }, children: n.label })
+                ]
+              },
+              i
+            );
+          })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/TimelineEvents.tsx
+  var import_jsx_runtime105 = __toESM(require_jsx_runtime());
+  var TimelineEvents = ({ events, width = 760, enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const lineT = interpolate(frame, [enterAt, enterAt + 30], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "relative", width, height: 150 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width, height: 3, borderRadius: 2, background: "rgba(255,255,255,0.15)" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width: width * lineT, height: 3, borderRadius: 2, background: COLOR.blue } }),
+      events.map((ev, i) => {
+        const start2 = enterAt + 10 + i * (MOTION.stagger + 6);
+        const t = interpolate(frame, [start2, start2 + MOTION.popInFrames], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: Easing.out(Easing.cubic)
+        });
+        const x = ev.xPct / 100 * width;
+        return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "absolute", left: x, top: 0, opacity: t, transform: `translateY(${(1 - t) * 14}px)` }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                top: 34,
+                left: -7,
+                width: 15,
+                height: 15,
+                borderRadius: 8,
+                background: COLOR.blue,
+                boxShadow: "0 0 12px rgba(77,158,255,0.8)"
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "absolute", top: -8, left: -6, whiteSpace: "nowrap" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.chip, color: COLOR.white }, children: ev.title }),
+            ev.sub ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { marginLeft: 10, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: ev.sub }) : null
+          ] }),
+          ev.chip ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                top: 66,
+                left: -6,
+                whiteSpace: "nowrap",
+                padding: "6px 12px",
+                borderRadius: RADIUS.chip,
+                border: `1.5px solid ${COLOR[ev.chip.color]}`,
+                background: COLOR.cardBg,
+                fontFamily: FONT.zh,
+                fontWeight: 700,
+                fontSize: SIZE.subSmall,
+                color: COLOR[ev.chip.color]
+              },
+              children: ev.chip.text
+            }
+          ) : null
+        ] }, i);
+      })
+    ] });
+  };
+
+  // src/JasonWu/components/jc/TweetCard.tsx
+  var import_jsx_runtime106 = __toESM(require_jsx_runtime());
+  var TweetCard = ({
+    name,
+    zhIdentity,
+    avatarSrc: avatarSrc2,
+    avatarText,
+    avatarColor = "#E05A33",
+    badgeSrc,
+    headlineTop,
+    headlineMain,
+    headlineColor = "red",
+    zhSub,
+    headlineSub,
+    chips = [],
+    enterAt = 0,
+    identityAt,
+    kickerAt,
+    mainAt
+  }) => {
+    const idEnter = useEnter(identityAt != null ? identityAt : enterAt, "left");
+    const kickerEnter = useEnter(kickerAt != null ? kickerAt : enterAt, "left");
+    const mainEnter = useEnter(mainAt != null ? mainAt : enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, opacity: idEnter.opacity, transform: idEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { position: "relative", flexShrink: 0 }, children: [
+          avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(Img, { src: avatarSrc2, style: { width: 116, height: 116, borderRadius: 58, objectFit: "cover", display: "block" } }) : /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+            "div",
+            {
+              style: {
+                width: 116,
+                height: 116,
+                borderRadius: 58,
+                background: avatarColor,
+                border: `3px solid ${COLOR.blue}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT.en,
+                fontWeight: 800,
+                fontSize: 44,
+                color: "#fff"
+              },
+              children: avatarText != null ? avatarText : name.slice(0, 1)
+            }
+          ),
+          badgeSrc ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+            Img,
+            {
+              src: badgeSrc,
+              style: {
+                position: "absolute",
+                right: -6,
+                bottom: -4,
+                width: 44,
+                height: 44,
+                borderRadius: 12,
+                boxShadow: "0 4px 12px rgba(0,0,0,0.5)"
+              }
+            }
+          ) : null
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 36, color: COLOR.white, letterSpacing: "0.03em" }, children: name.toUpperCase() }),
+          /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall + 2, color: COLOR.grey }, children: zhIdentity })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { opacity: kickerEnter.opacity, transform: kickerEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+          "div",
+          {
+            style: {
+              marginTop: 34,
+              fontFamily: "Georgia, serif",
+              fontWeight: 700,
+              fontSize: 88,
+              color: COLOR.blue,
+              lineHeight: 0.4
+            },
+            children: "\u201C"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { marginTop: 26, fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 42, color: COLOR.white, letterSpacing: "0.01em", whiteSpace: "nowrap" }, children: headlineTop.toUpperCase() })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { opacity: mainEnter.opacity, transform: mainEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+          "div",
+          {
+            style: {
+              marginTop: 2,
+              fontFamily: FONT.enTitle,
+              fontWeight: 400,
+              fontSize: SIZE.h1,
+              letterSpacing: "0.01em",
+              lineHeight: 1.05,
+              whiteSpace: "nowrap",
+              color: COLOR[headlineColor],
+              textShadow: "0 6px 24px rgba(0,0,0,0.65)"
+            },
+            children: headlineMain.toUpperCase()
+          }
+        ),
+        zhSub || headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 18, marginTop: 12 }, children: [
+          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white, whiteSpace: "nowrap" }, children: zhSub }) : null,
+          headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.24em", color: COLOR.grey, whiteSpace: "nowrap" }, children: headlineSub.toUpperCase() }) : null
+        ] }) : null
+      ] }),
+      chips.length ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { display: "flex", gap: 12, marginTop: 24 }, children: chips.map((c3, i) => {
+        var _a2;
+        return /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(Chip, { segments: [{ t: c3.text }], accent: (_a2 = c3.color) != null ? _a2 : "blue", enterAt: enterAt + 10 + i * 8 }, i);
+      }) }) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/UnitMatrix.tsx
+  var import_jsx_runtime107 = __toESM(require_jsx_runtime());
+  var GLOW2 = {
+    green: "rgba(61,220,132,0.4)",
+    red: "rgba(255,77,77,0.4)",
+    blue: "rgba(77,158,255,0.4)",
+    yellow: "rgba(255,197,61,0.4)"
+  };
+  var gcd = (a3, b3) => b3 === 0 ? a3 : gcd(b3, a3 % b3);
+  var pickStride = (total) => {
+    for (const s of [37, 29, 23, 17, 13, 11, 7, 3]) {
+      if (gcd(total, s) === 1) return s;
+    }
+    return 1;
+  };
+  var MatrixGroup = ({ rows: rows3, cols, color, cell, gap, fillRatio, enterAt, stages }) => {
+    var _a2, _b;
+    const frame = useCurrentFrame();
+    const [g0, g1] = GRADIENT[color];
+    const [gg0, gg1] = GRADIENT.green;
+    const total = rows3 * cols;
+    const stride = pickStride(total);
+    const litCount = fillRatio == null ? total : Math.round(Math.max(0, Math.min(1, fillRatio)) * total);
+    const greenCount = (_a2 = stages == null ? void 0 : stages.greenCount) != null ? _a2 : 0;
+    const fillFrames = (_b = stages == null ? void 0 : stages.fillFrames) != null ? _b : 45;
+    const stagger = stages ? Math.max(0.15, fillFrames / Math.max(1, litCount)) : Math.min(1.4, 110 / Math.max(1, litCount));
+    const baseAt = stages ? stages.placeholderAt : enterAt;
+    const fillAt = stages ? stages.fillAt : enterAt;
+    const W = cols * cell + (cols - 1) * gap;
+    const H = rows3 * cell + (rows3 - 1) * gap;
+    return /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW2[color]})` }, children: Array.from({ length: total }, (_, i) => {
+      const rank = i * stride % total;
+      const isRed = rank < litCount;
+      const isGreen = stages != null && !isRed && rank < litCount + greenCount;
+      const left = i % cols * (cell + gap);
+      const top = Math.floor(i / cols) * (cell + gap);
+      const base = interpolate(frame, [baseAt, baseAt + MOTION.popInFrames], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.quad)
+      });
+      const greyOpacity = base * (stages ? 1 : MOTION.dimOpacity);
+      const greyBg = stages ? "rgba(190,196,206,0.32)" : COLOR.cardStroke;
+      let t = 0;
+      let grad = null;
+      if (isRed) {
+        t = interpolate(frame, [fillAt + rank * stagger, fillAt + rank * stagger + 10], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: Easing.out(Easing.cubic)
+        });
+        grad = [g0, g1];
+      } else if (isGreen && (stages == null ? void 0 : stages.greenAt) != null) {
+        const gRank = rank - litCount;
+        t = interpolate(frame, [stages.greenAt + gRank * 1.2, stages.greenAt + gRank * 1.2 + 8], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: Easing.out(Easing.cubic)
+        });
+        grad = [gg0, gg1];
+      }
+      return /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "absolute", left, top, width: cell, height: cell }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              inset: 0,
+              borderRadius: cell * 0.26,
+              background: greyBg,
+              opacity: greyOpacity * (1 - t)
+            }
+          }
+        ),
+        grad && t > 0 ? /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              inset: 0,
+              borderRadius: cell * 0.26,
+              background: `linear-gradient(160deg, ${grad[0]} 0%, ${grad[1]} 100%)`,
+              boxShadow: "inset 0 1.5px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.25)",
+              opacity: t * (0.78 + i * 37 % 22 / 100),
+              transform: `scale(${0.5 + 0.5 * t})`
+            }
+          }
+        ) : null
+      ] }, i);
+    }) });
+  };
+  var UnitMatrix = ({ groups = 3, rows: rows3 = 5, cols = 8, color = "red", cell = 30, gap = 6, fillRatio, enterAt, stages }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { display: "flex", gap: GRID2 * 3, alignItems: "flex-start" }, children: Array.from({ length: groups }, (_, g) => /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+      MatrixGroup,
+      {
+        rows: rows3,
+        cols,
+        color,
+        cell,
+        gap,
+        fillRatio,
+        enterAt: enterAt + g * MOTION.stagger,
+        stages
+      },
+      g
+    )) });
+  };
+
+  // src/JasonWu/components/jc/VerdictBox.tsx
+  var import_jsx_runtime108 = __toESM(require_jsx_runtime());
+  var ChipTile = ({
+    icon,
+    label: label3,
+    revealAt,
+    accent
+  }) => {
+    const enter3 = useEnter(revealAt, "up");
+    return /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8, width: 76 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+        "div",
+        {
+          style: {
+            width: 76,
+            height: 76,
+            borderRadius: 12,
+            border: `2px solid ${accent}`,
+            background: COLOR.cardBg,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: accent,
+            opacity: enter3.opacity,
+            transform: enter3.transform
+          },
+          children: icon
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+        "div",
+        {
+          style: {
+            fontFamily: FONT.zh,
+            fontWeight: 700,
+            fontSize: 16,
+            lineHeight: 1.1,
+            color: COLOR.white,
+            whiteSpace: "nowrap",
+            opacity: enter3.opacity
+          },
+          children: label3
+        }
+      )
+    ] });
+  };
+  var VerdictBox = ({
+    color,
+    side,
+    headerZh,
+    headerEn,
+    headerIcon,
+    chips,
+    boxEnterAt,
+    top = 420,
+    offsetX = 72,
+    phase = 0,
+    width = 400,
+    height = 170,
+    qcId
+  }) => {
+    const accent = COLOR[color];
+    const pop = usePop(boxEnterAt);
+    return /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          top,
+          ...side === "left" ? { left: offsetX } : { right: offsetX }
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(Breathe, { phase, children: /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)(
+          "div",
+          {
+            "data-qc": "box",
+            "data-qc-id": qcId != null ? qcId : `verdict-${color}`,
+            style: {
+              position: "relative",
+              width,
+              height,
+              boxSizing: "border-box",
+              padding: "14px 20px",
+              borderRadius: 16,
+              border: `2px solid ${accent}`,
+              background: "rgba(12,14,18,0.55)",
+              boxShadow: `inset 0 0 26px ${accent}14`,
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+              opacity: pop.opacity,
+              transform: pop.transform
+            },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { display: "inline-flex", alignItems: "center", color: accent }, children: headerIcon }),
+                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: accent, whiteSpace: "nowrap" }, children: headerZh }),
+                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+                  "span",
+                  {
+                    style: {
+                      position: "absolute",
+                      top: 14,
+                      right: 20,
+                      fontFamily: FONT.en,
+                      fontWeight: 700,
+                      fontSize: 12,
+                      letterSpacing: "0.2em",
+                      textTransform: "uppercase",
+                      color: accent,
+                      opacity: 0.4
+                    },
+                    children: headerEn
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { display: "flex", gap: 14, justifyContent: "center" }, children: chips.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(ChipTile, { icon: c3.icon, label: c3.label, revealAt: c3.revealAt, accent }, i)) })
+            ]
+          }
+        ) })
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/ViewsBadge.tsx
+  var import_jsx_runtime109 = __toESM(require_jsx_runtime());
+  var ViewsBadge = ({ from = 0, to, unit = "M+", label: label3 = "VIEWS", enterAt = 0, countFrames = 20 }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "left");
+    if (frame < enterAt) return null;
+    const n = Math.round(
+      interpolate(frame, [enterAt, enterAt + countFrames], [from, to], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.cubic)
+      })
+    );
+    return /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "12px 16px",
+          borderRadius: 16,
+          border: `2px solid rgba(255,197,61,0.55)`,
+          background: "rgba(10,12,15,0.72)",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(Eye, { size: 28, color: COLOR.yellow, strokeWidth: 2.4 }),
+          /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 36, color: COLOR.yellow, lineHeight: 1, fontVariantNumeric: "tabular-nums" }, children: [
+            n,
+            unit
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime109.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 700, fontSize: 20, letterSpacing: "0.22em", color: COLOR.grey, lineHeight: 1 }, children: label3 })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/WindowCard.tsx
+  var import_jsx_runtime110 = __toESM(require_jsx_runtime());
+  var WindowCard = ({ title, icon, chip, width, height, children, enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const chipColor = chip ? chip.color === "purple" ? "#B26BFF" : COLOR[chip.color] : void 0;
+    return /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
+      "div",
+      {
+        style: {
+          width,
+          height,
+          display: "flex",
+          flexDirection: "column",
+          background: "rgba(18,20,24,0.92)",
+          border: "1.5px solid rgba(255,255,255,0.16)",
+          borderRadius: 16,
+          boxShadow: "0 22px 60px rgba(0,0,0,0.55)",
+          overflow: "hidden",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
+            "div",
+            {
+              style: {
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                padding: "14px 18px",
+                borderBottom: "1px solid rgba(255,255,255,0.08)",
+                flexShrink: 0
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { display: "flex", gap: 7 }, children: ["#FF5F57", "#FEBC2E", "#28C840"].map((c3) => /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { width: 13, height: 13, borderRadius: 7, background: c3 } }, c3)) }),
+                icon ? /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { display: "inline-flex", alignItems: "center", marginLeft: 6 }, children: icon }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 24, color: COLOR.white }, children: title }),
+                chip ? /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
+                  "span",
+                  {
+                    style: {
+                      marginLeft: "auto",
+                      border: `1.5px solid ${chipColor}`,
+                      borderRadius: 999,
+                      padding: "3px 14px",
+                      fontFamily: FONT.zh,
+                      fontWeight: 700,
+                      fontSize: 18,
+                      color: chipColor
+                    },
+                    children: chip.text
+                  }
+                ) : null
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { flex: 1, padding: 18, overflow: "hidden", position: "relative" }, children })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/JcNativeRecipes.tsx
+  var import_jsx_runtime111 = __toESM(require_jsx_runtime());
+  var validColors = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
+  var avatarSrc = "data:image/svg+xml,%3Csvg%20xmlns=%27http%3A%2F%2Fwww.w3.org%2F2000%200%20160%20160%27%3E%3Crect%20width%3D%27160%27%20height%3D%27160%27%20fill%3D%27%23131a2a%27%2F%3E%3Ccircle%20cx%3D%2780%27%20cy%3D%2762%27%20r%3D%2732%27%20fill%3D%27%234d9eff%27%2F%3E%3Crect%20x%3D%2734%27%20y%3D%27104%27%20width%3D%2792%27%20height%3D%2736%27%20rx%3D%2718%27%20fill%3D%27%233ddc84%27%2F%3E%3C%2Fsvg%3E";
+  var asText = (value, fallback = "") => typeof value === "string" && value.trim() ? value.trim() : fallback;
+  var asNumber = (value, fallback = 72) => Number.isFinite(Number(value)) ? Number(value) : fallback;
+  var stringList = (value) => Array.isArray(value) ? value.map((item2) => asText(item2)).filter(Boolean) : [];
+  var recipeContent = (source) => {
+    var _a2, _b;
+    const normalized = normalizeComponentContent(source);
+    const renderer = toRendererContentProps(source);
+    const payload = normalized.contentPayload;
+    const lines = payload.type === "chips" ? payload.items.map((item2) => item2.title).filter(Boolean) : payload.type === "steps" ? payload.steps.map((item2) => item2.text).filter(Boolean) : stringList(renderer.items).length ? stringList(renderer.items) : stringList(renderer.steps).length ? stringList(renderer.steps) : [normalized.headline];
+    const body = payload.type === "narrative" ? payload.bodyText : payload.type === "metrics" ? asText(payload.detailText, asText(renderer.body, normalized.headline)) : asText(renderer.body, normalized.headline);
+    const metric = payload.type === "metrics" ? { label: payload.label, value: asNumber(payload.value), unit: (_a2 = payload.unit) != null ? _a2 : "", detail: (_b = payload.detailText) != null ? _b : "" } : { label: asText(renderer.label, normalized.headline), value: asNumber(renderer.value), unit: asText(renderer.unit), detail: body };
+    return { category: normalized.category, headline: normalized.headline, body, lines: lines.length ? lines : [normalized.headline], metric };
+  };
+  var sourceAccent = (source, nativeColor) => {
+    var _a2;
+    if (source.__jcUseLayerAccent !== true) return nativeColor;
+    const requested = String((_a2 = source.accent) != null ? _a2 : "");
+    return validColors.has(requested) ? requested : nativeColor;
+  };
+  var lineAt = (content2, index) => {
+    var _a2, _b;
+    return (_b = (_a2 = content2.lines[index]) != null ? _a2 : content2.lines[content2.lines.length - 1]) != null ? _b : content2.headline;
+  };
+  var JcNativeStageBackdrop = ({ children, scrim = true }) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(
+    AbsoluteFill,
+    {
+      style: {
+        background: "radial-gradient(100% 90% at 24% 18%, #18243a 0%, #0b0e14 48%, #07090d 100%)",
+        overflow: "hidden"
+      },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(JcFontGate, {}),
+        scrim ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoScrim, { strength: 0.62, side: "left" }) : null,
+        children
+      ]
+    }
+  );
+  var renderJcNativeRecipe = (exportName, source) => {
+    const content2 = recipeContent(source);
+    const headline = content2.headline;
+    const body = content2.body || headline;
+    const lines = content2.lines;
+    const metric = content2.metric;
+    const color = (nativeColor) => sourceAccent(source, nativeColor);
+    switch (exportName) {
+      case "BadgeCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 610, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BadgeCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Crown, { size: 64 }), zhTitle: headline, zhResult: body, enKicker: content2.category, accent: color("yellow"), enterAt: 0 }) });
+      case "BarChart":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 430, top: 285 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BarChart2, { width: 760, accent: color("yellow"), items: lines.slice(0, 4).map((label3, index) => ({ label: label3, value: Math.max(12, metric.value - index * 14), display: String(Math.max(12, metric.value - index * 14)), highlight: index === 0 })) }) });
+      case "BigNumber":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 500, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BigNumber, { value: metric.value, suffix: metric.unit || "%", color: color("green"), enKicker: metric.label || content2.category, zhSub: metric.detail || body, size: "mega", enterAt: 0 }) });
+      case "BilingualSub":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: "CAPTION", segments: [{ t: headline, color: color("blue") }], top: 250, enterAt: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BilingualSub, { zh: body, en: content2.category })
+        ] });
+      case "Breathe":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 690, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Breathe, { amp: 2, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { width: 360, height: 360, borderRadius: 180, border: `6px solid ${COLOR.green}`, color: COLOR.green, boxShadow: `0 0 90px ${COLOR.green}66`, display: "flex", alignItems: "center", justifyContent: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ShieldCheck, { size: 150 }) }) }) });
+      case "BrickWall":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 470, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BrickWall, { label: headline, enLabel: content2.category, rows: 3, width: 880, enterAt: 0 }) });
+      case "CardWall":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 250, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CardWall, { cols: 3, cardWidth: 360, gap: 22, items: lines.slice(0, 6).map((text4, index) => ({ name: String.fromCharCode(65 + index), text: text4 })), enterAt: 0 }) });
+      case "Checklist":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Checklist, { accent: color("green"), top: 250, items: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Eye, { size: 34 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 34 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 34 }), segments: [{ t: text4 }], enterAt: index * 10 })) });
+      case "Chip":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 520, top: 420, display: "flex", gap: 28 }, children: lines.slice(0, 3).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Chip, { icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Sparkles, { size: 32 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 32 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 32 }), accent: color(index === 0 ? "blue" : index === 1 ? "red" : "green"), outlined: index === 1, segments: [{ t: text4 }], enterAt: index * 10 }, `${text4}-${index}`)) });
+      case "CloneCascade":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 260, top: 405 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CloneCascade, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Star, { size: 46 }), label: headline, cloneCount: 4, warnText: body, enterAt: 0 }) });
+      case "CompareCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 390, top: 240 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CompareCard, { width: 900, items: lines.slice(0, 3).map((name, index) => ({ logo: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Bot, { size: 38 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WandSparkles, { size: 38 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CodeXml, { size: 38 }), name, weak: index === 0 ? lineAt(content2, 1) : body, strong: index === 0 ? body : lineAt(content2, index - 1), strongColor: color(index === 0 ? "green" : index === 1 ? "blue" : "yellow") })) }) });
+      case "CurveOverlay":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { position: "absolute", left: 260, top: 250 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CurveOverlay, { width: 1120, height: 520, color: color("yellow"), strokeWidth: 10, enterAt: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { color: COLOR.yellow, fontSize: 44, fontWeight: 900, marginTop: -70 }, children: metric.label || headline })
+        ] });
+      case "DMCardStack":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 420, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(DMCardStack, { cards: lines.slice(0, 3).map((text4, index) => ({ chip: { text: index === 0 ? content2.category : index === 1 ? "SIGNAL" : "RESULT", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") }, text: text4, width: 640 - index * 40 })) }) });
+      case "FlowChain":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 260, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FlowChain, { nodeWidth: 230, nodes: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Bot, { size: 46 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(GitBranch, { size: 46 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Package, { size: 46 }), lines: [text4], accent: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") })) }) });
+      case "Flywheel":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 680, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flywheel, { size: 430, color: color("green"), icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Zap, { size: 88 }) }) });
+      case "HeroText":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: [{ t: content2.category.toLowerCase(), color: color("blue") }, { t: " system" }], segments: [{ t: headline, color: color("yellow") }], zhSub: body, echo: "motion card hero", top: 270, enterAt: 8 });
+      case "InfoCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 520, top: 380 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Lightbulb, { size: 56 }), en: content2.category, zh: body, accent: color("yellow"), enterAt: 0 }) });
+      case "InfoScrim":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoScrim, { strength: 0.9, side: "right" }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: "SCRIM", segments: [{ t: headline, color: color("blue") }], top: 330, enterAt: 0 })
+        ] });
+      case "LoopDiagram":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 620, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(LoopDiagram, { size: 500, color: color("blue"), labels: lines.slice(0, 4) }) });
+      case "MatrixIcon":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 670, top: 260 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(MatrixIcon, { color: color("yellow"), rows: 5, cols: 5, cell: 58, gap: 12, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Scale, { size: 92 }) }) });
+      case "NamePlate":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(NamePlate, { name: headline, slug: content2.category, avatarText: headline.charAt(0) || "J", enterAt: 0 }) });
+      case "PersonBadge":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PersonBadge, { avatarSrc, name: headline, zhSub: body, accent: color("blue"), enterAt: 0 }) });
+      case "PersonCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 360, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PersonCard, { name: headline, zhRole: body, avatarText: headline.charAt(0) || "J", orgChip: { text: content2.category, color: color("green") }, kickerNote: "SANDBOXED", enterAt: 0 }) });
+      case "PhoneMockup":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 720, top: 95 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PhoneMockup, { width: 340, glow: "purple", scrollTo: -170, scrollStart: 20, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { minHeight: 930, padding: "78px 30px 30px", background: "#f3f4f6", color: "#111827", fontSize: 28, lineHeight: 1.55 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("b", { children: headline }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {}),
+          lines.slice(0, 4).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_react129.default.Fragment, { children: [
+            index + 1,
+            ". ",
+            text4,
+            /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {})
+          ] }, `${text4}-${index}`)),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {}),
+          body
+        ] }) }) });
+      case "QuoteDoc":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 360, top: 190 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(QuoteDoc, { width: 960, source: content2.category, title: headline, zhNote: body, zhNoteYPct: 60, blocks: lines.slice(0, 3).map((text4, index) => ({ t: text4, heading: index === 0, hl: index === 2 })), highlightAt: 18, noteAt: 28 }) });
+      case "ScoreBoard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 500, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ScoreBoard, { rows: lines.slice(0, 3).map((text4, index) => ({ enKicker: content2.category, zhLabel: text4, left: Math.max(4, metric.value - index * 8), right: Math.max(1, metric.value - 13 - index * 8), note: index === 0 ? body : void 0 })), enterAt: 0 }) });
+      case "ShotCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 400, top: 230 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ShotCard, { width: 920, radius: 26, glow: "purple", highlight: { xPct: 12, yPct: 33, wPct: 62, hPct: 18 }, zhBar: { text: body }, enterAt: 0, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { background: "#fff", padding: 52, color: "#111827", minHeight: 430, lineHeight: 1.45 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { fontSize: 48, fontWeight: 900 }, children: headline }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { marginTop: 32, fontSize: 30 }, children: body }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { marginTop: 28, fontSize: 30, color: "#475467" }, children: lineAt(content2, 0) })
+        ] }) }) });
+      case "SideLabel":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SideLabel, { color: color("blue"), en: content2.category, zh: headline, sub: body, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Sparkles, { size: 28 }), variant: "title" });
+      case "SolventTank":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 610, top: 160 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SolventTank, { enterAt: 0, pourAt: 12, dissolveAt: 45, resistAt: 75 }) });
+      case "Stamp":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 650, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Stamp, { text: headline, color: color("green"), fontSize: 110, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 92 }), enSub: content2.category, enterAt: 0 }) });
+      case "StepList":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 430, top: 270 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(StepList, { accent: color("blue"), steps: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FileText, { size: 30 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 30 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WandSparkles, { size: 30 }), text: text4 })) }) });
+      case "TimelineCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 630, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TimelineCard, { width: 520, title: content2.category, subtitle: headline, enterAt: 0, nodes: lines.slice(0, 3).map((label3, index) => ({ date: index < 9 ? "0" + String(index + 1) : String(index + 1), label: label3, color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green"), icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FileText, { size: 20 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Play, { size: 20 }) })) }) });
+      case "TimelineEvents":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 300, top: 430 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TimelineEvents, { width: 1080, events: lines.slice(0, 3).map((title, index) => {
+          var _a2;
+          return { xPct: (_a2 = [5, 47, 86][index]) != null ? _a2 : 86, title, sub: index === 0 ? body : "", chip: { text: index === 0 ? "OPEN" : index === 1 ? "PAYOFF" : "DONE", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") } };
+        }) }) });
+      case "TweetCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 320, top: 210 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TweetCard, { name: content2.category, zhIdentity: body, avatarText: content2.category.charAt(0) || "J", headlineTop: content2.category, headlineMain: headline, headlineColor: color("red"), zhSub: body, headlineSub: "BY MOTION CARDS", chips: lines.slice(0, 2).map((text4, index) => ({ text: text4, color: color(index === 0 ? "blue" : "yellow") })) }) });
+      case "UnitMatrix":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 390, top: 300 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(UnitMatrix, { groups: 2, rows: 6, cols: 10, color: color("green"), cell: 44, gap: 9, fillRatio: Math.max(0.01, Math.min(1, metric.value / 100)), enterAt: 0 }) });
+      case "VerdictBox":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(VerdictBox, { color: color("red"), side: "left", headerZh: headline, headerEn: "DROP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(X, { size: 28 }), boxEnterAt: 0, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(X, { size: 34 }), label: label3, revealAt: 12 + index * 10 })) }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(VerdictBox, { color: color("green"), side: "right", headerZh: body, headerEn: "KEEP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 28 }), boxEnterAt: 8, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 34 }), label: label3, revealAt: 20 + index * 10 })) })
+        ] });
+      case "ViewsBadge":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 650, top: 420 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ViewsBadge, { from: 0, to: metric.value, unit: metric.unit || "M+", label: metric.label || content2.category, enterAt: 0 }) });
+      case "WindowCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 450, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WindowCard, { title: headline, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SquareTerminal, { size: 34 }), width: 820, height: 430, chip: { text: content2.category, color: color("blue") }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { color: "#F8FAFC", fontSize: 30, lineHeight: 1.7, fontFamily: FONT.en }, children: [
+          lines.slice(0, 4).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_react129.default.Fragment, { children: [
+            "entry: ",
+            text4,
+            /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {})
+          ] }, `${text4}-${index}`)),
+          "status: ",
+          body
+        ] }) }) });
+      default:
+        return null;
+    }
+  };
+
+  // src/JasonWu/jcLayoutRegistry.tsx
+  var import_jsx_runtime112 = __toESM(require_jsx_runtime());
+  var semanticAccents = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
+  var accentOf2 = (value) => semanticAccents.has(value) ? value : "blue";
+  var entryById = new Map(components_registry_default.components.filter((entry) => entry.id.startsWith("jc-")).map((entry) => [entry.id, entry]));
+  var JcEffectAdapter = ({ cue, props }) => {
+    var _a2, _b, _c, _d, _e, _f, _g;
+    const entry = entryById.get(String((_a2 = props.__jcLayoutId) != null ? _a2 : cue.layout));
+    const exportName = (_b = entry == null ? void 0 : entry.runtime) == null ? void 0 : _b.exportName;
+    const motion = (_c = props.__jcMotion) != null ? _c : {};
+    if (!exportName) return null;
+    const recipe = renderJcNativeRecipe(exportName, props);
+    if (!recipe) return null;
+    const stage = props.__jcStageBackdropProvided === true ? recipe : /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(JcNativeStageBackdrop, { children: recipe });
+    return /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(
+      MotionWrapper,
+      {
+        commonProps: motion.commonProps,
+        designTokens: (_d = motion.designTokens) != null ? _d : props.designTokens,
+        beatDuration: (_e = motion.beatDuration) != null ? _e : Math.max(1, cue.end - cue.start),
+        entranceDurationSeconds: (_f = motion.entranceDurationSeconds) != null ? _f : 2.2,
+        accent: accentOf2((_g = motion.accent) != null ? _g : props.accent),
+        preserveNativeMotion: true,
+        children: stage
+      }
+    );
+  };
+  var categoryFor = (intent) => intent === "metrics" ? "data" : intent === "narrative" || intent === "contrast" ? "story" : intent === "process" ? "interactive" : "data";
+  var jcLayoutDefinitions = [...entryById.values()].map((entry) => {
+    var _a2;
+    const manifest = entry.manifest;
+    if (!manifest || !((_a2 = entry.runtime) == null ? void 0 : _a2.exportName)) {
+      throw new Error(`Invalid JC registry entry: ${entry.id}`);
+    }
+    return {
+      key: entry.id,
+      component: JcEffectAdapter,
+      editableFields: [],
+      defaultProps: {
+        __jcLayoutId: entry.id,
+        accent: "blue"
+      },
+      meta: {
+        category: categoryFor(manifest.intent),
+        label: entry.name,
+        description: entry.description
+      },
+      renderLayer: "primary",
+      manifest,
+      usesInternalMotionWrapper: true
+    };
+  });
+
+  // src/JasonWu/layoutRegistry.ts
+  var copy = [{ key: "headline", label: "\u4E3B\u6807\u9898", type: "text" }];
+  var checkboxColorField = { key: "boxColor", label: "\u786E\u8BA4\u6846\u989C\u8272", type: "select", options: [{ label: "\u81EA\u52A8", value: "auto" }, { label: "\u7D2B\u8272", value: "purple" }, { label: "\u84DD\u8272", value: "blue" }, { label: "\u91D1\u8272", value: "gold" }, { label: "\u767D\u8272", value: "white" }, { label: "\u7EFF\u8272", value: "green" }, { label: "\u7EA2\u8272", value: "red" }] };
+  var text2 = (key, label3) => ({ key, label: label3, type: "text" });
+  var prose = (key, label3) => ({ key, label: label3, type: "textarea" });
+  var list2 = (key, label3, description) => ({ key, label: label3, type: "string-list", description });
+  var CONTROLLED_FIELDS = {
+    "person-rank": [text2("leftName", "\u5DE6\u4FA7\u4EBA\u7269"), text2("leftRole", "\u5DE6\u4FA7\u5934\u8854"), text2("rightName", "\u53F3\u4FA7\u4EBA\u7269"), text2("rightRole", "\u53F3\u4FA7\u5934\u8854")],
+    "event-timeline": [list2("years", "\u65F6\u95F4\u8282\u70B9", "\u6A2A\u7EBF\u4F9D\u6B21\u63A8\u8FDB\u81F3\u6BCF\u4E2A\u8282\u70B9")],
+    "pivot-list": [prose("text", "\u6253\u5B57\u673A\u6587\u672C")],
+    "capital-dashboard": [text2("marketLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "marketTo", label: "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("marketSuffix", "\u6570\u5B57\u5355\u4F4D"), text2("engineeringLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "engineeringTo", label: "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("engineeringSuffix", "\u6570\u5B57\u5355\u4F4D")],
+    "cook-machine": [text2("title", "\u9876\u7AEF\u6807\u7B7E"), text2("leftLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), text2("leftValue", "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011"), text2("rightLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), text2("rightValue", "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011"), { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }],
+    "market-battlefield": [text2("headline", "\u5730\u56FE\u6807\u9898"), list2("nodes", "\u8DEF\u7EBF\u8282\u70B9")],
+    "reject-list": [text2("title", "\u6E05\u5355\u6807\u9898"), list2("items", "\u6B63\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u53C9\u53F7\uFF0C\u53EF\u914D\u5408\u526F\u6807\u9898\u663E\u793A"), text2("subLabel", "\u9ED8\u8BA4\u526F\u6807\u9898"), checkboxColorField],
+    "check-progress": [text2("bodyText", "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number" }, list2("items", "\u6B63\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u6253\u52FE\u7684\u7070\u8272\u6587\u5B57\u5217\u8868"), checkboxColorField],
+    "diagonal-chips": [list2("items", "Chip \u6587\u6848", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u659C\u5165\u6807\u7B7E")],
+    "floating-chips": [list2("items", "\u6D6E\u52A8 Chip \u6587\u6848")],
+    "bare-typography": [text2("headline", "\u5927\u6807\u9898"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E"), prose("body", "\u8BF4\u660E\u6587\u6848")],
+    "chapter-card": [text2("chapterLabel", "\u7AE0\u8282\u6807\u7B7E"), text2("headline", "\u7AE0\u8282\u6807\u9898"), prose("body", "\u7AE0\u8282\u8BF4\u660E")],
+    "logo-wordmark": [text2("mark", "\u6807\u5FD7\u5B57\u6BCD"), text2("headline", "\u6807\u5FD7\u6807\u9898"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
+    "ordered-sequence": [text2("categoryTag", "\u9636\u6BB5\u6807\u7B7E"), list2("steps", "\u6B65\u9AA4\u5217\u8868", "\u6B65\u9AA4\u6309\u987A\u5E8F\u9010\u4E00\u5F39\u51FA")],
+    "org-chart": [text2("leader", "\u6838\u5FC3\u8282\u70B9"), text2("leaderRole", "\u6838\u5FC3\u8282\u70B9\u8BF4\u660E"), list2("units", "\u7EC4\u7EC7\u5355\u5143")],
+    "draw-line": [prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9")],
+    "progress-donut": [text2("label", "\u5C0F\u6807\u9898"), { key: "value", label: "\u6570\u503C", type: "number" }, text2("bodyText", "\u6B63\u6587\u5185\u5BB9")],
+    "avatar-handoff": [text2("leftName", "\u4EA4\u51FA\u65B9"), text2("leftRole", "\u4EA4\u51FA\u65B9\u5934\u8854"), text2("rightName", "\u63A5\u4EFB\u65B9"), text2("rightRole", "\u63A5\u4EFB\u65B9\u5934\u8854")],
+    "bull-bear": [text2("bullLabel", "\u591A\u65B9\u89C2\u70B9\u6807\u7B7E"), prose("bullText", "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011"), text2("bearLabel", "\u7A7A\u65B9\u89C2\u70B9\u6807\u7B7E"), prose("bearText", "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011"), prose("highlightQuote", "\u5E95\u90E8\u91D1\u8272\u5F3A\u8C03\u6587\u5B57")],
+    "opinion-hero": [text2("label", "\u89C2\u70B9\u6807\u7B7E"), text2("headline", "\u89C2\u70B9\u5927\u5B57"), prose("body", "\u89C2\u70B9\u8BF4\u660E")],
+    "photo-wall": [text2("photoTitle1", "\u7167\u72471\u6807\u9898"), text2("photoSubtitle1", "\u7167\u72471\u526F\u6807\u9898"), text2("photo1", "\u7167\u72471\u56FE\u7247URL"), text2("photoTitle2", "\u7167\u72472\u6807\u9898"), text2("photoSubtitle2", "\u7167\u72472\u526F\u6807\u9898"), text2("photo2", "\u7167\u72472\u56FE\u7247URL"), text2("photoTitle3", "\u7167\u72473\u6807\u9898"), text2("photoSubtitle3", "\u7167\u72473\u526F\u6807\u9898"), text2("photo3", "\u7167\u72473\u56FE\u7247URL"), text2("photoTitle4", "\u7167\u72474\u6807\u9898"), text2("photoSubtitle4", "\u7167\u72474\u526F\u6807\u9898"), text2("photo4", "\u7167\u72474\u56FE\u7247URL")],
+    "product-explosion": [text2("centerLabel", "\u4E2D\u5FC3\u4EA7\u54C1\u6807\u9898"), text2("centerImage", "\u4E2D\u5FC3\u4EA7\u54C1\u56FE\u7247"), text2("productTitle1", "\u4EA7\u54C11\u540D\u79F0"), text2("productImage1", "\u4EA7\u54C11\u56FE\u7247"), text2("productTitle2", "\u4EA7\u54C12\u540D\u79F0"), text2("productImage2", "\u4EA7\u54C12\u56FE\u7247"), text2("productTitle3", "\u4EA7\u54C13\u540D\u79F0"), text2("productImage3", "\u4EA7\u54C13\u56FE\u7247"), text2("productTitle4", "\u4EA7\u54C14\u540D\u79F0"), text2("productImage4", "\u4EA7\u54C14\u56FE\u7247")],
+    "route-map": [text2("headline", "\u5730\u56FE\u6807\u9898"), list2("nodes", "\u8DEF\u7EBF\u8282\u70B9")],
+    "data-flow": [text2("title", "\u9876\u7AEF\u6807\u7B7E"), text2("leftLabel", "\u5DE6\u4FA7\u6807\u7B7E"), text2("leftValue", "\u5DE6\u4FA7\u6570\u503C"), text2("rightLabel", "\u53F3\u4FA7\u6807\u7B7E"), text2("rightValue", "\u53F3\u4FA7\u6570\u503C"), { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }],
+    "screen-recording": [text2("headline", "\u7A97\u53E3\u6807\u9898"), list2("items", "\u7A97\u53E3\u6570\u636E\u5361")],
+    "zoom-statement": [text2("headline", "\u63A8\u62C9\u5927\u5B57"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
+    "desktop-folders": [list2("items", "\u6587\u4EF6\u5939\u540D\u79F0")],
+    "time-rewind": [text2("headline", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u65F6\u95F4\u8282\u70B9"), prose("bodyText", "\u65F6\u95F4\u56DE\u6EAF\u5185\u5BB9\u6B63\u6587")],
+    "clipboard-note": [text2("label", "\u4FBF\u7B7E\u6807\u7B7E"), prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField],
+    "closing-checklist": [text2("title", "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846"), checkboxColorField],
+    "platform-shift-line": [text2("metricLabel", "\u589E\u957F\u6307\u6807\u6807\u7B7E"), { key: "count", label: "\u589E\u957F\u6570\u91CF", type: "number" }, prose("summary", "\u589E\u957F\u8BF4\u660E"), list2("milestones", "\u4EA7\u54C1\u7EBF\u8282\u70B9"), text2("startLabel", "\u8D77\u70B9\u6807\u7B7E"), text2("endLabel", "\u7EC8\u70B9\u6807\u7B7E")],
+    "tradeoff-reject-round": [text2("label", "\u5426\u5B9A\u9879\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u5426\u5B9A\u9879", "\u4E09\u9879\u4F1A\u663E\u793A\u5728\u98CE\u9669\u6392\u9664\u4E0B\u65B9\u7684\u7EA2\u8272\u53C9\u53F7\u5217\u8868\u4E2D")],
+    "recovery-progress-bars": [text2("label", "\u8FDB\u5EA6\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u8FDB\u5EA6\u9879\u76EE"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number", description: "\u6BCF\u6761\u8FDB\u5EA6\u4F1A\u5728\u8BE5\u6570\u5B57\u6B63\u8D1F 15% \u5185\u7A33\u5B9A\u6D6E\u52A8" }],
+    "hud-glow-stack": [text2("subLabel", "\u5361\u7247\u8F85\u52A9\u6807\u7B7E"), list2("items", "HUD \u5361\u7247\u5185\u5BB9")],
+    "briefing-poster": [text2("label", "\u7B80\u62A5\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u526F\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A checkbox \u52FE\u9009\u9879")],
+    "rewind-milestones": [text2("label", "\u56DE\u6EAF\u6807\u7B7E"), text2("title", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u5E74\u4EFD\u8282\u70B9"), text2("milestoneLabel", "\u8282\u70B9\u8BF4\u660E")],
+    "flying-paper-stack": [text2("headline", "\u4E3B\u5361\u6807\u9898"), text2("ghostTitle", "\u80CC\u666F\u5361\u6807\u9898"), prose("body", "\u5361\u7247\u6B63\u6587")],
+    "checklist-editorial": [text2("label", "\u6E05\u5355\u6807\u7B7E"), text2("title", "\u6E05\u5355\u6807\u9898"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u65B9\u5F62\u786E\u8BA4\u6846")],
+    "spotlight-question": [list2("comments", "\u8BC4\u8BBA\u5185\u5BB9")],
+    "copyopen-hero-title": [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9")],
+    "copyopen-progress-bar": [{ key: "progress", label: "\u8FDB\u5EA6\u6570\u503C", type: "number" }, prose("body", "\u8FDB\u5EA6\u8BF4\u660E")],
+    "copyopen-comparison-card": [text2("leftLabel", "\u5DE6\u4FA7\u6807\u7B7E"), text2("leftValue", "\u5DE6\u4FA7\u6570\u503C"), text2("rightLabel", "\u53F3\u4FA7\u6807\u7B7E"), text2("rightValue", "\u53F3\u4FA7\u6570\u503C"), prose("body", "\u4E2D\u95F4\u53D8\u5316\u8BF4\u660E")],
+    "copyopen-terminal-scene": [list2("steps", "\u7EC8\u7AEF\u547D\u4EE4\u4E0E\u8F93\u51FA")],
+    "copyopen-end-tag": [prose("body", "\u7ED3\u5C3E\u6807\u8BED")],
+    "copyopen-bar-chart": [list2("items", "\u67F1\u72B6\u6807\u7B7E"), { key: "values", label: "\u67F1\u72B6\u6570\u503C", type: "string-list" }],
+    "copyopen-line-chart": [list2("items", "\u6298\u7EBF\u6A2A\u8F74"), { key: "values", label: "\u6298\u7EBF\u6570\u503C", type: "string-list" }],
+    "copyopen-pie-chart": [list2("items", "\u5206\u533A\u6807\u7B7E"), { key: "values", label: "\u5206\u533A\u6570\u503C", type: "string-list" }],
+    "copyopen-kpi-grid": [list2("items", "\u6307\u6807\u6807\u7B7E"), { key: "values", label: "\u6307\u6807\u6570\u503C", type: "string-list" }]
+  };
+  var LAYOUT_MANIFEST = {
+    "capital-dashboard": {
+      "id": "capital-dashboard",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u6570\u636E",
+        "\u589E\u957F",
+        "\u5E02\u503C",
+        "\u8425\u6536",
+        "\u767E\u5206\u6BD4",
+        "\u6307\u6807"
+      ],
+      "visualWeight": "medium"
+    },
+    "progress-donut": {
+      "id": "progress-donut",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u8FDB\u5EA6",
+        "\u5B8C\u6210\u5EA6",
+        "\u767E\u5206\u6BD4",
+        "\u8F6C\u5316\u7387",
+        "%"
+      ],
+      "visualWeight": "light"
+    },
+    "recovery-progress-bars": {
+      "id": "recovery-progress-bars",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u8FDB\u5EA6",
+        "\u6062\u590D",
+        "\u5B8C\u6210",
+        "\u63A8\u8FDB",
+        "\u767E\u5206\u6BD4"
+      ],
+      "visualWeight": "medium"
+    },
+    "platform-shift-line": {
+      "id": "platform-shift-line",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u4EA7\u54C1\u7EBF",
+        "\u5E73\u53F0",
+        "\u6F14\u8FDB",
+        "\u6269\u5C55",
+        "\u94FE\u8DEF"
+      ],
+      "visualWeight": "medium"
+    },
+    "hud-glow-stack": {
+      "id": "hud-glow-stack",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7CFB\u7EDF",
+        "\u4FE1\u53F7",
+        "\u94FE\u8DEF",
+        "\u6A21\u5757",
+        "\u95ED\u73AF"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-progress-bar": {
+      "id": "copyopen-progress-bar",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u8FDB\u5EA6",
+        "\u767E\u5206\u6BD4",
+        "\u5B8C\u6210",
+        "%"
+      ],
+      "visualWeight": "light"
+    },
+    "copyopen-comparison-card": {
+      "id": "copyopen-comparison-card",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u5BF9\u6BD4",
+        "\u5DEE\u5F02",
+        "\u6570\u503C",
+        "\u589E\u957F"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-bar-chart": {
+      "id": "copyopen-bar-chart",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u67F1\u72B6",
+        "\u6392\u540D",
+        "\u6570\u636E",
+        "\u5BF9\u6BD4"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-line-chart": {
+      "id": "copyopen-line-chart",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u8D8B\u52BF",
+        "\u589E\u957F",
+        "\u66F2\u7EBF",
+        "\u65F6\u95F4"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-pie-chart": {
+      "id": "copyopen-pie-chart",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u5360\u6BD4",
+        "\u6BD4\u4F8B",
+        "\u5206\u5E03",
+        "\u4EFD\u989D"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-kpi-grid": {
+      "id": "copyopen-kpi-grid",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 6
+      },
+      "keywords": [
+        "KPI",
+        "\u6307\u6807",
+        "\u6570\u636E",
+        "\u589E\u957F"
+      ],
+      "visualWeight": "medium"
+    },
+    "ordered-sequence": {
+      "id": "ordered-sequence",
+      "intent": "process",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u7B2C\u4E00\u6B65",
+        "\u7B2C\u4E8C\u6B65",
+        "\u9636\u6BB5",
+        "\u6B65\u9AA4",
+        "\u6D41\u7A0B"
+      ],
+      "visualWeight": "medium"
+    },
+    "event-timeline": {
+      "id": "event-timeline",
+      "intent": "process",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u65F6\u95F4\u7EBF",
+        "\u9636\u6BB5",
+        "\u6F14\u8FDB",
+        "\u8282\u70B9"
+      ],
+      "visualWeight": "medium"
+    },
+    "rewind-milestones": {
+      "id": "rewind-milestones",
+      "intent": "process",
+      "capacity": {
+        "minItems": 4,
+        "maxItems": 6
+      },
+      "keywords": [
+        "\u56DE\u6EAF",
+        "\u8FC7\u53BB",
+        "\u6F14\u8FDB",
+        "\u8282\u70B9"
+      ],
+      "visualWeight": "medium"
+    },
+    "time-rewind": {
+      "id": "time-rewind",
+      "intent": "process",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u56DE\u6EAF",
+        "\u65F6\u95F4",
+        "\u8FC7\u53BB",
+        "\u5386\u53F2"
+      ],
+      "visualWeight": "light"
+    },
+    "route-map": {
+      "id": "route-map",
+      "intent": "process",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u8DEF\u7EBF",
+        "\u8DEF\u5F84",
+        "\u6D41\u7A0B",
+        "\u5730\u56FE"
+      ],
+      "visualWeight": "heavy"
+    },
+    "check-progress": {
+      "id": "check-progress",
+      "intent": "process",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u786E\u8BA4",
+        "\u68C0\u67E5",
+        "\u5B8C\u6210",
+        "\u6B65\u9AA4"
+      ],
+      "visualWeight": "medium"
+    },
+    "org-chart": {
+      "id": "org-chart",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u7EC4\u7EC7",
+        "\u90E8\u95E8",
+        "\u5206\u5DE5",
+        "\u67B6\u6784"
+      ],
+      "visualWeight": "heavy"
+    },
+    "draw-line": {
+      "id": "draw-line",
+      "intent": "process",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u8DEF\u5F84",
+        "\u63A8\u5BFC",
+        "\u753B\u7EBF",
+        "\u8BBA\u8BC1"
+      ],
+      "visualWeight": "light"
+    },
+    "copyopen-terminal-scene": {
+      "id": "copyopen-terminal-scene",
+      "intent": "process",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 6
+      },
+      "keywords": [
+        "\u547D\u4EE4",
+        "\u6D41\u7A0B",
+        "\u6267\u884C",
+        "\u5DE5\u4F5C\u6D41"
+      ],
+      "visualWeight": "heavy"
+    },
+    "zoom-statement": {
+      "id": "zoom-statement",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u89C2\u70B9",
+        "\u5224\u65AD",
+        "\u7ED3\u8BBA",
+        "\u5173\u952E"
+      ],
+      "visualWeight": "light"
+    },
+    "opinion-hero": {
+      "id": "opinion-hero",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u89C2\u70B9",
+        "\u6838\u5FC3",
+        "\u91D1\u53E5",
+        "\u4E3B\u5F20"
+      ],
+      "visualWeight": "heavy"
+    },
+    "bare-typography": {
+      "id": "bare-typography",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u5927\u5B57",
+        "\u5224\u65AD",
+        "\u7ED3\u8BBA"
+      ],
+      "visualWeight": "light"
+    },
+    "spotlight-question": {
+      "id": "spotlight-question",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u95EE\u9898",
+        "\u8BC4\u8BBA",
+        "\u4E3A\u4EC0\u4E48",
+        "\u4E92\u52A8"
+      ],
+      "visualWeight": "light"
+    },
+    "bull-bear": {
+      "id": "bull-bear",
+      "intent": "contrast",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u770B\u591A",
+        "\u98CE\u9669",
+        "\u5BF9\u6BD4",
+        "\u591A\u7A7A"
+      ],
+      "visualWeight": "heavy"
+    },
+    "market-battlefield": {
+      "id": "market-battlefield",
+      "intent": "contrast",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7ADE\u4E89",
+        "\u5BF9\u624B",
+        "\u5E02\u573A\u5BF9\u5792",
+        "\u6218\u573A"
+      ],
+      "visualWeight": "heavy"
+    },
+    "tradeoff-reject-round": {
+      "id": "tradeoff-reject-round",
+      "intent": "contrast",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u98CE\u9669",
+        "\u5426\u5B9A",
+        "\u6392\u9664",
+        "\u4E0D\u8981"
+      ],
+      "visualWeight": "medium"
+    },
+    "reject-list": {
+      "id": "reject-list",
+      "intent": "contrast",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u9519\u8BEF",
+        "\u95EE\u9898",
+        "\u98CE\u9669",
+        "\u907F\u5751"
+      ],
+      "visualWeight": "medium"
+    },
+    "person-rank": {
+      "id": "person-rank",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u4EBA\u7269",
+        "\u56E2\u961F",
+        "\u4EA4\u63A5",
+        "\u7EC4\u7EC7"
+      ],
+      "visualWeight": "medium"
+    },
+    "value-verdict": {
+      "id": "value-verdict",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u4EF7\u503C",
+        "\u7ED3\u8BBA",
+        "\u5224\u65AD",
+        "\u6307\u6807"
+      ],
+      "visualWeight": "medium"
+    },
+    "product-explosion": {
+      "id": "product-explosion",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u4EA7\u54C1",
+        "\u751F\u6001",
+        "\u786C\u4EF6",
+        "\u7CFB\u5217"
+      ],
+      "visualWeight": "heavy"
+    },
+    "cook-machine": {
+      "id": "cook-machine",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7ECF\u8425",
+        "\u673A\u5668",
+        "\u5546\u4E1A",
+        "\u95ED\u73AF"
+      ],
+      "visualWeight": "medium"
+    },
+    "photo-wall": {
+      "id": "photo-wall",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7167\u7247",
+        "\u8BC1\u636E",
+        "\u6848\u4F8B",
+        "\u4EA7\u54C1"
+      ],
+      "visualWeight": "heavy"
+    },
+    "logo-wordmark": {
+      "id": "logo-wordmark",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u54C1\u724C",
+        "\u6807\u5FD7",
+        "\u5173\u952E\u8BCD"
+      ],
+      "visualWeight": "light"
+    },
+    "diagonal-chips": {
+      "id": "diagonal-chips",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u89C4\u683C",
+        "\u8981\u70B9",
+        "\u53C2\u6570",
+        "\u6A21\u5757"
+      ],
+      "visualWeight": "light"
+    },
+    "floating-chips": {
+      "id": "floating-chips",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u6807\u7B7E",
+        "\u8981\u70B9",
+        "\u6A21\u5757",
+        "\u4FE1\u53F7"
+      ],
+      "visualWeight": "light"
+    },
+    "desktop-folders": {
+      "id": "desktop-folders",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u6587\u4EF6",
+        "\u5206\u7C7B",
+        "\u6574\u7406",
+        "\u7CFB\u7EDF"
+      ],
+      "visualWeight": "medium"
+    },
+    "clipboard-note": {
+      "id": "clipboard-note",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u4FBF\u7B7E",
+        "\u6279\u6CE8",
+        "\u7ED3\u8BBA",
+        "\u786E\u8BA4"
+      ],
+      "visualWeight": "medium"
+    },
+    "briefing-poster": {
+      "id": "briefing-poster",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7B80\u62A5",
+        "\u6458\u8981",
+        "\u89C2\u70B9",
+        "\u6848\u4F8B"
+      ],
+      "visualWeight": "heavy"
+    },
+    "screen-recording": {
+      "id": "screen-recording",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u754C\u9762",
+        "\u64CD\u4F5C",
+        "\u4EA7\u54C1",
+        "\u7A97\u53E3"
+      ],
+      "visualWeight": "heavy"
+    },
+    "flying-paper-stack": {
+      "id": "flying-paper-stack",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u7EB8\u5361",
+        "\u8D44\u6599",
+        "\u7B80\u62A5",
+        "\u89C2\u70B9"
+      ],
+      "visualWeight": "medium"
+    },
+    "chapter-card": {
+      "id": "chapter-card",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u7AE0\u8282",
+        "\u5F00\u573A",
+        "\u4E3B\u9898"
+      ],
+      "visualWeight": "heavy"
+    },
+    "closing-checklist": {
+      "id": "closing-checklist",
+      "intent": "process",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u6536\u5C3E",
+        "\u6E05\u5355",
+        "\u786E\u8BA4",
+        "\u603B\u7ED3"
+      ],
+      "visualWeight": "medium"
+    },
+    "checklist-editorial": {
+      "id": "checklist-editorial",
+      "intent": "process",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u6E05\u5355",
+        "\u786E\u8BA4",
+        "\u6B65\u9AA4",
+        "\u603B\u7ED3"
+      ],
+      "visualWeight": "medium"
+    },
+    "pivot-list": {
+      "id": "pivot-list",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u6253\u5B57\u673A",
+        "\u89C2\u70B9",
+        "\u5217\u8868"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-hero-title": {
+      "id": "copyopen-hero-title",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u5F00\u573A",
+        "\u6807\u9898",
+        "\u4E3B\u89C6\u89C9"
+      ],
+      "visualWeight": "heavy"
+    },
+    "copyopen-end-tag": {
+      "id": "copyopen-end-tag",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u7ED3\u5C3E",
+        "\u6807\u8BED",
+        "\u6536\u675F"
+      ],
+      "visualWeight": "light"
+    }
+  };
+  var mergeFields = (key, editableFields) => {
+    var _a2;
+    const merged = [...(_a2 = CONTROLLED_FIELDS[key]) != null ? _a2 : [], ...editableFields];
+    return merged.filter((field, index) => merged.findIndex((candidate) => candidate.key === field.key) === index);
+  };
+  var item = (key, component, label3, description, category, renderLayer = "primary", editableFields = copy, defaultProps = {}) => {
+    var _a2;
+    return { key, component, editableFields: mergeFields(key, editableFields), defaultProps, meta: { category, label: label3, description }, renderLayer, manifest: (_a2 = LAYOUT_MANIFEST[key]) != null ? _a2 : { id: key, intent: "narrative", capacity: { minItems: 1, maxItems: 1 }, keywords: [label3, description, category], visualWeight: "medium" } };
+  };
+  var LAYOUT_DEFINITIONS = [
+    item("person-rank", DemoAvatarFlip, "\u4EBA\u7269\u4EA4\u63A5", "\u53CC\u4EBA\u7269\u4EA4\u63A5\u4E0E\u6743\u529B\u8F6C\u6362", "story", "primary", [{ key: "leftName", label: "\u5DE6\u4FA7\u4EBA\u7269", type: "text" }, { key: "rightName", label: "\u53F3\u4FA7\u4EBA\u7269", type: "text" }], { leftName: "\u4EBA\u7269 A", rightName: "\u4EBA\u7269 B" }),
+    item("event-timeline", GrowthTimelineLine, "\u589E\u957F\u65F6\u95F4\u8F74", "\u6A2A\u5411\u8282\u70B9\u7EBF\u4E0E\u5149\u70B9\u63A8\u8FDB", "data", "enhancement", [list2("years", "\u65F6\u95F4\u8282\u70B9")], { years: ["\u8D77\u6B65", "\u8FED\u4EE3", "\u89C4\u6A21\u5316", "\u76EE\u6807"] }),
+    item("value-verdict", ValueVerdict, "\u4EF7\u503C\u7ED3\u8BBA", "\u7ED3\u8BBA\u4E0E\u5173\u952E\u6307\u6807\u5361", "story", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("metricLabel", "\u6307\u6807\u6807\u7B7E"), text2("metricValue", "\u6570\u503C"), text2("metricUnit", "\u5355\u4F4D")], { metricLabel: "KEY SIGNAL" }),
+    item("pivot-list", SpecBadgeAndTypewriter, "\u89C4\u683C\u6253\u5B57\u673A", "\u7EFF\u8272\u7EC8\u7AEF\u9010\u5B57\u51FA\u73B0", "interactive", "enhancement", [{ key: "text", label: "\u6253\u5B57\u673A\u6587\u672C", type: "textarea" }], {}),
+    item("capital-dashboard", CapitalDashboardNumbers, "\u8D44\u672C\u4EEA\u8868\u76D8", "\u53CC\u6570\u5B57\u5361\u6EDA\u52A8\u589E\u957F", "data", "primary", [text2("marketLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "marketTo", label: "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("marketSuffix", "\u6570\u5B57\u5355\u4F4D"), text2("engineeringLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "engineeringTo", label: "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("engineeringSuffix", "\u6570\u5B57\u5355\u4F4D")], { marketLabel: "\u5E02\u573A\u89C4\u6A21", marketTo: 4600, marketSuffix: "\u4EBF", engineeringLabel: "\u589E\u957F\u7387", engineeringTo: 25, engineeringSuffix: "%" }),
+    item("cook-machine", SplitScreenAccent, "\u7ECF\u8425\u673A\u5668", "\u8FD0\u8425\u6548\u7387\u548C\u5229\u6DA6\u5BF9\u7167", "story", "primary", copy, { leftLabel: "PROFIT", rightLabel: "SHIPMENT", from: 20, to: 85 }),
+    item("market-battlefield", RouteMap, "\u5E02\u573A\u5BF9\u5792", "\u4F9B\u5E94\u94FE\u8DEF\u7EBF\u548C\u533A\u57DF\u8282\u70B9", "data"),
+    item("reject-list", RejectList, "\u9519\u8BEF\u6E05\u5355", "\u53C9\u53F7\u5426\u5B9A\u4E0E\u7EA0\u9519\u5217\u8868", "story", "primary", [checkboxColorField], { boxColor: "auto", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"], itemSubtitles: ["CUT FROM THE PRODUCT PATH", "REMOVE FROM THE FLOW", "BLOCK BEFORE RELEASE"] }),
+    item("check-progress", CheckProgress, "\u8FDB\u5EA6\u786E\u8BA4", "\u8FDB\u5EA6\u6761\u548C\u52FE\u9009\u786E\u8BA4", "interactive", "primary", [checkboxColorField], { boxColor: "auto" }),
+    item("diagonal-chips", DiagonalChips, "\u659C\u5165\u6807\u7B7E", "\u659C\u5411\u98DE\u5165\u7684\u89C4\u683C\u6807\u7B7E", "interactive", "primary", [{ key: "items", label: "Chip \u6587\u6848", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u659C\u5165\u6807\u7B7E" }], {}),
+    item("floating-chips", FloatingChips, "\u53D1\u5149\u6D6E\u52A8\u6807\u7B7E", "\u53D1\u5149\u6F02\u6D6E\u7684 Chip \u6807\u7B7E", "interactive"),
+    item("bare-typography", BareTypography, "\u7EAF\u6587\u5B57\u6392\u7248", "\u65E0\u6846\u5927\u5B57\u4FE1\u606F\u5C42", "typography"),
+    item("chapter-card", ChapterCard, "\u7AE0\u8282\u5361", "\u7AE0\u8282\u6807\u9898\u4E0E\u4FE1\u606F\u6458\u8981", "story"),
+    item("logo-wordmark", LogoWordmark, "\u6807\u5FD7\u6587\u5B57", "\u56FE\u5F62\u6807\u5FD7\u4E0E\u6587\u5B57\u7EC4\u5408", "story"),
+    item("ordered-sequence", OrderedSequence, "\u987A\u5E8F\u6B65\u9AA4", "\u7F16\u53F7\u4FE1\u606F\u9010\u9879\u51FA\u73B0", "story", "primary", [{ key: "categoryTag", label: "\u9636\u6BB5\u6807\u7B7E", type: "text" }, { key: "steps", label: "\u6B65\u9AA4\u5217\u8868", type: "string-list", description: "\u6B65\u9AA4\u6309\u987A\u5E8F\u9010\u4E00\u5F39\u51FA" }], {}),
+    item("org-chart", OrgChart, "\u7EC4\u7EC7\u67B6\u6784", "\u7EC4\u7EC7\u5173\u7CFB\u4E0E\u4E2D\u8F74\u7EBF\u52A8\u753B", "story"),
+    item("draw-line", DrawLine, "\u753B\u7EBF\u5F3A\u8C03", "\u66F2\u7EBF\u7ED8\u5236\u548C\u91CD\u70B9\u6807\u8BB0", "interactive"),
+    item("progress-donut", ProgressDonut, "\u73AF\u5F62\u8FDB\u5EA6", "\u73AF\u5F62\u8FDB\u5EA6\u4E0E\u5B8C\u6210\u5EA6", "data"),
+    item("avatar-handoff", DemoAvatarFlip, "\u5934\u50CF\u4EA4\u63A5", "\u53CC\u5934\u50CF\u5207\u6362\u4E0E\u63A5\u4EFB", "story", "primary", [{ key: "leftName", label: "\u4EA4\u51FA\u65B9", type: "text" }, { key: "rightName", label: "\u63A5\u4EFB\u65B9", type: "text" }], { leftName: "\u4EBA\u7269 A", leftRole: "\u8D77\u59CB\u89D2\u8272", rightName: "\u4EBA\u7269 B", rightRole: "\u76EE\u6807\u89D2\u8272" }),
+    item("bull-bear", BullBear, "\u591A\u7A7A\u5BF9\u6BD4", "\u5DE6\u53F3\u89C2\u70B9\u4E0E\u4E2D\u7EBF\u5BF9\u7167", "data", "primary", [{ key: "bullLabel", label: "\u591A\u65B9\u89C2\u70B9\u6807\u7B7E", type: "text" }, { key: "bullText", label: "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011", type: "textarea" }, { key: "bearLabel", label: "\u7A7A\u65B9\u89C2\u70B9\u6807\u7B7E", type: "text" }, { key: "bearText", label: "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011", type: "textarea" }, { key: "highlightQuote", label: "\u5E95\u90E8\u91D1\u8272\u5F3A\u8C03\u6587\u5B57", type: "textarea" }], { bullLabel: "\u770B\u591A\u89C2\u70B9", bearLabel: "\u98CE\u9669\u63D0\u793A", highlightQuote: "\u5173\u952E\u5206\u6B67\u51B3\u5B9A\u6700\u7EC8\u8D70\u52BF" }),
+    item("opinion-hero", OpinionHero, "\u89C2\u70B9\u4E3B\u89C6\u89C9", "\u91CD\u70B9\u89C2\u70B9\u5927\u5B57\u5F3A\u8C03", "typography"),
+    item("photo-wall", PhotoWall, "\u7167\u7247\u5899", "\u591A\u5C42\u4EA7\u54C1\u56FE\u7247\u5361\u7247\u7EC4\u5408", "story", "primary", [], { photoTitle1: "\u6838\u5FC3\u4FE1\u606F", photoSubtitle1: "PRODUCT HISTORY", photo1: "", photoTitle2: "\u89C6\u89C9\u8282\u594F", photoSubtitle2: "VISUAL RHYTHM", photo2: "", photoTitle3: "\u884C\u52A8\u7ED3\u8BBA", photoSubtitle3: "ACTION SIGNAL", photo3: "", photoTitle4: "\u8865\u5145\u8BC1\u636E", photoSubtitle4: "EXTRA PROOF", photo4: "" }),
+    item("product-explosion", ProductExplosion, "\u4EA7\u54C1\u7206\u70B8\u56FE", "\u4EA7\u54C1\u751F\u6001\u7206\u70B8\u5C55\u793A", "data", "primary", [], { centerLabel: "APPLE", productTitle1: "iPhone", productTitle2: "iPad", productTitle3: "Mac", productTitle4: "AirPods", items: ["iPhone", "iPad", "Mac", "AirPods"] }),
+    item("route-map", RouteMap, "\u4E8C\u7EF4\u5730\u56FE", "\u8DEF\u7EBF\u548C\u533A\u57DF\u8BF4\u660E", "data"),
+    item("data-flow", SplitScreenAccent, "\u6570\u636E\u5206\u5C4F", "\u8F6F\u4EF6\u786C\u4EF6\u5206\u5C4F\u6570\u636E\u5BF9\u7167", "data", "enhancement", [{ key: "leftLabel", label: "\u5DE6\u4FA7\u6807\u7B7E", type: "text" }, { key: "leftValue", label: "\u5DE6\u4FA7\u6570\u503C", type: "text" }, { key: "rightLabel", label: "\u53F3\u4FA7\u6807\u7B7E", type: "text" }, { key: "rightValue", label: "\u53F3\u4FA7\u6570\u503C", type: "text" }, { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }], {}),
+    item("screen-recording", ScreenRecording, "\u5C4F\u5E55\u5F55\u5236\u6846", "\u4EA7\u54C1\u754C\u9762\u4E0E\u64CD\u4F5C\u7A97\u53E3", "interactive"),
+    item("zoom-statement", KineticTypographyAccent, "\u955C\u5934\u63A8\u62C9\u5927\u5B57", "\u955C\u5934\u63A8\u62C9\u4E0E\u5927\u5B57\u51B2\u51FB", "typography", "enhancement"),
+    item("desktop-folders", DesktopFolders, "\u684C\u9762\u6587\u4EF6\u5939", "\u684C\u9762\u6587\u4EF6\u4E0E\u5185\u5BB9\u6574\u7406", "interactive"),
+    item("time-rewind", TimeRewind, "\u65F6\u95F4\u56DE\u6EAF", "\u9006\u5411\u65F6\u95F4\u7EBF\u53D9\u4E8B", "story", "primary", [], { bodyText: "\u65F6\u95F4\u56DE\u5F52" }),
+    item("clipboard-note", ClipboardNote, "\u526A\u8D34\u677F\u6279\u6CE8", "\u4FBF\u7B7E\u4E0E\u6279\u6CE8\u4FE1\u606F", "interactive", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField], { boxColor: "auto", body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E" }),
+    item("closing-checklist", ClosingChecklist, "\u7ED3\u5C3E\u6E05\u5355", "\u7ED3\u8BBA\u9879\u76EE\u9010\u9879\u786E\u8BA4", "story", "primary", [{ key: "title", label: "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09", type: "text" }, { key: "items", label: "\u6E05\u5355\u5185\u5BB9", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846" }, checkboxColorField], { title: "\u6838\u5FC3\u7ED3\u8BBA", boxColor: "auto" }),
+    item("platform-shift-line", PlatformShiftLine, "\u4EA7\u54C1\u7EBF\u589E\u957F", "\u84DD\u8272\u589E\u957F\u6570\u5B57\u4E0E\u4EA7\u54C1\u7EBF\u8282\u70B9", "data", "primary", [], { count: 3, metricLabel: "\u4EA7\u54C1\u7EBF", milestones: ["\u57FA\u7840\u80FD\u529B", "\u4EA7\u54C1\u6269\u5C55", "\u89C4\u6A21\u589E\u957F"], startLabel: "\u8D77\u70B9", endLabel: "\u76EE\u6807\u9636\u6BB5" }),
+    item("tradeoff-reject-round", TradeoffRejectRound, "\u5706\u5F62\u7EA2\u8272\u5426\u5B9A\u9879", "\u65E0\u8FB9\u6846\u7EA2\u8272\u5706\u53C9\u7684\u98CE\u9669\u6E05\u5355", "story", "primary", [{ key: "label", label: "\u5426\u5B9A\u9879\u6807\u7B7E", type: "text" }, { key: "bodyText", label: "\u6B63\u6587\u5185\u5BB9", type: "textarea" }, { key: "items", label: "\u5426\u5B9A\u9879", type: "string-list" }], { label: "\u98CE\u9669\u6392\u9664", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"] }),
+    item("recovery-progress-bars", RecoveryProgressBars, "\u8FDB\u5EA6\u786E\u8BA4\u6761", "\u8FDB\u5EA6\u6761\u4E0E\u53F3\u4FA7\u786E\u8BA4\u6807\u8BB0", "data", "primary", [], { label: "\u6267\u884C\u8FDB\u5EA6", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u9700\u6C42\u786E\u8BA4", "\u80FD\u529B\u5EFA\u8BBE", "\u7ED3\u679C\u9A8C\u8BC1"], progress: 76 }),
+    item("hud-glow-stack", HudGlowStack, "HUD \u6D6E\u52A8\u53D1\u5149", "\u53E0\u653E\u7684\u9AD8\u4EAE HUD \u4FE1\u606F\u5361", "interactive", "primary", [], { subLabel: "LIVE SIGNAL", items: ["\u6838\u5FC3\u4FE1\u53F7", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65\u52A8\u4F5C"] }),
+    item("briefing-poster", BriefingPoster, "\u62A5\u7EB8\u7B80\u62A5\u4E8C\u53F7", "\u5939\u677F\u5F0F\u79D1\u6280\u7B80\u62A5\u6D77\u62A5", "story", "primary", [prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u526F\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A checkbox \u52FE\u9009\u9879")], { label: "\u7B80\u62A5\u6458\u8981", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u5224\u65AD", "\u4EA7\u54C1\u8DEF\u5F84", "\u4E0B\u4E00\u6B65\u884C\u52A8"] }),
+    item("rewind-milestones", RewindMilestones, "\u65F6\u95F4\u56DE\u6EAF\u5BBD\u7248", "\u5BBD\u5E45\u65F6\u95F4\u7EBF\u4E0E\u56DE\u6EAF\u8282\u70B9", "story", "primary", [], { label: "\u65F6\u95F4\u56DE\u6EAF", years: ["\u8D77\u70B9", "\u63A2\u7D22", "\u8FED\u4EE3", "\u73B0\u5728", "\u4E0B\u4E00\u6B65"], milestoneLabel: "\u80FD\u529B\u6F14\u8FDB" }),
+    item("flying-paper-stack", FlyingPaperStack, "\u98DE\u5165\u7EB8\u5361\u4E8C\u53F7", "\u4E09\u5C42\u91CD\u53E0\u98DE\u5165\u7684\u7B80\u62A5\u7EB8\u5361", "story", "primary", [], { ghostTitle: "\u9636\u6BB5\u89C2\u5BDF", body: "\u63D0\u70BC\u5F53\u524D\u62CD\u7684\u6838\u5FC3\u89C2\u70B9\u4E0E\u884C\u52A8\u4FE1\u606F\u3002" }),
+    item("checklist-editorial", ChecklistEditorial, "\u7F16\u8F91\u6E05\u5355\u4E8C\u53F7", "\u7559\u767D\u66F4\u5F3A\u7684\u84DD\u8272\u65B9\u6846\u786E\u8BA4\u6E05\u5355", "story", "primary", [], { label: "\u6700\u7EC8\u786E\u8BA4", items: ["\u6838\u5FC3\u4EF7\u503C", "\u6267\u884C\u8DEF\u5F84", "\u7ED3\u679C\u9A8C\u8BC1"] }),
+    item("spotlight-question", FloatingCommentCards, "\u6D6E\u52A8\u8BC4\u8BBA", "\u4E92\u52A8\u8BC4\u8BBA\u5361", "interactive", "enhancement", [{ key: "comments", label: "\u8BC4\u8BBA\u5185\u5BB9", type: "string-list", description: "\u4E09\u9879\u5206\u522B\u5BF9\u5E94\u4E09\u4E2A\u53D1\u5149\u4E92\u52A8\u6309\u94AE" }], { comments: ["\u6838\u5FC3\u89C2\u70B9", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65"] }),
+    item("copyopen-hero-title", CopyOpenHeroTitle, "CopyOpen HeroTitle", "CopyOpen \u539F\u7248\u9010\u5B57\u5F39\u7C27\u4E3B\u6807\u9898", "typography", "primary", [], { body: "clip factory" }),
+    item("copyopen-progress-bar", CopyOpenProgressBar, "CopyOpen ProgressBar", "CopyOpen \u539F\u7248\u8109\u51B2\u8FDB\u5EA6\u6761", "data", "primary", [], { progress: 76, body: "Highlight extraction" }),
+    item("copyopen-comparison-card", CopyOpenComparisonCard, "CopyOpen ComparisonCard", "CopyOpen \u539F\u7248\u5DE6\u53F3\u6307\u6807\u5BF9\u6BD4\u5361", "data", "primary", [], { leftLabel: "Long video", rightLabel: "Short clips", leftValue: "58 min", rightValue: "8 clips", body: "ready" }),
+    item("copyopen-terminal-scene", CopyOpenTerminalScene, "CopyOpen TerminalScene", "CopyOpen \u539F\u7248\u7EC8\u7AEF\u547D\u4EE4\u56DE\u653E", "interactive", "primary", [], { steps: ["openmontage clip input.mp4", "transcribing audio...", "ranking highlight candidates...", "8 clips ready", "remotion render JcMotionCards", "done -> out/shorts"] }),
+    item("copyopen-end-tag", CopyOpenEndTag, "CopyOpen EndTag", "CopyOpen \u539F\u7248\u7ED3\u5C3E\u95EA\u5149\u6807\u8BED", "typography", "primary", [], { body: "Make the clip worth watching" }),
+    item("copyopen-bar-chart", CopyOpenBarChart, "CopyOpen BarChart", "CopyOpen \u539F\u7248\u52A8\u753B\u67F1\u72B6\u56FE", "data", "primary", [], { items: ["Hook", "Value", "Pace", "Share"], values: [94, 82, 76, 69] }),
+    item("copyopen-line-chart", CopyOpenLineChart, "CopyOpen LineChart", "CopyOpen \u539F\u7248\u6298\u7EBF\u7ED8\u5236\u56FE", "data", "primary", [], { items: ["0", "10", "20", "30"], values: [100, 91, 86, 78] }),
+    item("copyopen-pie-chart", CopyOpenPieChart, "CopyOpen PieChart", "CopyOpen \u539F\u7248\u73AF\u5F62\u5206\u5E03\u56FE", "data", "primary", [], { items: ["Hook", "Proof", "Story", "CTA"], values: [35, 30, 20, 15], value: 8, label: "clips" }),
+    item("copyopen-kpi-grid", CopyOpenKPIGrid, "CopyOpen KPIGrid", "CopyOpen \u539F\u7248 KPI \u4EEA\u8868\u7F51\u683C", "data", "primary", [], { items: ["clips", "avg score", "minutes saved"], values: [8, 86, 74] }),
+    ...jcLayoutDefinitions
+  ];
+  var LAYOUT_BY_KEY = new Map(LAYOUT_DEFINITIONS.map((definition) => [definition.key, definition]));
+  var getLayoutDefinition = (layout) => {
+    var _a2;
+    return (_a2 = LAYOUT_BY_KEY.get(layout)) != null ? _a2 : LAYOUT_DEFINITIONS[0];
+  };
+  var LAYOUT_METADATA = LAYOUT_DEFINITIONS.map(({ key, editableFields, defaultProps, meta, renderLayer, manifest }) => ({ key, editableFields, defaultProps, meta, renderLayer, manifest }));
+
+  // src/design/component-preset-resolver.ts
+  var { resolveFaceAwareLayer } = require_face_aware_layout();
+  var registry = components_registry_default;
+  var fallbackTokens = { padding: 48, gap: 16, position: "center", scale: 1, headerScale: 1, contentScale: 1, spring: "spring-up", sfx: "none", accentColor: "#00F2FE", defaultItemCount: 1, staggerFrames: 15, mountMode: "center", mountX: 0, mountY: 0, boundsX: 0, boundsY: 0, boundsWidth: 1920, boundsHeight: 1080 };
+  var getComponentPreset = (layout) => registry.components.find((component) => component.id === layout);
+  var getComponentTokens = (layout) => {
+    var _a2, _b;
+    return { ...fallbackTokens, ...(_b = (_a2 = getComponentPreset(layout)) == null ? void 0 : _a2.tokens) != null ? _b : {} };
+  };
+  var isTokenObject = (value) => !!value && typeof value === "object" && !Array.isArray(value);
+  var resolveComponentProps = (layout, effectProps) => {
+    var _a2, _b;
+    return { ...effectProps != null ? effectProps : {}, designTokens: { ...getComponentTokens(layout), ...isTokenObject(effectProps == null ? void 0 : effectProps.designTokens) ? effectProps.designTokens : {} }, designPresetVersion: (_b = (_a2 = getComponentPreset(layout)) == null ? void 0 : _a2.version) != null ? _b : 0 };
+  };
+
   // src/JasonWu/DemoEffectAdditions.tsx
-  var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime113 = __toESM(require_jsx_runtime());
   var strings3 = (value) => Array.isArray(value) ? value.filter((item2) => typeof item2 === "string" && !!item2.trim()).map((item2) => item2.trim()) : [];
   var numberToken = (props, key, fallback) => Number.isFinite(Number(props[key])) ? Math.max(0.6, Math.min(1.2, Number(props[key]))) : fallback;
   var text3 = (props, key, fallback) => typeof props[key] === "string" ? String(props[key]) : fallback;
@@ -52143,12 +60771,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const values2 = strings3(contentProps.steps).length ? strings3(contentProps.steps) : strings3(contentProps.items).length ? strings3(contentProps.items) : strings3(contentProps.units).length ? strings3(contentProps.units) : strings3(contentProps.comments).length ? strings3(contentProps.comments) : (_b = (_a2 = cue.steps) == null ? void 0 : _a2.map((step) => step.title)) != null ? _b : [];
     return { ...cue, section: { ...cue.section, subtitle: normalized.headline, eyebrow: normalized.category }, caption: { ...cue.caption, zh: body }, steps: values2.map((title, index) => ({ index: (index + 1 < 10 ? "0" : "") + String(index + 1), title, subtitle: "", active: false, tone: "blue" })) };
   };
-  var StandardComponentHeader = ({ category, headline }) => {
+  var semanticAccents2 = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
+  var headerAccentOf = (value) => semanticAccents2.has(value) ? value : "blue";
+  var StandardComponentHeader = ({ category, headline, accent = "blue" }) => {
     const frame = useCurrentFrame();
+    const theme = getAccentTheme(accent);
     const headerFadeIn = interpolate(frame, [0, 15], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { className: "static-header-anchor", style: { position: "absolute", left: 76, top: 58, zIndex: 50, maxWidth: 860, pointerEvents: "none", opacity: headerFadeIn }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { color: "var(--primary-accent)", fontSize: 26, fontWeight: 950, letterSpacing: 7, textTransform: "uppercase", textShadow: "0 0 20px rgba(0,132,255,.55)" }, children: category }),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { marginTop: 8, color: "#FFFFFF", fontSize: 46, lineHeight: 1.16, fontWeight: 950 }, children: headline })
+    return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { className: "static-header-anchor", style: { position: "absolute", left: 76, top: 58, zIndex: 50, maxWidth: 860, pointerEvents: "none", opacity: headerFadeIn, borderLeft: "5px solid " + theme.primary, paddingLeft: 18, textShadow: "0 2px 14px rgba(0,0,0,0.55)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { color: theme.primary, fontSize: 22, fontWeight: 800, letterSpacing: "0.28em", textTransform: "uppercase", textShadow: "0 0 20px " + theme.glow }, children: category }),
+      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { marginTop: 8, color: "#FFFFFF", fontSize: 44, lineHeight: 1.1, fontWeight: 900 }, children: headline })
     ] });
   };
   var resolveHeaderContent = (cue, layout) => {
@@ -52158,8 +60789,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return { ...content2, category: typeof ((_a2 = cue.section) == null ? void 0 : _a2.eyebrow) === "string" ? cue.section.eyebrow : content2.category, headline: typeof ((_b = cue.section) == null ? void 0 : _b.subtitle) === "string" ? cue.section.subtitle : content2.headline };
   };
   var LayoutEffectHeader = ({ cue, layout }) => {
+    var _a2, _b, _c, _d;
     const content2 = resolveHeaderContent(cue, layout);
-    return /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(StandardComponentHeader, { category: content2.category, headline: content2.headline });
+    const accent = headerAccentOf((_d = (_a2 = cue.effectProps) == null ? void 0 : _a2.accent) != null ? _d : (_c = (_b = cue.effectProps) == null ? void 0 : _b.contentPayload) == null ? void 0 : _c.accent);
+    return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(StandardComponentHeader, { category: content2.category, headline: content2.headline, accent });
   };
   var LayoutEffectRenderer = ({ cue, layout, showStandardHeader = true }) => {
     const definition = getLayoutDefinition(layout != null ? layout : cue.layout);
@@ -52169,8 +60802,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const props = { ...sourceProps, ...toRendererContentProps(sourceProps), __externalSectionLabel: true };
     const inheritedTokens = getComponentTokens(layout != null ? layout : cue.layout);
     const tokens = props.designTokens && typeof props.designTokens === "object" ? props.designTokens : inheritedTokens;
-    const contentScale = numberToken(props, "contentScale", 1);
     const isCopyOpen = String(layout != null ? layout : cue.layout).startsWith("copyopen-");
+    const isJcLayout = String(layout != null ? layout : cue.layout).startsWith("jc-");
+    const contentScale = isJcLayout ? 1 : numberToken(props, "contentScale", 1);
     const contentSlotStyle = isCopyOpen ? {
       position: "absolute",
       left: tokens.boundsX,
@@ -52186,182 +60820,86 @@ Check that all your Remotion packages are on the same version. If your dependenc
       transform: "scale(" + contentScale + ")",
       transformOrigin: "top left"
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(AbsoluteFill, { className: "layout-effect-root component-container", style: { padding: tokens.padding, gap: tokens.gap, ["--component-accent"]: tokens.accentColor }, children: [
-      showStandardHeader ? /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(StandardComponentHeader, { category: normalized.category, headline: normalized.headline }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { className: "layout-effect-content animated-content-slot", style: contentSlotStyle, children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(Component, { cue: controlledCue(cue, props), props }) })
-    ] });
-  };
-
-  // src/JasonWu/utils/contrast.ts
-  var normalize = (color) => color.trim().toLowerCase();
-  var isWhite = (color) => ["#fff", "#ffffff", "white", "rgba(255,255,255,1)"].indexOf(normalize(color)) !== -1;
-  var isDark = (color) => ["#000", "#000000", "black", "#0b0f17", "#111827"].indexOf(normalize(color)) !== -1;
-  var getContrastStyle = (color, enabled = true) => {
-    if (!enabled) return {};
-    if (isWhite(color)) return { WebkitTextStroke: "2px rgba(0,0,0,0.88)", textShadow: "0 2px 4px rgba(0,0,0,0.9), 0 0 3px #000" };
-    if (isDark(color)) return { WebkitTextStroke: "1px rgba(255,255,255,0.85)", textShadow: "0 2px 6px rgba(255,255,255,0.4)" };
-    return {};
-  };
-
-  // src/JasonWu/components/common/MotionWrapper.tsx
-  var import_jsx_runtime73 = __toESM(require_jsx_runtime());
-  var anchors = {
-    center: [0, 0],
-    "bottom-left": [-470, 260],
-    "bottom-right": [470, 260],
-    "top-right": [470, -245],
-    "center-right": [520, 0]
-  };
-  var DEFAULT_COMMON_PROPS = {
-    enterOffset: 0,
-    exitOffset: 0,
-    position: "center",
-    offsetX: 0,
-    offsetY: 0,
-    scale: 1,
-    enterAnimation: "spring-up",
-    exitAnimation: "none",
-    sfx: "none"
-  };
-  var MotionWrapper = ({ commonProps, designTokens, beatDuration, entranceDurationSeconds = 2.2, autoContrastStroke = true, children }) => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-    const frame = useCurrentFrame();
-    const { fps } = useVideoConfig();
-    const props = { ...DEFAULT_COMMON_PROPS, ...commonProps != null ? commonProps : {} };
-    const enterFrames = Math.max(0, Math.round(props.enterOffset * fps));
-    const fixedFrames = props.duration ? Math.max(1, Math.round(props.duration * fps)) : Math.max(1, Math.round(beatDuration * fps) - enterFrames - Math.round(((_a2 = props.exitOffset) != null ? _a2 : 0) * fps));
-    const exitStart = Math.min(Math.max(enterFrames + 1, Math.round(beatDuration * fps) - Math.round(((_b = props.exitOffset) != null ? _b : 0) * fps)), enterFrames + fixedFrames);
-    const entranceFrames = Math.max(1, Math.round(entranceDurationSeconds * fps));
-    const enterProgress = interpolate(frame, [enterFrames, enterFrames + entranceFrames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-    const exitProgress = props.exitAnimation === "none" ? 0 : interpolate(frame, [exitStart, exitStart + 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-    const hiddenBeforeEnter = frame < enterFrames;
-    const [anchorX, anchorY] = (_c = anchors[props.position]) != null ? _c : anchors.center;
-    const mountMode = (_d = designTokens == null ? void 0 : designTokens.mountMode) != null ? _d : "center";
-    const mountX = Number.isFinite(designTokens == null ? void 0 : designTokens.mountX) ? Number(designTokens == null ? void 0 : designTokens.mountX) : 0;
-    const mountY = Number.isFinite(designTokens == null ? void 0 : designTokens.mountY) ? Number(designTokens == null ? void 0 : designTokens.mountY) : 0;
-    const boundsX = Number.isFinite(designTokens == null ? void 0 : designTokens.boundsX) ? Number(designTokens == null ? void 0 : designTokens.boundsX) : 0;
-    const boundsY = Number.isFinite(designTokens == null ? void 0 : designTokens.boundsY) ? Number(designTokens == null ? void 0 : designTokens.boundsY) : 0;
-    const boundsWidth = Math.max(1, Number.isFinite(designTokens == null ? void 0 : designTokens.boundsWidth) ? Number(designTokens == null ? void 0 : designTokens.boundsWidth) : 1920);
-    const boundsHeight = Math.max(1, Number.isFinite(designTokens == null ? void 0 : designTokens.boundsHeight) ? Number(designTokens == null ? void 0 : designTokens.boundsHeight) : 1080);
-    const presenterSafeMaxWidth = Number.isFinite(designTokens == null ? void 0 : designTokens.presenterSafeMaxWidth) ? Number(designTokens == null ? void 0 : designTokens.presenterSafeMaxWidth) : 0;
-    const presenterSafeLogicalWidth = presenterSafeMaxWidth > 0 ? Math.min(boundsWidth, Math.max(1, Number(designTokens == null ? void 0 : designTokens.presenterSafeLogicalWidth) || Math.round(presenterSafeMaxWidth / Math.max(0.01, (_e = props.scale) != null ? _e : 1)))) : 0;
-    const presenterSafeInset = designTokens == null ? void 0 : designTokens.presenterSafeInset;
-    const safeClipX = presenterSafeInset === "right" ? boundsX + Math.max(0, boundsWidth - presenterSafeLogicalWidth) : boundsX;
-    const safeClipRight = presenterSafeLogicalWidth > 0 ? Math.max(0, 1920 - safeClipX - presenterSafeLogicalWidth) : 0;
-    const safeClipPath = presenterSafeLogicalWidth > 0 ? "inset(" + Math.max(0, boundsY) + "px " + safeClipRight + "px " + Math.max(0, 1080 - boundsY - boundsHeight) + "px " + Math.max(0, safeClipX) + "px)" : void 0;
-    const centeredOffsetX = 960 - (boundsX + boundsWidth / 2) + mountX;
-    const centeredOffsetY = 540 - (boundsY + boundsHeight / 2) + mountY;
-    const mountOffsetX = mountMode === "top-left" ? mountX : mountMode === "left" ? 96 - boundsX + mountX : mountMode === "right" ? 1824 - (boundsX + boundsWidth) + mountX : centeredOffsetX;
-    const mountOffsetY = mountMode === "top-left" ? mountY : mountMode === "top" ? 216 - boundsY + mountY : mountMode === "bottom" ? 864 - (boundsY + boundsHeight) + mountY : centeredOffsetY;
-    const enterX = props.enterAnimation === "slide-left" ? interpolate(enterProgress, [0, 1], [-110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "slide-right" ? interpolate(enterProgress, [0, 1], [110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
-    const enterY = props.enterAnimation === "spring-up" ? interpolate(enterProgress, [0, 1], [76, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
-    const enterScale = props.enterAnimation === "fade-scale" ? interpolate(enterProgress, [0, 1], [0.86, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "glitch" ? 1 + Math.sin(frame * 2.2) * (frame < enterFrames + 10 ? 0.015 : 0) : 1;
-    const exitY = props.exitAnimation === "slide-down" ? interpolate(exitProgress, [0, 1], [0, 96]) : 0;
-    const exitScale = props.exitAnimation === "scale-down" ? interpolate(exitProgress, [0, 1], [1, 0.86]) : 1;
-    const opacity2 = hiddenBeforeEnter ? 0 : props.exitAnimation === "fade-out" ? 1 - exitProgress : interpolate(enterProgress, [0, 1], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    const scale = Math.min(1.2, Math.max(0.6, (_f = props.scale) != null ? _f : 1)) * enterScale * exitScale;
-    const whiteContrast = getContrastStyle("#FFFFFF", autoContrastStroke);
-    const darkContrast = getContrastStyle("#000000", autoContrastStroke);
-    const contrastCss = [
-      '.motion-auto-contrast [style*="color: rgb(255, 255, 255)"],',
-      '.motion-auto-contrast [style*="color: rgb(248, 250, 252)"],',
-      '.motion-auto-contrast [style*="color: #F8FAFC"],',
-      '.motion-auto-contrast [style*="color: white"],',
-      '.motion-auto-contrast [style*="color: rgba(255, 255, 255"] {',
-      "-webkit-text-stroke:var(--contrast-white-stroke);text-shadow:var(--contrast-white-shadow);",
-      "}",
-      '.motion-auto-contrast svg text[fill="#F8FAFC"],',
-      '.motion-auto-contrast svg text[fill="#FFFFFF"],',
-      '.motion-auto-contrast svg text[fill="white"] {',
-      "stroke:var(--contrast-white-stroke-color);stroke-width:2px;paint-order:stroke fill;text-shadow:var(--contrast-white-shadow);",
-      "}",
-      '.motion-auto-contrast [style*="color: rgb(0, 0, 0)"],',
-      '.motion-auto-contrast [style*="color: black"],',
-      '.motion-auto-contrast [style*="color: rgb(11, 15, 23)"],',
-      '.motion-auto-contrast [style*="color: rgb(17, 24, 39)"] {',
-      "-webkit-text-stroke:var(--contrast-dark-stroke);text-shadow:var(--contrast-dark-shadow);",
-      "}"
-    ].join("");
-    const presenterSafeCss = presenterSafeLogicalWidth > 0 ? [
-      ".presenter-safe-overlay .layout-effect-root{width:var(--presenter-safe-logical-width)!important;max-width:100%!important;overflow:hidden;}",
-      ".presenter-safe-overlay .layout-effect-root > *{width:100%;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;}",
-      ".presenter-safe-overlay .layout-effect-root [style]{max-width:100%!important;box-sizing:border-box!important;}"
-    ].join("") : "";
-    return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(AbsoluteFill, { className: "motion-auto-contrast" + (presenterSafeLogicalWidth > 0 ? " presenter-safe-overlay" : ""), style: {
-      pointerEvents: "none",
-      opacity: opacity2,
-      transform: "translate(" + (mountOffsetX + anchorX + ((_g = props.offsetX) != null ? _g : 0) + enterX) + "px," + (mountOffsetY + anchorY + ((_h = props.offsetY) != null ? _h : 0) + enterY + exitY) + "px) scale(" + scale + ")",
-      transformOrigin: (mountMode === "top-left" || presenterSafeInset === "left" ? boundsX : presenterSafeInset === "right" ? boundsX + boundsWidth : boundsX + boundsWidth / 2) + "px " + (mountMode === "top-left" ? boundsY : boundsY + boundsHeight / 2) + "px",
-      clipPath: safeClipPath,
-      "--presenter-safe-logical-width": presenterSafeLogicalWidth + "px",
-      wordBreak: "keep-all",
-      overflowWrap: "break-word",
-      "--contrast-white-stroke": (_i = whiteContrast.WebkitTextStroke) != null ? _i : "none",
-      "--contrast-white-stroke-color": "rgba(0,0,0,0.88)",
-      "--contrast-white-shadow": (_j = whiteContrast.textShadow) != null ? _j : "none",
-      "--contrast-dark-stroke": (_k = darkContrast.WebkitTextStroke) != null ? _k : "none",
-      "--contrast-dark-shadow": (_l = darkContrast.textShadow) != null ? _l : "none"
-    }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("style", { children: contrastCss + presenterSafeCss }),
-      children
+    return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(AbsoluteFill, { className: "layout-effect-root component-container", style: { padding: tokens.padding, gap: tokens.gap, ["--component-accent"]: tokens.accentColor }, children: [
+      showStandardHeader && !isJcLayout ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(StandardComponentHeader, { category: normalized.category, headline: normalized.headline }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { className: "layout-effect-content animated-content-slot", style: contentSlotStyle, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Component, { cue: controlledCue(cue, props), props }) })
     ] });
   };
 
   // src/design/AdminComponentSandbox.tsx
-  var import_jsx_runtime74 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime114 = __toESM(require_jsx_runtime());
+  var resolveSandboxAccent = (requested, color) => {
+    var _a2;
+    if (["blue", "green", "yellow", "red"].indexOf(String(requested)) >= 0) return String(requested);
+    const hex = (_a2 = String(color != null ? color : "").match(/^#([0-9a-f]{6})$/i)) == null ? void 0 : _a2[1];
+    if (!hex) return "blue";
+    const red2 = Number.parseInt(hex.slice(0, 2), 16);
+    const green2 = Number.parseInt(hex.slice(2, 4), 16);
+    const blue2 = Number.parseInt(hex.slice(4, 6), 16);
+    if (red2 > green2 * 1.25 && red2 > blue2 * 1.25) return "red";
+    if (green2 > red2 * 1.15 && green2 > blue2 * 1.15) return "green";
+    if (red2 > 140 && green2 > 110 && blue2 < 150) return "yellow";
+    return "blue";
+  };
   var AdminComponentSandbox = ({ layout, tokens, mockData }) => {
     var _a2, _b, _c, _d, _e, _f, _g;
     const base = normalizeComponentContent(mockData);
     const contentProps = toRendererContentProps(mockData);
-    const cue = { id: "admin-sandbox", start: 0, end: 4, layout, section: { eyebrow: base.category, subtitle: base.headline }, caption: { zh: String((_b = (_a2 = contentProps.body) != null ? _a2 : contentProps.effectText) != null ? _b : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"), en: "Live component sandbox" }, effectProps: { ...mockData, ...contentProps, designTokens: tokens } };
-    const commonProps = { position: (_c = tokens.position) != null ? _c : "center", scale: (_d = tokens.scale) != null ? _d : 1, enterAnimation: (_e = tokens.spring) != null ? _e : "spring-up", sfx: (_f = tokens.sfx) != null ? _f : "none" };
+    const commonProps = { position: (_a2 = tokens.position) != null ? _a2 : "center", scale: (_b = tokens.scale) != null ? _b : 1, enterAnimation: (_c = tokens.spring) != null ? _c : "spring-up", sfx: (_d = tokens.sfx) != null ? _d : "none" };
+    const definition = getLayoutDefinition(layout);
+    const isNativeJc = String(layout).startsWith("jc-");
+    const sandboxAccent = resolveSandboxAccent(mockData.accent, tokens.accentColor);
+    const cue = { id: "admin-sandbox", start: 0, end: 4, layout, section: { eyebrow: base.category, subtitle: base.headline }, caption: { zh: String((_f = (_e = contentProps.body) != null ? _e : contentProps.effectText) != null ? _f : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"), en: "Live component sandbox" }, effectProps: { ...mockData, ...contentProps, accent: sandboxAccent, designTokens: tokens, ...isNativeJc ? { __jcStageBackdropProvided: true } : {}, ...definition.usesInternalMotionWrapper ? { __jcMotion: { commonProps, designTokens: tokens, beatDuration: 4, entranceDurationSeconds: 2.2, accent: sandboxAccent } } : {} } };
     const auditValues = Object.keys(contentProps).reduce((values2, key) => {
       const value = contentProps[key];
       const list3 = Array.isArray(value) ? value : [value];
       return values2.concat(list3.map((item2) => typeof item2 === "string" || typeof item2 === "number" ? String(item2) : "").filter(Boolean));
     }, []);
     const auditText = [base.category, base.headline, ...auditValues].join(" ");
-    return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)(AbsoluteFill, { "data-component-audit": auditText, style: { background: "#090d16", ["--primary-accent"]: (_g = tokens.accentColor) != null ? _g : "#00F2FE" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(LayoutEffectHeader, { cue }),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(MotionWrapper, { commonProps, designTokens: tokens, beatDuration: 4, entranceDurationSeconds: 2.2, children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(LayoutEffectRenderer, { cue, showStandardHeader: false }) })
+    const scene = /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(LayoutEffectRenderer, { cue, showStandardHeader: false });
+    const stage = isNativeJc ? /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(JcNativeStageBackdrop, { children: scene }) : scene;
+    const shellStyle = { ...isNativeJc ? {} : { background: "#090d16" }, ["--primary-accent"]: (_g = tokens.accentColor) != null ? _g : "#00F2FE" };
+    return /* @__PURE__ */ (0, import_jsx_runtime114.jsxs)(AbsoluteFill, { "data-component-audit": auditText, style: shellStyle, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(LayoutEffectHeader, { cue }),
+      definition.usesInternalMotionWrapper ? stage : /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(MotionWrapper, { commonProps, designTokens: tokens, beatDuration: 4, entranceDurationSeconds: 2.2, children: stage })
     ] });
   };
 
   // src/design/admin-components-client.tsx
-  var import_jsx_runtime75 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime115 = __toESM(require_jsx_runtime());
   var api = async (url, init) => {
     const response = await fetch(url, init);
     const text4 = await response.text();
     if (!response.ok) throw new Error(text4 || "\u8BF7\u6C42\u5931\u8D25");
     return JSON.parse(text4);
   };
-  var number = (value, min, max, step, onChange) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "range", min, max, step, value, onChange: (event) => onChange(Number(event.currentTarget.value)) });
-  var coordinate = (value, min, max, onChange) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "number", min, max, step: 1, value, onChange: (event) => onChange(Number(event.currentTarget.value) || 0) });
+  var number = (value, min, max, step, onChange) => /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "range", min, max, step, value, onChange: (event) => onChange(Number(event.currentTarget.value)) });
+  var coordinate = (value, min, max, onChange) => /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", min, max, step: 1, value, onChange: (event) => onChange(Number(event.currentTarget.value) || 0) });
   var toStringValue = (value) => typeof value === "string" || typeof value === "number" ? String(value) : "";
   var App = () => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p;
-    const [registry2, setRegistry] = (0, import_react123.useState)(null);
-    const [selectedId, setSelectedId] = (0, import_react123.useState)("");
-    const [draft, setDraft] = (0, import_react123.useState)(null);
-    const [previewDraft, setPreviewDraft] = (0, import_react123.useState)(null);
-    const [status, setStatus] = (0, import_react123.useState)("\u6B63\u5728\u8F7D\u5165\u7EC4\u4EF6\u8D44\u4EA7\u2026");
-    const [nonce, setNonce] = (0, import_react123.useState)(0);
-    const [replay, setReplay] = (0, import_react123.useState)(false);
-    const [collapsedFamilies, setCollapsedFamilies] = (0, import_react123.useState)({});
-    const [draggedId, setDraggedId] = (0, import_react123.useState)(null);
-    const [dropTargetFamily, setDropTargetFamily] = (0, import_react123.useState)(null);
-    const [pendingFamilyMoves, setPendingFamilyMoves] = (0, import_react123.useState)({});
-    const [toast, setToast] = (0, import_react123.useState)("");
-    const effectiveComponents = (0, import_react123.useMemo)(() => {
+    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s;
+    const [registry2, setRegistry] = (0, import_react130.useState)(null);
+    const [selectedId, setSelectedId] = (0, import_react130.useState)("");
+    const [draft, setDraft] = (0, import_react130.useState)(null);
+    const [previewDraft, setPreviewDraft] = (0, import_react130.useState)(null);
+    const [status, setStatus] = (0, import_react130.useState)("\u6B63\u5728\u8F7D\u5165\u7EC4\u4EF6\u8D44\u4EA7\u2026");
+    const [nonce, setNonce] = (0, import_react130.useState)(0);
+    const [replay, setReplay] = (0, import_react130.useState)(false);
+    const [collapsedFamilies, setCollapsedFamilies] = (0, import_react130.useState)({});
+    const [draggedId, setDraggedId] = (0, import_react130.useState)(null);
+    const [dropTargetFamily, setDropTargetFamily] = (0, import_react130.useState)(null);
+    const [pendingFamilyMoves, setPendingFamilyMoves] = (0, import_react130.useState)({});
+    const [toast, setToast] = (0, import_react130.useState)("");
+    const effectiveComponents = (0, import_react130.useMemo)(() => {
       var _a3;
       return (_a3 = registry2 == null ? void 0 : registry2.components.map((component) => pendingFamilyMoves[component.id] ? { ...component, family: pendingFamilyMoves[component.id] } : component)) != null ? _a3 : [];
     }, [registry2, pendingFamilyMoves]);
     const pendingMoveCount = Object.keys(pendingFamilyMoves).length;
-    const selected = (0, import_react123.useMemo)(() => {
+    const selected = (0, import_react130.useMemo)(() => {
       var _a3;
       return (_a3 = registry2 == null ? void 0 : registry2.components.find((component) => component.id === selectedId)) != null ? _a3 : null;
     }, [registry2, selectedId]);
-    (0, import_react123.useEffect)(() => {
+    (0, import_react130.useEffect)(() => {
       api("/api/admin/components").then((next) => {
         var _a3;
         setRegistry(next);
@@ -52372,7 +60910,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         setStatus("\u672C\u5730\u8D85\u7EA7\u7BA1\u7406\u5458\u6A21\u5F0F \xB7 \u8F93\u5165\u5B8C\u6210\u540E\u70B9\u4FDD\u5B58\u9884\u89C8\uFF0C\u786E\u8BA4\u65E0\u8BEF\u518D\u4FDD\u5B58\u5168\u5C40\u9884\u8BBE");
       }).catch((error2) => setStatus(error2.message));
     }, []);
-    (0, import_react123.useEffect)(() => {
+    (0, import_react130.useEffect)(() => {
       if (selected) {
         const next = structuredClone(selected);
         setDraft(next);
@@ -52491,7 +61029,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         setStatus(error2 instanceof Error ? error2.message : "\u4FDD\u5B58\u5931\u8D25");
       }
     };
-    if (!registry2 || !draft || !previewDraft) return /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("main", { className: "admin-loading", children: status });
+    if (!registry2 || !draft || !previewDraft) return /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("main", { className: "admin-loading", children: status });
     const base = normalizeComponentContent(draft.mockData);
     const payload = base.contentPayload;
     const previewBase = normalizeComponentContent(previewDraft.mockData);
@@ -52518,221 +61056,283 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const isPhotoWall = draft.id === "photo-wall";
     const showBaseSection = true;
     const photoSlots = [1, 2, 3, 4];
-    const contentEditor = isPersonRank ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u4EBA\u7269\u4EA4\u63A5" }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+    const jcField = (key) => {
+      var _a3;
+      return (_a3 = draft.editorSchema) == null ? void 0 : _a3.fields.find((field) => field.key === key);
+    };
+    const jcLabel = (key, fallback) => {
+      var _a3, _b2;
+      return (_b2 = (_a3 = jcField(key)) == null ? void 0 : _a3.label) != null ? _b2 : fallback;
+    };
+    const jcContentEditor = draft.id.startsWith("jc-") ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B" }),
+      payload.type === "narrative" ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(import_jsx_runtime115.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          jcLabel("bodyText", "\u6B63\u6587\u5185\u5BB9"),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 4, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        ] }),
+        jcField("highlightQuote") ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          jcLabel("highlightQuote", "\u526F\u6587\u5185\u5BB9"),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_a2 = payload.highlightQuote) != null ? _a2 : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
+        ] }) : null
+      ] }) : payload.type === "metrics" ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(import_jsx_runtime115.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          jcLabel("label", "\u6307\u6807\u6807\u7B7E"),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: payload.label, onChange: (event) => updatePayload({ ...payload, label: event.currentTarget.value }) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          jcLabel("value", "\u6570\u503C"),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", value: toStringValue(payload.value), onChange: (event) => updatePayload({ ...payload, value: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          jcLabel("unit", "\u5355\u4F4D"),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_b = payload.unit) != null ? _b : "", onChange: (event) => updatePayload({ ...payload, unit: event.currentTarget.value }) })
+        ] }),
+        jcField("detailText") ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          jcLabel("detailText", "\u8BF4\u660E\u5185\u5BB9"),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: (_c = payload.detailText) != null ? _c : "", onChange: (event) => updatePayload({ ...payload, detailText: event.currentTarget.value }) })
+        ] }) : null
+      ] }) : payload.type === "chips" ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(import_jsx_runtime115.Fragment, { children: [
+        payload.items.map((item2, index) => {
+          var _a3;
+          return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: item2.title, "aria-label": "\u6807\u7B7E " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, itemIndex) => itemIndex === index ? { ...entry, title: event.currentTarget.value } : entry) }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_a3 = item2.subtitle) != null ? _a3 : "", "aria-label": "\u526F\u6807 " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, itemIndex) => itemIndex === index ? { ...entry, subtitle: event.currentTarget.value } : entry) }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, items: payload.items.filter((_, itemIndex) => itemIndex !== index) }), children: "\u5220\u9664" })
+          ] }, index);
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, items: [...payload.items, { title: "\u65B0\u6807\u7B7E", subtitle: "" }] }), children: "\u6DFB\u52A0\u6807\u7B7E" })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(import_jsx_runtime115.Fragment, { children: [
+        typeof payload.progress === "number" && jcField("progress") ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          jcLabel("progress", "\u5B8C\u6210\u5EA6"),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", min: 0, max: 100, value: payload.progress, onChange: (event) => updatePayload({ ...payload, progress: Math.max(0, Math.min(100, Number(event.currentTarget.value) || 0)) }) })
+        ] }) : null,
+        payload.steps.map((step, index) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: step.stepNumber }),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: step.text, "aria-label": "\u6B65\u9AA4 " + step.stepNumber, onChange: (event) => updatePayload({ ...payload, steps: payload.steps.map((entry, itemIndex) => itemIndex === index ? { ...entry, text: event.currentTarget.value } : entry) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, steps: payload.steps.filter((_, itemIndex) => itemIndex !== index).map((entry, itemIndex) => ({ ...entry, stepNumber: itemIndex + 1 })) }), children: "\u5220\u9664" })
+        ] }, index)),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, steps: [...payload.steps, { stepNumber: payload.steps.length + 1, text: "\u65B0\u6B65\u9AA4" }] }), children: "\u6DFB\u52A0\u6B65\u9AA4" })
+      ] })
+    ] }) : null;
+    const contentEditor = jcContentEditor != null ? jcContentEditor : isPersonRank ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u4EBA\u7269\u4EA4\u63A5" }),
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u4EBA\u7269A",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.leftName), onChange: (event) => updateMockData({ leftName: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.leftName), onChange: (event) => updateMockData({ leftName: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u4EBA\u7269A\u5934\u50CF\u4E0A\u4F20",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("leftAvatar", event) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("leftAvatar", event) })
       ] }),
-      toStringValue(draft.mockData.leftAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ leftAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269A\u5934\u50CF" }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      toStringValue(draft.mockData.leftAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ leftAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269A\u5934\u50CF" }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u4EBA\u7269B",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.rightName), onChange: (event) => updateMockData({ rightName: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.rightName), onChange: (event) => updateMockData({ rightName: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u4EBA\u7269B\u5934\u50CF\u4E0A\u4F20",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("rightAvatar", event) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("rightAvatar", event) })
       ] }),
-      toStringValue(draft.mockData.rightAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ rightAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269B\u5934\u50CF" }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      toStringValue(draft.mockData.rightAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ rightAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269B\u5934\u50CF" }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u4EBA\u7269C",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.thirdName), onChange: (event) => updateMockData({ thirdName: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.thirdName), onChange: (event) => updateMockData({ thirdName: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u4EBA\u7269C\u5934\u50CF\u4E0A\u4F20",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("thirdAvatar", event) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("thirdAvatar", event) })
       ] }),
-      toStringValue(draft.mockData.thirdAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ thirdAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269C\u5934\u50CF" }) : null
-    ] }) : isProductExplosion ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u4EA7\u54C1\u7206\u70B8\u56FE" }),
-      photoSlots.map((slot) => /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "payload-row", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("output", { children: slot }),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { display: "grid", gap: 8, flex: 1 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      toStringValue(draft.mockData.thirdAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ thirdAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269C\u5934\u50CF" }) : null
+    ] }) : isProductExplosion ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u4EA7\u54C1\u7206\u70B8\u56FE" }),
+      photoSlots.map((slot) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: slot }),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { style: { display: "grid", gap: 8, flex: 1 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u4EA7\u54C1" + slot + "\u540D\u79F0",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData["productTitle" + slot]), onChange: (event) => {
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData["productTitle" + slot]), onChange: (event) => {
               const titles = photoSlots.map((index) => index === slot ? event.currentTarget.value : toStringValue(draft.mockData["productTitle" + index])).filter(Boolean);
               updateMockData({ ["productTitle" + slot]: event.currentTarget.value, items: titles, steps: titles, contentPayload: { type: "chips", items: titles.map((title) => ({ title, subtitle: "" })) } });
             } })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u4EA7\u54C1" + slot + "\u56FE\u7247\u4E0A\u4F20",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("productImage" + slot, event) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("productImage" + slot, event) })
           ] }),
-          toStringValue(draft.mockData["productImage" + slot]) ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ ["productImage" + slot]: "" }), children: [
+          toStringValue(draft.mockData["productImage" + slot]) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ ["productImage" + slot]: "" }), children: [
             "\u6E05\u9664\u4EA7\u54C1",
             slot,
             "\u56FE\u7247"
           ] }) : null
         ] })
       ] }, slot)),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u4E2D\u5FC3\u4EA7\u54C1\u6807\u9898",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.centerLabel), onChange: (event) => updateMockData({ centerLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.centerLabel), onChange: (event) => updateMockData({ centerLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u4E2D\u5FC3\u4EA7\u54C1\u56FE\u7247\u4E0A\u4F20",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("centerImage", event) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("centerImage", event) })
       ] }),
-      toStringValue(draft.mockData.centerImage) ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ centerImage: "" }), children: "\u6E05\u9664\u4E2D\u5FC3\u56FE\u7247" }) : null
-    ] }) : isPhotoWall ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u7167\u7247\u5899" }),
-      photoSlots.map((slot) => /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "payload-row", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("output", { children: slot }),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { display: "grid", gap: 8, flex: 1 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      toStringValue(draft.mockData.centerImage) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ centerImage: "" }), children: "\u6E05\u9664\u4E2D\u5FC3\u56FE\u7247" }) : null
+    ] }) : isPhotoWall ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u7167\u7247\u5899" }),
+      photoSlots.map((slot) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: slot }),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { style: { display: "grid", gap: 8, flex: 1 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u7167\u7247" + slot + "\u6807\u9898",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData["photoTitle" + slot]), onChange: (event) => updateMockData({ ["photoTitle" + slot]: event.currentTarget.value, items: photoSlots.map((index) => index === slot ? event.currentTarget.value : toStringValue(draft.mockData["photoTitle" + index])).filter(Boolean) }) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData["photoTitle" + slot]), onChange: (event) => updateMockData({ ["photoTitle" + slot]: event.currentTarget.value, items: photoSlots.map((index) => index === slot ? event.currentTarget.value : toStringValue(draft.mockData["photoTitle" + index])).filter(Boolean) }) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u7167\u7247" + slot + "\u526F\u6807\u9898",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData["photoSubtitle" + slot]), onChange: (event) => updateMockData({ ["photoSubtitle" + slot]: event.currentTarget.value }) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData["photoSubtitle" + slot]), onChange: (event) => updateMockData({ ["photoSubtitle" + slot]: event.currentTarget.value }) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u7167\u7247" + slot + "\u4E0A\u4F20",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("photo" + slot, event) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("photo" + slot, event) })
           ] }),
-          toStringValue(draft.mockData["photo" + slot]) ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ ["photo" + slot]: "" }), children: [
+          toStringValue(draft.mockData["photo" + slot]) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ ["photo" + slot]: "" }), children: [
             "\u6E05\u9664\u7167\u7247",
             slot
           ] }) : null
         ] })
       ] }, slot))
-    ] }) : payload.type === "narrative" ? isCookMachine ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u7ECF\u8425\u673A\u5668" }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+    ] }) : payload.type === "narrative" ? isCookMachine ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u7ECF\u8425\u673A\u5668" }),
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.leftLabel), onChange: (event) => updateMockData({ leftLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.leftLabel), onChange: (event) => updateMockData({ leftLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.leftValue), onChange: (event) => updateMockData({ leftValue: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.leftValue), onChange: (event) => updateMockData({ leftValue: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.rightLabel), onChange: (event) => updateMockData({ rightLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.rightLabel), onChange: (event) => updateMockData({ rightLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.rightValue), onChange: (event) => updateMockData({ rightValue: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.rightValue), onChange: (event) => updateMockData({ rightValue: event.currentTarget.value }) })
       ] })
-    ] }) : isBullBear ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u591A\u7A7A\u89C2\u70B9" }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+    ] }) : isBullBear ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u591A\u7A7A\u89C2\u70B9" }),
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("textarea", { rows: 3, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("textarea", { rows: 3, value: (_a2 = payload.bearText) != null ? _a2 : "", onChange: (event) => updatePayload({ ...payload, bearText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: (_d = payload.bearText) != null ? _d : "", onChange: (event) => updatePayload({ ...payload, bearText: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u8FA9\u8BBA\u4E3B\u9898",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: (_b = payload.highlightQuote) != null ? _b : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_e = payload.highlightQuote) != null ? _e : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u53D9\u4E8B" }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u53D9\u4E8B" }),
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("textarea", { rows: 4, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 4, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u526F\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: (_c = payload.highlightQuote) != null ? _c : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_f = payload.highlightQuote) != null ? _f : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
       ] })
-    ] }) : payload.type === "metrics" ? isCapitalDashboard ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u8D44\u672C\u4EEA\u8868\u76D8" }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+    ] }) : payload.type === "metrics" ? isCapitalDashboard ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u8D44\u672C\u4EEA\u8868\u76D8" }),
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.marketLabel), onChange: (event) => updateMockData({ marketLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.marketLabel), onChange: (event) => updateMockData({ marketLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "number", value: toStringValue(draft.mockData.marketTo), onChange: (event) => updateMockData({ marketTo: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", value: toStringValue(draft.mockData.marketTo), onChange: (event) => updateMockData({ marketTo: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue(draft.mockData.engineeringLabel), onChange: (event) => updateMockData({ engineeringLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.engineeringLabel), onChange: (event) => updateMockData({ engineeringLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "number", value: toStringValue(draft.mockData.engineeringTo), onChange: (event) => updateMockData({ engineeringTo: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", value: toStringValue(draft.mockData.engineeringTo), onChange: (event) => updateMockData({ engineeringTo: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6570\u5B57\u5355\u4F4D",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: toStringValue((_e = (_d = draft.mockData.marketSuffix) != null ? _d : draft.mockData.engineeringSuffix) != null ? _e : payload.unit), onChange: (event) => updateMockData({ marketSuffix: event.currentTarget.value, engineeringSuffix: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue((_h = (_g = draft.mockData.marketSuffix) != null ? _g : draft.mockData.engineeringSuffix) != null ? _h : payload.unit), onChange: (event) => updateMockData({ marketSuffix: event.currentTarget.value, engineeringSuffix: event.currentTarget.value }) })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6307\u6807" }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6307\u6807" }),
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         isProgressDonut ? "\u5C0F\u6807\u9898" : "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: payload.label, onChange: (event) => updatePayload({ ...payload, label: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: payload.label, onChange: (event) => updatePayload({ ...payload, label: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6570\u503C",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "number", value: toStringValue(payload.value), onChange: (event) => updatePayload({ ...payload, value: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", value: toStringValue(payload.value), onChange: (event) => updatePayload({ ...payload, value: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
       ] }),
-      isProgressDonut ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      isProgressDonut ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: (_g = (_f = payload.bodyText) != null ? _f : payload.unit) != null ? _g : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value, unit: event.currentTarget.value }) })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_j = (_i = payload.bodyText) != null ? _i : payload.unit) != null ? _j : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value, unit: event.currentTarget.value }) })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u5355\u4F4D",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: (_h = payload.unit) != null ? _h : "", onChange: (event) => updatePayload({ ...payload, unit: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_k = payload.unit) != null ? _k : "", onChange: (event) => updatePayload({ ...payload, unit: event.currentTarget.value }) })
       ] })
-    ] }) : payload.type === "chips" ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6807\u7B7E" }),
+    ] }) : payload.type === "chips" ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6807\u7B7E" }),
       payload.items.map((item2, index) => {
         var _a3;
-        return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "payload-row", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: item2.title, "aria-label": "\u6807\u7B7E " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, i) => i === index ? { ...entry, title: event.currentTarget.value } : entry) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: (_a3 = item2.subtitle) != null ? _a3 : "", "aria-label": "\u526F\u6807 " + (index + 1), placeholder: "\u526F\u6807\uFF08\u53EF\u9009\uFF09", onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, i) => i === index ? { ...entry, subtitle: event.currentTarget.value } : entry) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, items: payload.items.filter((_, i) => i !== index) }), children: "\u5220\u9664" })
+        return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: item2.title, "aria-label": "\u6807\u7B7E " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, i) => i === index ? { ...entry, title: event.currentTarget.value } : entry) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_a3 = item2.subtitle) != null ? _a3 : "", "aria-label": "\u526F\u6807 " + (index + 1), placeholder: "\u526F\u6807\uFF08\u53EF\u9009\uFF09", onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, i) => i === index ? { ...entry, subtitle: event.currentTarget.value } : entry) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, items: payload.items.filter((_, i) => i !== index) }), children: "\u5220\u9664" })
         ] }, index);
       }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, items: [...payload.items, { title: "\u65B0\u6807\u7B7E", subtitle: "" }] }), children: "\u6DFB\u52A0\u6807\u7B7E" })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: isBriefingPoster ? "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u62A5\u7EB8\u7B80\u62A5" : isTradeoffReject ? "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u98CE\u9669\u6392\u9664" : "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6B65\u9AA4" }),
-      (isCheckProgress || isRecoveryProgressBars) && /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, items: [...payload.items, { title: "\u65B0\u6807\u7B7E", subtitle: "" }] }), children: "\u6DFB\u52A0\u6807\u7B7E" })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: isBriefingPoster ? "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u62A5\u7EB8\u7B80\u62A5" : isTradeoffReject ? "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u98CE\u9669\u6392\u9664" : "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6B65\u9AA4" }),
+      (isCheckProgress || isRecoveryProgressBars) && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         isCheckProgress ? "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011" : "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: (_i = payload.bodyText) != null ? _i : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_l = payload.bodyText) != null ? _l : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      typeof payload.progress === "number" && /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      typeof payload.progress === "number" && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u5B8C\u6210\u5EA6",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "number", min: 0, max: 100, value: payload.progress, onChange: (event) => updatePayload({ ...payload, progress: Math.max(0, Math.min(100, Number(event.currentTarget.value) || 0)) }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", min: 0, max: 100, value: payload.progress, onChange: (event) => updatePayload({ ...payload, progress: Math.max(0, Math.min(100, Number(event.currentTarget.value) || 0)) }) })
       ] }),
-      isTimeRewind && /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      isTimeRewind && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u65F6\u95F4\u56DE\u6EAF\u5185\u5BB9\u6B63\u6587",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("textarea", { rows: 3, value: (_j = payload.bodyText) != null ? _j : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: (_m = payload.bodyText) != null ? _m : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      isBriefingPoster && /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      isBriefingPoster && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("textarea", { rows: 4, value: (_k = payload.bodyText) != null ? _k : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 4, value: (_n = payload.bodyText) != null ? _n : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      isTradeoffReject && /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+      isTradeoffReject && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
         "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("textarea", { rows: 3, value: (_l = payload.bodyText) != null ? _l : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: (_o = payload.bodyText) != null ? _o : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      payload.steps.map((step, index) => /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "payload-row", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("output", { children: step.stepNumber }),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: step.text, "aria-label": (isBriefingPoster ? "\u526F\u6587\u5185\u5BB9 " : isTradeoffReject ? "\u5426\u5B9A\u9879 " : "\u6B65\u9AA4 ") + step.stepNumber, placeholder: isBriefingPoster ? "\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u5426\u5B9A\u9879\u5185\u5BB9" : "\u6B65\u9AA4\u5185\u5BB9", onChange: (event) => updatePayload({ ...payload, steps: payload.steps.map((entry, i) => i === index ? { ...entry, text: event.currentTarget.value } : entry) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, steps: payload.steps.filter((_, i) => i !== index).map((entry, i) => ({ ...entry, stepNumber: i + 1 })) }), children: "\u5220\u9664" })
+      payload.steps.map((step, index) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: step.stepNumber }),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: step.text, "aria-label": (isBriefingPoster ? "\u526F\u6587\u5185\u5BB9 " : isTradeoffReject ? "\u5426\u5B9A\u9879 " : "\u6B65\u9AA4 ") + step.stepNumber, placeholder: isBriefingPoster ? "\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u5426\u5B9A\u9879\u5185\u5BB9" : "\u6B65\u9AA4\u5185\u5BB9", onChange: (event) => updatePayload({ ...payload, steps: payload.steps.map((entry, i) => i === index ? { ...entry, text: event.currentTarget.value } : entry) }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, steps: payload.steps.filter((_, i) => i !== index).map((entry, i) => ({ ...entry, stepNumber: i + 1 })) }), children: "\u5220\u9664" })
       ] }, index)),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, steps: [...payload.steps, { stepNumber: payload.steps.length + 1, text: isBriefingPoster ? "\u65B0\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u65B0\u5426\u5B9A\u9879" : "\u65B0\u6B65\u9AA4" }] }), children: isBriefingPoster ? "\u6DFB\u52A0\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u6DFB\u52A0\u5426\u5B9A\u9879" : "\u6DFB\u52A0\u6B65\u9AA4" })
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, steps: [...payload.steps, { stepNumber: payload.steps.length + 1, text: isBriefingPoster ? "\u65B0\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u65B0\u5426\u5B9A\u9879" : "\u65B0\u6B65\u9AA4" }] }), children: isBriefingPoster ? "\u6DFB\u52A0\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u6DFB\u52A0\u5426\u5B9A\u9879" : "\u6DFB\u52A0\u6B65\u9AA4" })
     ] });
-    return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("main", { className: "admin-shell", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("aside", { className: "admin-tree", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { className: "admin-tree-head", children: /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "admin-brand", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("strong", { children: "\u7EC4\u4EF6\u8D44\u4EA7\u5E93" }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { children: effectiveComponents.length + " visual components" })
-        ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { className: "tree-scroll", children: registry2.families.map((family) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("main", { className: "admin-shell", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("aside", { className: "admin-tree", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-tree-head", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-brand", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("strong", { children: "\u7EC4\u4EF6\u8D44\u4EA7\u5E93" }),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { children: effectiveComponents.length + " visual components" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("a", { className: "weight-link", href: "/admin/component-weights", children: "\u7EC4\u4EF6\u547D\u4E2D\u4F18\u5148\u7EA7" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { className: "tree-scroll", children: registry2.families.map((family) => {
           const familyComponents = effectiveComponents.filter((component) => component.family === family.id);
           const collapsed = !!collapsedFamilies[family.id];
-          return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "family-group" + (dropTargetFamily === family.id ? " is-drop-target" : ""), onDragEnter: (event) => {
+          return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "family-group" + (dropTargetFamily === family.id ? " is-drop-target" : ""), onDragEnter: (event) => {
             event.preventDefault();
             setDropTargetFamily(family.id);
           }, onDragOver: (event) => {
@@ -52744,22 +61344,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
             setDraggedId(null);
             setDropTargetFamily(null);
           }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("button", { className: "family-header", type: "button", onClick: () => toggleFamily(family.id), "aria-expanded": !collapsed, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("i", { className: "family-accent" }),
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { children: family.name }),
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { className: "family-chevron", children: collapsed ? "\u203A" : "\u2304" })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { className: "family-header", type: "button", onClick: () => toggleFamily(family.id), "aria-expanded": !collapsed, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("i", { className: "family-accent" }),
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { children: family.name }),
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { className: "family-chevron", children: collapsed ? "\u203A" : "\u2304" })
             ] }),
-            !collapsed && /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { className: "family-components", children: familyComponents.map((component) => /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("button", { draggable: true, "data-component-id": component.id, className: (component.id === selectedId ? "asset active" : "asset") + (component.id === draggedId ? " dragging" : "") + (pendingFamilyMoves[component.id] ? " pending" : ""), onDragStart: (event) => {
+            !collapsed && /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { className: "family-components", children: familyComponents.map((component) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { draggable: true, "data-component-id": component.id, className: (component.id === selectedId ? "asset active" : "asset") + (component.id === draggedId ? " dragging" : "") + (pendingFamilyMoves[component.id] ? " pending" : ""), onDragStart: (event) => {
               event.dataTransfer.effectAllowed = "move";
               setDraggedId(component.id);
             }, onDragEnd: () => {
               setDraggedId(null);
               setDropTargetFamily(null);
             }, onClick: () => setSelectedId(component.id), title: "\u62D6\u52A8\u5230\u5176\u4ED6\u5206\u7EC4", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { className: "drag-handle", "aria-hidden": "true", children: "\u22EE\u22EE" }),
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("span", { className: "asset-copy", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("strong", { children: component.name }),
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("span", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { className: "drag-handle", "aria-hidden": "true", children: "\u22EE\u22EE" }),
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("span", { className: "asset-copy", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("strong", { children: component.name }),
+                /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("span", { children: [
                   component.id,
                   " \xB7 v",
                   component.version,
@@ -52769,164 +61369,164 @@ Check that all your Remotion packages are on the same version. If your dependenc
             ] }, component.id)) })
           ] }, family.id);
         }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "admin-tree-actions", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("button", { className: "tree-save", type: "button", disabled: !pendingMoveCount, onClick: saveFamilyMoves, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-tree-actions", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { className: "tree-save", type: "button", disabled: !pendingMoveCount, onClick: saveFamilyMoves, children: [
             "\u786E\u8BA4\u4FDD\u5B58\u62D6\u62FD\u4FEE\u6539",
             pendingMoveCount ? " \xB7 " + pendingMoveCount : ""
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { className: "tree-pending", children: pendingMoveCount ? "\u5206\u7EC4\u5DF2\u6682\u5B58\uFF0C\u786E\u8BA4\u540E\u624D\u4F1A\u5199\u5165\u7EC4\u4EF6\u5E93\u3002" : "\u62D6\u52A8\u7EC4\u4EF6\u5230\u5206\u7EC4\u540E\uFF0C\u5728\u8FD9\u91CC\u786E\u8BA4\u4FDD\u5B58\u3002" })
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { className: "tree-pending", children: pendingMoveCount ? "\u5206\u7EC4\u5DF2\u6682\u5B58\uFF0C\u786E\u8BA4\u540E\u624D\u4F1A\u5199\u5165\u7EC4\u4EF6\u5E93\u3002" : "\u62D6\u52A8\u7EC4\u4EF6\u5230\u5206\u7EC4\u540E\uFF0C\u5728\u8FD9\u91CC\u786E\u8BA4\u4FDD\u5B58\u3002" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "admin-preview", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "admin-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("p", { children: "Live Remotion Sandbox" }),
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h1", { children: "\u6240\u89C1\u5373\u6240\u5F97" }),
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { children: "\u771F\u5B9E\u7EC4\u4EF6 \xB7 4 \u79D2\u5165\u573A\u52A8\u6548" })
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "admin-preview", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("p", { children: "Live Remotion Sandbox" }),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h1", { children: "\u6240\u89C1\u5373\u6240\u5F97" }),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { children: "\u771F\u5B9E\u7EC4\u4EF6 \xB7 4 \u79D2\u5165\u573A\u52A8\u6548" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "preview-actions", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { className: "replay", onClick: refreshPreview, children: "\u4FDD\u5B58\u9884\u89C8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { className: "replay", onClick: () => {
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "preview-actions", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { className: "replay", onClick: refreshPreview, children: "\u4FDD\u5B58\u9884\u89C8" }),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { className: "replay", onClick: () => {
               setReplay(true);
               setNonce((value) => value + 1);
             }, children: "\u91CD\u65B0\u64AD\u653E" })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "player-frame", "data-component-audit": previewAuditText, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Player, { style: { width: "100%", height: "100%" }, component: AdminComponentSandbox, inputProps: { layout: previewDraft.id, tokens: previewDraft.tokens, mockData: previewDraft.mockData }, durationInFrames: 120, compositionWidth: 1920, compositionHeight: 1080, fps: 30, initialFrame: 0, controls: true, autoPlay: replay }, previewDraft.id + "-" + nonce),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { className: "component-audit-snapshot", "aria-hidden": "true", style: { display: "none" }, children: previewAuditText })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "player-frame", "data-component-audit": previewAuditText, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)(Player, { style: { width: "100%", height: "100%" }, component: AdminComponentSandbox, inputProps: { layout: previewDraft.id, tokens: previewDraft.tokens, mockData: previewDraft.mockData }, durationInFrames: 120, compositionWidth: 1920, compositionHeight: 1080, fps: 30, initialFrame: 0, controls: true, autoPlay: replay }, previewDraft.id + "-" + nonce),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { className: "component-audit-snapshot", "aria-hidden": "true", style: { display: "none" }, children: previewAuditText })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "admin-inspector", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { className: "admin-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("p", { children: "Token Inspector" }),
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { className: "asset-name-editor", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "admin-inspector", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("p", { children: "Token Inspector" }),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { className: "asset-name-editor", children: [
               "\u7EC4\u4EF6\u540D\u79F0 / Component Name",
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "text", value: draft.name, onChange: (event) => updateAssetMeta({ name: event.currentTarget.value }) })
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "text", value: draft.name, onChange: (event) => updateAssetMeta({ name: event.currentTarget.value }) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("span", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("span", { children: [
               draft.id,
               " \xB7 ",
               draft.family
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("button", { className: "save", onClick: save, children: "\u4FDD\u5B58\u5168\u5C40\u9884\u8BBE" })
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { className: "save", onClick: save, children: "\u4FDD\u5B58\u5168\u5C40\u9884\u8BBE" })
         ] }),
-        showBaseSection ? /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section inspector-section-base", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u9ED8\u8BA4\u5934\u4FE1\u606F\u6A21\u677F" }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+        showBaseSection ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section inspector-section-base", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5934\u4FE1\u606F\u6A21\u677F" }),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u7AE0\u8282 / Category",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: base.category, onChange: (event) => updateBase({ category: event.currentTarget.value }) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: base.category, onChange: (event) => updateBase({ category: event.currentTarget.value }) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u6838\u5FC3\u5927\u6807\u9898 / Headline",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { value: base.headline, onChange: (event) => updateBase({ headline: event.currentTarget.value }) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: base.headline, onChange: (event) => updateBase({ headline: event.currentTarget.value }) })
           ] })
         ] }) : null,
         contentEditor,
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("section", { className: "inspector-section", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("h2", { children: "\u89C6\u89C9 Token" }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u89C6\u89C9 Token" }),
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u5185\u8FB9\u8DDD ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
               draft.tokens.padding,
               "px"
             ] }),
             number(draft.tokens.padding, 0, 160, 2, (value) => updateTokens({ padding: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u7EC4\u4EF6\u95F4\u8DDD ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
               draft.tokens.gap,
               "px"
             ] }),
             number(draft.tokens.gap, 0, 80, 1, (value) => updateTokens({ gap: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u6574\u4F53\u7F29\u653E ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
               Math.round(draft.tokens.scale * 100),
               "%"
             ] }),
             number(draft.tokens.scale, 0.6, 1.2, 0.01, (value) => updateTokens({ scale: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u6807\u9898\u533A\u7F29\u653E ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("output", { children: [
-              Math.round(((_m = draft.tokens.headerScale) != null ? _m : 1) * 100),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
+              Math.round(((_p = draft.tokens.headerScale) != null ? _p : 1) * 100),
               "%"
             ] }),
-            number((_n = draft.tokens.headerScale) != null ? _n : 1, 0.6, 1.2, 0.01, (value) => updateTokens({ headerScale: value }))
+            number((_q = draft.tokens.headerScale) != null ? _q : 1, 0.6, 1.2, 0.01, (value) => updateTokens({ headerScale: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u6B63\u6587\u5185\u5BB9\u7F29\u653E ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("output", { children: [
-              Math.round(((_o = draft.tokens.contentScale) != null ? _o : 1) * 100),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
+              Math.round(((_r = draft.tokens.contentScale) != null ? _r : 1) * 100),
               "%"
             ] }),
-            number((_p = draft.tokens.contentScale) != null ? _p : 1, 0.6, 1.2, 0.01, (value) => updateTokens({ contentScale: value }))
+            number((_s = draft.tokens.contentScale) != null ? _s : 1, 0.6, 1.2, 0.01, (value) => updateTokens({ contentScale: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u9ED8\u8BA4\u9879\u76EE\u6570\u91CF ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("output", { children: draft.tokens.defaultItemCount }),
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: draft.tokens.defaultItemCount }),
             number(draft.tokens.defaultItemCount, 1, 8, 1, (value) => updateTokens({ defaultItemCount: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u9519\u5CF0\u5E27\u6570 ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
               draft.tokens.staggerFrames,
               "f"
             ] }),
             number(draft.tokens.staggerFrames, 0, 45, 1, (value) => updateTokens({ staggerFrames: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u6302\u8F7D\u65B9\u5F0F",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("select", { value: draft.tokens.mountMode, onChange: (event) => updateTokens({ mountMode: event.currentTarget.value }), children: [
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("option", { value: "top-left", children: "\u5DE6\u4E0A\u89D2" }),
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("option", { value: "left", children: "\u5DE6\u8FB9" }),
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("option", { value: "right", children: "\u53F3\u8FB9" }),
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("option", { value: "top", children: "\u4E0A\u8FB9" }),
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("option", { value: "bottom", children: "\u4E0B\u8FB9" }),
-              /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("option", { value: "center", children: "\u4E2D\u95F4" })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("select", { value: draft.tokens.mountMode, onChange: (event) => updateTokens({ mountMode: event.currentTarget.value }), children: [
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "top-left", children: "\u5DE6\u4E0A\u89D2" }),
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "left", children: "\u5DE6\u8FB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "right", children: "\u53F3\u8FB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "top", children: "\u4E0A\u8FB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "bottom", children: "\u4E0B\u8FB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "center", children: "\u4E2D\u95F4" })
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u5B89\u5168\u8FB9\u8DDD X ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
               draft.tokens.mountX,
               "px"
             ] }),
             coordinate(draft.tokens.mountX, -960, 960, (value) => updateTokens({ mountX: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u5B89\u5168\u8FB9\u8DDD Y ",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
               draft.tokens.mountY,
               "px"
             ] }),
             coordinate(draft.tokens.mountY, -540, 540, (value) => updateTokens({ mountY: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u5165\u573A\u9884\u8BBE",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("select", { value: draft.tokens.spring, onChange: (event) => updateTokens({ spring: event.currentTarget.value }), children: ["spring-up", "fade-scale", "slide-left", "slide-right", "glitch"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("option", { children: value }, value)) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("select", { value: draft.tokens.spring, onChange: (event) => updateTokens({ spring: event.currentTarget.value }), children: ["spring-up", "fade-scale", "slide-left", "slide-right", "glitch"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { children: value }, value)) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u5165\u573A\u97F3\u6548",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("select", { value: draft.tokens.sfx, onChange: (event) => updateTokens({ sfx: event.currentTarget.value }), children: ["none", "whoosh", "tech-click", "pop"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("option", { children: value }, value)) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("select", { value: draft.tokens.sfx, onChange: (event) => updateTokens({ sfx: event.currentTarget.value }), children: ["none", "whoosh", "tech-click", "pop"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { children: value }, value)) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
             "\u5F3A\u8C03\u8272",
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("input", { type: "color", value: draft.tokens.accentColor, onChange: (event) => updateTokens({ accentColor: event.currentTarget.value.toUpperCase() }) })
+            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "color", value: draft.tokens.accentColor, onChange: (event) => updateTokens({ accentColor: event.currentTarget.value.toUpperCase() }) })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("p", { className: "admin-status", children: status })
+        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("p", { className: "admin-status", children: status })
       ] }),
-      toast && /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { className: "admin-toast", role: "status", children: toast })
+      toast && /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { className: "admin-toast", role: "status", children: toast })
     ] });
   };
   var node = document.getElementById("admin-components-root");
-  if (node) (0, import_client.createRoot)(node).render(/* @__PURE__ */ (0, import_jsx_runtime75.jsx)(App, {}));
+  if (node) (0, import_client.createRoot)(node).render(/* @__PURE__ */ (0, import_jsx_runtime115.jsx)(App, {}));
 })();
 /*! Bundled license information:
 
@@ -52983,5 +61583,46 @@ react/cjs/react-jsx-runtime.development.js:
    *
    * This source code is licensed under the MIT license found in the
    * LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs:
+lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs:
+lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs:
+lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs:
+lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs:
+lucide-react/dist/esm/shared/src/build/defaultAttributes.mjs:
+lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs:
+lucide-react/dist/esm/shared/src/build/buildLucideIconForReact.mjs:
+lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs:
+lucide-react/dist/esm/context.mjs:
+lucide-react/dist/esm/Icon.mjs:
+lucide-react/dist/esm/createLucideIcon.mjs:
+lucide-react/dist/esm/icons/arrow-down.mjs:
+lucide-react/dist/esm/icons/badge-check.mjs:
+lucide-react/dist/esm/icons/bot.mjs:
+lucide-react/dist/esm/icons/check.mjs:
+lucide-react/dist/esm/icons/code-xml.mjs:
+lucide-react/dist/esm/icons/crown.mjs:
+lucide-react/dist/esm/icons/eye.mjs:
+lucide-react/dist/esm/icons/file-text.mjs:
+lucide-react/dist/esm/icons/flame.mjs:
+lucide-react/dist/esm/icons/git-branch.mjs:
+lucide-react/dist/esm/icons/lightbulb.mjs:
+lucide-react/dist/esm/icons/package.mjs:
+lucide-react/dist/esm/icons/play.mjs:
+lucide-react/dist/esm/icons/scale.mjs:
+lucide-react/dist/esm/icons/shield-check.mjs:
+lucide-react/dist/esm/icons/sparkles.mjs:
+lucide-react/dist/esm/icons/square-terminal.mjs:
+lucide-react/dist/esm/icons/star.mjs:
+lucide-react/dist/esm/icons/wand-sparkles.mjs:
+lucide-react/dist/esm/icons/x.mjs:
+lucide-react/dist/esm/icons/zap.mjs:
+lucide-react/dist/esm/lucide-react.mjs:
+  (**
+   * @license lucide-react v1.45.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
    *)
 */

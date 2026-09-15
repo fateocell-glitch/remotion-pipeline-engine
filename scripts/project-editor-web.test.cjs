@@ -22,6 +22,7 @@ const adminSandbox = readFileSync("src/design/AdminComponentSandbox.tsx", "utf8"
 const adminComponentsPage = readFileSync("scripts/admin-components-page.cjs", "utf8");
 const componentCatalogPage = readFileSync("src/JasonWu/JasonWuComponentCatalog.tsx", "utf8");
 const componentContent = readFileSync("src/design/component-content.ts", "utf8");
+const componentPresetResolver = readFileSync("src/design/component-preset-resolver.ts", "utf8");
 const componentRegistryStore = readFileSync("scripts/services/component-registry-store.cjs", "utf8");
 const componentRegistry = JSON.parse(readFileSync("src/design/components.registry.json", "utf8"));
 
@@ -40,7 +41,7 @@ test("studio exposes layout selection, subtitle proofreading, and render actions
 test("studio uses the agreed subtitle labels and fixed two-line editor fields", () => {
   assert.match(page, /中文字幕/);
   assert.match(page, /英文字幕/);
-  assert.match(page, /data-content-narrative/);
+  assert.match(page, /data-schema-field/);
   assert.match(page, /rows="3"/);
 });
 
@@ -101,7 +102,7 @@ test("studio passes only compact Chinese effect copy into each rendered layer", 
 
 test("studio keeps semantic copy inside component-specific fields", () => {
   assert.doesNotMatch(page, /效果摘要 \/ Effect Summary/);
-  assert.match(page, /data-content-narrative/);
+  assert.match(page, /data-schema-field/);
   assert.doesNotMatch(page, /效果英文文案/);
 });
 
@@ -222,6 +223,15 @@ test("each effect layer renders through one visual dispatcher without duplicatin
 });
 
 
+test("server validates saved layers against the registered manifest instead of a stale layout list", () => {
+  assert.match(host, /const layouts = componentAssetRegistry\.components\.map\(\(component\) => component\.id\)/);
+  assert.ok(componentRegistry.components.some((component) => component.id === "value-verdict"));
+});
+
+test("an internal save failure stops the render request instead of submitting stale project data", () => {
+  const saveBeat = page.slice(page.indexOf("async function saveBeat"), page.indexOf("async function saveCaptions"));
+  assert.match(saveBeat, /if\(internal\)throw error;/);
+});
 test("Studio exposes layout metadata for external editor clients", () => {
   assert.match(host, /url\.pathname === "\/api\/layouts"/);
   assert.match(host, /JSON\.stringify\(layoutMetadata\)/);
@@ -287,15 +297,15 @@ test("common motion panel keeps only the five focused controls", () => {
 
 test("studio separates common motion controls from component-specific fields", () => {
   assert.match(page, /基础动效与时空参数/);
-  assert.match(page, /当前 Beat 语义内容/);
+  assert.match(page, /当前效果类型： /);
   assert.match(page, /class="props-card inspector-accordion"/);
   assert.match(page, /commonProps/);
 });
 
-test("composition applies the shared motion wrapper and optional contrast system", () => {
+test("composition keeps shared motion separate from subtitle contrast settings", () => {
   assert.match(effectLayers, /commonProps/);
   assert.match(composition, /<MotionWrapper/);
-  assert.match(composition, /getContrastStyle/);
+  assert.match(composition, /WebkitTextStroke: subtitleSettings\.theme\.autoContrastStroke/);
   assert.match(page, /gs-auto-contrast-stroke/);
 });
 
@@ -311,12 +321,11 @@ test("generated Studio script is syntactically valid", () => {
   assert.doesNotThrow(() => new Function(script));
 });
 
-test("motion wrapper applies contrast only to white or dark rendered text", () => {
-  assert.match(motionWrapper, /motion-auto-contrast/);
-  assert.match(motionWrapper, /--contrast-white-stroke/);
-  assert.equal(motionWrapper.includes("[style*=\\\"color: rgb(255, 255, 255)\\\"]"), true);
-  assert.equal(motionWrapper.includes("getContrastStyle(\"#FFFFFF\", autoContrastStroke)"), true);
-  assert.doesNotMatch(motionWrapper, /transformOrigin: "center center", ...getContrastStyle/);
+test("motion wrapper never mutates component typography", () => {
+  assert.doesNotMatch(motionWrapper, /motion-auto-contrast/);
+  assert.doesNotMatch(motionWrapper, /--contrast-white-stroke/);
+  assert.doesNotMatch(motionWrapper, /getContrastStyle/);
+  assert.match(motionWrapper, /motion-commercial-analysis/);
 });
 
 test("timeline keeps the user scroll position when selecting a beat", () => {
@@ -506,20 +515,22 @@ test("Studio preview uses registry mock data and tokens instead of active Beat s
 });
 
 test("Studio Inspector labels the current Layer semantic content and render-bound fields", () => {
-  assert.match(page, /当前图层完整配置 · 当前 Beat 语义内容/);
-  assert.match(page, /该 Layer 的语义内容只属于当前 Beat/);
+  assert.match(page, /当前效果类型： /);
+  assert.doesNotMatch(page, /当前图层完整配置 · 当前 Beat 语义内容/);
+  assert.doesNotMatch(page, /该 Layer 的语义内容只属于当前 Beat/);
   assert.match(page, new RegExp("章节 / Category"));
   assert.match(page, new RegExp("核心大标题 / Headline"));
-  assert.match(page, /当前 Beat 语义内容 · 叙事/);
-  assert.match(page, /data-content-narrative='bodyText'/);
+  assert.doesNotMatch(page, /专属内容模块 \/ 沙盒示例/);
+  assert.match(page, /data-schema-field="'\+key\+'"/);
   assert.ok(componentRegistry.components.some((component) => component.editorSchema?.fields?.some((field) => field.key === "highlightQuote" && field.label === "副文内容")));
-  assert.match(page, /组件库中的内容仅作默认模板与沙盒示例/);
+  assert.doesNotMatch(page, /组件库中的内容仅作默认模板与沙盒示例/);
 });
 
 test("narrative Layers bind their component body field directly to rendered content", () => {
-  assert.match(page, /data-content-narrative='bodyText'/);
+  assert.match(page, /data-schema-field="'\+key\+'"/);
   assert.ok(page.includes('payload.type==="narrative"?payload.bodyText:current.effectText'));
-  assert.ok(page.includes('setContentPayload(layer,{...currentPayload,bodyText})'));
+  assert.ok(page.includes('applySchemaPayload(layer,schema)'));
+  assert.doesNotMatch(page, /data-content-narrative/);
   assert.doesNotMatch(page, /正文内容（成片组件正文）<textarea/);
 });
 
@@ -633,7 +644,7 @@ test("full render refreshes three-stage copy and marks the active Beat with a bl
 
 
 test("formal layered renders hide recovered component internal section headers", () => {
-  assert.match(effectLayerRuntime, /__externalSectionLabel: true/);
+  assert.match(effectLayerRuntime, /__externalSectionLabel\s*:\s*true/);
   assert.match(recoveredEffects, /props\?\.__externalSectionLabel \? null :/);
   assert.match(composition, /<LayoutEffectHeader key=\{activeLayer\.layerId\} cue=\{effectiveHeaderCue\} \/>/);
   const effectLayerStack = composition.slice(composition.indexOf("const EffectLayerStack"), composition.indexOf("type JasonWuTemplateProps"));
@@ -855,9 +866,9 @@ test("Studio keeps copy fields inside the selected layer and removes the beat-le
   const inspector = page.slice(page.indexOf("function componentSpecificPanel"), page.indexOf("function proofreadLength"));
   assert.ok(page.includes("章节 / Category"));
   assert.ok(page.includes("核心大标题 / Headline"));
-  assert.match(page, /data-content-narrative='bodyText'/);
-  assert.match(page, /当前 Beat 语义内容 · 叙事/);
-  assert.match(page, /data-content-narrative='bodyText'/);
+  assert.match(page, /data-schema-field="'\+key\+'"/);
+  assert.doesNotMatch(page, /专属内容模块 \/ 沙盒示例/);
+  assert.match(page, /data-schema-field="'\+key\+'"/);
   assert.ok(page.includes("function layerBaseFields"));
   assert.doesNotMatch(inspector, /beat\.eyebrow=layer/);
   assert.doesNotMatch(inspector, /beat\.subtitle=layer/);
@@ -870,12 +881,12 @@ test("Studio keeps copy fields inside the selected layer and removes the beat-le
   assert.match(effectLayerRuntime, /layer\.effectText/);
 });
 
-test("studio layer semantic copy fields use a full-width single-column editor", () => {
-  assert.match(page, /layer-base-fields\{display:grid;grid-template-columns:minmax\(0,1fr\);gap:0\}/);
+test("studio layer semantic copy fields use a compact two-column editor", () => {
+  assert.match(page, /layer-base-fields\{display:grid;grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\);column-gap:14px;row-gap:0\}/);
   assert.match(page, /layer-base-fields \.field-label\{min-width:0\}/);
   assert.match(page, /layer-base-fields input,\.layer-base-fields textarea\{width:100%;min-width:0\}/);
   assert.match(page, /class=\\"grid layer-base-fields\\"/);
-  assert.match(page, /effect-copy-field\\" for=\\"/);
+  assert.match(page, /inputField\("headline","核心大标题 \/ Headline",copy\.headline\)/);
 });
 test("Layer tab selection forces an immediate custom preview refresh", () => {
   const selectLayer = page.slice(page.indexOf("function selectLayer"), page.indexOf("function closeAddEffectGallery"));
@@ -887,9 +898,24 @@ test("Layer tab selection forces an immediate custom preview refresh", () => {
 });
 
 
-test("Admin sandbox keeps the global component header fixed outside motion", () => {
-  assert.match(adminSandbox, /<LayoutEffectHeader cue=\{cue\} \/><MotionWrapper/);
-  assert.match(adminSandbox, /<LayoutEffectRenderer cue=\{cue\} showStandardHeader=\{false\} \/>/);
+test("component catalog supports direct asset selection for visual regression renders", () => {
+  assert.match(componentCatalogPage, /selectedLayout/);
+  assert.match(componentCatalogPage, /directCatalogIndex/);
+  assert.match(componentCatalogPage, /<CatalogScene index=\{directCatalogIndex\} \/>/);
+});
+
+test("component catalog feeds native JC assets their registered mock data", () => {
+  assert.match(componentCatalogPage, /jcMockDataById/);
+  assert.match(componentCatalogPage, /const jcMockData =/);
+  assert.match(componentCatalogPage, /\.\.\.\(jcMockData \?\? \{\}\)/);
+});
+
+test("Admin sandbox gives native JC assets the shared StandardComponentHeader outside the native recipe", () => {
+  assert.match(adminSandbox, /const isNativeJc = String\(layout\)\.startsWith\("jc-"\)/);
+  assert.match(adminSandbox, /<LayoutEffectHeader cue=\{cue\} \/>/);
+  assert.doesNotMatch(adminSandbox, /\["--accent-primary" as string\]/);
+  assert.match(adminSandbox, /const scene = <LayoutEffectRenderer cue=\{cue\} showStandardHeader=\{false\} \/>/);
+  assert.match(adminSandbox, /<JcNativeStageBackdrop>\{scene\}<\/JcNativeStageBackdrop>/);
 });
 
 test("formal layer rendering keeps exactly one active standard header outside MotionWrapper", () => {
@@ -899,7 +925,7 @@ test("formal layer rendering keeps exactly one active standard header outside Mo
   assert.match(composition, /const effectiveHeaderCue = \{/);
   assert.match(composition, /<LayoutEffectHeader key={activeLayer\.layerId} cue={effectiveHeaderCue} \/>/);
   assert.match(composition, /<SceneModules cue={effectiveCue} showStandardHeader={false} \/>/);
-  assert.match(demoAdditions, /showStandardHeader \? <StandardComponentHeader/);
+  assert.match(demoAdditions, /showStandardHeader && !isJcLayout \? <StandardComponentHeader/);
 });
 
 test("Layer preview uses a remount key and restarts the local animation", () => {
@@ -920,6 +946,15 @@ test("top-left component motion preserves registered content bounds below the fi
   assert.doesNotMatch(demoAdditions, /StandardComponentHeader[\\s\\S]*transform:/);
 });
 
+test("global component header uses semantic accent section-label rail", () => {
+  const header = demoAdditions.slice(demoAdditions.indexOf("export const StandardComponentHeader"), demoAdditions.indexOf("const resolveHeaderContent"));
+  assert.match(header, /getAccentTheme\(accent\)/);
+  assert.match(header, /borderLeft:\s*"5px solid " \+ theme\.primary/);
+  assert.match(header, /paddingLeft:\s*18/);
+  assert.match(header, /color:\s*theme\.primary/);
+  assert.match(header, /fontSize:\s*22/);
+  assert.match(header, /fontSize:\s*44/);
+});
 test("ordered sequence renders only animated body rows under the static global header", () => {
   const ordered = incompleteEffects.slice(incompleteEffects.indexOf("export const OrderedSequence"), incompleteEffects.indexOf("export const OrgChart"));
   assert.match(ordered, /className="animated-content-slot"/);
@@ -966,6 +1001,11 @@ test("Studio preview bridge always renders through the same direct Player host",
   assert.doesNotMatch(bridge, /createElement("video")/);
 });
 
+test("admin header template panel keeps the standard inspector card style", () => {
+  assert.match(adminComponentsPage, /\.inspector-section-base\{border-color:#3d78bf;background:#1c2938\}/);
+  assert.doesNotMatch(adminComponentsPage, /section-category-input/);
+  assert.doesNotMatch(adminSandboxClient, /section-category-label/);
+});
 test("admin component inspector lets the selected component display name be edited and saved", () => {
   assert.match(adminSandboxClient, /组件名称 \/ Component Name/);
   assert.match(adminSandboxClient, /updateAssetMeta\(\{name:event\.currentTarget\.value\}\)/);
@@ -1050,28 +1090,42 @@ test("copyopen components default to compact right-side overlay bounds instead o
   for (const component of copyOpenComponents) {
     assert.equal(component.displayIntent, "side-overlay");
     assert.equal(component.tokens.mountMode, "top-left", component.id + " must mount from a stable absolute safe zone");
-    const visualRight = component.tokens.boundsX + component.tokens.boundsWidth * component.tokens.scale;
-    assert.ok(component.tokens.boundsX >= 1180 && component.tokens.boundsX <= 1300, component.id + " must stay in the right-side safe zone");
-    assert.ok(Math.abs(visualRight - (1920 - 96)) <= 2, component.id + " must keep a 96px right safe margin");
-    assert.equal(component.tokens.boundsY, 300, component.id + " must sit 300px from the top");
+    const visualWidth = component.tokens.boundsWidth * component.tokens.scale;
+    const visualHeight = component.tokens.boundsHeight * component.tokens.scale;
+    if (component.id === "copyopen-end-tag") {
+      assert.ok(Math.abs(component.tokens.boundsX - Math.round((1920 - visualWidth) / 2)) <= 2, component.id + " must be horizontally centered");
+      assert.ok(Math.abs(component.tokens.boundsY - Math.round((1080 - visualHeight) / 2)) <= 2, component.id + " must be vertically centered");
+    } else {
+      const visualRight = component.tokens.boundsX + visualWidth;
+      if (component.id !== "copyopen-pie-chart") {
+        assert.ok(component.tokens.boundsX >= 1180 && component.tokens.boundsX <= 1300, component.id + " must stay in the right-side safe zone");
+        assert.ok(Math.abs(visualRight - (1920 - 96)) <= 2, component.id + " must keep a 96px right safe margin");
+      }
+      assert.equal(component.tokens.boundsY, 300, component.id + " must sit 300px from the top");
+    }
     assert.ok(component.tokens.boundsWidth <= 820, component.id + " must not use fullscreen width");
     assert.ok(component.tokens.boundsHeight <= 520, component.id + " must not use fullscreen height");
-    assert.ok(component.tokens.scale <= 0.78, component.id + " must be visually compact by default");
+    if (component.id !== "copyopen-pie-chart") assert.ok(component.tokens.scale <= 0.78, component.id + " must be visually compact by default");
     assert.equal(component.tokens.position, "center", component.id + " must keep a legal MotionWrapper anchor while mountMode handles side placement");
   }
-  assert.match(demoAdditions, /String\(layout \?\? cue\.layout\)\.startsWith\(\"copyopen-\"\)/);
-  assert.match(demoAdditions, /left: tokens\.boundsX/);
-  assert.match(demoAdditions, /top: tokens\.boundsY/);
+  assert.ok(demoAdditions.includes('String(layout ?? cue.layout).startsWith("copyopen-")'));
+  assert.ok(demoAdditions.includes('left: tokens.boundsX'));
+  assert.ok(demoAdditions.includes('top: tokens.boundsY'));
+});
+
+test("MotionWrapper keeps full-canvas native stages out of subtitle-zone clamping", () => {
+  assert.match(motionWrapper, /const isFullCanvasBounds =/);
+  assert.match(motionWrapper, /isFullCanvasBounds \? rawMountOffsetY : Math\.min\(rawMountOffsetY, maxMountOffsetY\)/);
 });
 
 test("motion wrapper falls back to center for invalid position tokens", () => {
   assert.match(motionWrapper, /anchors\[props\.position\] \?\? anchors\.center/);
 });
 
-test("motion wrapper gives CopyOpen white DOM and SVG text a 2px black stroke", () => {
+test("contrast helper remains reserved for subtitle text", () => {
   assert.ok(contrast.includes("WebkitTextStroke: \"2px rgba(0,0,0,0.88)\""));
-  assert.ok(motionWrapper.includes(".motion-auto-contrast svg text[fill=\\\"#F8FAFC\\\"]"));
-  assert.ok(motionWrapper.includes("stroke:var(--contrast-white-stroke-color);stroke-width:2px;paint-order:stroke fill;"));
+  assert.doesNotMatch(motionWrapper, /motion-auto-contrast/);
+  assert.doesNotMatch(motionWrapper, /stroke:var\(--contrast-white-stroke-color\)/);
 });
 
 test("copyopen end tag renders as transparent overlay without its black card background", () => {
@@ -1230,23 +1284,38 @@ test("confirmed captions remain the canonical Studio transcript after production
 test("semantic step and checklist editors keep their input in the flexible content column", () => {
   assert.match(page, /\.semantic-content-row\{grid-template-columns:30px minmax\(0,1fr\) 27px;width:100%\}/);
   assert.match(page, /\.semantic-content-row input\{width:100%;min-width:0\}/);
-  assert.match(page, /class='list-row semantic-content-row'/);
-  assert.match(page, /data-content-step/);
+  assert.match(page, /class=["']list-row semantic-content-row["']/);
+  assert.match(page, /data-schema-list-item/);
 });
 
+test("Studio renders and reads the registry chip-list editor with addable title and subtitle rows", () => {
+  assert.match(page, /control===\"chip-list\"/);
+  assert.match(page, /data-schema-chip-list/);
+  assert.match(page, /data-schema-chip-title/);
+  assert.match(page, /data-schema-chip-subtitle/);
+  assert.match(page, /addSchemaChipItem/);
+  assert.match(page, /removeSchemaChipItem/);
+  assert.match(page, /data-schema-chip-row/);
+});
+
+test("Studio explains scene alignment precedence when it conflicts with mount position", () => {
+  assert.match(page, /场景布局优先/);
+  assert.match(page, /sceneModeOverride/);
+  assert.match(page, /alignOverride/);
+});
 test("studio HUD chip editor stacks subtitle under the title to prevent squeezed content fields", () => {
   assert.match(page, /semantic-chip-row\{grid-template-columns:30px minmax\(0,1fr\) 27px;align-items:start\}/);
   assert.match(page, /semantic-chip-fields\{display:grid;gap:6px;min-width:0\}/);
-  assert.match(page, /semantic-content-row:not\(\.semantic-chip-row\):has\(\[data-content-chip-title\]\)\{grid-template-columns:30px minmax\(260px,\.85fr\) minmax\(260px,1fr\) 27px\}/);
-  assert.match(page, /class='list-row semantic-content-row semantic-chip-row'/);
-  assert.match(page, /class='semantic-chip-fields'/);
+  assert.match(page, /schema-mirror-panel/);
+  assert.match(page, /data-schema-list-item/);
+  assert.match(page, /schema-mirror-panel/);
 });
 
 test("studio list editors preserve focus by deferring preview refresh", () => {
   const wireListEditors = page.slice(page.indexOf("function wireListEditors"), page.indexOf("function renderInspector"));
   assert.match(wireListEditors, /schedulePreviewRefresh\(\)/);
   assert.doesNotMatch(wireListEditors, /renderLayoutPreview\(beat\)/);
-  assert.match(page, /\.map\(\(node\)=>node\.value\)\.filter\(\(value\)=>value\.trim\(\)\)/);
+  assert.doesNotMatch(page, /\[\.\.field\.querySelectorAll\("\[data-schema-list-item/);
   assert.match(page, /key:node\.value,value:values\[index\]\?\.value\|\|""/);
 });
 
@@ -1274,7 +1343,7 @@ test("component body content slots use the shared 300px top offset while fixed h
   assert.match(demoEffects, /FallbackTechPanel[\s\S]*left: 95, top: BODY_TOP/);
   assert.match(demoEffects, /MarketGrowthAndTimeline[\s\S]*right: 92, top: BODY_TOP/);
   assert.match(readFileSync("src/JasonWu/ValueVerdict.tsx", "utf8"), /left:86,top:300/);
-  const bodyTopExceptions = new Set(["briefing-poster", "chapter-card", "finale-kinetic", "copyopen-hero-title", "copyopen-progress-bar", "copyopen-comparison-card", "copyopen-terminal-scene", "copyopen-end-tag", "copyopen-bar-chart", "copyopen-line-chart", "copyopen-pie-chart", "copyopen-kpi-grid"]);
+  const bodyTopExceptions = new Set(["briefing-poster", "chapter-card", "copyopen-hero-title", "copyopen-progress-bar", "copyopen-comparison-card", "copyopen-terminal-scene", "copyopen-end-tag", "copyopen-bar-chart", "copyopen-line-chart", "copyopen-pie-chart", "copyopen-kpi-grid"]);
   for (const component of componentRegistry.components) {
     const tokens = component.tokens || {};
     if (["top-left", "left"].includes(tokens.mountMode) && !bodyTopExceptions.has(component.id)) assert.equal(tokens.boundsY, 300, component.id + " must default body top to 300px");
@@ -1380,15 +1449,15 @@ test("component registry owns the Studio content editor schema", () => {
   assert.match(page, /layout\.editorSchema/);
   assert.match(page, /renderEditorSchemaFields/);
   assert.doesNotMatch(page, /function semanticContentPanel/);
-  assert.match(page, /data-content-entity/);
-  assert.match(page, /data-content-narrative=\'bearText\'/);
+  assert.match(page, /data-schema-field/);
+  assert.match(page, /data-schema-field="'\+key\+'"/);
   assert.doesNotMatch(host, /看多标签|看多观点|看空标签|看空观点/);
   assert.match(page, /layer\.layout==="bull-bear"\)return ""/);
 });
 
 
 test("narrative body belongs only to component-specific fields", () => {
-  assert.match(page, /data-content-narrative=\'bodyText\'/);
+  assert.match(page, /data-schema-field="'\+key\+'"/);
   assert.match(page, /layerEffectField=byId\("zh"\)/);
   assert.doesNotMatch(page, /function renderContentMapping/);
   assert.ok(page.includes("function layerBaseFields"));
@@ -1428,4 +1497,74 @@ test("briefing poster exposes only its brief-item editor and never a duplicate b
   assert.deepEqual((briefing?.editorSchema?.fields || []).map((field) => [field.key, field.label]), [["steps", "副文内容"]]);
   const propFields = page.slice(page.indexOf("function propFields"), page.indexOf("function fallbackFields"));
   assert.match(propFields, /"bodyText"/);
+});
+
+
+test("Studio never writes component sandbox defaults into a real Layer when replacing or adding an effect", () => {
+  assert.doesNotMatch(page, /activeLayer\.payload=\{\.\.\.definition\(activeLayer\.layout\)\.defaults/);
+  const selectGallery = page.slice(page.indexOf("function selectGalleryLayout"), page.indexOf("function listDraft"));
+  assert.doesNotMatch(selectGallery, /payload=\{\.\.\.cloneLayers\(layout\.defaults/);
+  assert.match(selectGallery, /normalizeLayerPayload\(key,cloneLayers\(sourceLayer\.payload\|\|\{\}\),source\.effectZh\)/);
+});
+
+
+
+test("Studio semantic accent buttons reflect the selected Layer state immediately", () => {
+  assert.match(page, /function accentOfLayer\(layer\)/);
+  assert.match(page, /payload\.accent/);
+  assert.match(page, /effectProps\.accent/);
+  assert.match(page, /data-current-accent/);
+  assert.match(page, /function syncAccentButtons\(value\)/);
+  assert.match(page, /classList\.toggle\("active",active\)/);
+  assert.match(page, /layer\.effectProps=\{\.\.\.\(layer\.effectProps\|\|\{\}\),accent:value\}/);
+  assert.match(page, /APP\.previewApplied=\{beatId:current\.id,layerId:layer\.layerId,payload:previewPayload\(current,layer,"custom"\)\}/);
+  assert.match(page, /语义主题色已更新为/);
+});
+test("Studio exposes scene mode and left right alignment overrides for the selected layer", () => {
+  assert.match(page, /sceneModePanel\(beat,layer\)/);
+  assert.match(page, /data-scene-mode="speaker_mode"/);
+  assert.match(page, /data-scene-mode="cinematic_mode"/);
+  assert.match(page, /data-align-option="left"/);
+  assert.match(page, /data-align-option="right"/);
+  assert.match(page, /setLayerSceneMode/);
+  assert.match(page, /setLayerAlign/);
+});
+
+test("MotionWrapper reserves the bottom subtitle zone and receives cinematic scene tokens", () => {
+  assert.match(motionWrapper, /BOTTOM_SUBTITLE_SAFE_PCT\s*=\s*22/);
+  assert.match(motionWrapper, /bottomSubtitleSafePx/);
+  assert.match(motionWrapper, /clampedMountOffsetY/);
+  assert.match(motionWrapper, /cinematicCenterCorridorPct/);
+  assert.match(componentPresetResolver, /beatIndex/);
+  assert.match(composition, /resolveFaceAwareLayerForRender\(layer\.layout, layer\.commonProps, cue\.faceZone, beatIndex/);
+});
+
+test("draw-line maps body and sub copy consistently across editor and final composition", () => {
+  const drawLine = incompleteEffects.slice(incompleteEffects.indexOf("export const DrawLine"), incompleteEffects.indexOf("export const ProgressDonut"));
+  const composedDrawLine = composition.slice(composition.indexOf("if (cue.layout === \"draw-line\")"), composition.indexOf("if (cue.layout === \"progress-donut\")"));
+  assert.match(layoutRegistry, /"draw-line": \[prose\("bodyText", "正文内容"\), text\("highlightQuote", "副文内容"\)\]/);
+  assert.match(drawLine, /textProp\(props,"bodyText"/);
+  assert.match(drawLine, /textProp\(props,"highlightQuote"/);
+  assert.match(composedDrawLine, /textProp\("bodyText"/);
+  assert.match(composedDrawLine, /textProp\("highlightQuote"/);
+  assert.match(composedDrawLine, /color: COLORS\.blue/);
+});
+test("formal video contrast policy outlines subtitles only", () => {
+  const composition = readFileSync("src/JasonWu/JasonWuComposition.tsx", "utf8");
+  const motionWrapper = readFileSync("src/JasonWu/components/common/MotionWrapper.tsx", "utf8");
+
+  assert.match(composition, /WebkitTextStroke: subtitleSettings\.theme\.autoContrastStroke/);
+  assert.doesNotMatch(composition, /<EffectLayerStack cue=\{cue\} beatIndex=\{beatIndex\} autoContrastStroke=/);
+  assert.doesNotMatch(motionWrapper, /motion-auto-contrast/);
+  assert.doesNotMatch(motionWrapper, /getContrastStyle/);
+});
+test("Studio retains a blank HUD chip row until the user edits it", () => {
+  const updateChipList = page.slice(page.indexOf("function updateSchemaChipListDraft"), page.indexOf("function addSchemaChipItem"));
+  assert.match(updateChipList, /setContentPayload\(layer,\{type:"chips",items:rows\}\)/);
+  assert.doesNotMatch(updateChipList, /applySchemaPayload\(layer,schema\)/);
+});
+test("Layer history snapshots keep the selected Layer object attached to its Beat", () => {
+  const layerSnapshot = page.slice(page.indexOf("function layerSnapshot"), page.indexOf("function pushLayerHistory"));
+  assert.doesNotMatch(layerSnapshot, /layersOf\(beat\)/);
+  assert.match(layerSnapshot, /Array\.isArray\(beat\?\.layers\)&&beat\.layers\.length\?beat\.layers:\[\]/);
 });

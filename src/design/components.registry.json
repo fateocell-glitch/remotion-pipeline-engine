@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "updatedAt": "2026-09-14T01:15:28.297Z",
+  "updatedAt": "2026-09-15T01:37:09.883Z",
   "families": [
     {
       "id": "metrics",
@@ -21,6 +21,18 @@
     {
       "id": "entities",
       "name": "人物与产品"
+    },
+    {
+      "id": "process",
+      "name": "流程与时序"
+    },
+    {
+      "id": "contrast",
+      "name": "对比与风险"
+    },
+    {
+      "id": "system",
+      "name": "系统与结构"
     }
   ],
   "components": [
@@ -38,7 +50,7 @@
         "number",
         "percentage"
       ],
-      "version": 14,
+      "version": 18,
       "tokens": {
         "mountMode": "top-left",
         "mountX": 0,
@@ -53,7 +65,7 @@
         "scale": 0.9,
         "spring": "spring-up",
         "sfx": "none",
-        "accentColor": "#00F2FE",
+        "accentColor": "#1877F2",
         "defaultItemCount": 3,
         "staggerFrames": 15,
         "headerScale": 1,
@@ -121,7 +133,7 @@
         "metricLabel": "核心信息",
         "unit": "%"
       },
-      "updatedAt": "2026-09-13T21:16:13.040Z",
+      "updatedAt": "2026-09-14T20:58:35.002Z",
       "occupancyScore": 0.32,
       "faceAvoidanceEligible": true,
       "displayIntent": "side-overlay",
@@ -170,136 +182,6 @@
           "营收",
           "百分比",
           "指标"
-        ],
-        "visualWeight": "medium"
-      }
-    },
-    {
-      "id": "engineering-return",
-      "name": "工程回归",
-      "family": "narrative",
-      "description": "story · typewriter · product",
-      "tags": [
-        "story",
-        "typewriter",
-        "product"
-      ],
-      "data": [
-        "text"
-      ],
-      "version": 11,
-      "tokens": {
-        "mountMode": "top-left",
-        "mountX": 0,
-        "mountY": 0,
-        "boundsX": 1120,
-        "boundsY": 300,
-        "boundsWidth": 700,
-        "boundsHeight": 130,
-        "padding": 48,
-        "gap": 16,
-        "position": "center",
-        "scale": 0.86,
-        "spring": "spring-up",
-        "sfx": "none",
-        "accentColor": "#00F2FE",
-        "defaultItemCount": 1,
-        "staggerFrames": 15,
-        "headerScale": 1,
-        "contentScale": 1
-      },
-      "sfx": {
-        "enter": "none",
-        "exit": "none",
-        "volume": 0.65
-      },
-      "mockData": {
-        "headline": "核心设计信号",
-        "eyebrow": "DESIGN SYSTEM",
-        "effectText": "Design tokens update the live component preview.",
-        "text": "Design tokens update the live component preview.",
-        "items": [
-          "核心信息",
-          "视觉节奏",
-          "行动结论"
-        ],
-        "steps": [
-          "核心信息",
-          "视觉节奏",
-          "行动结论"
-        ],
-        "years": [
-          "起点",
-          "现在",
-          "下一步"
-        ],
-        "nodes": [
-          "输入",
-          "处理",
-          "输出"
-        ],
-        "comments": [
-          "核心信息",
-          "视觉节奏",
-          "行动结论"
-        ],
-        "category": "DESIGN SYSTEM",
-        "contentPayload": {
-          "type": "narrative",
-          "bodyText": "Design tokens update the live component preview.",
-          "highlightQuote": ""
-        },
-        "categoryTag": "DESIGN SYSTEM",
-        "label": "核心信息",
-        "title": "核心设计信号",
-        "value": 71,
-        "progress": 71,
-        "values": [
-          71,
-          71,
-          71
-        ],
-        "metric": "核心信息",
-        "marketTo": 71,
-        "marketLabel": "核心信息",
-        "metricLabel": "核心信息",
-        "unit": "视觉节奏",
-        "marketSuffix": "视觉节奏",
-        "body": "Design tokens update the live component preview.",
-        "effectZh": "Design tokens update the live component preview."
-      },
-      "updatedAt": "2026-09-12T22:11:52.655Z",
-      "occupancyScore": 0.32,
-      "faceAvoidanceEligible": true,
-      "displayIntent": "side-overlay",
-      "editorSchema": {
-        "version": 1,
-        "kind": "narrative",
-        "fields": [
-          {
-            "key": "bodyText",
-            "label": "正文内容",
-            "control": "textarea"
-          },
-          {
-            "key": "highlightQuote",
-            "label": "副文内容",
-            "control": "text"
-          }
-        ]
-      },
-      "manifest": {
-        "id": "engineering-return",
-        "intent": "narrative",
-        "capacity": {
-          "minItems": 1,
-          "maxItems": 1
-        },
-        "keywords": [
-          "工程",
-          "回归",
-          "打字机",
-          "观点"
         ],
         "visualWeight": "medium"
       }
@@ -377,7 +259,8 @@
           "type": "metrics",
           "value": 92,
           "label": "红色",
-          "bodyText": "GOODS"
+          "bodyText": "GOODS",
+          "detailText": "展示可编辑的真实组件预设"
         },
         "categoryTag": "DESIGNRENEW",
         "label": "红色",
@@ -398,7 +281,8 @@
         "engineeringTo": 9,
         "engineeringSuffix": "SAFASDFAS",
         "bodyText": "GOODS",
-        "unit": "GOODS"
+        "unit": "GOODS",
+        "detailText": "展示可编辑的真实组件预设"
       },
       "occupancyScore": 0.56,
       "faceAvoidanceEligible": true,
@@ -1950,7 +1834,8 @@
         "title": "核心设计信号",
         "body": "核心信息ggg",
         "effectZh": "核心信息ggg",
-        "highlightQuote": "视觉节奏"
+        "highlightQuote": "视觉节奏",
+        "bodyText": "核心信息ggg"
       },
       "occupancyScore": 0.32,
       "faceAvoidanceEligible": true,
@@ -2067,7 +1952,8 @@
         "title": "核心设计信号",
         "body": "核心信息",
         "effectZh": "核心信息",
-        "highlightQuote": "视觉节奏"
+        "highlightQuote": "视觉节奏",
+        "bodyText": "核心信息"
       },
       "updatedAt": "2026-09-12T22:12:22.921Z",
       "occupancyScore": 0.56,
@@ -2184,7 +2070,8 @@
         "title": "核心设计信号",
         "body": "这个是正文的内容",
         "effectZh": "这个是正文的内容",
-        "highlightQuote": "这个是正文下面的副文"
+        "highlightQuote": "这个是正文下面的副文",
+        "bodyText": "这个是正文的内容"
       },
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": true,
@@ -2300,7 +2187,8 @@
         "title": "核心设计信号",
         "body": "核心信息",
         "effectZh": "核心信息",
-        "highlightQuote": "视觉节奏"
+        "highlightQuote": "视觉节奏",
+        "bodyText": "核心信息"
       },
       "updatedAt": "2026-09-12T22:05:15.409Z",
       "occupancyScore": 0.82,
@@ -2566,12 +2454,13 @@
         "categoryTag": "DESIGN SYSTEM",
         "title": "核心设计信号",
         "body": "展示可编辑的真实组件预设",
-        "effectZh": "展示可编辑的真实组件预设"
+        "effectZh": "展示可编辑的真实组件预设",
+        "bodyText": "展示可编辑的真实组件预设"
       },
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": true,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-13T23:46:04.810Z",
+      "updatedAt": "2026-09-13T23:46:04.81Z",
       "editorSchema": {
         "version": 1,
         "kind": "narrative",
@@ -2682,7 +2571,9 @@
         "contentPayload": {
           "type": "narrative",
           "bodyText": "展示可编辑的真实组件预设"
-        }
+        },
+        "bodyText": "Signal confirmed. Visual system ready.",
+        "highlightQuote": "真实组件预设说明"
       },
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": true,
@@ -3165,7 +3056,9 @@
           "type": "narrative",
           "bodyText": "降低第一次购买的心理门槛，才能为后续交易建立信任。",
           "highlightQuote": "用低门槛打开持续关系"
-        }
+        },
+        "bodyText": "降低第一次购买的心理门槛，才能为后续交易建立信任。",
+        "highlightQuote": "真实组件预设说明"
       },
       "editorSchema": {
         "version": 1,
@@ -3757,12 +3650,13 @@
         "categoryTag": "DESIGN SYSTEM",
         "title": "核心设计信号",
         "effectZh": "标志文字的正文大字",
-        "bullText": "标志文字的正文大字"
+        "bullText": "标志文字的正文大字",
+        "bodyText": "标志文字的正文大字"
       },
       "occupancyScore": 0.32,
       "faceAvoidanceEligible": true,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-13T21:09:27.910Z",
+      "updatedAt": "2026-09-13T21:09:27.91Z",
       "editorSchema": {
         "version": 1,
         "kind": "narrative",
@@ -4302,7 +4196,8 @@
         "categoryTag": "DESIGN SYSTEM",
         "title": "核心设计信号",
         "effectZh": "展示可编辑的真实撒旦飞洒",
-        "bullText": "展示可编辑的真实撒旦飞洒"
+        "bullText": "展示可编辑的真实撒旦飞洒",
+        "bodyText": "展示可编辑的真实撒旦飞洒"
       },
       "occupancyScore": 0.32,
       "faceAvoidanceEligible": true,
@@ -4677,7 +4572,9 @@
         "contentPayload": {
           "type": "narrative",
           "bodyText": "展示可编辑的真实组件预设"
-        }
+        },
+        "bodyText": "Signal confirmed. Visual system ready.",
+        "highlightQuote": "真实组件预设说明"
       },
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": true,
@@ -4795,7 +4692,8 @@
         "body": "这个是组件内容的正文，试试看变成2行的话会是什么样的效果\n",
         "effectZh": "这个是组件内容的正文，试试看变成2行的话会是什么样的效果\n",
         "highlightQuote": "这个是组件内容副文",
-        "bullText": "这个是组件内容的正文，试试看变成2行的话会是什么样的效果\n"
+        "bullText": "这个是组件内容的正文，试试看变成2行的话会是什么样的效果\n",
+        "bodyText": "这个是组件内容的正文，试试看变成2行的话会是什么样的效果\n"
       },
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": true,
@@ -5073,122 +4971,6 @@
       }
     },
     {
-      "id": "finale-kinetic",
-      "name": "结尾冲击",
-      "family": "narrative",
-      "description": "chapter · statement · verdict",
-      "tags": [
-        "chapter",
-        "statement",
-        "verdict"
-      ],
-      "data": [
-        "text"
-      ],
-      "version": 7,
-      "tokens": {
-        "mountMode": "top-left",
-        "mountX": 0,
-        "mountY": 0,
-        "boundsX": 0,
-        "boundsY": 0,
-        "boundsWidth": 1920,
-        "boundsHeight": 1080,
-        "padding": 48,
-        "gap": 16,
-        "position": "center",
-        "scale": 1,
-        "spring": "spring-up",
-        "sfx": "none",
-        "accentColor": "#00F2FE",
-        "defaultItemCount": 1,
-        "staggerFrames": 15,
-        "headerScale": 1,
-        "contentScale": 1
-      },
-      "sfx": {
-        "enter": "none",
-        "exit": "none",
-        "volume": 0.65
-      },
-      "mockData": {
-        "headline": "核心设计信号",
-        "eyebrow": "DESIGN SYSTEM",
-        "effectText": "有什么可以用的撒旦发生范德萨发算法大发萨法",
-        "text": "有什么可以用的撒旦发生范德萨发算法大发萨法",
-        "items": [
-          "核心信息",
-          "视觉节奏",
-          "行动结论"
-        ],
-        "steps": [
-          "定义目标",
-          "组织信息",
-          "完成验证"
-        ],
-        "years": [
-          "起点",
-          "现在",
-          "下一步"
-        ],
-        "nodes": [
-          "输入",
-          "处理",
-          "输出"
-        ],
-        "comments": [
-          "重点信息",
-          "持续观察"
-        ],
-        "category": "DESIGN SYSTEM",
-        "contentPayload": {
-          "type": "narrative",
-          "bodyText": "有什么可以用的撒旦发生范德萨发算法大发萨法",
-          "highlightQuote": "百年树人1324"
-        },
-        "categoryTag": "DESIGN SYSTEM",
-        "title": "核心设计信号",
-        "body": "有什么可以用的撒旦发生范德萨发算法大发萨法",
-        "effectZh": "有什么可以用的撒旦发生范德萨发算法大发萨法",
-        "highlightQuote": "百年树人1324",
-        "bullText": "有什么可以用的撒旦发生范德萨发算法大发萨法"
-      },
-      "occupancyScore": 0.82,
-      "faceAvoidanceEligible": true,
-      "displayIntent": "fullscreen-modal",
-      "updatedAt": "2026-09-13T22:47:54.597Z",
-      "editorSchema": {
-        "version": 1,
-        "kind": "narrative",
-        "fields": [
-          {
-            "key": "bodyText",
-            "label": "正文内容",
-            "control": "textarea"
-          },
-          {
-            "key": "highlightQuote",
-            "label": "副文内容",
-            "control": "text"
-          }
-        ]
-      },
-      "manifest": {
-        "id": "finale-kinetic",
-        "intent": "narrative",
-        "capacity": {
-          "minItems": 1,
-          "maxItems": 1
-        },
-        "keywords": [
-          "结尾",
-          "冲击",
-          "总结"
-        ],
-        "visualWeight": "heavy"
-      }
-    },
-    {
       "id": "pivot-list",
       "name": "规格打字机",
       "family": "narrative",
@@ -5261,7 +5043,9 @@
         "contentPayload": {
           "type": "narrative",
           "bodyText": "展示可编辑的真实组件预设"
-        }
+        },
+        "bodyText": "Design tokens update the live component preview.",
+        "highlightQuote": "真实组件预设说明"
       },
       "occupancyScore": 0.32,
       "faceAvoidanceEligible": true,
@@ -5308,7 +5092,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00.000Z",
+      "updatedAt": "2026-09-14T00:00:00Z",
       "id": "copyopen-hero-title",
       "name": "CopyOpen HeroTitle",
       "family": "narrative",
@@ -5357,7 +5141,8 @@
         "categoryTag": "COPYOPEN",
         "title": "OpenMontage",
         "effectZh": "蓝白相间的正文内容",
-        "bullText": "蓝白相间的正文内容"
+        "bullText": "蓝白相间的正文内容",
+        "bodyText": "蓝白相间的正文内容"
       },
       "editorSchema": {
         "version": 1,
@@ -5391,7 +5176,7 @@
       }
     },
     {
-      "version": 11,
+      "version": 12,
       "sfx": {
         "enter": "none",
         "exit": "none",
@@ -5400,7 +5185,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00.000Z",
+      "updatedAt": "2026-09-15T01:13:08.106Z",
       "id": "copyopen-progress-bar",
       "name": "进度条2",
       "family": "metrics",
@@ -5434,11 +5219,11 @@
         "contentScale": 0.76
       },
       "mockData": {
-        "category": "COPYOPEN",
-        "headline": "Highlight extraction",
+        "category": "COPYOPEN 001",
+        "headline": "Highlight extraction 002",
         "progress": 86,
         "value": 86,
-        "label": "Highlight",
+        "label": "COPYOPEN 001",
         "body": "Highlight extraction",
         "effectText": "Highlight extraction",
         "contentPayload": {
@@ -5449,9 +5234,9 @@
           "bodyText": "%",
           "detailText": "Highlight extraction"
         },
-        "eyebrow": "COPYOPEN",
-        "categoryTag": "COPYOPEN",
-        "title": "Highlight extraction",
+        "eyebrow": "COPYOPEN 001",
+        "categoryTag": "COPYOPEN 001",
+        "title": "Highlight extraction 002",
         "values": [],
         "metric": "Highlight",
         "metricLabel": "Highlight",
@@ -5521,7 +5306,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00.000Z",
+      "updatedAt": "2026-09-14T00:00:00Z",
       "id": "copyopen-comparison-card",
       "name": "前后对比卡",
       "family": "metrics",
@@ -5570,7 +5355,11 @@
           "unit": "clips",
           "label": "Short clips",
           "detailText": "ready"
-        }
+        },
+        "label": "Before / After",
+        "value": 76,
+        "unit": "Before / After",
+        "detailText": "Before / After"
       },
       "editorSchema": {
         "version": 1,
@@ -5624,7 +5413,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00.000Z",
+      "updatedAt": "2026-09-14T00:00:00Z",
       "id": "copyopen-terminal-scene",
       "name": "CopyOpen TerminalScene",
       "family": "chips",
@@ -5744,7 +5533,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00.000Z",
+      "updatedAt": "2026-09-14T00:00:00Z",
       "id": "copyopen-end-tag",
       "name": "EndTag",
       "family": "narrative",
@@ -5761,8 +5550,8 @@
         "mountMode": "top-left",
         "mountX": 0,
         "mountY": 0,
-        "boundsX": 1277,
-        "boundsY": 300,
+        "boundsX": 686,
+        "boundsY": 418,
         "boundsWidth": 720,
         "boundsHeight": 320,
         "padding": 48,
@@ -5791,7 +5580,9 @@
         "categoryTag": "COPYOPEN",
         "title": "Closing Tag",
         "effectZh": "Make the clip worth watching yourself\n",
-        "bullText": "Make the clip worth watching yourself\n"
+        "bullText": "Make the clip worth watching yourself\n",
+        "bodyText": "Make the clip worth watching yourself\n",
+        "highlightQuote": "真实组件预设说明"
       },
       "editorSchema": {
         "version": 1,
@@ -5834,7 +5625,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00.000Z",
+      "updatedAt": "2026-09-14T00:00:00Z",
       "id": "copyopen-bar-chart",
       "name": "柱状图显示",
       "family": "metrics",
@@ -5972,7 +5763,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00.000Z",
+      "updatedAt": "2026-09-14T00:00:00Z",
       "id": "copyopen-line-chart",
       "name": "折线图-2",
       "family": "metrics",
@@ -6082,7 +5873,7 @@
       }
     },
     {
-      "version": 7,
+      "version": 8,
       "sfx": {
         "enter": "none",
         "exit": "none",
@@ -6091,7 +5882,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T01:15:28.297Z",
+      "updatedAt": "2026-09-15T01:13:41.484Z",
       "id": "copyopen-pie-chart",
       "name": "多彩环形图",
       "family": "metrics",
@@ -6127,7 +5918,7 @@
       },
       "mockData": {
         "category": "章节09",
-        "headline": "Clip mix",
+        "headline": "多彩环形图",
         "items": [
           "Hook",
           "Proof",
@@ -6170,7 +5961,8 @@
           ]
         },
         "eyebrow": "章节09",
-        "categoryTag": "章节09"
+        "categoryTag": "章节09",
+        "title": "多彩环形图"
       },
       "editorSchema": {
         "version": 1,
@@ -6210,7 +6002,7 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00.000Z",
+      "updatedAt": "2026-09-14T00:00:00Z",
       "id": "copyopen-kpi-grid",
       "name": "KPI图",
       "family": "metrics",
@@ -6306,6 +6098,4475 @@
           "增长"
         ],
         "visualWeight": "medium"
+      }
+    },
+    {
+      "id": "avatar-handoff",
+      "name": "头像交接",
+      "family": "system",
+      "description": "运行时已有的双人物交接效果",
+      "tags": [
+        "person",
+        "handoff",
+        "system"
+      ],
+      "data": [
+        "person",
+        "comparison"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 76,
+        "boundsY": 250,
+        "boundsWidth": 860,
+        "boundsHeight": 620,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 0.76,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 0.76
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "TEAM",
+        "headline": "关键角色交接",
+        "contentPayload": {
+          "type": "chips",
+          "items": [
+            {
+              "title": "前序角色",
+              "subtitle": "KEY SIGNAL"
+            },
+            {
+              "title": "目标角色",
+              "subtitle": ""
+            }
+          ]
+        },
+        "items": [
+          {
+            "title": "前序角色",
+            "subtitle": "KEY SIGNAL"
+          },
+          {
+            "title": "目标角色",
+            "subtitle": ""
+          }
+        ]
+      },
+      "defaultPayload": {
+        "type": "chips",
+        "items": [
+          {
+            "title": "前序角色",
+            "subtitle": "KEY SIGNAL"
+          },
+          {
+            "title": "目标角色",
+            "subtitle": ""
+          }
+        ]
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "chips",
+        "fields": [
+          {
+            "key": "items",
+            "label": "角色信息",
+            "control": "string-list",
+            "capacity": 2
+          }
+        ]
+      },
+      "manifest": {
+        "id": "avatar-handoff",
+        "intent": "system",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "keywords": [
+          "人物",
+          "交接",
+          "团队",
+          "角色"
+        ],
+        "visualWeight": "medium"
+      }
+    },
+    {
+      "id": "data-flow",
+      "name": "数据分屏",
+      "family": "system",
+      "description": "运行时已有的左右数据分屏效果",
+      "tags": [
+        "data",
+        "system",
+        "comparison"
+      ],
+      "data": [
+        "number",
+        "comparison"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 76,
+        "boundsY": 250,
+        "boundsWidth": 920,
+        "boundsHeight": 620,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 0.76,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 0.76
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.42,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "DATA FLOW",
+        "headline": "两侧数据对照",
+        "contentPayload": {
+          "type": "metrics",
+          "value": 72,
+          "unit": "%",
+          "label": "转化提升",
+          "detailText": "核心指标形成明确分差。"
+        },
+        "label": "转化提升",
+        "value": 72,
+        "unit": "%",
+        "detailText": "核心指标形成明确分差。"
+      },
+      "defaultPayload": {
+        "type": "metrics",
+        "value": 72,
+        "unit": "%",
+        "label": "转化提升",
+        "detailText": "核心指标形成明确分差。"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "metrics",
+        "fields": [
+          {
+            "key": "label",
+            "label": "正文内容",
+            "control": "text"
+          },
+          {
+            "key": "value",
+            "label": "数值",
+            "control": "number"
+          },
+          {
+            "key": "unit",
+            "label": "单位",
+            "control": "text"
+          },
+          {
+            "key": "detailText",
+            "label": "说明内容",
+            "control": "textarea"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "data-flow",
+        "intent": "system",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "keywords": [
+          "数据",
+          "对照",
+          "系统",
+          "链路"
+        ],
+        "visualWeight": "medium"
+      }
+    },
+    {
+      "id": "jc-narrative-badge-card",
+      "name": "[JC] 徽章结论卡",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "徽章结论卡",
+        "effectText": "用一个明确结论收束当前商业判断。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "用一个明确结论收束当前商业判断。",
+          "highlightQuote": "TIER ONE"
+        },
+        "bodyText": "用一个明确结论收束当前商业判断。",
+        "highlightQuote": "TIER ONE"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "用一个明确结论收束当前商业判断。",
+        "highlightQuote": "TIER ONE"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-badge-card",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "结论",
+          "判断",
+          "定位",
+          "第一"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "BadgeCard",
+        "adapter": "jc-narrative-badge-card"
+      }
+    },
+    {
+      "id": "jc-metrics-bar-chart",
+      "name": "[JC] 动态柱状图",
+      "family": "metrics",
+      "description": "JC imported metrics visual component",
+      "tags": [
+        "jc",
+        "metrics"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 2,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "METRICS",
+        "headline": "动态柱状图",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "采购成本001"
+            },
+            {
+              "stepNumber": 2,
+              "text": "履约成本002"
+            },
+            {
+              "stepNumber": 3,
+              "text": "毛利空间003"
+            }
+          ],
+          "progress": 72
+        },
+        "steps": [
+          "采购成本001",
+          "履约成本002",
+          "毛利空间003"
+        ],
+        "items": [
+          "采购成本001",
+          "履约成本002",
+          "毛利空间003"
+        ],
+        "progress": 72,
+        "eyebrow": "METRICS",
+        "categoryTag": "METRICS",
+        "title": "动态柱状图",
+        "years": [
+          "采购成本001",
+          "履约成本002",
+          "毛利空间003"
+        ],
+        "nodes": [
+          "采购成本001",
+          "履约成本002",
+          "毛利空间003"
+        ],
+        "units": [
+          "采购成本001",
+          "履约成本002",
+          "毛利空间003"
+        ],
+        "comments": [
+          "采购成本001",
+          "履约成本002",
+          "毛利空间003"
+        ],
+        "label": "METRICS",
+        "body": "",
+        "bodyText": "",
+        "effectZh": "",
+        "text": "",
+        "value": 72,
+        "values": [
+          72,
+          72,
+          72
+        ]
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "采购成本"
+          },
+          {
+            "stepNumber": 2,
+            "text": "履约成本"
+          },
+          {
+            "stepNumber": 3,
+            "text": "毛利空间"
+          }
+        ],
+        "progress": 72
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-metrics-bar-chart",
+        "intent": "metrics",
+        "capacity": {
+          "minItems": 3,
+          "maxItems": 5
+        },
+        "keywords": [
+          "数据",
+          "对比",
+          "排名",
+          "增长"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "BarChart",
+        "adapter": "jc-metrics-bar-chart"
+      },
+      "updatedAt": "2026-09-15T01:15:25.214Z"
+    },
+    {
+      "id": "jc-metrics-big-number",
+      "name": "[JC] 大数字计数",
+      "family": "metrics",
+      "description": "JC imported metrics visual component",
+      "tags": [
+        "jc",
+        "metrics"
+      ],
+      "data": [
+        "number",
+        "percentage"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "METRICS",
+        "headline": "大数字计数",
+        "effectText": "",
+        "contentPayload": {
+          "type": "metrics",
+          "value": 72,
+          "unit": "%",
+          "label": "转化提升",
+          "detailText": "关键指标在当前阶段形成明显差异。"
+        },
+        "label": "转化提升",
+        "value": 72,
+        "unit": "%",
+        "detailText": "关键指标在当前阶段形成明显差异。"
+      },
+      "defaultPayload": {
+        "type": "metrics",
+        "value": 72,
+        "unit": "%",
+        "label": "转化提升",
+        "detailText": "关键指标在当前阶段形成明显差异。"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "metrics",
+        "fields": [
+          {
+            "key": "label",
+            "label": "正文内容",
+            "control": "text"
+          },
+          {
+            "key": "value",
+            "label": "数值",
+            "control": "number"
+          },
+          {
+            "key": "unit",
+            "label": "单位",
+            "control": "text"
+          },
+          {
+            "key": "detailText",
+            "label": "说明内容",
+            "control": "textarea"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-metrics-big-number",
+        "intent": "metrics",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "数据",
+          "数字",
+          "增长",
+          "百分比"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "BigNumber",
+        "adapter": "jc-metrics-big-number"
+      }
+    },
+    {
+      "id": "jc-narrative-bilingual-sub",
+      "name": "[JC] 双语字幕条",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "双语字幕条",
+        "effectText": "先给观点，再给证据。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "先给观点，再给证据。",
+          "highlightQuote": "POINT THEN PROOF"
+        },
+        "bodyText": "先给观点，再给证据。",
+        "highlightQuote": "POINT THEN PROOF"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "先给观点，再给证据。",
+        "highlightQuote": "POINT THEN PROOF"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-bilingual-sub",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "字幕",
+          "观点",
+          "说明"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "BilingualSub",
+        "adapter": "jc-narrative-bilingual-sub"
+      }
+    },
+    {
+      "id": "jc-narrative-breathe",
+      "name": "[JC] 呼吸强调",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "呼吸强调",
+        "effectText": "核心信息保持持续呼吸感。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "核心信息保持持续呼吸感。"
+        },
+        "bodyText": "核心信息保持持续呼吸感。",
+        "highlightQuote": ""
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "核心信息保持持续呼吸感。"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-breathe",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "强调",
+          "呼吸",
+          "观点"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "Breathe",
+        "adapter": "jc-narrative-breathe"
+      }
+    },
+    {
+      "id": "jc-system-brick-wall",
+      "name": "[JC] 砖墙约束",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "砖墙约束",
+        "effectText": "供给约束决定了扩张上限。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "供给约束决定了扩张上限。",
+          "highlightQuote": "HARD WALL"
+        },
+        "bodyText": "供给约束决定了扩张上限。",
+        "highlightQuote": "HARD WALL"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "供给约束决定了扩张上限。",
+        "highlightQuote": "HARD WALL"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-brick-wall",
+        "intent": "system",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "壁垒",
+          "约束",
+          "供给",
+          "风险"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "BrickWall",
+        "adapter": "jc-system-brick-wall"
+      }
+    },
+    {
+      "id": "jc-system-card-wall",
+      "name": "[JC] 信息卡墙",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 6,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "信息卡墙",
+        "effectText": "",
+        "contentPayload": {
+          "type": "chips",
+          "items": [
+            {
+              "title": "渠道结构",
+              "subtitle": "KEY SIGNAL"
+            },
+            {
+              "title": "供给能力",
+              "subtitle": ""
+            },
+            {
+              "title": "复购表现",
+              "subtitle": ""
+            }
+          ]
+        },
+        "items": [
+          "渠道结构",
+          "供给能力",
+          "复购表现"
+        ],
+        "itemSubtitles": [
+          "KEY SIGNAL",
+          "",
+          ""
+        ]
+      },
+      "defaultPayload": {
+        "type": "chips",
+        "items": [
+          {
+            "title": "渠道结构",
+            "subtitle": "KEY SIGNAL"
+          },
+          {
+            "title": "供给能力",
+            "subtitle": ""
+          },
+          {
+            "title": "复购表现",
+            "subtitle": ""
+          }
+        ]
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "chips",
+        "fields": [
+          {
+            "key": "items",
+            "label": "标签项",
+            "control": "chip-list",
+            "capacity": 3,
+            "itemFields": [
+              {
+                "key": "title",
+                "label": "标签",
+                "control": "text"
+              },
+              {
+                "key": "subtitle",
+                "label": "副标",
+                "control": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-card-wall",
+        "intent": "system",
+        "capacity": {
+          "minItems": 3,
+          "maxItems": 6
+        },
+        "keywords": [
+          "结构",
+          "模块",
+          "信息",
+          "系统"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "CardWall",
+        "adapter": "jc-system-card-wall"
+      }
+    },
+    {
+      "id": "jc-process-checklist",
+      "name": "[JC] 逐项清单",
+      "family": "process",
+      "description": "JC imported process visual component",
+      "tags": [
+        "jc",
+        "process"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "PROCESS",
+        "headline": "逐项清单",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "明确采购底价"
+            },
+            {
+              "stepNumber": 2,
+              "text": "锁定履约成本"
+            },
+            {
+              "stepNumber": 3,
+              "text": "验证复购路径"
+            }
+          ],
+          "progress": 78
+        },
+        "steps": [
+          "明确采购底价",
+          "锁定履约成本",
+          "验证复购路径"
+        ],
+        "items": [
+          "明确采购底价",
+          "锁定履约成本",
+          "验证复购路径"
+        ],
+        "progress": 78
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "明确采购底价"
+          },
+          {
+            "stepNumber": 2,
+            "text": "锁定履约成本"
+          },
+          {
+            "stepNumber": 3,
+            "text": "验证复购路径"
+          }
+        ],
+        "progress": 78
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-process-checklist",
+        "intent": "process",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 5
+        },
+        "keywords": [
+          "清单",
+          "步骤",
+          "执行",
+          "确认"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "Checklist",
+        "adapter": "jc-process-checklist"
+      }
+    },
+    {
+      "id": "jc-system-chip",
+      "name": "[JC] 语义标签",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "语义标签",
+        "effectText": "",
+        "contentPayload": {
+          "type": "chips",
+          "items": [
+            {
+              "title": "低价入口",
+              "subtitle": "KEY SIGNAL"
+            },
+            {
+              "title": "高频复购",
+              "subtitle": ""
+            },
+            {
+              "title": "履约闭环",
+              "subtitle": ""
+            }
+          ]
+        },
+        "items": [
+          "低价入口",
+          "高频复购",
+          "履约闭环"
+        ],
+        "itemSubtitles": [
+          "KEY SIGNAL",
+          "",
+          ""
+        ]
+      },
+      "defaultPayload": {
+        "type": "chips",
+        "items": [
+          {
+            "title": "低价入口",
+            "subtitle": "KEY SIGNAL"
+          },
+          {
+            "title": "高频复购",
+            "subtitle": ""
+          },
+          {
+            "title": "履约闭环",
+            "subtitle": ""
+          }
+        ]
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "chips",
+        "fields": [
+          {
+            "key": "items",
+            "label": "标签项",
+            "control": "chip-list",
+            "capacity": 3,
+            "itemFields": [
+              {
+                "key": "title",
+                "label": "标签",
+                "control": "text"
+              },
+              {
+                "key": "subtitle",
+                "label": "副标",
+                "control": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-chip",
+        "intent": "system",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "keywords": [
+          "标签",
+          "模块",
+          "要点",
+          "链路"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "Chip",
+        "adapter": "jc-system-chip"
+      }
+    },
+    {
+      "id": "jc-contrast-clone-cascade",
+      "name": "[JC] 克隆风险级联",
+      "family": "contrast",
+      "description": "JC imported contrast visual component",
+      "tags": [
+        "jc",
+        "contrast"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "CONTRAST",
+        "headline": "克隆风险级联",
+        "effectText": "同质化会快速压低先发优势。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "同质化会快速压低先发优势。",
+          "highlightQuote": "COPY RISK"
+        },
+        "bodyText": "同质化会快速压低先发优势。",
+        "highlightQuote": "COPY RISK"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "同质化会快速压低先发优势。",
+        "highlightQuote": "COPY RISK"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-contrast-clone-cascade",
+        "intent": "contrast",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "风险",
+          "复制",
+          "同质化",
+          "竞争"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "CloneCascade",
+        "adapter": "jc-contrast-clone-cascade"
+      }
+    },
+    {
+      "id": "jc-contrast-compare-card",
+      "name": "[JC] 对照信息卡",
+      "family": "contrast",
+      "description": "JC imported contrast visual component",
+      "tags": [
+        "jc",
+        "contrast"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 4,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "CONTRAST",
+        "headline": "对照信息卡",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "传统高毛利"
+            },
+            {
+              "stepNumber": 2,
+              "text": "低价高周转"
+            },
+            {
+              "stepNumber": 3,
+              "text": "复购驱动"
+            }
+          ],
+          "progress": 68
+        },
+        "steps": [
+          "传统高毛利",
+          "低价高周转",
+          "复购驱动"
+        ],
+        "items": [
+          "传统高毛利",
+          "低价高周转",
+          "复购驱动"
+        ],
+        "progress": 68
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "传统高毛利"
+          },
+          {
+            "stepNumber": 2,
+            "text": "低价高周转"
+          },
+          {
+            "stepNumber": 3,
+            "text": "复购驱动"
+          }
+        ],
+        "progress": 68
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-contrast-compare-card",
+        "intent": "contrast",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "keywords": [
+          "对比",
+          "差异",
+          "取舍",
+          "变化"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "CompareCard",
+        "adapter": "jc-contrast-compare-card"
+      }
+    },
+    {
+      "id": "jc-metrics-curve-overlay",
+      "name": "[JC] 增长曲线",
+      "family": "metrics",
+      "description": "JC imported metrics visual component",
+      "tags": [
+        "jc",
+        "metrics"
+      ],
+      "data": [
+        "number",
+        "percentage"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "METRICS",
+        "headline": "增长曲线",
+        "effectText": "",
+        "contentPayload": {
+          "type": "metrics",
+          "value": 74,
+          "unit": "%",
+          "label": "增长曲线",
+          "detailText": "曲线用于强调规模与效率的同步变化。"
+        },
+        "label": "增长曲线",
+        "value": 74,
+        "unit": "%",
+        "detailText": "曲线用于强调规模与效率的同步变化。"
+      },
+      "defaultPayload": {
+        "type": "metrics",
+        "value": 74,
+        "unit": "%",
+        "label": "增长曲线",
+        "detailText": "曲线用于强调规模与效率的同步变化。"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "metrics",
+        "fields": [
+          {
+            "key": "label",
+            "label": "正文内容",
+            "control": "text"
+          },
+          {
+            "key": "value",
+            "label": "数值",
+            "control": "number"
+          },
+          {
+            "key": "unit",
+            "label": "单位",
+            "control": "text"
+          },
+          {
+            "key": "detailText",
+            "label": "说明内容",
+            "control": "textarea"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-metrics-curve-overlay",
+        "intent": "metrics",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "趋势",
+          "曲线",
+          "增长",
+          "数据"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "CurveOverlay",
+        "adapter": "jc-metrics-curve-overlay"
+      }
+    },
+    {
+      "id": "jc-narrative-dm-card-stack",
+      "name": "[JC] 对话卡叠层",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 4,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "对话卡叠层",
+        "effectText": "",
+        "contentPayload": {
+          "type": "chips",
+          "items": [
+            {
+              "title": "先降低决策阻力",
+              "subtitle": "KEY SIGNAL"
+            },
+            {
+              "title": "再建立复购理由",
+              "subtitle": ""
+            },
+            {
+              "title": "最后扩张渠道",
+              "subtitle": ""
+            }
+          ]
+        },
+        "items": [
+          "先降低决策阻力",
+          "再建立复购理由",
+          "最后扩张渠道"
+        ],
+        "itemSubtitles": [
+          "KEY SIGNAL",
+          "",
+          ""
+        ]
+      },
+      "defaultPayload": {
+        "type": "chips",
+        "items": [
+          {
+            "title": "先降低决策阻力",
+            "subtitle": "KEY SIGNAL"
+          },
+          {
+            "title": "再建立复购理由",
+            "subtitle": ""
+          },
+          {
+            "title": "最后扩张渠道",
+            "subtitle": ""
+          }
+        ]
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "chips",
+        "fields": [
+          {
+            "key": "items",
+            "label": "标签项",
+            "control": "chip-list",
+            "capacity": 3,
+            "itemFields": [
+              {
+                "key": "title",
+                "label": "标签",
+                "control": "text"
+              },
+              {
+                "key": "subtitle",
+                "label": "副标",
+                "control": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-dm-card-stack",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "keywords": [
+          "对话",
+          "叙事",
+          "观点",
+          "用户"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "DMCardStack",
+        "adapter": "jc-narrative-dm-card-stack"
+      }
+    },
+    {
+      "id": "jc-process-flow-chain",
+      "name": "[JC] 商业链路",
+      "family": "process",
+      "description": "JC imported process visual component",
+      "tags": [
+        "jc",
+        "process"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "PROCESS",
+        "headline": "商业链路",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "低价入口"
+            },
+            {
+              "stepNumber": 2,
+              "text": "试用转化"
+            },
+            {
+              "stepNumber": 3,
+              "text": "复购回流"
+            }
+          ],
+          "progress": 76
+        },
+        "steps": [
+          "低价入口",
+          "试用转化",
+          "复购回流"
+        ],
+        "items": [
+          "低价入口",
+          "试用转化",
+          "复购回流"
+        ],
+        "progress": 76
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "低价入口"
+          },
+          {
+            "stepNumber": 2,
+            "text": "试用转化"
+          },
+          {
+            "stepNumber": 3,
+            "text": "复购回流"
+          }
+        ],
+        "progress": 76
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-process-flow-chain",
+        "intent": "process",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 5
+        },
+        "keywords": [
+          "链路",
+          "流程",
+          "闭环",
+          "传导"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "FlowChain",
+        "adapter": "jc-process-flow-chain"
+      }
+    },
+    {
+      "id": "jc-system-flywheel",
+      "name": "[JC] 增长飞轮",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "增长飞轮",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "供给稳定"
+            },
+            {
+              "stepNumber": 2,
+              "text": "成本下降"
+            },
+            {
+              "stepNumber": 3,
+              "text": "复购增长"
+            }
+          ],
+          "progress": 80
+        },
+        "steps": [
+          "供给稳定",
+          "成本下降",
+          "复购增长"
+        ],
+        "items": [
+          "供给稳定",
+          "成本下降",
+          "复购增长"
+        ],
+        "progress": 80
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "供给稳定"
+          },
+          {
+            "stepNumber": 2,
+            "text": "成本下降"
+          },
+          {
+            "stepNumber": 3,
+            "text": "复购增长"
+          }
+        ],
+        "progress": 80
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-flywheel",
+        "intent": "system",
+        "capacity": {
+          "minItems": 3,
+          "maxItems": 5
+        },
+        "keywords": [
+          "飞轮",
+          "循环",
+          "增长",
+          "系统"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "Flywheel",
+        "adapter": "jc-system-flywheel"
+      }
+    },
+    {
+      "id": "jc-narrative-hero-text",
+      "name": "[JC] 主视觉断言",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.88,
+      "faceAvoidanceEligible": false,
+      "displayIntent": "fullscreen-modal",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "主视觉断言",
+        "effectText": "低价不是优势，是决策阻力归零。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "低价不是优势，是决策阻力归零。",
+          "highlightQuote": "BUSINESS THESIS"
+        },
+        "bodyText": "低价不是优势，是决策阻力归零。",
+        "highlightQuote": "BUSINESS THESIS"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "低价不是优势，是决策阻力归零。",
+        "highlightQuote": "BUSINESS THESIS"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-hero-text",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "观点",
+          "判断",
+          "结论",
+          "主视觉"
+        ],
+        "visualWeight": "heavy"
+      },
+      "runtime": {
+        "exportName": "HeroText",
+        "adapter": "jc-narrative-hero-text"
+      }
+    },
+    {
+      "id": "jc-narrative-info-card",
+      "name": "[JC] 信息说明卡",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "信息说明卡",
+        "effectText": "价格低到绕过理性比价，直接触发即时购买。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "价格低到绕过理性比价，直接触发即时购买。",
+          "highlightQuote": "KEY INSIGHT"
+        },
+        "bodyText": "价格低到绕过理性比价，直接触发即时购买。",
+        "highlightQuote": "KEY INSIGHT"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "价格低到绕过理性比价，直接触发即时购买。",
+        "highlightQuote": "KEY INSIGHT"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-info-card",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "说明",
+          "观点",
+          "洞察",
+          "信息"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "InfoCard",
+        "adapter": "jc-narrative-info-card"
+      }
+    },
+    {
+      "id": "jc-narrative-info-scrim",
+      "name": "[JC] 信息遮罩",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "信息遮罩",
+        "effectText": "用留白突出关键信息。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "用留白突出关键信息。"
+        },
+        "bodyText": "用留白突出关键信息。",
+        "highlightQuote": ""
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "用留白突出关键信息。"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-info-scrim",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "遮罩",
+          "信息",
+          "留白"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "InfoScrim",
+        "adapter": "jc-narrative-info-scrim"
+      }
+    },
+    {
+      "id": "jc-system-loop-diagram",
+      "name": "[JC] 闭环图解",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "闭环图解",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "流量入口"
+            },
+            {
+              "stepNumber": 2,
+              "text": "成交转化"
+            },
+            {
+              "stepNumber": 3,
+              "text": "复购沉淀"
+            }
+          ],
+          "progress": 82
+        },
+        "steps": [
+          "流量入口",
+          "成交转化",
+          "复购沉淀"
+        ],
+        "items": [
+          "流量入口",
+          "成交转化",
+          "复购沉淀"
+        ],
+        "progress": 82
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "流量入口"
+          },
+          {
+            "stepNumber": 2,
+            "text": "成交转化"
+          },
+          {
+            "stepNumber": 3,
+            "text": "复购沉淀"
+          }
+        ],
+        "progress": 82
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-loop-diagram",
+        "intent": "system",
+        "capacity": {
+          "minItems": 3,
+          "maxItems": 5
+        },
+        "keywords": [
+          "闭环",
+          "系统",
+          "循环",
+          "链路"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "LoopDiagram",
+        "adapter": "jc-system-loop-diagram"
+      }
+    },
+    {
+      "id": "jc-system-matrix-icon",
+      "name": "[JC] 矩阵图标",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "number",
+        "percentage"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "矩阵图标",
+        "effectText": "",
+        "contentPayload": {
+          "type": "metrics",
+          "value": 75,
+          "unit": "%",
+          "label": "能力矩阵",
+          "detailText": "用矩阵强调能力密度与协同。"
+        },
+        "label": "能力矩阵",
+        "value": 75,
+        "unit": "%",
+        "detailText": "用矩阵强调能力密度与协同。"
+      },
+      "defaultPayload": {
+        "type": "metrics",
+        "value": 75,
+        "unit": "%",
+        "label": "能力矩阵",
+        "detailText": "用矩阵强调能力密度与协同。"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "metrics",
+        "fields": [
+          {
+            "key": "label",
+            "label": "正文内容",
+            "control": "text"
+          },
+          {
+            "key": "value",
+            "label": "数值",
+            "control": "number"
+          },
+          {
+            "key": "unit",
+            "label": "单位",
+            "control": "text"
+          },
+          {
+            "key": "detailText",
+            "label": "说明内容",
+            "control": "textarea"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-matrix-icon",
+        "intent": "system",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "矩阵",
+          "能力",
+          "系统",
+          "模块"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "MatrixIcon",
+        "adapter": "jc-system-matrix-icon"
+      }
+    },
+    {
+      "id": "jc-narrative-name-plate",
+      "name": "[JC] 人物名牌",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "人物名牌",
+        "effectText": "关键角色决定了执行上限。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "关键角色决定了执行上限。",
+          "highlightQuote": "KEY OPERATOR"
+        },
+        "bodyText": "关键角色决定了执行上限。",
+        "highlightQuote": "KEY OPERATOR"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "关键角色决定了执行上限。",
+        "highlightQuote": "KEY OPERATOR"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-name-plate",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "人物",
+          "角色",
+          "负责人",
+          "名牌"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "NamePlate",
+        "adapter": "jc-narrative-name-plate"
+      }
+    },
+    {
+      "id": "jc-narrative-person-badge",
+      "name": "[JC] 人物徽章",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "人物徽章",
+        "effectText": "操盘手的选择会改变整条链路。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "操盘手的选择会改变整条链路。",
+          "highlightQuote": "OPERATOR"
+        },
+        "bodyText": "操盘手的选择会改变整条链路。",
+        "highlightQuote": "OPERATOR"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "操盘手的选择会改变整条链路。",
+        "highlightQuote": "OPERATOR"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-person-badge",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "人物",
+          "角色",
+          "团队",
+          "负责人"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "PersonBadge",
+        "adapter": "jc-narrative-person-badge"
+      }
+    },
+    {
+      "id": "jc-narrative-person-card",
+      "name": "[JC] 人物信息卡",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "人物信息卡",
+        "effectText": "角色分工要与商业目标保持一致。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "角色分工要与商业目标保持一致。",
+          "highlightQuote": "ROLE FIT"
+        },
+        "bodyText": "角色分工要与商业目标保持一致。",
+        "highlightQuote": "ROLE FIT"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "角色分工要与商业目标保持一致。",
+        "highlightQuote": "ROLE FIT"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-person-card",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "人物",
+          "团队",
+          "角色",
+          "分工"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "PersonCard",
+        "adapter": "jc-narrative-person-card"
+      }
+    },
+    {
+      "id": "jc-system-phone-mockup",
+      "name": "[JC] 手机界面框",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "手机界面框",
+        "effectText": "产品体验必须把路径压缩到最短。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "产品体验必须把路径压缩到最短。",
+          "highlightQuote": "MOBILE FLOW"
+        },
+        "bodyText": "产品体验必须把路径压缩到最短。",
+        "highlightQuote": "MOBILE FLOW"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "产品体验必须把路径压缩到最短。",
+        "highlightQuote": "MOBILE FLOW"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-phone-mockup",
+        "intent": "system",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "产品",
+          "手机",
+          "界面",
+          "体验"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "PhoneMockup",
+        "adapter": "jc-system-phone-mockup"
+      }
+    },
+    {
+      "id": "jc-narrative-quote-doc",
+      "name": "[JC] 引文资料卡",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "引文资料卡",
+        "effectText": "关键原话能为判断提供最直接的证据。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "关键原话能为判断提供最直接的证据。",
+          "highlightQuote": "SOURCE NOTE"
+        },
+        "bodyText": "关键原话能为判断提供最直接的证据。",
+        "highlightQuote": "SOURCE NOTE"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "关键原话能为判断提供最直接的证据。",
+        "highlightQuote": "SOURCE NOTE"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-quote-doc",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "keywords": [
+          "引文",
+          "资料",
+          "证据",
+          "观点"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "QuoteDoc",
+        "adapter": "jc-narrative-quote-doc"
+      }
+    },
+    {
+      "id": "jc-contrast-score-board",
+      "name": "[JC] 对比记分牌",
+      "family": "contrast",
+      "description": "JC imported contrast visual component",
+      "tags": [
+        "jc",
+        "contrast"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "CONTRAST",
+        "headline": "对比记分牌",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "成本更低"
+            },
+            {
+              "stepNumber": 2,
+              "text": "履约更快"
+            },
+            {
+              "stepNumber": 3,
+              "text": "复购更稳"
+            }
+          ],
+          "progress": 83
+        },
+        "steps": [
+          "成本更低",
+          "履约更快",
+          "复购更稳"
+        ],
+        "items": [
+          "成本更低",
+          "履约更快",
+          "复购更稳"
+        ],
+        "progress": 83
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "成本更低"
+          },
+          {
+            "stepNumber": 2,
+            "text": "履约更快"
+          },
+          {
+            "stepNumber": 3,
+            "text": "复购更稳"
+          }
+        ],
+        "progress": 83
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-contrast-score-board",
+        "intent": "contrast",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 5
+        },
+        "keywords": [
+          "评分",
+          "对比",
+          "竞争",
+          "优势"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "ScoreBoard",
+        "adapter": "jc-contrast-score-board"
+      }
+    },
+    {
+      "id": "jc-narrative-shot-card",
+      "name": "[JC] 截图注释卡",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "截图注释卡",
+        "effectText": "画面证据要服务于当前判断。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "画面证据要服务于当前判断。",
+          "highlightQuote": "VISUAL PROOF"
+        },
+        "bodyText": "画面证据要服务于当前判断。",
+        "highlightQuote": "VISUAL PROOF"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "画面证据要服务于当前判断。",
+        "highlightQuote": "VISUAL PROOF"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-shot-card",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "截图",
+          "证据",
+          "画面",
+          "说明"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "ShotCard",
+        "adapter": "jc-narrative-shot-card"
+      }
+    },
+    {
+      "id": "jc-narrative-side-label",
+      "name": "[JC] 侧边标签",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "侧边标签",
+        "effectText": "把关键判断固定在安全侧边。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "把关键判断固定在安全侧边。",
+          "highlightQuote": "SIDE SIGNAL"
+        },
+        "bodyText": "把关键判断固定在安全侧边。",
+        "highlightQuote": "SIDE SIGNAL"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "把关键判断固定在安全侧边。",
+        "highlightQuote": "SIDE SIGNAL"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-side-label",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "标签",
+          "侧边",
+          "判断",
+          "强调"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "SideLabel",
+        "adapter": "jc-narrative-side-label"
+      }
+    },
+    {
+      "id": "jc-system-solvent-tank",
+      "name": "[JC] 溶剂反应槽",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "溶剂反应槽",
+        "effectText": "效率提升来自结构性溶解成本。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "效率提升来自结构性溶解成本。",
+          "highlightQuote": "COST REACTION"
+        },
+        "bodyText": "效率提升来自结构性溶解成本。",
+        "highlightQuote": "COST REACTION"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "效率提升来自结构性溶解成本。",
+        "highlightQuote": "COST REACTION"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-solvent-tank",
+        "intent": "system",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "成本",
+          "效率",
+          "系统",
+          "变化"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "SolventTank",
+        "adapter": "jc-system-solvent-tank"
+      }
+    },
+    {
+      "id": "jc-narrative-stamp",
+      "name": "[JC] 结论印章",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "NARRATIVE",
+        "headline": "结论印章",
+        "effectText": "结论成立，进入下一步。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "结论成立，进入下一步。",
+          "highlightQuote": "VERDICT"
+        },
+        "bodyText": "结论成立，进入下一步。",
+        "highlightQuote": "VERDICT"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "结论成立，进入下一步。",
+        "highlightQuote": "VERDICT"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-stamp",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "结论",
+          "印章",
+          "确认",
+          "判断"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "Stamp",
+        "adapter": "jc-narrative-stamp"
+      }
+    },
+    {
+      "id": "jc-process-step-list",
+      "name": "[JC] 步骤清单",
+      "family": "process",
+      "description": "JC imported process visual component",
+      "tags": [
+        "jc",
+        "process"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "PROCESS",
+        "headline": "步骤清单",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "确定目标人群"
+            },
+            {
+              "stepNumber": 2,
+              "text": "验证单次利润"
+            },
+            {
+              "stepNumber": 3,
+              "text": "放大复购效率"
+            }
+          ],
+          "progress": 78
+        },
+        "steps": [
+          "确定目标人群",
+          "验证单次利润",
+          "放大复购效率"
+        ],
+        "items": [
+          "确定目标人群",
+          "验证单次利润",
+          "放大复购效率"
+        ],
+        "progress": 78
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "确定目标人群"
+          },
+          {
+            "stepNumber": 2,
+            "text": "验证单次利润"
+          },
+          {
+            "stepNumber": 3,
+            "text": "放大复购效率"
+          }
+        ],
+        "progress": 78
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-process-step-list",
+        "intent": "process",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 5
+        },
+        "keywords": [
+          "步骤",
+          "流程",
+          "执行",
+          "行动"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "StepList",
+        "adapter": "jc-process-step-list"
+      }
+    },
+    {
+      "id": "jc-process-timeline-card",
+      "name": "[JC] 时间卡片",
+      "family": "process",
+      "description": "JC imported process visual component",
+      "tags": [
+        "jc",
+        "process"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 4,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "PROCESS",
+        "headline": "时间卡片",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "低价试探"
+            },
+            {
+              "stepNumber": 2,
+              "text": "复购验证"
+            },
+            {
+              "stepNumber": 3,
+              "text": "渠道放大"
+            }
+          ],
+          "progress": 74
+        },
+        "steps": [
+          "低价试探",
+          "复购验证",
+          "渠道放大"
+        ],
+        "items": [
+          "低价试探",
+          "复购验证",
+          "渠道放大"
+        ],
+        "progress": 74
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "低价试探"
+          },
+          {
+            "stepNumber": 2,
+            "text": "复购验证"
+          },
+          {
+            "stepNumber": 3,
+            "text": "渠道放大"
+          }
+        ],
+        "progress": 74
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-process-timeline-card",
+        "intent": "process",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "keywords": [
+          "时间",
+          "阶段",
+          "演进",
+          "节点"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "TimelineCard",
+        "adapter": "jc-process-timeline-card"
+      }
+    },
+    {
+      "id": "jc-process-timeline-events",
+      "name": "[JC] 时间事件轴",
+      "family": "process",
+      "description": "JC imported process visual component",
+      "tags": [
+        "jc",
+        "process"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "PROCESS",
+        "headline": "时间事件轴",
+        "effectText": "",
+        "contentPayload": {
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "起步"
+            },
+            {
+              "stepNumber": 2,
+              "text": "优化"
+            },
+            {
+              "stepNumber": 3,
+              "text": "扩张"
+            }
+          ],
+          "progress": 70
+        },
+        "steps": [
+          "起步",
+          "优化",
+          "扩张"
+        ],
+        "items": [
+          "起步",
+          "优化",
+          "扩张"
+        ],
+        "progress": 70
+      },
+      "defaultPayload": {
+        "type": "steps",
+        "steps": [
+          {
+            "stepNumber": 1,
+            "text": "起步"
+          },
+          {
+            "stepNumber": 2,
+            "text": "优化"
+          },
+          {
+            "stepNumber": 3,
+            "text": "扩张"
+          }
+        ],
+        "progress": 70
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "steps",
+        "fields": [
+          {
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-process-timeline-events",
+        "intent": "process",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 5
+        },
+        "keywords": [
+          "时间线",
+          "事件",
+          "阶段",
+          "节点"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "TimelineEvents",
+        "adapter": "jc-process-timeline-events"
+      }
+    },
+    {
+      "id": "jc-narrative-tweet-card",
+      "name": "[JC] 观点引用帖",
+      "family": "narrative",
+      "description": "JC imported narrative visual component",
+      "tags": [
+        "jc",
+        "narrative"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 3,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 3,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "观点作者ID",
+        "headline": "恭喜Tesla CyberCab",
+        "effectText": "一条观点必须落到可以验证的商业事实。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "一条观点必须落到可以验证的商业事实。",
+          "highlightQuote": "PUBLIC TAKE"
+        },
+        "bodyText": "一条观点必须落到可以验证的商业事实。",
+        "highlightQuote": "PUBLIC TAKE",
+        "eyebrow": "观点作者ID",
+        "categoryTag": "观点作者ID",
+        "label": "观点作者ID",
+        "title": "恭喜Tesla CyberCab"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "一条观点必须落到可以验证的商业事实。",
+        "highlightQuote": "PUBLIC TAKE"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-narrative-tweet-card",
+        "intent": "narrative",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "keywords": [
+          "观点",
+          "引用",
+          "评论",
+          "判断"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "TweetCard",
+        "adapter": "jc-narrative-tweet-card"
+      },
+      "updatedAt": "2026-09-15T01:37:09.883Z"
+    },
+    {
+      "id": "jc-metrics-unit-matrix",
+      "name": "[JC] 单元矩阵",
+      "family": "metrics",
+      "description": "JC imported metrics visual component",
+      "tags": [
+        "jc",
+        "metrics"
+      ],
+      "data": [
+        "number",
+        "percentage"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "METRICS",
+        "headline": "单元矩阵",
+        "effectText": "",
+        "contentPayload": {
+          "type": "metrics",
+          "value": 68,
+          "unit": "%",
+          "label": "结构占比",
+          "detailText": "用单元密度展示规模与结构。"
+        },
+        "label": "结构占比",
+        "value": 68,
+        "unit": "%",
+        "detailText": "用单元密度展示规模与结构。"
+      },
+      "defaultPayload": {
+        "type": "metrics",
+        "value": 68,
+        "unit": "%",
+        "label": "结构占比",
+        "detailText": "用单元密度展示规模与结构。"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "metrics",
+        "fields": [
+          {
+            "key": "label",
+            "label": "正文内容",
+            "control": "text"
+          },
+          {
+            "key": "value",
+            "label": "数值",
+            "control": "number"
+          },
+          {
+            "key": "unit",
+            "label": "单位",
+            "control": "text"
+          },
+          {
+            "key": "detailText",
+            "label": "说明内容",
+            "control": "textarea"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-metrics-unit-matrix",
+        "intent": "metrics",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "矩阵",
+          "占比",
+          "规模",
+          "数据"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "UnitMatrix",
+        "adapter": "jc-metrics-unit-matrix"
+      }
+    },
+    {
+      "id": "jc-contrast-verdict-box",
+      "name": "[JC] 风险裁决框",
+      "family": "contrast",
+      "description": "JC imported contrast visual component",
+      "tags": [
+        "jc",
+        "contrast"
+      ],
+      "data": [
+        "list"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 4,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "CONTRAST",
+        "headline": "风险裁决框",
+        "effectText": "",
+        "contentPayload": {
+          "type": "chips",
+          "items": [
+            {
+              "title": "供给不稳",
+              "subtitle": "KEY SIGNAL"
+            },
+            {
+              "title": "履约失控",
+              "subtitle": ""
+            },
+            {
+              "title": "复购不足",
+              "subtitle": ""
+            }
+          ]
+        },
+        "items": [
+          "供给不稳",
+          "履约失控",
+          "复购不足"
+        ],
+        "itemSubtitles": [
+          "KEY SIGNAL",
+          "",
+          ""
+        ]
+      },
+      "defaultPayload": {
+        "type": "chips",
+        "items": [
+          {
+            "title": "供给不稳",
+            "subtitle": "KEY SIGNAL"
+          },
+          {
+            "title": "履约失控",
+            "subtitle": ""
+          },
+          {
+            "title": "复购不足",
+            "subtitle": ""
+          }
+        ]
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "chips",
+        "fields": [
+          {
+            "key": "items",
+            "label": "标签项",
+            "control": "chip-list",
+            "capacity": 3,
+            "itemFields": [
+              {
+                "key": "title",
+                "label": "标签",
+                "control": "text"
+              },
+              {
+                "key": "subtitle",
+                "label": "副标",
+                "control": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-contrast-verdict-box",
+        "intent": "contrast",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "keywords": [
+          "风险",
+          "裁决",
+          "对比",
+          "取舍"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "VerdictBox",
+        "adapter": "jc-contrast-verdict-box"
+      }
+    },
+    {
+      "id": "jc-metrics-views-badge",
+      "name": "[JC] 观看量徽章",
+      "family": "metrics",
+      "description": "JC imported metrics visual component",
+      "tags": [
+        "jc",
+        "metrics"
+      ],
+      "data": [
+        "number",
+        "percentage"
+      ],
+      "version": 3,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "METRICS",
+        "headline": "观看量徽章",
+        "effectText": "用增长数字强调市场反馈。",
+        "contentPayload": {
+          "type": "metrics",
+          "value": 80,
+          "unit": "M+",
+          "label": "美元基金",
+          "bodyText": "M+",
+          "detailText": "用增长数字强调市场反馈。"
+        },
+        "label": "美元基金",
+        "value": 80,
+        "unit": "M+",
+        "detailText": "用增长数字强调市场反馈。",
+        "eyebrow": "METRICS",
+        "categoryTag": "METRICS",
+        "title": "观看量徽章",
+        "progress": 80,
+        "values": [],
+        "metric": "美元基金",
+        "metricLabel": "美元基金",
+        "marketLabel": "触达规模",
+        "marketTo": 8,
+        "marketSuffix": "M+",
+        "engineeringLabel": "增长指标",
+        "engineeringTo": 8,
+        "engineeringSuffix": "M+",
+        "bodyText": "M+",
+        "body": "用增长数字强调市场反馈。",
+        "effectZh": "用增长数字强调市场反馈。",
+        "items": [],
+        "steps": [],
+        "comments": []
+      },
+      "defaultPayload": {
+        "type": "metrics",
+        "value": 20,
+        "unit": "M+",
+        "label": "触达规模",
+        "detailText": "用增长数字强调市场反馈。"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "metrics",
+        "fields": [
+          {
+            "key": "label",
+            "label": "正文内容",
+            "control": "text"
+          },
+          {
+            "key": "value",
+            "label": "数值",
+            "control": "number"
+          },
+          {
+            "key": "unit",
+            "label": "单位",
+            "control": "text"
+          },
+          {
+            "key": "detailText",
+            "label": "说明内容",
+            "control": "textarea"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-metrics-views-badge",
+        "intent": "metrics",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "播放",
+          "观看",
+          "规模",
+          "数据"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "ViewsBadge",
+        "adapter": "jc-metrics-views-badge"
+      },
+      "updatedAt": "2026-09-15T01:17:42.023Z"
+    },
+    {
+      "id": "jc-system-window-card",
+      "name": "[JC] 产品窗口卡",
+      "family": "system",
+      "description": "JC imported system visual component",
+      "tags": [
+        "jc",
+        "system"
+      ],
+      "data": [
+        "text"
+      ],
+      "version": 1,
+      "tokens": {
+        "mountMode": "center",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 0,
+        "boundsY": 0,
+        "boundsWidth": 1920,
+        "boundsHeight": 1080,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 1,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.36,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "mockData": {
+        "category": "SYSTEM",
+        "headline": "产品窗口卡",
+        "effectText": "界面每一步都要缩短用户决策。",
+        "contentPayload": {
+          "type": "narrative",
+          "bodyText": "界面每一步都要缩短用户决策。",
+          "highlightQuote": "PRODUCT WINDOW"
+        },
+        "bodyText": "界面每一步都要缩短用户决策。",
+        "highlightQuote": "PRODUCT WINDOW"
+      },
+      "defaultPayload": {
+        "type": "narrative",
+        "bodyText": "界面每一步都要缩短用户决策。",
+        "highlightQuote": "PRODUCT WINDOW"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "narrative",
+        "fields": [
+          {
+            "key": "bodyText",
+            "label": "正文内容",
+            "control": "textarea"
+          },
+          {
+            "key": "highlightQuote",
+            "label": "副文内容",
+            "control": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "jc-system-window-card",
+        "intent": "system",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "keywords": [
+          "产品",
+          "窗口",
+          "界面",
+          "系统"
+        ],
+        "visualWeight": "medium"
+      },
+      "runtime": {
+        "exportName": "WindowCard",
+        "adapter": "jc-system-window-card"
       }
     }
   ],

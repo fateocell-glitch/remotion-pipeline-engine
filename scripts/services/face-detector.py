@@ -45,7 +45,9 @@ def zone_from_face(face, width, height, payload):
     safe_x, safe_y = max(0.0, fx - px), max(0.0, fy - py)
     safe_w, safe_h = min(1.0 - safe_x, fw + px * 2), min(1.0 - safe_y, fh + py * 2)
     cx = fx + fw / 2
-    return {"faceX": round(fx, 4), "faceY": round(fy, 4), "faceW": round(fw, 4), "faceH": round(fh, 4), "safeX": round(safe_x, 4), "safeY": round(safe_y, 4), "safeW": round(safe_w, 4), "safeH": round(safe_h, 4), "faceArea": "left" if cx < .34 else "right" if cx > .66 else "center", "confidence": round(score, 4), "detectorVersion": VERSION, "sourceFingerprint": payload.get("sourceFingerprint", ""), "beatStart": payload.get("beatStart"), "beatEnd": payload.get("beatEnd"), "sampledAt": payload.get("sampledAt")}
+    face_area_ratio = round(fw * fh, 4)
+    face_presence_ratio = round(float(payload.get("facePresenceRatio", payload.get("presenceRatio", 1))), 4)
+    return {"faceX": round(fx, 4), "faceY": round(fy, 4), "faceW": round(fw, 4), "faceH": round(fh, 4), "safeX": round(safe_x, 4), "safeY": round(safe_y, 4), "safeW": round(safe_w, 4), "safeH": round(safe_h, 4), "faceArea": "left" if cx < .34 else "right" if cx > .66 else "center", "faceAreaRatio": face_area_ratio, "facePresenceRatio": face_presence_ratio, "confidence": round(score, 4), "detectorVersion": VERSION, "sourceFingerprint": payload.get("sourceFingerprint", ""), "beatStart": payload.get("beatStart"), "beatEnd": payload.get("beatEnd"), "sampledAt": payload.get("sampledAt")}
 
 def main():
     try:

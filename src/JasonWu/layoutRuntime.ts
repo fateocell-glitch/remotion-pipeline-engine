@@ -8,7 +8,7 @@ const ARRAY_LAYOUTS = new Set<JasonWuCue["layout"]>([
   "recovery-progress-bars", "hud-glow-stack", "briefing-poster", "rewind-milestones",
   "flying-paper-stack", "checklist-editorial",
 ]);
-const TYPEWRITER_LAYOUTS = new Set<JasonWuCue["layout"]>(["pivot-list", "engineering-return"]);
+const TYPEWRITER_LAYOUTS = new Set<JasonWuCue["layout"]>(["pivot-list"]);
 
 const clean = (value: unknown) => typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
 const cleanMissing = (value: unknown) => typeof value === "string" ? clean(value) : undefined;

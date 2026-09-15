@@ -6,9 +6,13 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@fontsource/archivo-black": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/noto-sans-sc": "^5.3.0",
     "@remotion/cli": "4.0.522",
     "@remotion/player": "4.0.522",
     "@remotion/tailwind-v4": "4.0.522",
+    "lucide-react": "^1.45.0",
     "opencc-js": "1.0.5",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -46,9 +50,11 @@
     "render:zhuzige-full:segments": "powershell -ExecutionPolicy Bypass -File scripts/render-zhuzige-full-segments.ps1",
     "render:zhuzige-full:v2:segments": "powershell -ExecutionPolicy Bypass -File scripts/render-zhuzige-full-v2-segments.ps1",
     "test:qa": "node scripts/test-runner.cjs",
-    "test:watch": "node scripts/test-runner.cjs --watch"
+    "test:watch": "node scripts/test-runner.cjs --watch",
+    "component:create": "node scripts/create-component.cjs"
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "src/JasonWu/components/jc/fonts.ts"
   ]
 }

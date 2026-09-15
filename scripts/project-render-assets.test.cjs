@@ -218,3 +218,8 @@ test("absorbs an existing terminal micro Beat into the preceding Layer stack", (
   assert.equal(merged.render.revision, 8);
   assert.equal(merged.terminalTailAbsorbed.sourceBeatId, "beat-011");
 });
+
+test("render cache fingerprint tracks the subtitle-only typography contract", () => {
+  const source = require("node:fs").readFileSync("scripts/project-render-assets.cjs", "utf8");
+  assert.match(source, /typographyContract: 2/);
+});

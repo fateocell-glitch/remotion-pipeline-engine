@@ -1,15 +1,16 @@
 "use strict";
 
-const {extractBeatContent} = require("./services/beat-content-extraction.cjs");
+const {diversifyVisualCard, extractBeatContent, extractComponentPayload, matchWindowCaptions} = require("./services/beat-content-extraction.cjs");
+const {inferCommercialTextRole, assignSemanticAccent} = require("./services/commercial-analysis-preset.cjs");
 const {buildBeatContext, componentManifest, componentRegistry, pickBestComponent, summarizeComponentUsage} = require("./services/component-recommender.cjs");
 const {getComponentRegistrySync} = require("./services/component-registry-store.cjs");
 
 const fillerPattern = /^(?:嗯|啊|呃|这个|那个|然后|就是|其实|所以|好的|ok|OK|我觉得|你看|拿到手)/;
 
-function inferLayoutFromContent(text, beatIndex, totalBeats, history = [], layerIndex = 0, captions = [], layerCount = 1) {
+function inferLayoutFromContent(text, beatIndex, totalBeats, history = [], layerIndex = 0, captions = [], layerCount = 1, textRole = "") {
   // Kept as a small compatibility wrapper for callers that only need an ID.
   const normalizedHistory = Array.isArray(history) ? history.map((item) => ({...item, intent: item.intent ?? componentManifest[item.layout]?.intent})) : history ? [{layout: history, family: componentRegistry[history]?.family, intent: componentManifest[history]?.intent}] : [];
-  const context = buildBeatContext({text, captions, beatIndex, totalBeats, layerIndex, layerCount});
+  const context = buildBeatContext({text, captions, beatIndex, totalBeats, layerIndex, layerCount, textRole});
   return pickBestComponent(context, layerIndex, normalizedHistory).componentId;
 }
 
@@ -39,17 +40,68 @@ function takeItems(layout, items, max = getItemCapacity(layout)) {
 
 const CHIP_CONTENT_LAYOUTS = new Set(["hud-glow-stack", "diagonal-chips", "floating-chips", "desktop-folders", "photo-wall", "product-explosion"]);
 const STEP_CONTENT_LAYOUTS = new Set(["ordered-sequence", "event-timeline", "rewind-milestones", "time-rewind", "route-map", "check-progress", "org-chart", "closing-checklist", "checklist-editorial", "recovery-progress-bars", "briefing-poster", "tradeoff-reject-round", "reject-list", "pivot-list"]);
-const METRIC_CONTENT_LAYOUTS = new Set(["capital-dashboard", "engineering-return", "progress-donut", "data-flow", "platform-shift-line"]);
+const METRIC_CONTENT_LAYOUTS = new Set(["capital-dashboard",  "progress-donut", "data-flow", "platform-shift-line"]);
+const PLACEHOLDER_LAYER_VALUES = new Set(["识别关键机制", "降低行动阻力", "持续放大优势", "把局部优势做成增长结构", "用更低阻力推动持续成交"]);
+const isPlaceholderLayerValue = (value) => PLACEHOLDER_LAYER_VALUES.has(String(value || "").trim());
 
-function contentPayloadFor(layout, headline, effectText, items, bodyText = effectText) {
+function numericValuesFromCaptions(captions) {
+  const source = (captions || []).map((caption) => String(caption?.zh || caption?.en || "")).join(" ");
+  return [...source.matchAll(/(?:^|[^\d])(\d+(?:\.\d+)?)(?=(?:\s|$|[%％万亿倍元件款年]))/g)]
+    .map((match) => Number(match[1]))
+    .filter((value) => Number.isFinite(value));
+}
+function componentDefinition(layout) {
+  try { return getComponentRegistrySync(process.cwd()).components.find((component) => component.id === layout) || null; } catch { return null; }
+}
+function hydrateLayerWithPayload(layout, effectProps = {}, captions = []) {
+  const component = componentDefinition(layout);
+  const extraction = extractComponentPayload({
+    layout,
+    editorSchema: component?.editorSchema || {},
+    family: component?.family || "",
+    captions,
+    copy: {
+      headline: effectProps.headline,
+      effectText: effectProps.effectText || effectProps.effectZh,
+      effectZh: effectProps.effectZh || effectProps.effectText,
+      bodyText: effectProps.bodyText || effectProps.body,
+      steps: effectProps.contentPayload?.steps?.map((item) => item?.text) || effectProps.steps || effectProps.items,
+    },
+  });
+  const contentPayload = extraction.contentPayload;
+  const next = {...effectProps, ...extraction.fields, contentPayload};
+  if (contentPayload.type === "chips") {
+    const items = contentPayload.items.map((item) => item.title);
+    next.items = items; next.steps = items; next.comments = items;
+    next.itemSubtitles = contentPayload.items.map((item) => item.subtitle || "");
+    next.subLabels = next.itemSubtitles;
+  } else if (contentPayload.type === "steps") {
+    const items = contentPayload.steps.map((item) => item.text);
+    next.items = items; next.steps = items; next.years = items; next.nodes = items; next.units = items; next.comments = items;
+    if (contentPayload.bodyText) { next.bodyText = contentPayload.bodyText; next.body = contentPayload.bodyText; }
+  } else if (contentPayload.type === "metrics") {
+    next.value = contentPayload.value; next.progress = contentPayload.value; next.unit = contentPayload.unit;
+    next.label = contentPayload.label; next.metric = contentPayload.label;
+    next.bodyText = contentPayload.bodyText || next.bodyText || "";
+    next.detailText = contentPayload.detailText || next.detailText || "";
+    next.body = next.detailText || next.bodyText;
+  } else {
+    next.bodyText = contentPayload.bodyText; next.body = contentPayload.bodyText;
+    next.highlightQuote = contentPayload.highlightQuote || next.highlightQuote || "";
+    if (contentPayload.bearText) next.bearText = contentPayload.bearText;
+  }
+  return next;
+}
+
+function contentPayloadFor(layout, headline, effectText, items, bodyText = effectText, metrics = []) {
   let family = "narrative";
   try { family = getComponentRegistrySync(process.cwd()).components.find((component) => component.id === layout)?.family || family; } catch {}
-  const values = takeItems(layout, items);
+  const values = takeItems(layout, items).filter((value) => !isPlaceholderLayerValue(value));
   if (CHIP_CONTENT_LAYOUTS.has(layout)) return {type: "chips", items: values.map((title, index) => ({title, subtitle: index === 0 ? effectText : ""}))};
-  if (METRIC_CONTENT_LAYOUTS.has(layout)) return {type: "metrics", value: 75, unit: "%", label: headline, detailText: bodyText};
+  if (METRIC_CONTENT_LAYOUTS.has(layout)) return {type: "metrics", value: metrics[0] ?? "", unit: metrics.length ? "%" : "", label: headline, detailText: bodyText};
   if (STEP_CONTENT_LAYOUTS.has(layout)) return {type: "steps", steps: values.map((text, index) => ({stepNumber: index + 1, text}))};
   if (family === "chips") return {type: "chips", items: values.map((title, index) => ({title, subtitle: index === 0 ? effectText : ""}))};
-  if (family === "metrics") return {type: "metrics", value: 75, unit: "%", label: headline, detailText: bodyText};
+  if (family === "metrics") return {type: "metrics", value: metrics[0] ?? "", unit: metrics.length ? "%" : "", label: headline, detailText: bodyText};
   if (family === "steps") return {type: "steps", steps: values.map((text, index) => ({stepNumber: index + 1, text}))};
   if (layout === "bull-bear") return {type: "narrative", bodyText, bearText: effectText, highlightQuote: headline};
   return {type: "narrative", bodyText};
@@ -70,14 +122,20 @@ function extractListItems(captions, beat, max = 4) {
   return [...items, ...fallback.filter((item) => !items.includes(item))].slice(0, max);
 }
 
-function buildEffectProps(beat, captions, layout) {
+function buildEffectProps(beat, captions, layout, previousAccent = "") {
   const card = beat.visualCard || {};
-  const items = Array.isArray(card.steps) && card.steps.length ? card.steps : extractListItems(captions, beat, getItemCapacity(layout));
-  const headline = compact(beat.subtitle) || items[0] || "核心观点";
-  const effectZh = compact(beat.effectText || beat.zh) || items[1] || headline;
+  const sourceText = (captions || []).map((caption) => String(caption.zh || caption.en || "")).join(" ");
+  const textRole = typeof card.role === "string" ? card.role : typeof card.textRole === "string" ? card.textRole : typeof beat.role === "string" ? beat.role : typeof beat.textRole === "string" ? beat.textRole : inferCommercialTextRole({captions, layerIndex: 0, layerCount: 1});
+  const accent = assignSemanticAccent({role: textRole, text: sourceText, previousAccent});
+  const derivedSteps = Array.isArray(card.steps) ? card.steps.filter((value) => !isPlaceholderLayerValue(value)) : [];
+  const items = derivedSteps.length ? derivedSteps : extractListItems(captions, beat, getItemCapacity(layout)).filter((value) => !isPlaceholderLayerValue(value));
+  const headline = compact(beat.subtitle) || items[0];
+  const effectZh = compact(beat.effectText || beat.zh) || items[1] || items[0];
+  if (!headline || !effectZh) throw new Error("LayerContentError: source captions did not yield usable Layer copy");
   const bodyText = String(card.bodyText || effectZh).replace(/\s+/g, " ").trim() || effectZh;
-  const contentPayload = contentPayloadFor(layout, headline, effectZh, items, bodyText);
-  const shared = {headline, eyebrow: compact(beat.eyebrow), effectText: effectZh, effectZh, body: bodyText, bodyText, title: headline, items: takeItems(layout, items), steps: takeItems(layout, items), units: takeItems(layout, items), comments: takeItems(layout, items), contentPayload, ...(contentPayload.type === "chips" ? {itemSubtitles: contentPayload.items.map((item) => item.subtitle || ""), subLabels: contentPayload.items.map((item) => item.subtitle || "")} : {})};
+  const metrics = numericValuesFromCaptions(captions);
+  const contentPayload = contentPayloadFor(layout, headline, effectZh, items, bodyText, metrics);
+  const shared = {textRole, role: textRole, accent, headline, eyebrow: compact(beat.eyebrow), effectText: effectZh, effectZh, body: bodyText, bodyText, title: headline, items: takeItems(layout, items), steps: takeItems(layout, items), units: takeItems(layout, items), comments: takeItems(layout, items), contentPayload, ...(contentPayload.type === "chips" ? {itemSubtitles: contentPayload.items.map((item) => item.subtitle || ""), subLabels: contentPayload.items.map((item) => item.subtitle || "")} : {})};
   if (layout === "platform-shift-line") return {...shared, count: Math.max(1, items.length), metricLabel: "产品线", milestones: takeItems(layout, items), startLabel: "起点", endLabel: "目标阶段", summary: effectZh};
   if (layout === "tradeoff-reject-round") return {...shared, label: "风险排除", title: headline, items: takeItems(layout, items)};
   if (layout === "recovery-progress-bars") return {...shared, label: "执行进度", title: headline, items: takeItems(layout, items), values: takeItems(layout, items).map((_, index) => 76 - index * 14)};
@@ -88,12 +146,12 @@ function buildEffectProps(beat, captions, layout) {
   if (layout === "checklist-editorial") return {...shared, label: "最终确认", title: headline, items: takeItems(layout, items)};
   if (layout === "ordered-sequence") return {...shared, categoryTag: beat.eyebrow || "核心步骤"};
   if (layout === "diagonal-chips" || layout === "floating-chips" || layout === "photo-wall" || layout === "desktop-folders" || layout === "product-explosion") return shared;
-  if (layout === "pivot-list" || layout === "engineering-return") return {...shared, text: effectZh};
+  if (layout === "pivot-list") return {...shared, text: effectZh};
   if (layout === "zoom-statement") return {...shared, headline: effectZh, title: headline, body: effectZh};
   if (layout === "data-flow" || layout === "cook-machine") return {...shared, leftLabel: items[0] || headline, leftValue: items[1] || headline, rightLabel: items[2] || "关键结论", rightValue: effectZh, from: 0, to: 100};
   if (layout === "event-timeline") return {...shared, years: takeItems(layout, items)};
-  if (layout === "capital-dashboard") return {...shared, marketLabel: headline, marketTo: 100, marketSuffix: "%", engineeringLabel: "关键指标", engineeringTo: 25, engineeringSuffix: "%"};
-  if (layout === "progress-donut" || layout === "check-progress") return {...shared, label: headline, progress: 75, value: 75, metric: effectZh};
+  if (layout === "capital-dashboard") return {...shared, marketLabel: items[0] || headline, marketTo: metrics[0] ?? "", marketSuffix: metrics.length ? "%" : "", engineeringLabel: items[1] || effectZh, engineeringTo: metrics[1] ?? "", engineeringSuffix: metrics.length > 1 ? "%" : ""};
+  if (layout === "progress-donut" || layout === "check-progress") return {...shared, label: headline, progress: metrics[0] ?? "", value: metrics[0] ?? "", metric: effectZh};
   if (layout === "person-rank" || layout === "avatar-handoff") return {...shared, leftName: items[0] || headline, leftRole: beat.eyebrow || "前序角色", rightName: items[1] || effectZh, rightRole: "目标角色"};
   if (layout === "org-chart") return {...shared, leader: headline, leaderRole: beat.eyebrow || "核心节点"};
   if (layout === "bull-bear") return {...shared, bullLabel: "多方观点", bullText: contentPayload.bodyText || bodyText, bearLabel: "空方观点", bearText: contentPayload.bearText || effectZh, highlightQuote: contentPayload.highlightQuote || headline};
@@ -107,11 +165,11 @@ function applyEffectProps(beat, layout, effectProps) {
   const found = layers.findIndex((layer) => layer.layout === layout);
   const index = found < 0 ? 0 : found;
   if (!layers.length) layers.push({layerId: "layer-1", layout, effectProps: {}, commonProps: {enterOffset: 0}, enterOffset: 0});
-  layers[index] = {...layers[index], layout, category: effectProps.eyebrow, headline: effectProps.headline, effectText: effectProps.effectText, payload: {...effectProps}, effectProps: {...effectProps}};
+  layers[index] = {...layers[index], layout, category: effectProps.eyebrow, headline: effectProps.headline, effectText: effectProps.effectText, textRole: effectProps.textRole, role: effectProps.role || effectProps.textRole, accent: effectProps.accent, payload: {...effectProps}, effectProps: {...effectProps}};
   return {...beat, layout, effectProps: {...effectProps}, layers};
 }
 
-const windowCaptions = (captions, start, end) => (captions || []).filter((caption) => Number(caption?.end) > start && Number(caption?.start) < end);
+const windowCaptions = (captions, start, end) => matchWindowCaptions(captions || [], {start, end}, .35).captions;
 
 const semanticContinuationStart = /^(?:也|还|并|而|才|就|却|根本|他们|我们才|大家|这个|这些|这|那|其|搞清楚|真的|的|如果|因为|所以|最后|接着|再|在|到底|就是|能|会|要|不|没有|包括|从|对|把|给|跟|和|但|但是)/;
 const semanticIncompleteTail = /(?:的|地|得|在|把|将|让|给|跟|和|对|从|向|于|是|有|要|会|能|想|被|这一年|这个|这些|这种)$/;
@@ -164,20 +222,26 @@ function buildTimedEffectLayers(project, beat, beatIndex, layerCount, history, {
     const captions = windowCaptions(project.captions, start, end);
     const text = captions.map((caption) => String(caption.zh || "") + " " + String(caption.en || "")).join(" ");
     const semanticIndex = beatIndex * layerCount + layerIndex;
+    const extracted = extractBeatContent(beat.id + "-layer-" + (layerIndex + 1), captions, {start, end, layerIndex, layerCount, previousAccent: layers.at(-1)?.accent}, semanticIndex);
+    const derived = layerIndex > 0 ? diversifyVisualCard(extracted, layers.at(-1)?.headline, captions) : extracted;
     const layout = preserveLayout && layerIndex === 0 && typeof beat.layout === "string" && beat.layout
       ? beat.layout
-      : inferLayoutFromContent(text, beatIndex, project.beats.length, layerHistory, layerIndex, captions, layerCount);
-    const derived = extractBeatContent(beat.id + "-layer-" + (layerIndex + 1), captions, {start, end}, semanticIndex);
+      : inferLayoutFromContent(text, beatIndex, project.beats.length, layerHistory, layerIndex, captions, layerCount, derived.textRole);
     const localBeat = {...beat, start, end, eyebrow: derived.chapter || beat.eyebrow, subtitle: derived.headline || beat.subtitle, zh: derived.effectZh || beat.zh, effectText: derived.effectZh || beat.effectText || beat.zh, visualCard: derived};
-    const effectProps = buildEffectProps(localBeat, captions, layout);
+    const effectProps = hydrateLayerWithPayload(layout, buildEffectProps(localBeat, captions, layout, layers.at(-1)?.accent), captions);
     layers.push({
       layerId: "layer-" + (layerIndex + 1),
       layout,
+      category: effectProps.eyebrow,
+      headline: effectProps.headline,
+      effectText: effectProps.effectText,
+      textRole: effectProps.textRole,
+      payload: {...effectProps},
       effectProps,
       commonProps: timedCommonProps(beat.start, start, end, layerIndex === layerCount - 1),
       enterOffset: Number(Math.max(0, start - beat.start).toFixed(2)),
     });
-    layerHistory.push({layout, family: componentRegistry[layout]?.family, intent: componentManifest[layout]?.intent});
+    layerHistory.push({layout, family: componentRegistry[layout]?.family, intent: componentManifest[layout]?.intent, beatIndex, layerIndex});
   }
 
   const primary = layers[0];
@@ -205,13 +269,13 @@ function autoMatchProject(project, {force = false, preserveLayout = false, effec
     const captions = windowCaptions(project.captions, beat.start, beat.end);
     const text = captions.map((caption) => String(caption.zh || "") + " " + String(caption.en || "")).join(" ");
     const layout = preserveLayout && typeof beat.layout === "string" && beat.layout ? beat.layout : inferLayoutFromContent(text, index, project.beats.length, history, 0, captions, 1);
-    history.push({layout, family: componentRegistry[layout]?.family, intent: componentManifest[layout]?.intent});
-    const effectProps = buildEffectProps(beat, captions, layout);
+    history.push({layout, family: componentRegistry[layout]?.family, intent: componentManifest[layout]?.intent, beatIndex:index, layerIndex:0});
+    const effectProps = hydrateLayerWithPayload(layout, buildEffectProps(beat, captions, layout, history.at(-1)?.accent), captions);
     const next = applyEffectProps(beat, layout, effectProps);
     if (JSON.stringify({layout: beat.layout, effectProps: beat.effectProps, layers: beat.layers}) !== JSON.stringify({layout: next.layout, effectProps: next.effectProps, layers: next.layers})) changed.push(beat.id);
     return {...next, layoutSource: "auto", layoutLocked: false};
   });
   return {...project, beats, autoMatch: {changed, generatedAt: new Date().toISOString(), effectsPerBeat: requestedLayerCount, componentUsage: summarizeComponentUsage(history)}};
 }
-module.exports = {inferLayoutFromContent, extractListItems, buildEffectProps, contentPayloadFor, findSemanticHandoff, buildTimedEffectLayers, autoMatchProject};
+module.exports = {inferLayoutFromContent, extractListItems, buildEffectProps, contentPayloadFor, findSemanticHandoff, buildTimedEffectLayers, autoMatchProject, hydrateLayerWithPayload};
 

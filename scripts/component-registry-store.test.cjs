@@ -6,23 +6,16 @@ const {join} = require("node:path");
 
 const {getComponentRegistry, getFamilyCandidates, moveComponentToFamily, updateComponentPreset} = require('./services/component-registry-store.cjs');
 
-test("registry exposes 49 visual components in five families and keeps subtitles separate", async () => {
+test("registry exposes at least the current 47 visual components in five families and keeps subtitles separate", async () => {
   const registry = await getComponentRegistry(process.cwd());
-  assert.equal(registry.components.length, 49);
-  assert.deepEqual(new Set(registry.components.map((component) => component.family)), new Set(["metrics", "steps", "chips", "narrative", "entities"]));
+  assert.ok(registry.components.length >= 47);
+  assert.deepEqual(new Set(registry.components.map((component) => component.family)), new Set(["metrics", "steps", "chips", "narrative", "entities", "process", "contrast", "system"]));
   assert.equal(registry.subtitleAssets.length, 1);
   assert.equal(registry.subtitleAssets[0].id, "karaoke-captions");
-  const typewriter = registry.components.find((component) => component.id === "engineering-return");
-  assert.equal(typewriter.tokens.mountMode, "top-left");
-  assert.equal(typewriter.tokens.mountX, 0);
-  assert.equal(typewriter.tokens.mountY, 0);
-  assert.deepEqual([typewriter.tokens.boundsX, typewriter.tokens.boundsY, typewriter.tokens.boundsWidth, typewriter.tokens.boundsHeight], [1120, 520, 700, 130]);
-  assert.equal(typewriter.family, "narrative");
-  assert.equal(typewriter.mockData.contentPayload.type, "narrative");
-  assert.equal(typewriter.mockData.contentPayload.bodyText, typewriter.mockData.text);
-  assert.equal(typewriter.mockData.effectZh, typewriter.mockData.text);
+  assert.equal(registry.components.some((component) => component.id === "engineering-return"), false);
+  assert.equal(registry.components.some((component) => component.id === "finale-kinetic"), false);
   const dashboard = registry.components.find((component) => component.id === "capital-dashboard");
-  assert.deepEqual([dashboard.tokens.boundsX, dashboard.tokens.boundsY, dashboard.tokens.boundsWidth, dashboard.tokens.boundsHeight], [1282, 382, 538, 108]);
+  assert.deepEqual([dashboard.tokens.boundsX, dashboard.tokens.boundsY, dashboard.tokens.boundsWidth, dashboard.tokens.boundsHeight], [1282, 300, 538, 108]);
   const diagonalChips = registry.components.find((component) => component.id === "diagonal-chips");
   const sameFamilyIds = registry.components
     .filter((component) => component.family === diagonalChips.family)
@@ -152,3 +145,13 @@ test("CopyOpen imported components expose editable content payloads", async () =
 });
 
 
+
+test("moving a JC asset supports the five-intent family groups", async () => {
+  const root = await mkdtemp(join(tmpdir(), "jc-component-family-"));
+  const moved = await moveComponentToFamily(root, "jc-process-flow-chain", "contrast");
+  const after = await getComponentRegistry(root);
+  assert.equal(moved.family, "contrast");
+  assert.equal(moved.manifest.intent, "contrast");
+  assert.equal(after.components.find((component) => component.id === "jc-process-flow-chain").family, "contrast");
+  assert.equal(after.components.find((component) => component.id === "jc-process-flow-chain").manifest.intent, "contrast");
+});

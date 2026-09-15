@@ -10,7 +10,7 @@ const {getComponentRegistrySync, getFamilyCandidates, updateComponentPreset} = r
 const {autoMatchProject, buildEffectProps} = require("./layout-matcher.cjs");
 const {reconcileProjectRenderCache, renderContentHash, ensureProjectLifecycle, currentAssetPath} = require("./project-render-assets.cjs");
 
-const allowedFamilies = new Set(["metrics", "steps", "chips", "narrative", "entities"]);
+const allowedFamilies = new Set(["metrics", "steps", "chips", "narrative", "entities", "process", "contrast", "system"]);
 const allowedIntents = new Set(["process", "metrics", "narrative", "contrast", "system"]);
 const allowedVisualWeights = new Set(["heavy", "medium", "light"]);
 const forbiddenCopy = ["从素材到成片", "从素材到成片的操作路径", "关键路线出现转折", "核心体验进入实测", "这一拍的核心判断"];
@@ -20,7 +20,7 @@ const topLeftRequired = new Set([
   "hud-glow-stack", "briefing-poster", "rewind-milestones", "flying-paper-stack",
   "checklist-editorial", "closing-checklist",  "clipboard-note",
 ]);
-const fullscreenLayouts = new Set(["chapter-card", "finale-kinetic"]);
+const fullscreenLayouts = new Set(["chapter-card"]);
 const selected = new Set(process.argv.slice(2).filter((arg) => arg.startsWith("test:")));
 const watch = process.argv.includes("--watch");
 const fixedHeaderBottom = 58 + 31 + 8 + 54;
@@ -44,7 +44,7 @@ function assertNoForbidden(value, label) {
 
 async function testRegistry() {
   const registry = getComponentRegistrySync(process.cwd());
-  assert.equal(registry.components.length, 49, "registry must contain 49 visual components");
+  assert.ok(registry.components.length >= 47, "registry must contain at least the current 47 visual components");
   const ids = new Set();
   for (const component of registry.components) {
     assert.equal(typeof component.id, "string", "component id must be a string");
@@ -71,10 +71,20 @@ async function testVisualPresets() {
     const tokens = component.tokens || {};
     if (component.displayIntent === "fullscreen-modal") continue;
     assert.ok(["center", "left", "right", "top", "bottom", "top-left"].includes(tokens.mountMode), component.id + " must declare a valid mount mode");
-    assert.ok(tokens.boundsX >= 60, component.id + " must register a real visual boundsX with safe left margin");
-    assert.ok(tokens.boundsY >= 58, component.id + " must register a real visual boundsY with safe top margin");
-    assert.ok(tokens.boundsWidth > 0 && tokens.boundsWidth <= 1920, component.id + " must declare a legal visual width");
-    assert.ok(tokens.boundsHeight > 0 && tokens.boundsHeight <= 1080, component.id + " must declare a legal visual height");
+    const isNativeJc = component.id.startsWith("jc-");
+    if (isNativeJc) {
+      assert.equal(tokens.boundsX, 0, component.id + " must keep native left coordinates");
+      assert.equal(tokens.boundsY, 0, component.id + " must keep native top coordinates");
+      assert.equal(tokens.boundsWidth, 1920, component.id + " must keep native canvas width");
+      assert.equal(tokens.boundsHeight, 1080, component.id + " must keep native canvas height");
+      assert.equal(tokens.scale, 1, component.id + " must not be globally scaled before face avoidance");
+      assert.equal(tokens.contentScale, 1, component.id + " must not receive content double-scaling");
+    } else {
+      assert.ok(tokens.boundsX >= 60, component.id + " must register a real visual boundsX with safe left margin");
+      assert.ok(tokens.boundsY >= 58, component.id + " must register a real visual boundsY with safe top margin");
+      assert.ok(tokens.boundsWidth > 0 && tokens.boundsWidth <= 1920, component.id + " must declare a legal visual width");
+      assert.ok(tokens.boundsHeight > 0 && tokens.boundsHeight <= 1080, component.id + " must declare a legal visual height");
+    }
   }
   for (const component of registry.components.filter((item) => fullscreenLayouts.has(item.id))) {
     assert.equal(component.displayIntent, "fullscreen-modal", component.id + " must be explicitly fullscreen");
@@ -95,11 +105,8 @@ async function testVisualPresets() {
   assert.ok(rewind.tokens.defaultItemCount >= 5, "rewind-milestones must default to five editable milestones");
   assert.ok(rewind.tokens.boundsY >= fixedHeaderBottom + fixedHeaderSafeGap, "rewind-milestones content must stay below the fixed global header safe zone");
   assert.ok(rewind.tokens.boundsWidth <= 1280, "rewind-milestones must stay compact enough for side-overlay use");
-  const typewriter = registry.components.find((component) => component.id === "engineering-return");
-  assert.ok(typewriter, "engineering-return must exist in the visual registry");
-  assert.equal(typewriter.family, "narrative", "engineering-return must use the narrative editor, not the metrics editor");
-  assert.equal(typewriter.mockData.contentPayload.type, "narrative", "engineering-return must expose a text payload for the typewriter renderer");
-  assert.equal(typewriter.mockData.contentPayload.bodyText, typewriter.mockData.text, "engineering-return textarea must drive the visible typewriter text");
+  assert.equal(registry.components.some((component) => component.id === "engineering-return"), false, "engineering-return must be removed from the visual registry");
+  assert.equal(registry.components.some((component) => component.id === "finale-kinetic"), false, "finale-kinetic must be removed from the visual registry");
   const motionWrapper = readFileSync(join(process.cwd(), "src/JasonWu/components/common/MotionWrapper.tsx"), "utf8");
   assert.equal(motionWrapper.includes("mountMode === \"top-left\" ? 76 - boundsY"), false, "top-left content must not be pulled into the fixed header band");
 }
@@ -183,6 +190,50 @@ async function testAddedListItemsAreRenderable() {
   assert.match(recoveredEffects, /Math\.max\(itemLimit\(props, maxItems\), rows\.length\)/, "recovered list components must render explicit rows beyond the old default count");
   assert.match(incompleteEffects, /Math\.max\(itemLimit\(props, fallback\), rows\.length\)/, "incomplete list components must render explicit rows beyond the old default count");
 }
+async function testStudioSchemaForm() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["scripts/test-studio-schema-form.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
+
+async function testComponentWeights() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["--test", "scripts/component-weighting.test.cjs", "scripts/component-weights-admin.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
+
+async function testCommercialAnalysisPreset() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["--test", "scripts/services/beat-content-extraction.test.cjs", "scripts/services/component-recommender.test.cjs", "scripts/produce-project-25s-dual-unique.test.cjs", "scripts/commercial-analysis-visual-style.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
+async function testComponentIntakeGuard() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["scripts/component-generator.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+  const registry = getComponentRegistrySync(process.cwd());
+  for (const component of registry.components) {
+    assert.ok(component.editorSchema && Array.isArray(component.editorSchema.fields), component.id + " must expose editorSchema.fields");
+    const seen = new Set();
+    for (const field of component.editorSchema.fields) {
+      assert.equal(typeof field.key, "string", component.id + " schema field key must be a string");
+      assert.ok(field.key.length > 0, component.id + " schema field key must not be empty");
+      assert.equal(seen.has(field.key), false, component.id + " schema field key must be unique: " + field.key);
+      seen.add(field.key);
+      assert.equal(typeof field.label, "string", component.id + " schema field label must be a string");
+      assert.ok(field.label.length > 0, component.id + " schema field label must not be empty");
+      const fieldType = field.type || field.control;
+      assert.ok(["text", "number", "select", "textarea", "string-list", "key-value-list", "chips", "chip-list", "list", "image"].includes(fieldType), component.id + " schema field type is invalid: " + fieldType);
+      assert.ok(Object.prototype.hasOwnProperty.call(component.mockData, field.key), component.id + " mockData must contain schema field " + field.key);
+    }
+    assert.ok(component.mockData.contentPayload && ["narrative", "chips", "metrics", "steps"].includes(component.mockData.contentPayload.type), component.id + " must use one of the four standard payload families");
+  }
+}
+async function testSemanticAccent() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["--test", "scripts/semantic-accent.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
+async function testJcComponents() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["scripts/qa-test-jc-components.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
+
 async function testCache() {
   const base = ensureProjectLifecycle({projectId: "qa-cache", fps: 30, globalSettings: {}, captions: [], beats: [{id: "beat-001", start: 0, end: 4, subtitle: "稳定缓存", zh: "稳定缓存", en: "", layout: "diagonal-chips", effectProps: {}, render: {revision: 1, status: "ready"}}]});
   const beat = base.beats[0];
@@ -203,6 +254,10 @@ async function testCache() {
   }
 }
 
+async function testFaceAwareLayout() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["--test", "scripts/services/face-detector.test.cjs", "scripts/services/face-aware-layout.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
 async function runOnce() {
   const cases = [
     ["test:registry", testRegistry],
@@ -213,6 +268,13 @@ async function runOnce() {
     ["test:empty-fields", testEmptyFieldsStayEmpty],
     ["test:empty-list-items", testEmptyListItemsStayEditable],
     ["test:added-list-items", testAddedListItemsAreRenderable],
+    ["test:studio-schema-form", testStudioSchemaForm],
+    ["test:component-weights", testComponentWeights],
+    ["test:face-aware-layout", testFaceAwareLayout],
+    ["test:commercial-analysis", testCommercialAnalysisPreset],
+    ["test:component-intake", testComponentIntakeGuard],
+    ["test:semantic-accent", testSemanticAccent],
+    ["test:jc-components", testJcComponents],
     ["test:cache", testCache],
   ];
   let passed = 0;

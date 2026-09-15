@@ -15,13 +15,14 @@ const {
 const allowedIntents = new Set(["process", "metrics", "narrative", "contrast", "system"]);
 
 test("registers all current Studio visual components with five-intent manifest metadata", () => {
-  assert.equal(Object.keys(componentRegistry).length, 49);
-  assert.equal(Object.keys(componentManifest).length, 49);
+  assert.ok(Object.keys(componentRegistry).length >= 47);
+  assert.ok(Object.keys(componentManifest).length >= 47);
   assert.equal(componentRegistry["draw-line"].family, "F2_TIMELINE_PROCESS");
   assert.equal(componentRegistry["hud-glow-stack"].family, "F1_QUANTITATIVE");
   assert.equal(componentRegistry["closing-checklist"].family, "F6_CHAPTER_VERDICT");
   assert.equal(componentManifest["value-verdict"].intent, "narrative");
-  assert.equal(componentManifest["engineering-return"].intent, "narrative");
+  assert.equal("engineering-return" in componentManifest, false);
+  assert.equal("finale-kinetic" in componentManifest, false);
   assert.equal("newspaper-swap" in componentRegistry, false);
   for (const [id, manifest] of Object.entries(componentManifest)) {
     assert.equal(manifest.id, id, id + " manifest id must mirror its registry key");
@@ -57,13 +58,52 @@ test("gives number-heavy market copy to quantitative candidates", () => {
   assert.ok(best.matchingTags.includes("metrics"));
 });
 
-test("applies full-project de-duplication and rewards unused alternatives", () => {
+test("applies beat-aware fatigue to prevent high-weight components from repeating", () => {
   const context = buildBeatContext({text: "芯片规格和性能需要重新定义。", beatIndex: 3, totalBeats: 8});
-  const history = [{layout: "diagonal-chips", family: "F5_SPECS_MULTIDIM", intent: "system"}];
+  const history = [
+    {layout: "diagonal-chips", family: "F5_SPECS_MULTIDIM", intent: "system", beatIndex: 1},
+    {layout: "diagonal-chips", family: "F5_SPECS_MULTIDIM", intent: "system", beatIndex: 2},
+  ];
   const repeated = scoreComponent("diagonal-chips", context, history);
   const alternative = scoreComponent("product-explosion", context, history);
 
-  assert.ok(repeated.reasons.includes("上一层同组件 -100"));
-  assert.ok(repeated.reasons.includes("全片已使用，硬排除"));
+  assert.equal(repeated.fatiguePenalty, 120);
+  assert.ok(repeated.reasons.includes("上一 Beat 出现 -80"));
+  assert.ok(repeated.reasons.includes("全片累计出现 2 次 -40"));
+  assert.equal(repeated.score, repeated.semanticScore * .4 + repeated.baseWeight * .6 - repeated.fatiguePenalty);
   assert.ok(alternative.score > repeated.score);
+});
+test("uses the commercial text role to keep risk evidence inside risk-capable layouts", () => {
+  const context = buildBeatContext({
+    text: "但是库存积压和现金流压力会让低价策略迅速反噬。",
+    textRole: "risk",
+    beatIndex: 2,
+    totalBeats: 8,
+    layerIndex: 1,
+    layerCount: 2,
+  });
+  const best = pickBestComponent(context, 1, []);
+
+  assert.equal(best.textRole, "risk");
+  assert.ok(["bull-bear", "market-battlefield", "tradeoff-reject-round", "reject-list"].includes(best.componentId));
+  assert.ok(best.reasons.some((reason) => reason.includes("文字角色 risk")));
+});
+test("includes registered JC assets in the existing weighted recommendation funnel", () => {
+  const context = buildBeatContext({
+    text: "采购成本下降40%，履约效率持续提升，利润空间被重新打开。",
+    beatIndex: 4,
+    totalBeats: 8,
+  });
+  const jc = scoreComponent("jc-metrics-bar-chart", context, []);
+
+  assert.equal(componentManifest["jc-metrics-bar-chart"].intent, "metrics");
+  assert.ok(componentManifest["jc-metrics-bar-chart"].textRoles.includes("metric"));
+  assert.equal(componentRegistry["jc-metrics-bar-chart"].family, "metrics");
+  assert.equal(jc.score, jc.semanticScore * .4 + jc.baseWeight * .6 - jc.fatiguePenalty);
+  assert.equal(jc.baseWeight, 50);
+  assert.ok(jc.reasons.some((reason) => reason.includes("人工优先级 50")));
+});
+test("backfilled runtime assets also remain eligible for recommendation", () => {
+  assert.ok(componentManifest["avatar-handoff"]);
+  assert.ok(componentManifest["data-flow"]);
 });

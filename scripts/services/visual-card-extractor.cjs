@@ -25,5 +25,82 @@ const RULES=[
   [/(?:十年.*规格|材料最稳|回购最高|追不上)/,{headline:"长期深耕形成追赶壁垒",effectZh:"多年细节迭代会拉开竞争距离",bodyText:"同一品类里的长期打磨会不断积累产品、客户和渠道优势，后来者很难快速追上。",steps:["持续研究细节","积累复购数据","拉开长期差距"]}],
   [/(?:所有人天天|小需求|风口|脚边)/,{headline:"日常小需求撑起大市场",effectZh:"被忽视的高频动作最能聚合规模",bodyText:"财富不只藏在风口里，真正稳定的市场往往来自每天重复发生、却没人炫耀的小需求。",steps:["观察日常动作","识别高频需求","持续优化体验"]}],
 ];
-function extractVisualCard(captions,fallback={}){const text=sourceText(captions);const match=RULES.find(([pattern])=>pattern.test(text));const fallbackHeadline=String(fallback.headline||"").trim(),fallbackEffect=String(fallback.effectZh||"").trim();const trusted=fallback.trusted===true;const fragment=/^(?:当|如果|因为|所以|先说|你们|这些|而且|但是|采购|物流|一次|可能|找|周|西|点|是|么|的|在|而|但|就|也|会|能|要|让|给|把)/.test(fallbackHeadline)||/[，,、]$/.test(fallbackHeadline);const headlineLength=length(fallbackHeadline);const compactNamedHeadline=/[A-Za-z0-9]{2,}/.test(fallbackHeadline)&&headlineLength>=6;const useFallbackHeadline=trusted||(!match&&(headlineLength>=8||compactNamedHeadline)&&headlineLength<=14&&!fragment);const useFallbackEffect=trusted||(!match&&length(fallbackEffect)>=6&&overlap(fallbackHeadline,fallbackEffect)<.7);const card=match&&!trusted?match[1]:{headline:useFallbackHeadline?fallbackHeadline:"把局部优势做成增长结构",effectZh:useFallbackEffect?fallbackEffect:"用更低阻力推动持续成交",bodyText:"真正有效的增长，不是复述现象，而是把局部优势沉淀成可以持续复制的交易结构。",steps:["识别关键机制","降低行动阻力","持续放大优势"]};const headline=card.headline;const effectZh=overlap(headline,card.effectZh)<.7?card.effectZh:"用更低阻力推动持续成交";const bodyText=length(card.bodyText)>=20&&length(card.bodyText)<=35&&Math.max(overlap(headline,card.bodyText),overlap(effectZh,card.bodyText))<.7?card.bodyText:"当用户无需反复比较时，购买更容易发生，交易频次也会在重复体验中持续累积。";return {headline,effectZh,bodyText,steps:card.steps};}
+const PLACEHOLDER_COPY = new Set([
+  "把局部优势做成增长结构",
+  "用更低阻力推动持续成交",
+  "真正有效的增长，不是复述现象，而是把局部优势沉淀成可以持续复制的交易结构。",
+  "识别关键机制",
+  "降低行动阻力",
+  "持续放大优势",
+]);
+
+function isPlaceholderCopy(value) {
+  return PLACEHOLDER_COPY.has(String(value || "").trim());
+}
+
+function sourceClauses(captions) {
+  return sourceText(captions)
+    .split(/[。！？；，,]/)
+    .map((value) => String(value || "").trim())
+    .filter((value) => value && !isPlaceholderCopy(value));
+}
+
+function completeLocalValue(value, minimum, maximum) {
+  return length(value) >= minimum && length(value) <= maximum && !/^(?:当|如果|因为|所以|但是|而且|然后|这|那|它)/.test(String(value || "").trim()) && !/[，,、]$/.test(String(value || "").trim());
+}
+
+const LOCAL_SEMANTIC_RULES = [
+  [/(?:预订).*(?:排队|早高峰)|(?:排队|早高峰).*(?:预订)/, {headline:"预订分流缩短排队", effectZh:"提前备货降低早高峰压力"}],
+  [/(?:规模效应).*(?:摊薄|固定成本)|(?:摊薄).*(?:固定成本)/, {headline:"规模效应摊薄固定成本", effectZh:"产量提升持续拉低单位成本"}],
+  [/(?:小额高频).*(?:利润|引擎)|(?:重复购买).*(?:利润|收入)/, {headline:"小额高频才是利润引擎", effectZh:"重复购买持续放大长期收入"}],
+  [/(?:长期深耕|多年改良).*(?:壁垒|差距)|(?:细节).*(?:竞争壁垒)/, {headline:"长期深耕筑起竞争壁垒", effectZh:"细节积累拉开长期差距"}],
+];
+
+function semanticLocalCopy(captions) {
+  const text = sourceText(captions);
+  const match = LOCAL_SEMANTIC_RULES.find(([pattern]) => pattern.test(text));
+  return match ? match[1] : null;
+}
+
+function localSourceCard(captions, fallback = {}) {
+  const clauses = sourceClauses(captions);
+  const source = sourceText(captions);
+  const semantic = semanticLocalCopy(captions);
+  const fallbackHeadline = String(fallback.headline || "").trim();
+  const fallbackEffect = String(fallback.effectZh || fallback.effectText || "").trim();
+  const fallbackBody = String(fallback.bodyText || "").trim();
+  const headline = semantic?.headline || (completeLocalValue(fallbackHeadline, 4, 15)
+    ? fallbackHeadline
+    : clauses.find((value) => completeLocalValue(value, 4, 15)));
+  const effectZh = semantic?.effectZh || (completeLocalValue(fallbackEffect, 6, 24) && compact(fallbackEffect) !== compact(headline)
+    ? fallbackEffect
+    : clauses.find((value) => completeLocalValue(value, 6, 24) && compact(value) !== compact(headline)) || clauses[0]);
+  const bodyText = !isPlaceholderCopy(fallbackBody) && completeLocalValue(fallbackBody, 12, 120)
+    ? fallbackBody
+    : clauses.find((value) => completeLocalValue(value, 12, 120) && compact(value) !== compact(headline) && compact(value) !== compact(effectZh)) || source;
+  const steps = clauses
+    .filter((value) => completeLocalValue(value, 3, 36))
+    .filter((value) => !isPlaceholderCopy(value))
+    .slice(0, 4);
+  if (!headline || !effectZh || !bodyText) {
+    throw new Error("VisualCardExtractionError: local captions cannot produce a complete source-backed card");
+  }
+  return {headline, effectZh, bodyText, steps};
+}
+function extractVisualCard(captions, fallback = {}) {
+  const text = sourceText(captions);
+  const match = RULES.find(([pattern]) => pattern.test(text));
+  const card = match ? match[1] : localSourceCard(captions, fallback);
+  const headline = String(card.headline || "").trim();
+  const effectZh = String(card.effectZh || "").trim();
+  const bodyText = String(card.bodyText || "").trim();
+  const steps = Array.isArray(card.steps)
+    ? card.steps.map((value) => String(value || "").trim()).filter((value) => value && !isPlaceholderCopy(value))
+    : [];
+  if (!completeLocalValue(headline, 4, 15) || !completeLocalValue(effectZh, 6, 24) || !bodyText) {
+    throw new Error("VisualCardExtractionError: incomplete visual card output");
+  }
+  return {headline, effectZh, bodyText, steps};
+}
+
 module.exports={extractVisualCard,overlap,compact,length};

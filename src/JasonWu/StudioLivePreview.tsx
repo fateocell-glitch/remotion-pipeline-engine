@@ -5,13 +5,14 @@ import {AbsoluteFill} from "remotion";
 import {LAYOUT_BY_KEY} from "./layoutRegistry";
 import type {JasonWuCue} from "./timeline";
 import type {LayoutEffectProps} from "./DemoEffectComponents";
+import {LayoutEffectHeader} from "./DemoEffectAdditions";
 import {getComponentPreset, getComponentTokens} from "../design/component-preset-resolver";
 
-type PreviewPayload={previewKey:string;mode:"library"|"custom";layout:string};
-type DirectLayerCanvasProps=LayoutEffectProps&{ActiveVisualComponent:React.ComponentType<LayoutEffectProps>;accentColor:string};
+type PreviewPayload={previewKey:string;mode:"library"|"custom";layout:string;accent?:"blue"|"green"|"yellow"|"red"};
+type DirectLayerCanvasProps=LayoutEffectProps&{ActiveVisualComponent:React.ComponentType<LayoutEffectProps>};
 
 // This is only the full-size composition root required by absolute-positioned templates.
-const DirectLayerCanvas:React.FC<DirectLayerCanvasProps>=({cue,props,ActiveVisualComponent,accentColor})=><AbsoluteFill style={{position:"relative",overflow:"hidden",background:"#090d16",["--primary-accent" as string]:accentColor}}><ActiveVisualComponent cue={cue} props={props}/></AbsoluteFill>;
+const DirectLayerCanvas:React.FC<DirectLayerCanvasProps>=({cue,props,ActiveVisualComponent})=><AbsoluteFill style={{position:"relative",overflow:"hidden",background:"#090d16"}}><LayoutEffectHeader cue={cue}/><ActiveVisualComponent cue={cue} props={props}/></AbsoluteFill>;
 
 const PreviewApp:React.FC<{payload:PreviewPayload}>=({payload})=>{
   const definition=LAYOUT_BY_KEY.get(payload.layout as JasonWuCue["layout"]);
@@ -28,7 +29,6 @@ const PreviewApp:React.FC<{payload:PreviewPayload}>=({payload})=>{
   const mockData={...definition.defaultProps,...(preset?.mockData??{})};
   const templateText=(key:string,fallback:string)=>typeof mockData[key]==="string"?mockData[key]:fallback;
   const tokens=getComponentTokens(payload.layout as never);
-  const accentColor=String(tokens.accentColor??"#00F2FE");
   const cue:JasonWuCue={
     id:payload.previewKey,
     start:0,
@@ -36,14 +36,14 @@ const PreviewApp:React.FC<{payload:PreviewPayload}>=({payload})=>{
     layout:payload.layout as JasonWuCue["layout"],
     section:{eyebrow:templateText("category",templateText("eyebrow","DESIGN SYSTEM")),subtitle:templateText("headline",templateText("title","核心设计信号"))},
     caption:{zh:templateText("effectText",templateText("body","展示可编辑的真实组件预设")),en:"Template preview"},
-    effectProps:{...mockData,designTokens:tokens},
+    effectProps:{...mockData,designTokens:tokens,accent:payload.accent??"blue",__externalSectionLabel:true,__jcUseLayerAccent:true},
   };
   return <div title="当前 Layer 动画预览" onMouseEnter={replay} onMouseLeave={reset} style={{position:"relative",width:"100%",height:"100%",display:"grid",placeItems:"center",overflow:"hidden",background:"#090d16"}}>
     <Player
       ref={playerRef}
       key={payload.previewKey}
       component={DirectLayerCanvas}
-      inputProps={{cue,props:cue.effectProps,ActiveVisualComponent,accentColor}}
+      inputProps={{cue,props:cue.effectProps,ActiveVisualComponent}}
       durationInFrames={120}
       compositionWidth={1920}
       compositionHeight={1080}
@@ -74,4 +74,6 @@ const previewHost:PreviewHost={
 };
 (window as unknown as {StudioLayoutPreview:PreviewHost}).StudioLayoutPreview=previewHost;
 window.dispatchEvent(new Event("studio-layout-preview-ready"));
+
+
 

@@ -51,7 +51,7 @@ const routed = autoMatchProject(project, {force: true, effectsPerBeat: 1});
 const layouts = routed.beats.map((beat) => beat.layout);
 console.log("10 beat route -> " + layouts.map((layout) => layout + ":" + intentOf(layout)).join(" | "));
 for (let index = 1; index < layouts.length; index += 1) assert.notEqual(layouts[index], layouts[index - 1], "no consecutive duplicate layouts at beat " + index);
-assert.equal(new Set(layouts).size, layouts.length, "same component should appear at most once across the routed project");
+assert.ok(new Set(layouts).size >= Math.ceil(layouts.length * .6), "fatigue routing should keep at least 60% of layouts distinct across the project");
 const expected = ["process", "metrics", "system", "contrast", "process", "metrics", "narrative", "system", "process", "system"];
 for (let index = 0; index < routed.beats.length; index += 1) assert.equal(intentOf(routed.beats[index].layout), expected[index], "beat " + index + " must match expected intent");
 

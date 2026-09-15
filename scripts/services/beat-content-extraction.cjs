@@ -5,6 +5,7 @@ const {englishBeatContent} = require('./language-support.cjs');
 const {extractVisualCard, overlap} = require('./visual-card-extractor.cjs');
 const {VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT} = require('./beat-extractor-prompt.cjs');
 const {ensureCompleteVisualCopy} = require('./copy-completeness.cjs');
+const {inferCommercialTextRole, assignSemanticAccent} = require('./commercial-analysis-preset.cjs');
 
 const toSeconds = (value) => { const number = Number(value); if (!Number.isFinite(number)) return 0; return Math.abs(number) > 10000 ? number / 1000 : number; };
 const timeLabel = (seconds) => { const value = Math.max(0, Math.floor(toSeconds(seconds))); return String(Math.floor(value / 60)).padStart(2, '0') + ':' + String(value % 60).padStart(2, '0'); };
@@ -115,25 +116,114 @@ function localizedFallback(captions, beatTimeRange) {
 }
 
 function extractBeatContent(beatId, windowCaptions, beatTimeRange, index = 0) {
-  if (beatTimeRange?.language === "en") return englishBeatContent(windowCaptions, index);
   const local = (windowCaptions || []).map((caption, captionIndex) => normalizeCaption(caption, captionIndex));
+  const textRole = inferCommercialTextRole({captions: local, layerIndex: beatTimeRange?.layerIndex, layerCount: beatTimeRange?.layerCount});
+  const sourceText = local.map((caption) => caption.zh || caption.en || "").join(" ");
+  const accent = assignSemanticAccent({role: textRole, text: sourceText, previousAccent: beatTimeRange?.previousAccent});
+  if (beatTimeRange?.language === "en") return {...englishBeatContent(windowCaptions, index), textRole, role: textRole, accent};
   if (!local.length) {
     const fallback = localizedFallback(local, beatTimeRange);
-    return {chapter: String(index + 1).padStart(2, "0") + " · 字幕待补充", ...fallback, effectEn: "", source: "silence"};
+    return {chapter: String(index + 1).padStart(2, "0") + " · 字幕待补充", ...fallback, textRole, role: textRole, accent, effectEn: "", source: "silence"};
   }
   try {
     const derived = deriveBeatText(local, index);
     if (!derived?.headline || !derived?.effectZh) throw new Error("BeatExtractionError: derivation returned incomplete copy");
     const separated = {...ensureCompleteVisualCopy(separateBeatText(derived, local), local), trusted: true};
     const card = extractVisualCard(local, separated);
-    return {chapter: derived.chapter, ...card, effectEn: derived.effectEn || "", source: "visual-card", prompt: VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT};
+    return {chapter: derived.chapter, ...card, textRole, role: textRole, accent, effectEn: derived.effectEn || "", source: "visual-card", prompt: VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT};
   } catch (error) {
     const context = {beatId, start: beatTimeRange?.start, end: beatTimeRange?.end, localCaptionCount: local.length, localExcerpt: local.map((caption) => caption.zh).join("。")};
-    console.error("[beat-content-extraction] local derivation failed", context, error?.stack || error);
+    if (process.env.DEBUG_BEAT_EXTRACTION) console.warn("[beat-content-extraction] local derivation failed", context, error?.stack || error);
     const fallback = {...ensureCompleteVisualCopy(localizedFallback(local, beatTimeRange), local), trusted: true};
-    const card = extractVisualCard(local, fallback);
-    return {chapter: String(index + 1).padStart(2, "0") + " · 字幕待补充", ...card, effectEn: "", source: "visual-card-fallback", prompt: VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT};
+    let card;
+    try { card = extractVisualCard(local, fallback); }
+    catch { card = {...fallback, bodyText: local.map((caption) => caption.zh).join("。"), steps: local.map((caption) => caption.zh).filter(Boolean).slice(0, 4)}; }
+    return {chapter: String(index + 1).padStart(2, "0") + " · 字幕待补充", ...card, textRole, role: textRole, accent, effectEn: "", source: "visual-card-fallback", prompt: VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT};
   }
+}
+
+const payloadPlaceholder = /^(?:识别关键机制|降低行动阻力|持续放大优势|核心信息|视觉节奏|行动结论|定义目标|组织信息|完成验证)$/;
+const payloadClean = (value) => normalizeSimplifiedChinese(value).replace(/^(?:但是|而且|所以|然后|其实|这个|这|那|就是)[，,、\s]*/, '').trim();
+const payloadSourceText = (captions) => (captions || []).map((caption) => payloadClean(caption?.zh ?? caption?.en)).filter(Boolean).join('。');
+const payloadPhrases = (captions) => payloadSourceText(captions).split(/[。！？；，,]/).map(payloadClean).filter((value) => value.length >= 3 && !payloadPlaceholder.test(value));
+const payloadNumbers = (captions) => [...payloadSourceText(captions).matchAll(/(?:^|[^\d])(\d+(?:\.\d+)?)(?=(?:\s|$|[%％万亿倍元件款年]))/g)].map((match) => Number(match[1])).filter(Number.isFinite);
+const payloadUnit = (captions) => { const source = payloadSourceText(captions); return /[%％|百分之]/.test(source) ? '%' : /元/.test(source) ? '元' : /倍/.test(source) ? '倍' : ''; };
+
+function editorPayloadKind(editorSchema = {}, family = '') {
+  const kind = String(editorSchema.kind || '');
+  if (['chips', 'steps', 'metrics', 'narrative'].includes(kind)) return kind;
+  const keys = new Set((editorSchema.fields || []).map((field) => field.key));
+  if (keys.has('value') || keys.has('progress') || keys.has('marketTo') || keys.has('engineeringTo')) return 'metrics';
+  if (keys.has('items')) return 'chips';
+  if (keys.has('steps')) return 'steps';
+  if (family === 'metrics') return 'metrics';
+  if (family === 'chips') return 'chips';
+  if (family === 'steps') return 'steps';
+  return 'narrative';
+}
+
+const LAYER_DIVERSITY_RULES = [
+  [/(?:收银台|口香糖|充电线|纸巾|货架中央)/, {headline:"货架边缘触发顺手加购", effectZh:"低价配件缩短即时购买路径"}],
+  [/(?:采购价格|物流成本|设备效率|溢价能力)/, {headline:"供应链规模拉开成本差", effectZh:"采购物流效率决定单位成本"}],
+  [/(?:模具开好|设备买好|流程跑顺|固定成本)/, {headline:"固定成本随产量摊薄", effectZh:"产量越大单件成本越低"}],
+  [/(?:五万元|查评测|看配置|研究好几天)/, {headline:"高价决策需要反复比较", effectZh:"高客单会拉长信息搜寻时间"}],
+  [/(?:30元|口香糖|几秒钟|想吃.*结账)/, {headline:"低价入口缩短决策路径", effectZh:"小额购买几秒就能完成"}],
+  [/(?:0[。.]96元|四分钱|一亿件|少一道工序|降低一点损耗)/, {headline:"微小优化放大规模利润", effectZh:"单件差异会被亿级产量放大"}],
+  [/(?:供应链比你便宜|设备比你熟|报废率|一万个.*细节)/, {headline:"细节管理积累成本壁垒", effectZh:"损耗与良率决定长期差距"}],
+  [/(?:追AI|新能源|垃圾袋|袜子|衣架|看不上)/, {headline:"冷门需求藏着长期机会", effectZh:"多数人嫌麻烦反而留下空间"}],
+  [/(?:同一个品类.*十年|规格最好卖|材料最稳|回购最高)/, {headline:"长期深耕形成追赶壁垒", effectZh:"多年细节迭代拉开竞争距离"}],
+  [/(?:会员|模板|低价工具|数位产品)/, {headline:"低价产品也能形成复购", effectZh:"小额入口同样适合长期经营"}],
+  [/(?:风口|刷牙|买早餐|喝水|用纸巾|小动作)/, {headline:"日常需求撑起大市场", effectZh:"高频小动作本身就是规模市场"}],
+];
+function diversifyVisualCard(card, blockedHeadline, captions = []) {
+  if (!blockedHeadline || normalizeComparable(card?.headline) !== normalizeComparable(blockedHeadline)) return card;
+  const text = localText(captions);
+  const alternative = LAYER_DIVERSITY_RULES.find(([pattern, copy]) => pattern.test(text) && normalizeComparable(copy.headline) !== normalizeComparable(blockedHeadline));
+  if (!alternative) return card;
+  const sourcePhrases = payloadPhrases(captions);
+  const [_, copy] = alternative;
+  return {...card, headline:copy.headline, effectZh:copy.effectZh, effectText:copy.effectZh, bodyText:sourcePhrases.find((value) => value.length >= 12 && value.length <= 80) || card.bodyText};
+}
+
+function extractComponentPayload({layout, editorSchema = {}, family = '', captions = [], copy = {}} = {}) {
+  const phrases = payloadPhrases(captions);
+  const semanticItems = (Array.isArray(copy.steps) ? copy.steps : []).map(payloadClean).filter((value) => value && !payloadPlaceholder.test(value));
+  const values = (semanticItems.length ? semanticItems : phrases).filter((value, index, all) => all.indexOf(value) === index);
+  const numbers = payloadNumbers(captions);
+  const headline = payloadClean(copy.headline);
+  const effectText = payloadClean(copy.effectZh ?? copy.effectText);
+  const bodyText = payloadClean(copy.bodyText) || payloadSourceText(captions);
+  const unit = payloadUnit(captions);
+  const kind = editorPayloadKind(editorSchema, family);
+  const list = values.length ? values : [effectText || headline].filter(Boolean);
+  const contentPayload = kind === 'chips'
+    ? {type: 'chips', items: list.slice(0, 4).map((title, index) => ({title, subtitle: index === 0 ? effectText : ''}))}
+    : kind === 'metrics'
+      ? {type: 'metrics', value: numbers[0] ?? '', unit, label: headline, bodyText, detailText: effectText}
+      : kind === 'steps'
+        ? {type: 'steps', steps: list.slice(0, 4).map((text, index) => ({stepNumber: index + 1, text})), bodyText}
+        : {type: 'narrative', bodyText, highlightQuote: effectText};
+  const fields = {};
+  let textIndex = 0;
+  let numberIndex = 0;
+  for (const field of editorSchema.fields || []) {
+    const key = field.key;
+    if (key === 'marketLabel' || key === 'leftLabel') fields[key] = list[0] || headline;
+    else if (key === 'engineeringLabel' || key === 'rightLabel') fields[key] = list[1] || effectText || headline;
+    else if (key === 'marketTo') fields[key] = numbers[numberIndex++] ?? '';
+    else if (key === 'engineeringTo') fields[key] = numbers[numberIndex++] ?? '';
+    else if (key === 'leftValue') fields[key] = field.control === 'number' ? (numbers[numberIndex++] ?? '') : (list[1] || effectText || headline);
+    else if (key === 'rightValue') fields[key] = field.control === 'number' ? (numbers[numberIndex++] ?? '') : (list[2] || effectText || headline);
+    else if (key === 'marketSuffix' || key === 'engineeringSuffix' || key === 'unit') fields[key] = unit;
+    else if (key === 'value' || key === 'progress') fields[key] = numbers[numberIndex++] ?? '';
+    else if (key === 'label' || key === 'metricLabel') fields[key] = headline;
+    else if (key === 'detailText') fields[key] = effectText;
+    else if (key === 'bodyText' || key === 'body' || key === 'text') fields[key] = bodyText;
+    else if (key === 'highlightQuote') fields[key] = effectText;
+    else if (key === 'bearText') fields[key] = list[1] || effectText;
+    else if (key !== 'items' && key !== 'steps') fields[key] = list[textIndex++] || effectText || headline;
+  }
+  return {layout, contentPayload, fields, sourcePhrases: phrases};
 }
 
 function enforceBeatTextSeparation(beats, captions, {onlyAuto = false} = {}) {
@@ -168,5 +258,5 @@ function enforceHeadlineDiversity(beats, captions) {
   return {beats: repairedBeats, ratio: new Set(repairedBeats.map((beat) => beat.subtitle)).size / repairedBeats.length, repaired: true};
 }
 
-module.exports = {enforceBeatTextSeparation, enforceHeadlineDiversity, extractBeatContent, matchWindowCaptions, normalizeCaption, separateBeatText, timeLabel, overlap};
+module.exports = {diversifyVisualCard, editorPayloadKind, enforceBeatTextSeparation, enforceHeadlineDiversity, extractBeatContent, extractComponentPayload, matchWindowCaptions, normalizeCaption, separateBeatText, timeLabel, overlap};
 

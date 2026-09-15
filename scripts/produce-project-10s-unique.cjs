@@ -4,8 +4,8 @@ const {copyFileSync, existsSync, readFileSync, writeFileSync} = require("node:fs
 const {dirname, join} = require("node:path");
 const {ensureProjectLifecycle} = require("./project-render-assets.cjs");
 const {hydrateBeatDrafts} = require("./project-onboarding.cjs");
-const {buildEffectProps} = require("./layout-matcher.cjs");
-const {buildBeatContext, componentRegistry, pickBestComponent} = require("./services/component-recommender.cjs");
+const {buildEffectProps, hydrateLayerWithPayload} = require("./layout-matcher.cjs");
+const {buildBeatContext, componentRegistry, pickBestComponent, scoreComponent} = require("./services/component-recommender.cjs");
 const {matchWindowCaptions} = require("./services/beat-content-extraction.cjs");
 const {getComponentRegistrySync} = require("./services/component-registry-store.cjs");
 
@@ -35,9 +35,15 @@ function allowedLayouts(root) {
 
 function chooseUnusedComponent(context, history, used, allowed) {
   const recommendation = pickBestComponent(context, 0, history);
-  const choice = recommendation.ranked.find((candidate) => allowed.has(candidate.componentId) && !used.has(candidate.componentId));
-  if (!choice) throw new Error("10-second unique production ran out of unused visual components.");
-  return choice;
+  const preferred = recommendation.ranked.find((candidate) => allowed.has(candidate.componentId) && !used.has(candidate.componentId));
+  if (preferred) return preferred;
+  const fallback = [...allowed]
+    .filter((componentId) => !used.has(componentId))
+    .map((componentId) => scoreComponent(componentId, context, history))
+    .filter((candidate) => Number.isFinite(candidate.score))
+    .sort((left, right) => right.score - left.score || left.componentId.localeCompare(right.componentId))[0];
+  if (!fallback) throw new Error("Unique component production ran out of eligible visual components.");
+  return fallback;
 }
 
 function createTenSecondUniqueProject(source, {root = process.cwd(), targetSeconds = 10} = {}) {
@@ -62,10 +68,10 @@ function createTenSecondUniqueProject(source, {root = process.cwd(), targetSecon
   const history = [];
   const allowed = allowedLayouts(root);
   const beats = hydrated.map((draft, index) => {
-    const captions = matchWindowCaptions(source.captions || [], draft, 0.01).captions;
+    const captions = matchWindowCaptions(source.captions || [], draft, .35).captions;
     const choice = chooseUnusedComponent(buildBeatContext({text: textFor(captions), captions, beatIndex: index, totalBeats: hydrated.length, layerIndex: 0, layerCount: 1}), history, used, allowed);
     const layout = choice.componentId;
-    const effectProps = buildEffectProps(draft, captions, layout);
+    const effectProps = hydrateLayerWithPayload(layout, buildEffectProps(draft, captions, layout), captions);
     const durationSeconds = round(draft.end - draft.start);
     const layer = {
       layerId: "layer-1",
@@ -79,7 +85,7 @@ function createTenSecondUniqueProject(source, {root = process.cwd(), targetSecon
       enterOffset: 0,
     };
     used.add(layout);
-    history.push({layout, family: componentRegistry[layout]?.family});
+    history.push({layout, family: componentRegistry[layout]?.family, beatIndex:index, layerIndex:0});
     return {...draft, layout, effectProps: {...effectProps}, layers: [layer], layoutSource: "auto", layoutLocked: false};
   });
   const previousById = new Map((source.beats || []).map((beat) => [beat.id, beat]));

@@ -5,10 +5,12 @@ const {getComponentRegistrySync} = require("./component-registry-store.cjs");
 const normalizedOffset = (value) => typeof value === "number" && Number.isFinite(value) ? Math.max(0, value) : 0;
 const normalizeCommonProps = (value, legacyEnterOffset) => {
   const source = value && typeof value === "object" && !Array.isArray(value) ? value : {};
-  return {enterOffset: normalizedOffset(source.enterOffset ?? legacyEnterOffset), exitOffset: normalizedOffset(source.exitOffset), duration: typeof source.duration === "number" && Number.isFinite(source.duration) && source.duration > 0 ? source.duration : undefined, position: ["center","bottom-left","bottom-right","top-right","center-right"].includes(source.position) ? source.position : "center", offsetX: typeof source.offsetX === "number" && Number.isFinite(source.offsetX) ? source.offsetX : 0, offsetY: typeof source.offsetY === "number" && Number.isFinite(source.offsetY) ? source.offsetY : 0, scale: Math.min(1.2, Math.max(0.8, typeof source.scale === "number" && Number.isFinite(source.scale) ? source.scale : 1)), enterAnimation: ["spring-up","fade-scale","slide-left","slide-right","glitch"].includes(source.enterAnimation) ? source.enterAnimation : "spring-up", exitAnimation: ["fade-out","slide-down","scale-down","none"].includes(source.exitAnimation) ? source.exitAnimation : "none", sfx: ["whoosh","tech-click","pop","none"].includes(source.sfx) ? source.sfx : "none"};
+  return {enterOffset: normalizedOffset(source.enterOffset ?? legacyEnterOffset), exitOffset: normalizedOffset(source.exitOffset), duration: typeof source.duration === "number" && Number.isFinite(source.duration) && source.duration > 0 ? source.duration : undefined, position: ["center","bottom-left","bottom-right","top-right","center-right"].includes(source.position) ? source.position : "center", offsetX: typeof source.offsetX === "number" && Number.isFinite(source.offsetX) ? source.offsetX : 0, offsetY: typeof source.offsetY === "number" && Number.isFinite(source.offsetY) ? source.offsetY : 0, scale: Math.min(1.2, Math.max(0.8, typeof source.scale === "number" && Number.isFinite(source.scale) ? source.scale : 1)), enterAnimation: ["spring-up","fade-scale","slide-left","slide-right","glitch"].includes(source.enterAnimation) ? source.enterAnimation : "spring-up", exitAnimation: ["fade-out","slide-down","scale-down","none"].includes(source.exitAnimation) ? source.exitAnimation : "none", sfx: ["whoosh","tech-click","pop","none"].includes(source.sfx) ? source.sfx : "none", ...(["auto","manual"].includes(source.faceAvoidanceMode) ? {faceAvoidanceMode: source.faceAvoidanceMode} : {}), ...(["speaker_mode","cinematic_mode"].includes(source.sceneModeOverride) ? {sceneModeOverride: source.sceneModeOverride} : {}), ...(["left","right"].includes(source.alignOverride) ? {alignOverride: source.alignOverride} : {})};
 };
 
 const clean = (value, fallback = "") => typeof value === "string" ? value.trim() : fallback;
+const VALID_ROLES = new Set(["hook", "chain", "metric", "risk", "verdict"]);
+const VALID_ACCENTS = new Set(["blue", "green", "yellow", "red"]);
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
 const layerPayload = (layer) => {
   const source = object(layer?.payload);
@@ -19,7 +21,7 @@ const layerPayload = (layer) => {
 };
 const CHIP_CONTENT_LAYOUTS = new Set(["hud-glow-stack", "diagonal-chips", "floating-chips", "desktop-folders", "photo-wall", "product-explosion"]);
 const STEP_CONTENT_LAYOUTS = new Set(["ordered-sequence", "event-timeline", "rewind-milestones", "time-rewind", "route-map", "check-progress", "org-chart", "closing-checklist", "checklist-editorial", "recovery-progress-bars", "briefing-poster", "tradeoff-reject-round", "reject-list", "pivot-list"]);
-const METRIC_CONTENT_LAYOUTS = new Set(["capital-dashboard", "engineering-return", "progress-donut", "data-flow", "platform-shift-line"]);
+const METRIC_CONTENT_LAYOUTS = new Set(["capital-dashboard",  "progress-donut", "data-flow", "platform-shift-line"]);
 const stringRows = (value) => Array.isArray(value) ? value.map((item) => typeof item === "string" ? item.trim() : typeof item?.text === "string" ? item.text.trim() : typeof item?.title === "string" ? item.title.trim() : "").filter(Boolean) : [];
 const componentFamily = (layout) => { try { return getComponentRegistrySync(process.cwd()).components.find((component) => component.id === layout)?.family || "narrative"; } catch { return "narrative"; } };
 const normalizeContentPayload = (payload, layout, effectText) => {
@@ -46,8 +48,13 @@ const normalizeLayer = (layer, index, beat) => {
   const headline = clean(layer?.headline, clean(legacy.headline, clean(legacy.title, clean(beat?.subtitle, "核心观点"))));
   const effectText = clean(layer?.effectText, clean(legacy.effectText, clean(legacy.effectZh, clean(legacy.body, clean(beat?.effectText, clean(beat?.zh, ""))))));
   const rawPayload = layerPayload(layer);
-  const payload = {...rawPayload, contentPayload: normalizeContentPayload(rawPayload, layer?.layout ?? beat?.layout, effectText)};
-  return {layerId: typeof layer?.layerId === "string" && layer.layerId ? layer.layerId : "layer-" + (index + 1), layout: layer?.layout ?? beat?.layout, category, headline, effectText, payload, commonProps: normalizeCommonProps(layer?.commonProps, layer?.enterOffset), enterOffset: normalizedOffset(layer?.commonProps?.enterOffset ?? layer?.enterOffset)};
+  const textRole = clean(layer?.textRole, clean(rawPayload.textRole, clean(legacy.textRole)));
+  const roleCandidate = String(layer?.role || rawPayload.role || legacy.role || textRole || "");
+  const role = VALID_ROLES.has(roleCandidate) ? roleCandidate : undefined;
+  const accentCandidate = String(layer?.accent || rawPayload.accent || legacy.accent || "blue");
+  const accent = VALID_ACCENTS.has(accentCandidate) ? accentCandidate : "blue";
+  const payload = {...rawPayload, ...(textRole ? {textRole} : {}), ...(role ? {role} : {}), accent, contentPayload: normalizeContentPayload(rawPayload, layer?.layout ?? beat?.layout, effectText)};
+  return {layerId: typeof layer?.layerId === "string" && layer.layerId ? layer.layerId : "layer-" + (index + 1), layout: layer?.layout ?? beat?.layout, category, headline, effectText, ...(textRole ? {textRole} : {}), ...(role ? {role} : {}), accent, payload, commonProps: normalizeCommonProps(layer?.commonProps, layer?.enterOffset), enterOffset: normalizedOffset(layer?.commonProps?.enterOffset ?? layer?.enterOffset)};
 };
 const layerEnd = (layer, beatDuration) => {
   const common = layer.commonProps || {};

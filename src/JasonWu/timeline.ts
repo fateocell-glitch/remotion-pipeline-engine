@@ -8,6 +8,9 @@ export type JasonWuCaption = {
   en: string;
 };
 
+export type CommercialTextRole = "hook" | "chain" | "metric" | "risk" | "verdict";
+export type SemanticAccent = "blue" | "green" | "yellow" | "red";
+
 export type JasonWuTranscriptCue = {
   start: number;
   end: number;
@@ -49,6 +52,8 @@ export type BaseLayerCommonProps = {
   exitAnimation: "fade-out" | "slide-down" | "scale-down" | "none";
   sfx: "whoosh" | "tech-click" | "pop" | "none";
   faceAvoidanceMode?: "auto" | "manual";
+  sceneModeOverride?: "speaker_mode" | "cinematic_mode";
+  alignOverride?: "left" | "right";
 };
 
 export type JasonWuEffectLayer = {
@@ -57,6 +62,9 @@ export type JasonWuEffectLayer = {
   category?: string;
   headline?: string;
   effectText?: string;
+  textRole?: CommercialTextRole;
+  role?: CommercialTextRole;
+  accent?: SemanticAccent;
   payload?: Record<string, unknown>;
   effectProps?: Record<string, unknown>; // Legacy project compatibility only.
   commonProps?: Partial<BaseLayerCommonProps>;
@@ -76,9 +84,7 @@ export type JasonWuCue = {
     | "value-verdict"
     | "capital-dashboard"
     | "cook-machine"
-    | "engineering-return"
     | "market-battlefield"
-    | "finale-kinetic"
     | "reject-list"
     | "check-progress"
     | "diagonal-chips"
@@ -121,13 +127,15 @@ export type JasonWuCue = {
     | "copyopen-bar-chart"
     | "copyopen-line-chart"
     | "copyopen-pie-chart"
-    | "copyopen-kpi-grid";
+    | "copyopen-kpi-grid"
+    | `jc-${string}`;
   people?: JasonWuPerson[];
   steps?: JasonWuStep[];
   metric?: JasonWuMetric;
   effectProps?: Record<string, unknown>;
   layers?: JasonWuEffectLayer[];
   faceZone?: import("../design/component-preset-resolver").FaceZone | null;
+  sceneMode?: "speaker_mode" | "cinematic_mode";
 };
 
 export const jasonWuCues: JasonWuCue[] = [

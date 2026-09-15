@@ -9,7 +9,7 @@ const {autoMatchProject} = require("./layout-matcher.cjs");
 const root = process.cwd();
 const projectsDir = join(root, "src", "JasonWu", "projects");
 const previewDir = join(root, "out", "project-editor-previews");
-const layouts = ["person-rank","event-timeline","pivot-list","capital-dashboard","cook-machine","engineering-return","market-battlefield","finale-kinetic","reject-list","check-progress","diagonal-chips","bare-typography","chapter-card","logo-wordmark","ordered-sequence","org-chart","draw-line","progress-donut","avatar-handoff","bull-bear","opinion-hero","photo-wall","product-explosion","route-map","data-flow","screen-recording","zoom-statement","desktop-folders","time-rewind","clipboard-note","closing-checklist","spotlight-question"];
+const layouts = ["person-rank","event-timeline","pivot-list","capital-dashboard","cook-machine","market-battlefield","reject-list","check-progress","diagonal-chips","bare-typography","chapter-card","logo-wordmark","ordered-sequence","org-chart","draw-line","progress-donut","avatar-handoff","bull-bear","opinion-hero","photo-wall","product-explosion","route-map","data-flow","screen-recording","zoom-statement","desktop-folders","time-rewind","clipboard-note","closing-checklist","spotlight-question"];
 const jobs = new Map();
 const send = (res, status, body, type = "application/json; charset=utf-8") => {res.writeHead(status, {"Content-Type": type, "Cache-Control": "no-store"}); res.end(body)};
 const readBody = (req) => new Promise((resolveBody, reject) => {let text=""; req.on("data", c => {text += c; if(text.length > 2000000) reject(new Error("Request too large."))}); req.on("end", () => resolveBody(text)); req.on("error", reject)});

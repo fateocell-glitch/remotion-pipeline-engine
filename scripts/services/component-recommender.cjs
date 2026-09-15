@@ -1,7 +1,12 @@
 "use strict";
 
+const {DEFAULT_WEIGHT, getComponentWeightsSync} = require("./component-weight-store.cjs");
+const {normalizeCommercialTextRole, textRolesForLayout} = require("./commercial-analysis-preset.cjs");
+const {getComponentRegistrySync} = require("./component-registry-store.cjs");
+const intentTextRoles = {narrative:["hook","verdict"], metrics:["metric"], process:["chain"], contrast:["risk","verdict"], system:["chain"]};
+
 const componentManifest = {
-  "engineering-return": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["工程","回归","打字机","观点"], visualWeight:"medium", family:"F3_ARGUMENT_CONFLICT", tags:["story","typewriter","product","statement"], data:["text"]},
+
   "capital-dashboard": {intent:"metrics", capacity:{minItems:1,maxItems:2}, keywords:["数据","增长","市值","营收","百分比","指标"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","market","growth"], data:["number","percentage"]},
   "progress-donut": {intent:"metrics", capacity:{minItems:1,maxItems:1}, keywords:["进度","完成度","百分比","转化率","%"], visualWeight:"light", family:"F1_QUANTITATIVE", tags:["metrics","confirmation","progress"], data:["percentage"]},
   "recovery-progress-bars": {intent:"metrics", capacity:{minItems:2,maxItems:5}, keywords:["进度","恢复","完成","推进","百分比"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","process","progress"], data:["list","percentage"]},
@@ -51,13 +56,38 @@ const componentManifest = {
   "chapter-card": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["章节","开场","主题"], visualWeight:"heavy", family:"F6_CHAPTER_VERDICT", tags:["chapter","statement","verdict"], data:["text"], allowRepeat:true},
   "closing-checklist": {intent:"process", capacity:{minItems:2,maxItems:5}, keywords:["收尾","清单","确认","总结"], visualWeight:"medium", family:"F6_CHAPTER_VERDICT", tags:["confirmation","verdict","checklist","process"], data:["list"]},
   "checklist-editorial": {intent:"process", capacity:{minItems:2,maxItems:5}, keywords:["清单","确认","步骤","总结"], visualWeight:"medium", family:"F6_CHAPTER_VERDICT", tags:["confirmation","statement","checklist","process"], data:["list"]},
-  "finale-kinetic": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["结尾","冲击","总结"], visualWeight:"heavy", family:"F6_CHAPTER_VERDICT", tags:["chapter","statement","verdict"], data:["text"], allowRepeat:true},
   "pivot-list": {intent:"narrative", capacity:{minItems:1,maxItems:4}, keywords:["打字机","观点","列表"], visualWeight:"medium", family:"F6_CHAPTER_VERDICT", tags:["comparison","statement","verdict"], data:["list","text"]},
   "copyopen-hero-title": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["开场","标题","主视觉"], visualWeight:"heavy", family:"F6_CHAPTER_VERDICT", tags:["chapter","statement","opening"], data:["text"], manualFirst:true},
   "copyopen-end-tag": {intent:"narrative", capacity:{minItems:1,maxItems:1}, keywords:["结尾","标语","收束"], visualWeight:"light", family:"F6_CHAPTER_VERDICT", tags:["confirmation","verdict","closing"], data:["text"], manualFirst:true},
 };
 
-for (const [id, manifest] of Object.entries(componentManifest)) manifest.id = id;
+const registeredJcAssets = (() => {
+  try {
+    return getComponentRegistrySync().components.filter((component) => component.id.startsWith("jc-") || component.id === "avatar-handoff" || component.id === "data-flow");
+  } catch {
+    return [];
+  }
+})();
+
+for (const component of registeredJcAssets) {
+  const manifest = component.manifest;
+  if (!manifest || !["narrative", "metrics", "process", "contrast", "system"].includes(manifest.intent)) continue;
+  componentManifest[component.id] = {
+    id: component.id,
+    intent: manifest.intent,
+    capacity: manifest.capacity,
+    keywords: manifest.keywords,
+    visualWeight: manifest.visualWeight,
+    family: component.family,
+    tags: Array.isArray(component.tags) ? component.tags : ["jc", manifest.intent],
+    data: Array.isArray(component.data) ? component.data : [],
+    textRoles: intentTextRoles[manifest.intent] ?? [],
+  };
+}
+for (const [id, manifest] of Object.entries(componentManifest)) {
+  manifest.id = id;
+  if (!Array.isArray(manifest.textRoles) || !manifest.textRoles.length) manifest.textRoles = textRolesForLayout(id);
+}
 
 const componentRegistry = Object.fromEntries(Object.entries(componentManifest).map(([id, manifest]) => [id, {family: manifest.family, tags: manifest.tags, data: manifest.data}]));
 
@@ -92,14 +122,14 @@ const tagPatterns = [
   ["system", /(?:系统|架构|链路|闭环|底层|模块|组织|分工|平台|生态|pipeline|architecture|system)/i],
 ];
 
-function buildBeatContext({text = "", captions = [], beatIndex = 0, totalBeats = 1, layerIndex = 0, layerCount = 1} = {}) {
+function buildBeatContext({text = "", captions = [], beatIndex = 0, totalBeats = 1, layerIndex = 0, layerCount = 1, textRole = ""} = {}) {
   const source = `${text} ${(captions || []).map((caption) => caption?.zh || caption?.en || "").join(" ")}`;
   const tags = new Set();
   for (const [tag, pattern] of tagPatterns) if (pattern.test(source)) tags.add(tag);
   if (tags.has("steps")) tags.add("process");
   if (!tags.size) tags.add("statement");
   const listCount = Math.max((source.match(/[，,。！？!?；;、]/g) || []).length + 1, (captions || []).filter((caption) => String(caption?.zh || caption?.en || "").trim()).length);
-  return {text: source, tags: [...tags], beatIndex, totalBeats, layerIndex, hasNumber: tags.has("metrics"), listCount, isOpening: beatIndex === 0 && layerIndex === 0, isClosing: beatIndex === totalBeats - 1 && layerIndex === layerCount - 1 && !(beatIndex === 0 && layerIndex === 0)};
+  return {text: source, tags: [...tags], beatIndex, totalBeats, layerIndex, textRole: normalizeCommercialTextRole(textRole), hasNumber: tags.has("metrics"), listCount, isOpening: beatIndex === 0 && layerIndex === 0, isClosing: beatIndex === totalBeats - 1 && layerIndex === layerCount - 1 && !(beatIndex === 0 && layerIndex === 0)};
 }
 
 function classifyBeatIntent(context) {
@@ -121,44 +151,66 @@ function classifyBeatIntent(context) {
   return {...context, targetIntent, intentScores: scores, payloadShape: {slotType, itemCount: Math.max(1, Math.min(8, context.listCount || 1)), hasMetric: Boolean(context.hasNumber)}};
 }
 
-const recentlyUsedLayouts = (history) => new Set((history || []).slice(-2).map((item) => item.layout));
-const usedLayouts = (history) => new Set((history || []).map((item) => item.layout));
-function candidateScore(manifest, classified, history = []) {
-  let score = 0;
-  if (manifest.intent === classified.targetIntent) score += 100;
+const clampScore = (value) => Math.max(0, Math.min(100, value));
+function getComponentWeight(componentId, root = process.cwd()) {
+  return getComponentWeightsSync(root)[componentId] ?? DEFAULT_WEIGHT;
+}
+
+function calculateFatiguePenalty(layout, classified, history = []) {
+  const appearances = (history || []).filter((item) => item.layout === layout);
+  const beatIndex = Number(classified.beatIndex);
+  const previousBeat = Number.isFinite(beatIndex)
+    ? appearances.some((item) => Number(item.beatIndex) === beatIndex - 1)
+    : history.at(-1)?.layout === layout;
+  const repeatedAcrossProject = appearances.length > 1;
+  return {
+    fatiguePenalty: (previousBeat ? 80 : 0) + (repeatedAcrossProject ? 40 : 0),
+    previousBeat,
+    appearanceCount: appearances.length,
+    repeatedAcrossProject,
+  };
+}
+
+function candidateScore(manifest, classified, history = [], componentWeights = getComponentWeightsSync()) {
+  let semanticScore = 0;
+  const baseWeight = componentWeights[manifest.id] ?? DEFAULT_WEIGHT;
+  const roleMatch = Boolean(classified.textRole && manifest.textRoles.includes(classified.textRole));
+  if (manifest.intent === classified.targetIntent) semanticScore += 45;
+  if (classified.textRole) semanticScore += roleMatch ? 32 : -22;
   const matchingKeywords = manifest.keywords.filter((keyword) => String(classified.text || "").toLowerCase().includes(keyword.toLowerCase()));
-  score += matchingKeywords.length * 16;
+  semanticScore += matchingKeywords.length * 18;
   const matchingTags = manifest.tags.filter((tag) => (classified.tags || []).includes(tag));
-  score += matchingTags.length * 9;
+  semanticScore += matchingTags.length * 8;
   const count = classified.payloadShape.itemCount;
-  if (count >= manifest.capacity.minItems && count <= manifest.capacity.maxItems) score += 14;
-  if (classified.payloadShape.hasMetric && manifest.data.some((kind) => ["number", "percentage"].includes(kind))) score += 18;
-  if (classified.payloadShape.slotType === "list" && manifest.data.includes("list")) score += 10;
-  if (classified.payloadShape.slotType === "quote" && manifest.data.includes("text")) score += 8;
-  if (classified.isOpening && manifest.id === "chapter-card" && classified.targetIntent === "narrative") score += 45;
-  if (classified.isClosing && manifest.id === "closing-checklist") score += 36;
-  if (manifest.manualFirst) score -= 60;
+  if (count >= manifest.capacity.minItems && count <= manifest.capacity.maxItems) semanticScore += 6;
+  if (classified.payloadShape.hasMetric && manifest.data.some((kind) => ["number", "percentage"].includes(kind))) semanticScore += 12;
+  if (classified.payloadShape.slotType === "list" && manifest.data.includes("list")) semanticScore += 6;
+  if (classified.payloadShape.slotType === "quote" && manifest.data.includes("text")) semanticScore += 6;
+  if (classified.isClosing && manifest.id === "closing-checklist") semanticScore += 16;
+  if (manifest.manualFirst) semanticScore -= 45;
   const previous = history.at(-1);
-  if (previous?.intent === manifest.intent) score -= 35;
-  if (classified.layerIndex > 0 && previous?.intent === "narrative" && ["metrics", "system"].includes(manifest.intent)) score += 42;
-  if (recentlyUsedLayouts(history).has(manifest.id)) score -= 100;
-  return {score, matchingTags, matchingKeywords};
+  if (previous?.intent === manifest.intent) semanticScore -= 12;
+  if (classified.layerIndex > 0 && previous?.intent === "narrative" && ["metrics", "system"].includes(manifest.intent)) semanticScore += 14;
+  semanticScore = clampScore(semanticScore);
+  const fatigue = calculateFatiguePenalty(manifest.id, classified, history);
+  const score = semanticScore * .4 + baseWeight * .6 - fatigue.fatiguePenalty;
+  return {score, semanticScore, baseWeight, preferenceWeight: baseWeight, fatiguePenalty: fatigue.fatiguePenalty, matchingTags, matchingKeywords, roleMatch, ...fatigue};
 }
 
 function getCandidatePool(classifiedInput, history = [], limit = 5) {
   const classified = classifiedInput.targetIntent ? classifiedInput : classifyBeatIntent(classifiedInput);
-  const used = usedLayouts(history);
   const previous = history.at(-1);
+  const componentWeights = getComponentWeightsSync();
   const allCandidates = () => Object.entries(componentManifest)
-    .map(([id, manifest]) => ({id, ...manifest, ...candidateScore({id, ...manifest}, classified, history)}))
-    .filter((item) => item.allowRepeat || !used.has(item.id));
+    .map(([id, manifest]) => ({id, ...manifest, ...candidateScore({id, ...manifest}, classified, history, componentWeights)}));
 
-  let candidates = allCandidates().filter((item) => item.intent === classified.targetIntent);
+  const roleCandidates = classified.textRole ? allCandidates().filter((item) => item.textRoles.includes(classified.textRole)) : [];
+  let candidates = roleCandidates.length >= 3 ? roleCandidates : allCandidates().filter((item) => item.intent === classified.targetIntent);
 
-  if (classified.layerIndex > 0 && previous?.intent === "narrative") {
+  if (roleCandidates.length < 3 && classified.layerIndex > 0 && previous?.intent === "narrative") {
     const complement = allCandidates().filter((item) => ["metrics", "system"].includes(item.intent));
     if (complement.length >= 3) candidates = complement;
-  } else if (previous?.intent && candidates.filter((item) => item.intent !== previous.intent).length >= 3) {
+  } else if (roleCandidates.length < 3 && previous?.intent && candidates.filter((item) => item.intent !== previous.intent).length >= 3) {
     candidates = candidates.filter((item) => item.intent !== previous.intent);
   }
 
@@ -168,26 +220,26 @@ function getCandidatePool(classifiedInput, history = [], limit = 5) {
   }
   candidates.sort((left, right) => right.score - left.score || left.visualWeight.localeCompare(right.visualWeight) || left.id.localeCompare(right.id));
   return candidates.slice(0, Math.max(3, Math.min(limit, 5)));
-}
-
-function scoreComponent(componentId, context, history = []) {
+}function scoreComponent(componentId, context, history = []) {
   const manifest = componentManifest[componentId];
   if (!manifest) return {componentId, score: Number.NEGATIVE_INFINITY, reasons: ["unregistered"]};
   const classified = classifyBeatIntent(context);
-  const raw = candidateScore({id: componentId, ...manifest}, classified, history);
+  const raw = candidateScore({id: componentId, ...manifest}, classified, history, getComponentWeightsSync());
   const reasons = [];
   if (manifest.intent === classified.targetIntent) reasons.push("意图命中 " + classified.targetIntent);
   if (raw.matchingTags.length) reasons.push(`语义标签 ${raw.matchingTags.join("、")}`);
   if (classified.payloadShape.hasMetric && manifest.data.some((kind) => ["number", "percentage"].includes(kind))) reasons.push("数值承载");
-  if (history.at(-1)?.layout === componentId) reasons.push("上一层同组件 -100");
-  if ((history || []).some((item) => item.layout === componentId) && !manifest.allowRepeat) reasons.push("全片已使用，硬排除");
-  return {componentId, family: manifest.family, intent: manifest.intent, score: raw.score, matchingTags: raw.matchingTags, reasons};
+  if (classified.textRole) reasons.push("文字角色 " + classified.textRole + (raw.roleMatch ? " 命中" : " 兼容兜底"));
+  reasons.push("人工优先级 " + raw.baseWeight);
+  if (raw.previousBeat) reasons.push("上一 Beat 出现 -80");
+  if (raw.repeatedAcrossProject) reasons.push("全片累计出现 " + raw.appearanceCount + " 次 -40");
+  return {componentId, family: manifest.family, intent: manifest.intent, textRole: classified.textRole, score: raw.score, semanticScore: raw.semanticScore, baseWeight: raw.baseWeight, preferenceWeight: raw.preferenceWeight, fatiguePenalty: raw.fatiguePenalty, matchingTags: raw.matchingTags, reasons};
 }
 
 function funnelPickComponent(beatContext, layerIndex = 0, history = []) {
   const classified = classifyBeatIntent({...beatContext, layerIndex});
   const candidatePool = getCandidatePool(classified, history, 5);
-  const ranked = candidatePool.map((item) => ({componentId: item.id, family: item.family, intent: item.intent, score: item.score, matchingTags: item.matchingTags, reasons: [`候选池意图 ${classified.targetIntent}`]})).sort((left, right) => right.score - left.score || left.componentId.localeCompare(right.componentId));
+  const ranked = candidatePool.map((item) => ({componentId: item.id, family: item.family, intent: item.intent, textRole: classified.textRole, score: item.score, semanticScore: item.semanticScore, baseWeight: item.baseWeight, fatiguePenalty: item.fatiguePenalty, matchingTags: item.matchingTags, preferenceWeight: item.preferenceWeight, reasons: [`候选池意图 ${classified.targetIntent}`, ...(classified.textRole ? [`文字角色 ${classified.textRole}${item.roleMatch ? " 命中" : " 兼容兜底"}`] : []), `人工优先级 ${item.baseWeight}`]})).sort((left, right) => right.score - left.score || left.componentId.localeCompare(right.componentId));
   const best = ranked[0];
   return {...best, classified, candidatePool, ranked};
 }
@@ -202,4 +254,4 @@ function summarizeComponentUsage(history = []) {
   return summary;
 }
 
-module.exports = {buildBeatContext, classifyBeatIntent, componentManifest, componentRegistry, funnelPickComponent, getCandidatePool, pickBestComponent, scoreComponent, summarizeComponentUsage};
+module.exports = {buildBeatContext, calculateFatiguePenalty, classifyBeatIntent, componentManifest, componentRegistry, funnelPickComponent, getCandidatePool, getComponentWeight, pickBestComponent, scoreComponent, summarizeComponentUsage};

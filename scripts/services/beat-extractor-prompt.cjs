@@ -14,6 +14,8 @@ const VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT = `
 5. 【完整性硬约束】Headline 必须是自成一体的名词短语或动宾短语；严禁以副词、介词、连词或依附状语开头、结尾。严禁以“从、到、在、当、与、和、以及、时、被、把、谁、的、地、得、逗号、顿号”收尾。
 6. 错误范例：“做这个skill时”、“你可能连对方的产品卖给谁、”。正确范例：“核心技能的商业化路径”、“明确终端客户画像与需求”。
 7. 中英文混排时，Industry Research、Remotion、iPhone Duo 等英文术语必须保留完整单词，绝不能输出半截词。
+8. 每个 Layer 必须额外标注 role：hook（认知反差、痛点切入或定性结论）、chain（商业运作链条或机制闭环）、metric（成本、单价、利润、转化或规模实证）、risk（前提限制、陷阱、阻力或亏损条件）、verdict（最终商业衡量基准）。role 必须由当前 Layer 的字幕证据决定，不能套用默认示例；旧字段 textRole 与 role 保持同值。
+9. 每个 Layer 必须输出 accent：blue（定义/机制/流程推进）、green（正向结论/收益/复购与增长）、yellow（机会点/认知冲突/反直觉转折）、red（风险/负面陷阱/失败前提）。risk 或亏损/踩坑/阻力优先 red，metric 的增长/收益优先 green，hook 的提问/反转/机会优先 yellow，chain 默认 blue；相邻 Layer 遇到同色且没有强烈红绿情绪时，在 blue 与 yellow 之间交替。
 
 Bad Case:
 口播：“这些东西便宜到你买的时候，可能连价格都懒得比较。”

@@ -1,13 +1,19 @@
 import React from "react";
+import registryJson from "../design/components.registry.json";
 import {AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig} from "remotion";
 import {LayoutEffectRenderer} from "./DemoEffectAdditions";
 import {componentCatalog, COMPONENT_CATALOG_SECONDS} from "./componentCatalog";
 import {getLayoutDefinition} from "./layoutRegistry";
 import type {JasonWuCue} from "./timeline";
 
+type RegistryEntry = {id: string; mockData?: Record<string, unknown>};
+const jcMockDataById = new Map((registryJson.components as RegistryEntry[]).filter((component) => component.id.indexOf("jc-") === 0).map((component) => [component.id, component.mockData ?? {}]));
+
 const CatalogScene: React.FC<{index: number}> = ({index}) => {
   const item = componentCatalog[index];
   const definition = getLayoutDefinition(item.layout);
+  const isNativeJc = String(item.layout).indexOf("jc-") === 0;
+  const jcMockData = isNativeJc ? jcMockDataById.get(item.layout) : undefined;
   const cue: JasonWuCue = {
     id: `catalog-${item.layout}`,
     start: 0,
@@ -15,13 +21,17 @@ const CatalogScene: React.FC<{index: number}> = ({index}) => {
     section: {eyebrow: item.en.toUpperCase(), subtitle: item.zh},
     caption: {zh: "Standard / visual component library", en: "JasonWu component catalog"},
     layout: item.layout,
-    effectProps: {...definition.defaultProps, __externalSectionLabel: true},
+    effectProps: {...definition.defaultProps, ...(jcMockData ?? {}), __externalSectionLabel: true},
     steps: [
       {index: "01", title: "Core Signal", subtitle: "KEY SIGNAL", active: true, tone: "blue"},
       {index: "02", title: "Action Path", subtitle: "FLOW SYSTEM", active: true, tone: "gold"},
       {index: "03", title: "Decision Result", subtitle: "FINAL OUTPUT", active: true, tone: "blue"},
     ],
   };
+
+  if (isNativeJc) {
+    return <AbsoluteFill style={{overflow: "hidden"}}><LayoutEffectRenderer cue={cue} layout={item.layout} showStandardHeader={false} /></AbsoluteFill>;
+  }
 
   return (
     <AbsoluteFill style={{background: "#000000", fontFamily: "Inter, Noto Sans SC, Microsoft YaHei UI, Microsoft YaHei, sans-serif", overflow: "hidden"}}>
@@ -36,14 +46,20 @@ const CatalogScene: React.FC<{index: number}> = ({index}) => {
   );
 };
 
-export const JasonWuComponentCatalog: React.FC = () => {
+export const JasonWuComponentCatalog: React.FC<{selectedLayout?: JasonWuCue["layout"]}> = ({selectedLayout}) => {
   const {fps} = useVideoConfig();
   const frame = useCurrentFrame();
   const framesPerScene = COMPONENT_CATALOG_SECONDS * fps;
-  const activeIndex = Math.min(componentCatalog.length - 1, Math.floor(frame / framesPerScene));
+  const directCatalogIndex = selectedLayout ? componentCatalog.map((item) => item.layout).indexOf(selectedLayout) : -1;
+  const shellStyle = {"--primary-accent": "#0A84FF", "--card-panel": "rgba(3,8,15,.82)"} as React.CSSProperties;
 
+  if (directCatalogIndex >= 0) {
+    return <AbsoluteFill style={shellStyle}><CatalogScene index={directCatalogIndex} /></AbsoluteFill>;
+  }
+
+  const activeIndex = Math.min(componentCatalog.length - 1, Math.floor(frame / framesPerScene));
   return (
-    <AbsoluteFill style={{"--primary-accent": "#0A84FF", "--card-panel": "rgba(3,8,15,.82)"} as React.CSSProperties}>
+    <AbsoluteFill style={shellStyle}>
       {componentCatalog.map((item, index) => (
         <Sequence key={item.layout} from={index * framesPerScene} durationInFrames={framesPerScene}>
           <CatalogScene index={index === activeIndex ? activeIndex : index} />
@@ -52,4 +68,3 @@ export const JasonWuComponentCatalog: React.FC = () => {
     </AbsoluteFill>
   );
 };
-

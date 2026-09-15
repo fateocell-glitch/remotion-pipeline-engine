@@ -77,7 +77,7 @@ function renderPayload(project, beat, presetSignature) {
   const layouts = [...new Set([layout, ...(Array.isArray(beatData.layers) ? beatData.layers.map((layer) => layer?.layout) : [])].filter(Boolean))];
   const resolvedPresets = Array.isArray(presetSignature) ? presetSignature.filter((entry) => layouts.includes(entry?.id)) : componentPresetFingerprintSync(process.cwd(), layouts);
   const renderPresets = resolvedPresets.map((preset) => ({id:preset?.id, family:preset?.family, displayIntent:preset?.displayIntent, tokens:preset?.tokens, sfx:preset?.sfx}));
-  return {version: 6, presenterSafeContract: 2, fps: project.fps, globalSettings: project.globalSettings, componentPresets: renderPresets, beat: {id: beatData.id, start: beatData.start, end: beatData.end, eyebrow: beatData.eyebrow, subtitle: beatData.subtitle, zh: beatData.zh, en: beatData.en, layers: beatData.layers, faceZone: beatData.faceZone}, captions};
+  return {version: 7, presenterSafeContract: 2, typographyContract: 2, fps: project.fps, globalSettings: project.globalSettings, componentPresets: renderPresets, beat: {id: beatData.id, start: beatData.start, end: beatData.end, eyebrow: beatData.eyebrow, subtitle: beatData.subtitle, zh: beatData.zh, en: beatData.en, layers: beatData.layers, faceZone: beatData.faceZone}, captions};
 }
 function renderContentHash(project, beat, presetSignature) {
   return createHash("sha256").update(stableJson(renderPayload(project, beat, presetSignature))).digest("hex");

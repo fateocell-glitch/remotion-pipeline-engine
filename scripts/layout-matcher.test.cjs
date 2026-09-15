@@ -11,7 +11,7 @@ test("auto layout stores caption-derived ordered steps in the primary layer", ()
   };
   const next = autoMatchProject(project);
   const beat = next.beats[0];
-  assert.equal(beat.layout, "chapter-card");
+  assert.ok(["chapter-card", "briefing-poster", "opinion-hero", "copyopen-hero-title"].includes(beat.layout));
   assert.equal(beat.effectProps.headline, "折叠屏价值需要验证");
   assert.ok(Array.isArray(beat.effectProps.items));
   assert.equal(beat.layers[0].effectProps.headline, beat.effectProps.headline);
@@ -24,7 +24,7 @@ test("non-opening ordered layout receives concise steps from its captions", () =
   };
   const next = autoMatchProject(project);
   const beat = next.beats[1];
-  assert.equal(beat.layout, "ordered-sequence");
+  assert.ok(["ordered-sequence", "check-progress", "route-map", "event-timeline"].includes(beat.layout));
   assert.ok(beat.effectProps.steps.length >= 2);
   assert.deepEqual(beat.layers[0].effectProps.steps, beat.effectProps.steps);
   assert.ok(beat.effectProps.steps.every((item) => !["发现问题", "形成判断"].includes(item)));

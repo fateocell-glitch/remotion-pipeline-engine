@@ -1,12 +1,11 @@
 "use strict";
-(() => {
+var StudioLivePreview = (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
   var __commonJS = (cb, mod) => function __require() {
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
@@ -26,7 +25,6 @@
     isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
     mod
   ));
-  var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
   // node_modules/.pnpm/react@19.2.3/node_modules/react/cjs/react.development.js
   var require_react_development = __commonJS({
@@ -1332,7 +1330,7 @@
           return dispatcher;
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var React17 = require_react(), Internals2 = {
+        var React22 = require_react(), Internals2 = {
           d: {
             f: noop,
             r: function() {
@@ -1350,7 +1348,7 @@
           },
           p: 0,
           findDOMNode: null
-        }, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React17.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+        }, REACT_PORTAL_TYPE = Symbol.for("react.portal"), ReactSharedInternals = React22.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
         "function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error(
           "React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills"
         );
@@ -2074,9 +2072,9 @@
                     (Fake = fn()) && "function" === typeof Fake.catch && Fake.catch(function() {
                     });
                   }
-                } catch (sample) {
-                  if (sample && control && "string" === typeof sample.stack)
-                    return [sample.stack, control.stack];
+                } catch (sample2) {
+                  if (sample2 && control && "string" === typeof sample2.stack)
+                    return [sample2.stack, control.stack];
                 }
                 return [null, null];
               }
@@ -2885,7 +2883,7 @@
           "number" === type && getActiveElement(node.ownerDocument) === node || node.defaultValue === "" + value || (node.defaultValue = "" + value);
         }
         function validateOptionProps(element, props) {
-          null == props.value && ("object" === typeof props.children && null !== props.children ? React17.Children.forEach(props.children, function(child) {
+          null == props.value && ("object" === typeof props.children && null !== props.children ? React22.Children.forEach(props.children, function(child) {
             null == child || "string" === typeof child || "number" === typeof child || "bigint" === typeof child || didWarnInvalidChild || (didWarnInvalidChild = true, console.error(
               "Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>."
             ));
@@ -18517,14 +18515,14 @@
           ));
         }
         "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-        var Scheduler = require_scheduler(), React17 = require_react(), ReactDOM = require_react_dom(), assign = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy");
+        var Scheduler = require_scheduler(), React22 = require_react(), ReactDOM = require_react_dom(), assign = Object.assign, REACT_LEGACY_ELEMENT_TYPE = Symbol.for("react.element"), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy");
         Symbol.for("react.scope");
         var REACT_ACTIVITY_TYPE = Symbol.for("react.activity");
         Symbol.for("react.legacy_hidden");
         Symbol.for("react.tracing_marker");
         var REACT_MEMO_CACHE_SENTINEL = Symbol.for("react.memo_cache_sentinel");
         Symbol.for("react.view_transition");
-        var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React17.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
+        var MAYBE_ITERATOR_SYMBOL = Symbol.iterator, REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), isArrayImpl = Array.isArray, ReactSharedInternals = React22.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, ReactDOMSharedInternals = ReactDOM.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, NotPending = Object.freeze({
           pending: false,
           data: null,
           method: null,
@@ -21312,7 +21310,7 @@
           }
         };
         (function() {
-          var isomorphicReactPackageVersion = React17.version;
+          var isomorphicReactPackageVersion = React22.version;
           if ("19.2.3" !== isomorphicReactPackageVersion)
             throw Error(
               'Incompatible React versions: The "react" and "react-dom" packages must have the exact same version. Instead got:\n  - react:      ' + (isomorphicReactPackageVersion + "\n  - react-dom:  19.2.3\nLearn more: https://react.dev/warnings/version-mismatch")
@@ -21666,18 +21664,18 @@
         function isValidElement(object) {
           return "object" === typeof object && null !== object && object.$$typeof === REACT_ELEMENT_TYPE;
         }
-        var React17 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React17.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
+        var React22 = require_react(), REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_ACTIVITY_TYPE = Symbol.for("react.activity"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference"), ReactSharedInternals = React22.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, hasOwnProperty = Object.prototype.hasOwnProperty, isArrayImpl = Array.isArray, createTask = console.createTask ? console.createTask : function() {
           return null;
         };
-        React17 = {
+        React22 = {
           react_stack_bottom_frame: function(callStackForError) {
             return callStackForError();
           }
         };
         var specialPropKeyWarningShown;
         var didWarnAboutElementRef = {};
-        var unknownOwnerDebugStack = React17.react_stack_bottom_frame.bind(
-          React17,
+        var unknownOwnerDebugStack = React22.react_stack_bottom_frame.bind(
+          React22,
           UnknownOwner
         )();
         var unknownOwnerDebugTask = createTask(getTaskName(UnknownOwner));
@@ -21725,22 +21723,24 @@
   var require_face_aware_layout = __commonJS({
     "scripts/services/face-aware-layout.cjs"(exports, module) {
       "use strict";
-      var SAFE_ISLAND_WIDTH = Math.round(1920 * 0.42);
+      var SAFE_ISLAND_WIDTH = Math.round(1920 * 0.48);
       var SAFE_ISLAND_SCALE = 0.78;
+      var CINEMATIC_WIDE_WIDTH = Math.round(1920 * 0.6);
+      var CINEMATIC_WIDE_SCALE = 0.92;
+      var CINEMATIC_CENTER_CORRIDOR_PCT = 35;
+      var BOTTOM_SUBTITLE_SAFE_PCT2 = 22;
       var clamp = (value, min, max) => Math.max(min, Math.min(max, value));
       var copy2 = (value) => ({ ...value || {} });
       var area = (rect) => Math.max(0, rect.w) * Math.max(0, rect.h);
       var overlapArea = (left, right) => Math.max(0, Math.min(left.x + left.w, right.x + right.w) - Math.max(left.x, right.x)) * Math.max(0, Math.min(left.y + left.h, right.y + right.h) - Math.max(left.y, right.y));
       function safeRect(faceZone) {
-        var _a2, _b, _c, _d;
         if (!faceZone || !Number.isFinite(Number(faceZone.faceX)) || !Number.isFinite(Number(faceZone.faceY))) return null;
-        return { x: clamp(Number((_a2 = faceZone.safeX) != null ? _a2 : faceZone.faceX), 0, 1), y: clamp(Number((_b = faceZone.safeY) != null ? _b : faceZone.faceY), 0, 1), w: clamp(Number((_c = faceZone.safeW) != null ? _c : faceZone.faceW), 0.01, 1), h: clamp(Number((_d = faceZone.safeH) != null ? _d : faceZone.faceH), 0.01, 1) };
+        return { x: clamp(Number(faceZone.safeX ?? faceZone.faceX), 0, 1), y: clamp(Number(faceZone.safeY ?? faceZone.faceY), 0, 1), w: clamp(Number(faceZone.safeW ?? faceZone.faceW), 0.01, 1), h: clamp(Number(faceZone.safeH ?? faceZone.faceH), 0.01, 1) };
       }
       function componentRect(tokens, commonProps) {
-        var _a2, _b;
         const width = clamp(Number(tokens.boundsWidth || 1180) / 1920, 0.18, 1);
         const height = clamp(Number(tokens.boundsHeight || 520) / 1080, 0.12, 1);
-        const scale = clamp(Number((_b = (_a2 = commonProps.scale) != null ? _a2 : tokens.scale) != null ? _b : 1), 0.72, 1.2);
+        const scale = clamp(Number(commonProps.scale ?? tokens.scale ?? 1), 0.72, 1.2);
         const w = width * scale, h = height * scale;
         const mode = tokens.mountMode || "center";
         let x = 0.5 - w / 2, y = 0.5 - h / 2;
@@ -21756,62 +21756,99 @@
         y += Number(commonProps.offsetY || 0) / 1080;
         return { x: clamp(x, -1, 1), y: clamp(y, -1, 1), w, h };
       }
-      function applyPresenterSafeIsland(tokens, commonProps, faceZone) {
-        var _a2, _b, _c, _d;
+      function normalizedFaceCenterX(faceZone) {
+        const x = Number(faceZone?.faceX);
+        const w = Number(faceZone?.faceW);
+        if (Number.isFinite(x) && Number.isFinite(w)) return clamp(x + w / 2, 0, 1);
+        return 0.5;
+      }
+      function detectSceneMode({ faceZone, sceneMode, beatIndex = 0, align } = {}) {
+        const explicitMode = sceneMode === "speaker_mode" || sceneMode === "cinematic_mode" ? sceneMode : null;
+        const face = safeRect(faceZone);
+        const faceAreaRatio = Number(faceZone?.faceAreaRatio ?? faceZone?.areaRatio ?? (face ? Number(faceZone?.faceW || face.w) * Number(faceZone?.faceH || face.h) : 0));
+        const facePresenceRatio = Number(faceZone?.facePresenceRatio ?? faceZone?.presenceRatio ?? faceZone?.durationRatio ?? (face ? 1 : 0));
+        const isSpeaker = explicitMode ? explicitMode === "speaker_mode" : Boolean(face && faceAreaRatio > 0.1 && facePresenceRatio > 0.5);
+        const scene = isSpeaker ? "speaker_mode" : "cinematic_mode";
+        let nextAlign = align === "left" || align === "right" ? align : null;
+        if (!nextAlign && scene === "speaker_mode") {
+          const faceArea = faceZone?.faceArea || (normalizedFaceCenterX(faceZone) > 0.5 ? "right" : "left");
+          nextAlign = faceArea === "right" ? "left" : faceArea === "left" ? "right" : "left";
+        }
+        if (!nextAlign) nextAlign = Number(beatIndex || 0) % 2 === 0 ? "left" : "right";
+        return { sceneMode: scene, align: nextAlign, faceZone: face ? { ...faceZone, faceAreaRatio, facePresenceRatio } : null, faceAreaRatio, facePresenceRatio };
+      }
+      function applyPresenterSafeIsland(tokens, commonProps, faceZone, align) {
         const face = safeRect(faceZone);
         const inset = 96, gap = 32;
-        const leftWidth = Math.max(0, Math.round(((_a2 = face == null ? void 0 : face.x) != null ? _a2 : 0.5) * 1920 - inset - gap));
-        const rightWidth = Math.max(0, Math.round((1 - (((_b = face == null ? void 0 : face.x) != null ? _b : 0.5) + ((_c = face == null ? void 0 : face.w) != null ? _c : 0))) * 1920 - inset - gap));
-        const faceArea = (faceZone == null ? void 0 : faceZone.faceArea) || "center";
-        const side = faceArea === "right" ? "left" : faceArea === "left" ? "right" : leftWidth >= rightWidth ? "left" : "right";
+        const leftWidth = Math.max(0, Math.round((face?.x ?? 0.5) * 1920 - inset - gap));
+        const rightWidth = Math.max(0, Math.round((1 - ((face?.x ?? 0.5) + (face?.w ?? 0))) * 1920 - inset - gap));
+        const faceArea = faceZone?.faceArea || "center";
+        const side = align === "left" || align === "right" ? align : faceArea === "right" ? "left" : faceArea === "left" ? "right" : leftWidth >= rightWidth ? "left" : "right";
         const available = side === "left" ? leftWidth : rightWidth;
         const maxWidth = Math.max(280, Math.min(SAFE_ISLAND_WIDTH, available || SAFE_ISLAND_WIDTH));
         tokens.presenterSafeMaxWidth = maxWidth;
         tokens.presenterSafeLogicalWidth = Math.round(maxWidth / SAFE_ISLAND_SCALE);
         tokens.mountMode = side;
         tokens.presenterSafeInset = side;
-        commonProps.scale = Math.min(Number((_d = commonProps.scale) != null ? _d : 1), SAFE_ISLAND_SCALE);
+        tokens.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
+        commonProps.scale = Math.min(Number(commonProps.scale ?? 1), SAFE_ISLAND_SCALE);
         if (side === "left") commonProps.offsetX = Math.min(Number(commonProps.offsetX || 0), 0);
         else commonProps.offsetX = Math.max(Number(commonProps.offsetX || 0), 0);
         return faceArea === "center" ? "presenter-safe-center-" + side : "presenter-safe-" + faceArea;
       }
-      function resolveFaceAwareLayer2({ layout, commonProps, tokens, faceZone, family, candidates, displayIntent = "side-overlay" }) {
-        var _a2, _b;
+      function applyCinematicWing(tokens, commonProps, align) {
+        const side = align === "right" ? "right" : "left";
+        tokens.mountMode = side;
+        tokens.presenterSafeInset = side;
+        tokens.presenterSafeMaxWidth = CINEMATIC_WIDE_WIDTH;
+        tokens.presenterSafeLogicalWidth = Math.round(CINEMATIC_WIDE_WIDTH / CINEMATIC_WIDE_SCALE);
+        tokens.cinematicCenterCorridorPct = CINEMATIC_CENTER_CORRIDOR_PCT;
+        tokens.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
+        commonProps.scale = Math.min(Number(commonProps.scale ?? 1), CINEMATIC_WIDE_SCALE);
+        commonProps.offsetX = side === "left" ? Math.min(Number(commonProps.offsetX || 0), 0) : Math.max(Number(commonProps.offsetX || 0), 0);
+        return "cinematic-wide-" + side;
+      }
+      function resolveFaceAwareLayer2({ layout, commonProps, tokens, faceZone, family, candidates, displayIntent = "side-overlay", sceneMode, beatIndex = 0 }) {
         const sourceCommon = copy2(commonProps);
         const sourceTokens = copy2(tokens);
-        const face = safeRect(faceZone);
-        const base = { layout, commonProps: sourceCommon, tokens: sourceTokens, avoidance: { applied: false, reason: "no-face", collision: 0, faceArea: (faceZone == null ? void 0 : faceZone.faceArea) || null, displayIntent } };
-        if (!face) return base;
+        const explicitSceneMode = sourceCommon.sceneModeOverride === "speaker_mode" || sourceCommon.sceneModeOverride === "cinematic_mode" ? sourceCommon.sceneModeOverride : sceneMode;
+        const explicitAlign = sourceCommon.alignOverride === "left" || sourceCommon.alignOverride === "right" ? sourceCommon.alignOverride : void 0;
+        const hasSceneLayoutOverride = Boolean(explicitSceneMode || explicitAlign);
+        if (hasSceneLayoutOverride) sourceCommon.position = "center";
+        const scene = detectSceneMode({ faceZone, sceneMode: explicitSceneMode, beatIndex, align: explicitAlign });
+        const face = safeRect(scene.faceZone);
+        const base = { layout, commonProps: sourceCommon, tokens: sourceTokens, avoidance: { applied: false, reason: scene.sceneMode === "cinematic_mode" ? "cinematic" : "no-face", collision: 0, faceArea: scene.faceZone?.faceArea || null, displayIntent, sceneMode: scene.sceneMode, align: scene.align } };
         if (displayIntent === "fullscreen-modal") return { ...base, avoidance: { ...base.avoidance, reason: "fullscreen-modal" } };
-        if (sourceCommon.faceAvoidanceMode === "manual") return { ...base, avoidance: { ...base.avoidance, reason: "manual" } };
+        if (sourceCommon.faceAvoidanceMode === "manual" && !explicitAlign && !explicitSceneMode) return { ...base, avoidance: { ...base.avoidance, reason: "manual" } };
+        if (scene.sceneMode === "cinematic_mode") {
+          const nextCommon2 = copy2(sourceCommon);
+          const nextTokens2 = copy2(sourceTokens);
+          const reason2 = applyCinematicWing(nextTokens2, nextCommon2, scene.align);
+          return { layout, commonProps: nextCommon2, tokens: nextTokens2, avoidance: { ...base.avoidance, applied: true, reason: reason2, maxWidth: nextTokens2.presenterSafeMaxWidth } };
+        }
+        if (!face) return base;
         const before = componentRect(sourceTokens, sourceCommon);
         const collision = area(face) ? overlapArea(before, face) / area(face) : 0;
         const nextCommon = copy2(sourceCommon);
         const nextTokens = copy2(sourceTokens);
-        const faceArea = faceZone.faceArea || "center";
-        const reason = applyPresenterSafeIsland(nextTokens, nextCommon, faceZone);
+        const faceArea = scene.faceZone.faceArea || "center";
+        const reason = applyPresenterSafeIsland(nextTokens, nextCommon, scene.faceZone, scene.align);
         const after = componentRect(nextTokens, nextCommon);
         const remaining = area(face) ? overlapArea(after, face) / area(face) : 0;
         let nextLayout = layout;
         if (remaining > 0.28 && Array.isArray(candidates)) {
-          const currentScore = Number((_b = (_a2 = candidates.find((item2) => item2.id === layout)) == null ? void 0 : _a2.occupancyScore) != null ? _b : 1);
-          const compact = candidates.filter((item2) => {
-            var _a3;
-            return item2.family === family && item2.id !== layout && item2.faceAvoidanceEligible !== false && Number((_a3 = item2.occupancyScore) != null ? _a3 : 1) < currentScore;
-          }).sort((left, right) => {
-            var _a3, _b2;
-            return Number((_a3 = left.occupancyScore) != null ? _a3 : 1) - Number((_b2 = right.occupancyScore) != null ? _b2 : 1);
-          })[0];
+          const currentScore = Number(candidates.find((item2) => item2.id === layout)?.occupancyScore ?? 1);
+          const compact = candidates.filter((item2) => item2.family === family && item2.id !== layout && item2.faceAvoidanceEligible !== false && Number(item2.occupancyScore ?? 1) < currentScore).sort((left, right) => Number(left.occupancyScore ?? 1) - Number(right.occupancyScore ?? 1))[0];
           if (compact) nextLayout = compact.id;
         }
-        return { layout: nextLayout, commonProps: nextCommon, tokens: nextTokens, avoidance: { applied: true, reason, collision, remainingCollision: remaining, faceArea, displayIntent, maxWidth: nextTokens.presenterSafeMaxWidth } };
+        return { layout: nextLayout, commonProps: nextCommon, tokens: nextTokens, avoidance: { applied: true, reason, collision, remainingCollision: remaining, faceArea, displayIntent, maxWidth: nextTokens.presenterSafeMaxWidth, sceneMode: scene.sceneMode, align: scene.align } };
       }
-      module.exports = { SAFE_ISLAND_SCALE, SAFE_ISLAND_WIDTH, componentRect, resolveFaceAwareLayer: resolveFaceAwareLayer2 };
+      module.exports = { BOTTOM_SUBTITLE_SAFE_PCT: BOTTOM_SUBTITLE_SAFE_PCT2, CINEMATIC_CENTER_CORRIDOR_PCT, CINEMATIC_WIDE_SCALE, CINEMATIC_WIDE_WIDTH, SAFE_ISLAND_SCALE, SAFE_ISLAND_WIDTH, componentRect, detectSceneMode, resolveFaceAwareLayer: resolveFaceAwareLayer2 };
     }
   });
 
   // src/JasonWu/StudioLivePreview.tsx
-  var import_react123 = __toESM(require_react());
+  var import_react130 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
   // node_modules/.pnpm/@remotion+player@4.0.522_re_3aa89c96c794c3c6f07a400220cdf8eb/node_modules/@remotion/player/dist/esm/index.mjs
@@ -21994,22 +22031,18 @@
     }
   });
   var getHot = () => {
-    var _a2;
     try {
       if (typeof __webpack_module__ === "undefined") {
         return null;
       }
-      return (_a2 = __webpack_module__.hot) != null ? _a2 : null;
-    } catch (e) {
+      return __webpack_module__.hot ?? null;
+    } catch {
       return null;
     }
   };
   var CompositionErrorBoundary = class extends import_react5.default.Component {
-    constructor() {
-      super(...arguments);
-      __publicField(this, "state", { hasError: false });
-      __publicField(this, "hmrStatusHandler", null);
-    }
+    state = { hasError: false };
+    hmrStatusHandler = null;
     static getDerivedStateFromError() {
       return { hasError: true };
     }
@@ -22113,8 +22146,7 @@
     componentIdentityResolver = resolver;
   };
   var resolveComponentIdentity = (component) => {
-    var _a2;
-    return (_a2 = componentIdentityResolver == null ? void 0 : componentIdentityResolver(component)) != null ? _a2 : component;
+    return componentIdentityResolver?.(component) ?? component;
   };
   var setStackForControls = (controls, stack) => {
     if (stack === void 0) {
@@ -22124,8 +22156,7 @@
     stacksByControls.set(controls, stack);
   };
   var getStackForControls = (controls) => {
-    var _a2;
-    return (_a2 = stacksByControls.get(controls)) != null ? _a2 : null;
+    return stacksByControls.get(controls) ?? null;
   };
   var getSingleChildComponent = (children) => {
     const mountedChildren = import_react7.default.Children.toArray(children);
@@ -22204,7 +22235,7 @@
   var useRemotionEnvironment = () => {
     const context = (0, import_react9.useContext)(RemotionEnvironmentContext);
     const [env] = (0, import_react9.useState)(() => getRemotionEnvironment());
-    return context != null ? context : env;
+    return context ?? env;
   };
   var getRegex = () => /^([a-zA-Z0-9-\u4E00-\u9FFF])+$/g;
   var isFolderNameValid = (name) => name.match(getRegex());
@@ -22225,12 +22256,11 @@
     parentName: null
   });
   var Folder = (props) => {
-    var _a2;
     const { name, children } = props;
     const parent = (0, import_react8.useContext)(FolderContext);
     const { registerFolder, unregisterFolder } = (0, import_react8.useContext)(CompositionSetters);
     const environment = useRemotionEnvironment();
-    const stack = (_a2 = props._remotionInternalStack) != null ? _a2 : null;
+    const stack = props._remotionInternalStack ?? null;
     validateFolderName(name);
     const parentNameArr = [parent.parentName, parent.folderName].filter(truthy);
     const parentName = parentNameArr.length === 0 ? null : parentNameArr.join("/");
@@ -22300,14 +22330,13 @@
     }
   };
   var resolveFileTokenToUrl = (value) => {
-    var _a2;
     const encodedName = value.replace(FILE_TOKEN, "");
     let name = encodedName;
     try {
       name = encodedName.split("/").map(decodeURIComponent).join("/");
-    } catch (e) {
+    } catch {
     }
-    const matchingStaticFile = (_a2 = window.remotion_staticFiles) == null ? void 0 : _a2.find((file) => file.name === name);
+    const matchingStaticFile = window.remotion_staticFiles?.find((file) => file.name === name);
     if (matchingStaticFile) {
       return matchingStaticFile.src;
     }
@@ -22551,10 +22580,9 @@
       newProps
     }) => {
       setProps((prev) => {
-        var _a2;
         return {
           ...prev,
-          [id]: typeof newProps === "function" ? newProps((_a2 = prev[id]) != null ? _a2 : defaultProps) : newProps
+          [id]: typeof newProps === "function" ? newProps(prev[id] ?? defaultProps) : newProps
         };
       });
     }, []);
@@ -22632,17 +22660,15 @@
       currentCompositionMetadata,
       currentAssetMetadata
     } = (0, import_react17.useContext)(CompositionManager);
-    const currentComposition = (canvasContent == null ? void 0 : canvasContent.type) === "composition" ? canvasContent.compositionId : null;
-    const compositionId = preferredCompositionId != null ? preferredCompositionId : currentComposition;
+    const currentComposition = canvasContent?.type === "composition" ? canvasContent.compositionId : null;
+    const compositionId = preferredCompositionId ?? currentComposition;
     const composition = compositions.find((c3) => c3.id === compositionId);
     const selectedEditorProps = (0, import_react17.useMemo)(() => {
-      var _a2;
-      return composition ? (_a2 = allEditorProps[composition.id]) != null ? _a2 : {} : {};
+      return composition ? allEditorProps[composition.id] ?? {} : {};
     }, [allEditorProps, composition]);
     const env = useRemotionEnvironment();
     return (0, import_react17.useMemo)(() => {
-      var _a2, _b, _c, _d;
-      if (preferredCompositionId === null && (canvasContent == null ? void 0 : canvasContent.type) === "asset" && (currentAssetMetadata == null ? void 0 : currentAssetMetadata.asset) === canvasContent.asset) {
+      if (preferredCompositionId === null && canvasContent?.type === "asset" && currentAssetMetadata?.asset === canvasContent.asset) {
         return {
           type: "success",
           metadataSource: null,
@@ -22663,7 +22689,7 @@
           result: {
             ...currentCompositionMetadata,
             id: composition.id,
-            defaultProps: (_a2 = composition.defaultProps) != null ? _a2 : {}
+            defaultProps: composition.defaultProps ?? {}
           }
         };
       }
@@ -22684,11 +22710,11 @@
             fps: composition.fps,
             id: composition.id,
             durationInFrames: composition.durationInFrames,
-            defaultProps: (_b = composition.defaultProps) != null ? _b : {},
+            defaultProps: composition.defaultProps ?? {},
             props: {
-              ...(_c = composition.defaultProps) != null ? _c : {},
-              ...selectedEditorProps != null ? selectedEditorProps : {},
-              ...typeof window === "undefined" || env.isPlayer || !window.remotion_inputProps ? {} : (_d = getInputProps()) != null ? _d : {}
+              ...composition.defaultProps ?? {},
+              ...selectedEditorProps ?? {},
+              ...typeof window === "undefined" || env.isPlayer || !window.remotion_inputProps ? {} : getInputProps() ?? {}
             },
             defaultCodec: null,
             defaultOutName: null,
@@ -22719,7 +22745,6 @@
   };
   var AssetPreviewComposition = () => null;
   var useVideo = () => {
-    var _a2;
     const {
       canvasContent,
       compositions,
@@ -22727,12 +22752,11 @@
       currentAssetMetadata
     } = (0, import_react16.useContext)(CompositionManager);
     const selected = compositions.find((c3) => {
-      return (canvasContent == null ? void 0 : canvasContent.type) === "composition" && c3.id === canvasContent.compositionId;
+      return canvasContent?.type === "composition" && c3.id === canvasContent.compositionId;
     });
-    const resolved = useResolvedVideoConfig((_a2 = selected == null ? void 0 : selected.id) != null ? _a2 : null);
+    const resolved = useResolvedVideoConfig(selected?.id ?? null);
     return (0, import_react16.useMemo)(() => {
-      var _a3;
-      if ((canvasContent == null ? void 0 : canvasContent.type) === "asset" && (currentAssetMetadata == null ? void 0 : currentAssetMetadata.asset) === canvasContent.asset) {
+      if (canvasContent?.type === "asset" && currentAssetMetadata?.asset === canvasContent.asset) {
         return {
           ...currentAssetMetadata,
           id: getAssetPreviewCompositionId(canvasContent.asset),
@@ -22754,9 +22778,9 @@
       }
       return {
         ...resolved.result,
-        defaultProps: (_a3 = selected.defaultProps) != null ? _a3 : {},
+        defaultProps: selected.defaultProps ?? {},
         id: selected.id,
-        ...currentCompositionMetadata != null ? currentCompositionMetadata : {},
+        ...currentCompositionMetadata ?? {},
         component: selected.component
       };
     }, [
@@ -22768,11 +22792,10 @@
     ]);
   };
   var useUnsafeVideoConfig = () => {
-    var _a2, _b, _c;
     const context = (0, import_react14.useContext)(SequenceContext);
-    const ctxWidth = (_a2 = context == null ? void 0 : context.width) != null ? _a2 : null;
-    const ctxHeight = (_b = context == null ? void 0 : context.height) != null ? _b : null;
-    const ctxDuration = (_c = context == null ? void 0 : context.durationInFrames) != null ? _c : null;
+    const ctxWidth = context?.width ?? null;
+    const ctxHeight = context?.height ?? null;
+    const ctxDuration = context?.durationInFrames ?? null;
     const video = useVideo();
     return (0, import_react14.useMemo)(() => {
       if (!video) {
@@ -22795,10 +22818,10 @@
       } = video;
       return {
         id,
-        width: ctxWidth != null ? ctxWidth : width,
-        height: ctxHeight != null ? ctxHeight : height,
+        width: ctxWidth ?? width,
+        height: ctxHeight ?? height,
         fps,
-        durationInFrames: ctxDuration != null ? ctxDuration : durationInFrames,
+        durationInFrames: ctxDuration ?? durationInFrames,
         defaultProps,
         props,
         defaultCodec,
@@ -22846,7 +22869,7 @@
       return subscribeToPortalNodeCurrentScale(update);
     }, []);
     if (hasContext === null || config === null || zoomContext === null) {
-      if (options == null ? void 0 : options.dontThrowIfOutsideOfRemotion) {
+      if (options?.dontThrowIfOutsideOfRemotion) {
         return 1;
       }
       if (env.isRendering) {
@@ -22936,8 +22959,7 @@
     });
   };
   var getErrorStackWithMessage = (error2) => {
-    var _a2;
-    const stack = (_a2 = error2.stack) != null ? _a2 : "";
+    const stack = error2.stack ?? "";
     return stack.startsWith("Error:") ? stack : `${error2.message}
 ${stack}`;
   };
@@ -23054,18 +23076,17 @@ ${stack}`;
     label: label22,
     options
   }) => {
-    var _a2, _b, _c, _d, _e;
     if (typeof label22 !== "string" && label22 !== null) {
       throw new Error("The label parameter of delayRender() must be a string or undefined, got: " + JSON.stringify(label22));
     }
     const handle = Math.random();
     scope.remotion_delayRenderHandles.push(handle);
-    const called = (_b = (_a2 = Error().stack) == null ? void 0 : _a2.replace(/^Error/g, "")) != null ? _b : "";
+    const called = Error().stack?.replace(/^Error/g, "") ?? "";
     if (environment.isRendering) {
-      const timeoutToUse = ((_d = (_c = options == null ? void 0 : options.timeoutInMilliseconds) != null ? _c : scope.remotion_puppeteerTimeout) != null ? _d : defaultTimeout) - 2e3;
-      const retriesLeft = ((_e = options == null ? void 0 : options.retries) != null ? _e : 0) - (scope.remotion_attempt - 1);
+      const timeoutToUse = (options?.timeoutInMilliseconds ?? scope.remotion_puppeteerTimeout ?? defaultTimeout) - 2e3;
+      const retriesLeft = (options?.retries ?? 0) - (scope.remotion_attempt - 1);
       scope.remotion_delayRenderTimeouts[handle] = {
-        label: label22 != null ? label22 : null,
+        label: label22 ?? null,
         startTime: Date.now(),
         timeout: setTimeout(() => {
           const message = [
@@ -23087,6 +23108,17 @@ ${stack}`;
     }
     scope.remotion_renderReady = false;
     return handle;
+  };
+  var delayRender = (label22, options) => {
+    if (typeof window === "undefined") {
+      return Math.random();
+    }
+    return delayRenderInternal({
+      scope: window,
+      environment: getRemotionEnvironment(),
+      label: label22 ?? null,
+      options: options ?? {}
+    });
   };
   var continueRenderInternal = ({
     scope,
@@ -23118,6 +23150,17 @@ ${stack}`;
       scope.remotion_renderReady = true;
     }
   };
+  var continueRender = (handle) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    continueRenderInternal({
+      scope: window,
+      handle,
+      environment: getRemotionEnvironment(),
+      logLevel: window.remotion_logLevel ?? "info"
+    });
+  };
   var LogLevelContext = (0, import_react20.createContext)({
     logLevel: "info",
     mountTime: 0
@@ -23138,9 +23181,8 @@ ${stack}`;
   };
   var DelayRenderContextType = (0, import_react19.createContext)(null);
   var useDelayRender = () => {
-    var _a2;
     const environment = useRemotionEnvironment();
-    const scope = (_a2 = (0, import_react19.useContext)(DelayRenderContextType)) != null ? _a2 : typeof window !== "undefined" ? window : void 0;
+    const scope = (0, import_react19.useContext)(DelayRenderContextType) ?? (typeof window !== "undefined" ? window : void 0);
     const logLevel = useLogLevel();
     const delayRender2 = (0, import_react19.useCallback)((label22, options) => {
       if (!scope) {
@@ -23149,8 +23191,8 @@ ${stack}`;
       return delayRenderInternal({
         scope,
         environment,
-        label: label22 != null ? label22 : null,
-        options: options != null ? options : {}
+        label: label22 ?? null,
+        options: options ?? {}
       });
     }, [environment, scope]);
     const continueRender2 = (0, import_react19.useCallback)((handle) => {
@@ -23165,7 +23207,7 @@ ${stack}`;
       });
     }, [environment, logLevel, scope]);
     const cancelRender2 = (0, import_react19.useCallback)((err) => {
-      return cancelRenderInternal(scope != null ? scope : typeof window !== "undefined" ? window : void 0, err);
+      return cancelRenderInternal(scope ?? (typeof window !== "undefined" ? window : void 0), err);
     }, [scope]);
     return { delayRender: delayRender2, continueRender: continueRender2, cancelRender: cancelRender2 };
   };
@@ -23239,7 +23281,6 @@ ${stack}`;
     schema,
     ...compProps
   }) => {
-    var _a2, _b, _c, _d;
     const compManager = (0, import_react2.useContext)(CompositionSetters);
     const { registerComposition, unregisterComposition } = compManager;
     const video = useVideo();
@@ -23252,7 +23293,7 @@ ${stack}`;
     const environment = useRemotionEnvironment();
     const canUseComposition = (0, import_react2.useContext)(CanUseRemotionHooks);
     if (typeof window !== "undefined") {
-      window.remotion_seenCompositionIds = Array.from(/* @__PURE__ */ new Set([...(_a2 = window.remotion_seenCompositionIds) != null ? _a2 : [], id]));
+      window.remotion_seenCompositionIds = Array.from(/* @__PURE__ */ new Set([...window.remotion_seenCompositionIds ?? [], id]));
     }
     if (canUseComposition) {
       if (isPlayer) {
@@ -23261,29 +23302,28 @@ ${stack}`;
       throw new Error("<Composition> mounted inside another composition. See https://remotion.dev/docs/wrong-composition-mount for help.");
     }
     const { folderName, parentName } = (0, import_react2.useContext)(FolderContext);
-    const stack = (_b = compProps._remotionInternalStack) != null ? _b : null;
+    const stack = compProps._remotionInternalStack ?? null;
     const componentFromProps = "component" in compProps ? resolveComponentIdentity(compProps.component) : null;
     (0, import_react2.useEffect)(() => {
-      var _a3;
       if (!id) {
         throw new Error("No id for composition passed.");
       }
       validateCompositionId(id);
       validateDefaultAndInputProps(defaultProps, "defaultProps", id);
       registerComposition({
-        durationInFrames: durationInFrames != null ? durationInFrames : void 0,
-        fps: fps != null ? fps : void 0,
-        height: height != null ? height : void 0,
-        width: width != null ? width : void 0,
+        durationInFrames: durationInFrames ?? void 0,
+        fps: fps ?? void 0,
+        height: height ?? void 0,
+        width: width ?? void 0,
         id,
         folderName,
         component: lazy,
-        defaultProps: serializeThenDeserializeInStudio(defaultProps != null ? defaultProps : {}),
+        defaultProps: serializeThenDeserializeInStudio(defaultProps ?? {}),
         order: null,
         parentFolderName: parentName,
         componentFromProps,
-        schema: schema != null ? schema : null,
-        calculateMetadata: (_a3 = compProps.calculateMetadata) != null ? _a3 : null,
+        schema: schema ?? null,
+        calculateMetadata: compProps.calculateMetadata ?? null,
         stack
       });
       return () => {
@@ -23326,7 +23366,7 @@ ${stack}`;
           children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react2.Suspense, {
             fallback: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Loading, {}),
             children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Comp, {
-              ...(_c = resolved.result.props) != null ? _c : {}
+              ...resolved.result.props ?? {}
             })
           })
         })
@@ -23341,7 +23381,7 @@ ${stack}`;
         children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react2.Suspense, {
           fallback: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Fallback, {}),
           children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Comp, {
-            ...(_d = resolved.result.props) != null ? _d : {}
+            ...resolved.result.props ?? {}
           })
         })
       }), portalNode());
@@ -23456,7 +23496,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [playbackRate, setPlaybackRate] = (0, import_react25.useState)(1);
     const audioAndVideoTags = (0, import_react25.useRef)([]);
     const [_frame, setFrame] = (0, import_react25.useState)(() => getInitialFrameState());
-    const frame = frameState != null ? frameState : _frame;
+    const frame = frameState ?? _frame;
     const frameRef = (0, import_react25.useRef)(frame);
     frameRef.current = frame;
     const readIsPlaying = (0, import_react25.useCallback)(() => playingStore.store.getSnapshot().playing, [playingStore]);
@@ -23469,8 +23509,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           const id = delayRender2(`Setting the current frame to ${f}`);
           let asyncUpdate = true;
           setFrame((s) => {
-            var _a2;
-            const currentFrame = (_a2 = s[composition]) != null ? _a2 : window.remotion_initialFrame;
+            const currentFrame = s[composition] ?? window.remotion_initialFrame;
             if (currentFrame === f) {
               asyncUpdate = false;
               return s;
@@ -23543,7 +23582,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var checkIfSnapshotChanged = (instance) => {
     try {
       return !objectIs(instance.value, instance.getSnapshot());
-    } catch (e) {
+    } catch {
       return true;
     }
   };
@@ -23576,8 +23615,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var useSyncExternalStoreShimServer = (_subscribe, getSnapshot) => getSnapshot();
   var shim = typeof window === "undefined" || typeof window.document === "undefined" || typeof window.document.createElement === "undefined" ? useSyncExternalStoreShimServer : useSyncExternalStoreShimClient;
-  var _a;
-  var useSyncExternalStore2 = (_a = React12.useSyncExternalStore) != null ? _a : shim;
+  var useSyncExternalStore2 = React12.useSyncExternalStore ?? shim;
   var usePlaying = () => {
     const { isPlaying } = useTimelineContext();
     const { subscribePlaying } = (0, import_react26.useContext)(SetTimelineContext);
@@ -23594,14 +23632,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     localStorage.setItem(makeKey(), JSON.stringify(time));
   };
   var getInitialFrameState = () => {
-    var _a2;
-    const item2 = (_a2 = localStorage.getItem(makeKey())) != null ? _a2 : "{}";
+    const item2 = localStorage.getItem(makeKey()) ?? "{}";
     const obj = JSON.parse(item2);
     return obj;
   };
   var getFrameForComposition = (composition) => {
-    var _a2, _b;
-    const item2 = (_a2 = localStorage.getItem(makeKey())) != null ? _a2 : "{}";
+    const item2 = localStorage.getItem(makeKey()) ?? "{}";
     const obj = JSON.parse(item2);
     if (obj[composition] !== void 0) {
       return Number(obj[composition]);
@@ -23609,19 +23645,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (typeof window === "undefined") {
       return 0;
     }
-    return (_b = window.remotion_initialFrame) != null ? _b : 0;
+    return window.remotion_initialFrame ?? 0;
   };
   var clampFrameToCompositionRange = (frame, durationInFrames) => {
     return Math.max(0, Math.min(Math.max(0, durationInFrames - 1), frame));
   };
   var useTimelinePositionFromContext = (state) => {
-    var _a2, _b;
     const videoConfig = useVideo();
     const env = useRemotionEnvironment();
     if (!videoConfig) {
-      return typeof window === "undefined" ? 0 : (_a2 = window.remotion_initialFrame) != null ? _a2 : 0;
+      return typeof window === "undefined" ? 0 : window.remotion_initialFrame ?? 0;
     }
-    const unclamped = (_b = state.frame[videoConfig.id]) != null ? _b : env.isPlayer ? 0 : getFrameForComposition(videoConfig.id);
+    const unclamped = state.frame[videoConfig.id] ?? (env.isPlayer ? 0 : getFrameForComposition(videoConfig.id));
     return clampFrameToCompositionRange(unclamped, videoConfig.durationInFrames);
   };
   var useTimelineContext = () => {
@@ -23691,7 +23726,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     children,
     active = true
   }) => {
-    var _a2;
     const frame = useCurrentFrame();
     const videoConfig = useVideoConfig();
     if (typeof frameToFreeze === "undefined") {
@@ -23716,7 +23750,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [active, frame]);
     const timelineContext = useTimelineContext();
     const sequenceContext = (0, import_react23.useContext)(SequenceContext);
-    const relativeFrom = (_a2 = sequenceContext == null ? void 0 : sequenceContext.relativeFrom) != null ? _a2 : 0;
+    const relativeFrom = sequenceContext?.relativeFrom ?? 0;
     const timelineValue = (0, import_react23.useMemo)(() => {
       if (!isActive) {
         return timelineContext;
@@ -24138,7 +24172,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
   };
   var clampCrop = (value) => {
-    return Math.min(1, Math.max(0, value != null ? value : 0));
+    return Math.min(1, Math.max(0, value ?? 0));
   };
   var resolveAxis = (start2, end) => {
     const resolvedStart = clampCrop(start2);
@@ -24169,17 +24203,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return null;
     }
     const serializeRadius = (radius) => typeof radius === "number" ? `${radius}px` : radius;
-    const shorthand = serializeRadius(style2 == null ? void 0 : style2.borderRadius);
+    const shorthand = serializeRadius(style2?.borderRadius);
     const longhands = [
-      style2 == null ? void 0 : style2.borderTopLeftRadius,
-      style2 == null ? void 0 : style2.borderTopRightRadius,
-      style2 == null ? void 0 : style2.borderBottomRightRadius,
-      style2 == null ? void 0 : style2.borderBottomLeftRadius
+      style2?.borderTopLeftRadius,
+      style2?.borderTopRightRadius,
+      style2?.borderBottomRightRadius,
+      style2?.borderBottomLeftRadius
     ];
-    const serializedBorderRadius = shorthand || (longhands.some((radius) => radius !== void 0) ? longhands.map((radius) => {
-      var _a2;
-      return (_a2 = serializeRadius(radius)) != null ? _a2 : "0px";
-    }).join(" ") : void 0);
+    const serializedBorderRadius = shorthand || (longhands.some((radius) => radius !== void 0) ? longhands.map((radius) => serializeRadius(radius) ?? "0px").join(" ") : void 0);
     const rounded = serializedBorderRadius ? ` round ${serializedBorderRadius}` : "";
     return `inset(${top * 100}% ${right * 100}% ${bottom * 100}% ${left * 100}%${rounded})`;
   };
@@ -24360,8 +24391,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           setSequences((currentSequences) => {
             let changed = false;
             const nextSequences = currentSequences.map((sequence) => {
-              var _a2;
-              const timelineOrder = (_a2 = order.get(sequence.id)) != null ? _a2 : null;
+              const timelineOrder = order.get(sequence.id) ?? null;
               if (sequence.timelineOrder === timelineOrder) {
                 return sequence;
               }
@@ -24380,19 +24410,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [isStudio, sequenceManagerId]);
     const registerSequence = (0, import_react30.useCallback)((seq) => {
       setSequences((seqs) => {
-        var _a2, _b;
         return [
           ...seqs,
           {
             ...seq,
-            timelineOrder: (_b = (_a2 = committedOrderRef.current) == null ? void 0 : _a2.get(seq.id)) != null ? _b : null
+            timelineOrder: committedOrderRef.current?.get(seq.id) ?? null
           }
         ];
       });
     }, []);
     const updateSequence = (0, import_react30.useCallback)((seq) => {
       setSequences((seqs) => {
-        var _a2, _b;
         const index = seqs.findIndex((item2) => item2.id === seq.id);
         if (index === -1) {
           return seqs;
@@ -24400,7 +24428,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         const next = [...seqs];
         next[index] = {
           ...seq,
-          timelineOrder: (_b = (_a2 = committedOrderRef.current) == null ? void 0 : _a2.get(seq.id)) != null ? _b : null
+          timelineOrder: committedOrderRef.current?.get(seq.id) ?? null
         };
         return next;
       });
@@ -24417,12 +24445,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       };
     }, [registerSequence, sequences, unregisterSequence, updateSequence]);
     const getDragOverrides = (0, import_react30.useCallback)((nodePath) => {
-      var _a2;
-      return (_a2 = dragOverrides[makeSequencePropsSubscriptionKey(nodePath)]) != null ? _a2 : {};
+      return dragOverrides[makeSequencePropsSubscriptionKey(nodePath)] ?? {};
     }, [dragOverrides]);
     const getEffectDragOverrides = (0, import_react30.useCallback)((nodePath, effectIndex) => {
-      var _a2;
-      return (_a2 = effectDragOverridesState[effectDragOverridesKey(nodePath, effectIndex)]) != null ? _a2 : {};
+      return effectDragOverridesState[effectDragOverridesKey(nodePath, effectIndex)] ?? {};
     }, [effectDragOverridesState]);
     const propStatusesContext = (0, import_react30.useMemo)(() => {
       return {
@@ -24500,7 +24526,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   });
   var ENABLE_V5_BREAKING_CHANGES = false;
   var resolveV5Default = (value) => {
-    return value != null ? value : ENABLE_V5_BREAKING_CHANGES;
+    return value ?? ENABLE_V5_BREAKING_CHANGES;
   };
   var usePremounting = ({
     from,
@@ -24516,8 +24542,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame() - parentPremountContext.premountFramesRemaining;
     const environment = useRemotionEnvironment();
     const { fps } = useVideoConfig();
-    const effectivePremountFor = ENABLE_V5_BREAKING_CHANGES ? premountFor != null ? premountFor : fps : premountFor != null ? premountFor : 0;
-    const effectivePostmountFor = postmountFor != null ? postmountFor : 0;
+    const effectivePremountFor = ENABLE_V5_BREAKING_CHANGES ? premountFor ?? fps : premountFor ?? 0;
+    const effectivePostmountFor = postmountFor ?? 0;
     const endThreshold = Math.ceil(from + durationInFrames - 1);
     const premountingActive = !environment.isRendering && frame < from && frame >= from - effectivePremountFor;
     const postmountingActive = !environment.isRendering && frame > endThreshold && frame <= endThreshold + effectivePostmountFor;
@@ -24795,12 +24821,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var UnsupportedStringInterpolationValueError = class extends TypeError {
   };
   var parseStringInterpolationComponent = (component, value) => {
-    var _a2;
     const match = cssNumberRegex.exec(component);
     if (match === null) {
       throw new UnsupportedStringInterpolationValueError(`Cannot interpolate "${value}" because "${component}" is not a supported scale, translate, or rotate value`);
     }
-    const unit = (_a2 = match[2]) != null ? _a2 : null;
+    const unit = match[2] ?? null;
     const numberValue = Number(match[1]);
     if (!Number.isFinite(numberValue)) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not finite`);
@@ -24821,12 +24846,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     value,
     allowPercentage
   }) => {
-    var _a2;
     const match = cssNumberRegex.exec(component);
     if (match === null) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not a supported transform-origin ${allowPercentage ? "length-percentage" : "z length"}`);
     }
-    const unit = (_a2 = match[2]) != null ? _a2 : null;
+    const unit = match[2] ?? null;
     const numberValue = Number(match[1]);
     if (!Number.isFinite(numberValue)) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not finite`);
@@ -24958,7 +24982,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     };
   };
   var parseStringInterpolationValue = (output) => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
     if (typeof output === "number") {
       if (!Number.isFinite(output)) {
         throw new Error(`outputRange must contain only finite numbers, but got [${output}]`);
@@ -24991,8 +25014,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     if (kind === "scale") {
       const x = parsed[0].value;
-      const y = (_b = (_a2 = parsed[1]) == null ? void 0 : _a2.value) != null ? _b : x;
-      const z = (_d = (_c = parsed[2]) == null ? void 0 : _c.value) != null ? _d : 1;
+      const y = parsed[1]?.value ?? x;
+      const z = parsed[2]?.value ?? 1;
       return {
         kind,
         values: [x, y, z, 0],
@@ -25003,11 +25026,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     return {
       kind,
-      values: [parsed[0].value, (_f = (_e = parsed[1]) == null ? void 0 : _e.value) != null ? _f : 0, (_h = (_g = parsed[2]) == null ? void 0 : _g.value) != null ? _h : 0, 0],
+      values: [parsed[0].value, parsed[1]?.value ?? 0, parsed[2]?.value ?? 0, 0],
       units: [
         parsed[0].unit,
-        (_j = (_i = parsed[1]) == null ? void 0 : _i.unit) != null ? _j : null,
-        (_l = (_k = parsed[2]) == null ? void 0 : _k.unit) != null ? _l : null,
+        parsed[1]?.unit ?? null,
+        parsed[2]?.unit ?? null,
         null
       ],
       dimensions: parsed.length,
@@ -25095,7 +25118,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
   var defaultEasing = (num2) => num2;
   var resolveOutputOption = (output) => {
-    return output != null ? output : "linear";
+    return output ?? "linear";
   };
   var shouldExtendRightForEasing = (easing) => {
     return easing.remotionShouldExtendRight === true;
@@ -25134,20 +25157,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
     outputRange,
     options
   }) => {
-    const output = resolveOutputOption(options == null ? void 0 : options.output);
+    const output = resolveOutputOption(options?.output);
     if (inputRange.length === 1) {
       return outputRange[0];
     }
-    const easingOption = options == null ? void 0 : options.easing;
+    const easingOption = options?.easing;
     let extrapolateLeft = "extend";
-    if ((options == null ? void 0 : options.extrapolateLeft) !== void 0) {
+    if (options?.extrapolateLeft !== void 0) {
       extrapolateLeft = options.extrapolateLeft;
     }
     let extrapolateRight = "extend";
-    if ((options == null ? void 0 : options.extrapolateRight) !== void 0) {
+    if (options?.extrapolateRight !== void 0) {
       extrapolateRight = options.extrapolateRight;
     }
-    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const range = findRange(posterizedInput, inputRange);
     const easing = resolveEasingForSegment({
       easing: easingOption,
@@ -25193,10 +25216,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     outputRange,
     options
   }) => {
-    var _a2;
     const initiallyParsedOutputRange = outputRange.map(parseStringInterpolationValue);
     const hasAxisRotation = initiallyParsedOutputRange.some((parsed) => parsed.axisRotation);
-    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const segmentIndex = inputRange.length === 1 ? 0 : findRange(posterizedInput, inputRange);
     const parsedOutputRange = hasAxisRotation ? initiallyParsedOutputRange.map((parsed, index) => {
       if (parsed.kind !== "rotate") {
@@ -25209,7 +25231,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         throw new TypeError("Cannot interpolate a multi-angle rotate value with an axis rotation");
       }
       const adjacentAxisRotation = parsed.values[0] === 0 ? index === 0 ? initiallyParsedOutputRange.find((candidate) => candidate.axisRotation) : index === initiallyParsedOutputRange.length - 1 ? [...initiallyParsedOutputRange].reverse().find((candidate) => candidate.axisRotation) : index === segmentIndex ? initiallyParsedOutputRange[index + 1] : index === segmentIndex + 1 ? initiallyParsedOutputRange[index - 1] : void 0 : void 0;
-      const axis = (adjacentAxisRotation == null ? void 0 : adjacentAxisRotation.axisRotation) ? adjacentAxisRotation.values : [0, 0, 1];
+      const axis = adjacentAxisRotation?.axisRotation ? adjacentAxisRotation.values : [0, 0, 1];
       return {
         kind: "rotate",
         values: [axis[0], axis[1], axis[2], parsed.values[0]],
@@ -25218,7 +25240,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         axisRotation: true
       };
     }) : initiallyParsedOutputRange;
-    const kind = (_a2 = parsedOutputRange[0]) == null ? void 0 : _a2.kind;
+    const kind = parsedOutputRange[0]?.kind;
     if (kind === void 0) {
       throw new Error("outputRange must have at least 1 element");
     }
@@ -25285,21 +25307,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     for (let segmentIndex = 0; segmentIndex < inputRange.length - 1; segmentIndex++) {
       if (resolveEasingForSegment({
-        easing: options == null ? void 0 : options.easing,
+        easing: options?.easing,
         segmentIndex
       }) !== Easing.step1) {
         throw new TypeError("Non-numeric strings can only be interpolated using Easing.step1");
       }
     }
-    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const inputMin = inputRange[0];
     const inputMax = inputRange[inputRange.length - 1];
     let resolvedInput = posterizedInput;
     if (resolvedInput < inputMin) {
-      if ((options == null ? void 0 : options.extrapolateLeft) === "identity") {
+      if (options?.extrapolateLeft === "identity") {
         throw new TypeError('extrapolateLeft: "identity" is not supported for non-numeric strings');
       }
-      if ((options == null ? void 0 : options.extrapolateLeft) === "wrap") {
+      if (options?.extrapolateLeft === "wrap") {
         const wrapRange = inputMax - inputMin;
         resolvedInput = ((resolvedInput - inputMin) % wrapRange + wrapRange) % wrapRange + inputMin;
       } else {
@@ -25307,10 +25329,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }
     if (resolvedInput > inputMax) {
-      if ((options == null ? void 0 : options.extrapolateRight) === "identity") {
+      if (options?.extrapolateRight === "identity") {
         throw new TypeError('extrapolateRight: "identity" is not supported for non-numeric strings');
       }
-      if ((options == null ? void 0 : options.extrapolateRight) === "wrap") {
+      if (options?.extrapolateRight === "wrap") {
         const wrapRange = inputMax - inputMin;
         resolvedInput = ((resolvedInput - inputMin) % wrapRange + wrapRange) % wrapRange + inputMin;
       } else {
@@ -25321,8 +25343,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return resolvedInput >= inputRange[range + 1] ? outputRange[range + 1] : outputRange[range];
   };
   var validateTupleOutputRange = (outputRange) => {
-    var _a2;
-    const dimensions = (_a2 = outputRange[0]) == null ? void 0 : _a2.length;
+    const dimensions = outputRange[0]?.length;
     if (dimensions === void 0) {
       throw new Error("outputRange must have at least 1 element");
     }
@@ -25421,9 +25442,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     checkInfiniteRange("inputRange", inputRange);
     checkValidInputRange(inputRange);
-    assertValidInterpolateEasingOption(options == null ? void 0 : options.easing, inputRange.length);
-    assertValidInterpolatePosterizeOption(options == null ? void 0 : options.posterize);
-    assertValidInterpolateOutputOption(options == null ? void 0 : options.output);
+    assertValidInterpolateEasingOption(options?.easing, inputRange.length);
+    assertValidInterpolatePosterizeOption(options?.posterize);
+    assertValidInterpolateOutputOption(options?.output);
     if (typeof input !== "number") {
       throw new TypeError("Cannot interpolate an input which is not a number");
     }
@@ -25719,7 +25740,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         throw new Error("did not calculate natural duration, this is an error with Remotion. Please report");
       }
     };
-    const reverseProcessed = reverse ? (passedDurationInFrames != null ? passedDurationInFrames : naturalDurationGetter.get()) - passedFrame : passedFrame;
+    const reverseProcessed = reverse ? (passedDurationInFrames ?? naturalDurationGetter.get()) - passedFrame : passedFrame;
     const delayProcessed = reverseProcessed + (reverse ? delay2 : -delay2);
     const durationProcessed = passedDurationInFrames === void 0 ? delayProcessed : delayProcessed / (passedDurationInFrames / naturalDurationGetter.get());
     if (passedDurationInFrames && delayProcessed > passedDurationInFrames) {
@@ -26016,12 +26037,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const xr = fx3 > epsilon ? fx3 : (116 * fx - 16) / kappa;
     const yr = L > kappa * epsilon ? ((L + 16) / 116) ** 3 : L / kappa;
     const zr = fz3 > epsilon ? fz3 : (116 * fz - 16) / kappa;
-    const X = xr * Xn;
+    const X2 = xr * Xn;
     const Y = yr * Yn;
     const Z = zr * Zn;
-    const rLin = 3.2404542 * X - 1.5371385 * Y - 0.4985314 * Z;
-    const gLin = -0.969266 * X + 1.8760108 * Y + 0.041556 * Z;
-    const bLin = 0.0556434 * X - 0.2040259 * Y + 1.0572252 * Z;
+    const rLin = 3.2404542 * X2 - 1.5371385 * Y - 0.4985314 * Z;
+    const gLin = -0.969266 * X2 + 1.8760108 * Y + 0.041556 * Z;
+    const bLin = 0.0556434 * X2 - 0.2040259 * Y + 1.0572252 * Z;
     return [linearToSrgb(rLin), linearToSrgb(gLin), linearToSrgb(bLin)];
   }
   function hwbToSrgb(h, w, bk) {
@@ -26311,10 +26332,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var interpolateColorsRGB = (value, inputRange, colors, options) => {
     const [r, g, b22, a22] = [red, green, blue, opacity].map((f) => {
       const unrounded = interpolate(value, inputRange, colors.map((c22) => f(c22)), {
-        easing: options == null ? void 0 : options.easing,
+        easing: options?.easing,
         extrapolateLeft: "clamp",
         extrapolateRight: "clamp",
-        posterize: options == null ? void 0 : options.posterize
+        posterize: options?.posterize
       });
       if (f === opacity) {
         return Number(unrounded.toFixed(3));
@@ -26343,7 +26364,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     easing,
     forceSpringAllowTail
   }) => {
-    var _a2, _b;
     switch (easing.type) {
       case "linear":
         return Easing.linear;
@@ -26351,9 +26371,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return Easing.step1;
       case "spring":
         return Easing.spring({
-          allowTail: (_a2 = forceSpringAllowTail != null ? forceSpringAllowTail : easing.allowTail) != null ? _a2 : void 0,
+          allowTail: forceSpringAllowTail ?? easing.allowTail ?? void 0,
           damping: easing.damping,
-          durationRestThreshold: (_b = easing.durationRestThreshold) != null ? _b : void 0,
+          durationRestThreshold: easing.durationRestThreshold ?? void 0,
           mass: easing.mass,
           overshootClamping: easing.overshootClamping,
           stiffness: easing.stiffness
@@ -26388,7 +26408,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           easing: easing.map((e) => easingToFn({ easing: e, forceSpringAllowTail })),
           posterize: status.posterize
         });
-      } catch (e) {
+      } catch {
         return null;
       }
     }
@@ -26403,17 +26423,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
         output: status.output,
         posterize: status.posterize
       });
-    } catch (e) {
+    } catch {
       return null;
     }
   };
   var getFrameInKeyframedStatusClock = ({
     frame,
     status
-  }) => {
-    var _a2;
-    return frame - ((_a2 = status.keyframeDisplayOffsetAdjustment) != null ? _a2 : 0);
-  };
+  }) => frame - (status.keyframeDisplayOffsetAdjustment ?? 0);
   var resolveDragOverrideValue = ({
     dragOverrideValue,
     frame
@@ -26547,8 +26564,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const stableDefinitions = isSame ? previous.definitions : definitions;
     (0, import_react36.useLayoutEffect)(() => {
       stableDefinitions.forEach((_definition, index) => {
-        var _a2;
-        const snapshot = (_a2 = effects[index]) == null ? void 0 : _a2.params;
+        const snapshot = effects[index]?.params;
         controllers[index].setSnapshot(snapshot);
       });
     }, [controllers, effects, stableDefinitions]);
@@ -26592,14 +26608,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     effects,
     overrideId
   }) => {
-    var _a2;
     const previousRef = (0, import_react36.useRef)(null);
     const { propStatuses } = (0, import_react36.useContext)(VisualModePropStatusesContext);
     const { getEffectDragOverrides } = (0, import_react36.useContext)(VisualModeDragOverridesContext);
     const frame = useCurrentFrame();
     const { overrideIdToNodePathMappings } = (0, import_react36.useContext)(OverrideIdsToNodePathsGettersContext);
     const previous = previousRef.current;
-    const nodePath = overrideId ? (_a2 = overrideIdToNodePathMappings[overrideId]) != null ? _a2 : null : null;
+    const nodePath = overrideId ? overrideIdToNodePathMappings[overrideId] ?? null : null;
     const resolved = effects.map((descriptor, index) => {
       if (nodePath === null) {
         return {
@@ -26638,7 +26653,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return next;
   };
   var flattenActiveSchema = (schema, resolve) => {
-    var _a2;
     const out = {};
     for (const key of Object.keys(schema)) {
       const field = schema[key];
@@ -26646,7 +26660,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         continue;
       } else if (field.type === "enum") {
         out[key] = field;
-        const current = (_a2 = resolve(key)) != null ? _a2 : field.default;
+        const current = resolve(key) ?? field.default;
         const variant = field.variants[current];
         if (variant) {
           Object.assign(out, flattenActiveSchema(variant, resolve));
@@ -26761,7 +26775,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     };
   };
   var getStaticDragOverrideValue = (dragOverrideValue) => {
-    if ((dragOverrideValue == null ? void 0 : dragOverrideValue.type) !== "static") {
+    if (dragOverrideValue?.type !== "static") {
       return;
     }
     return dragOverrideValue.value;
@@ -26793,20 +26807,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
     propStatus,
     frame
   }) => {
-    var _a2, _b;
     const merged = {};
     const propsToDelete = /* @__PURE__ */ new Set();
     for (const key of Object.keys(currentValue)) {
-      const status = (_a2 = propStatus == null ? void 0 : propStatus[key]) != null ? _a2 : null;
+      const status = propStatus?.[key] ?? null;
       const field = findFieldInSchema(schema, key);
-      if ((field == null ? void 0 : field.type) === "hidden") {
+      if (field?.type === "hidden") {
         continue;
       }
       let value;
       if (status === null) {
         value = currentValue[key];
       } else if (isKeyframedStatus(status)) {
-        if ((field == null ? void 0 : field.type) === "array" || (field == null ? void 0 : field.keyframable) === false) {
+        if (field?.type === "array" || field?.keyframable === false) {
           value = currentValue[key];
         } else {
           const dragOverride = resolveDragOverrideValue({
@@ -26821,7 +26834,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               frame: getFrameInKeyframedStatusClock({ frame, status }),
               status
             });
-            value = interpolated != null ? interpolated : currentValue[key];
+            value = interpolated ?? currentValue[key];
           } else {
             value = currentValue[key];
           }
@@ -26832,12 +26845,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
         value = getEffectiveVisualModeValue({
           propStatus: status,
           dragOverrideValue: overrideValues[key],
-          defaultValue: field == null ? void 0 : field.default,
+          defaultValue: field?.default,
           frame,
           shouldResortToDefaultValueIfUndefined: false
         });
       }
-      if ((field == null ? void 0 : field.type) === "asset" && typeof value === "string" && value.startsWith(FILE_TOKEN)) {
+      if (field?.type === "asset" && typeof value === "string" && value.startsWith(FILE_TOKEN)) {
         value = resolveFileTokenToUrl(value);
       }
       if (value === void 0) {
@@ -26846,7 +26859,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       merged[key] = value;
     }
     for (const key of Object.keys(overrideValues)) {
-      if (((_b = schema[key]) == null ? void 0 : _b.type) === "enum") {
+      if (schema[key]?.type === "enum") {
         const propsToDeleteForKey = findPropsToDelete({
           schema,
           key,
@@ -26874,9 +26887,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     key,
     props
   }) => {
-    var _a2;
     const value = getNestedValue(props, key);
-    if (((_a2 = flatSchema[key]) == null ? void 0 : _a2.type) === "text-content" && typeof value !== "string") {
+    if (flatSchema[key]?.type === "text-content" && typeof value !== "string") {
       return;
     }
     return value;
@@ -26898,11 +26910,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     schemaKeys,
     propsToDelete
   }) => {
-    var _a2;
     const merged = { ...props };
     for (const key of schemaKeys) {
       const value = valuesDotNotation[key];
-      if (((_a2 = flatSchema[key]) == null ? void 0 : _a2.type) === "text-content" && value === void 0) {
+      if (flatSchema[key]?.type === "text-content" && value === void 0) {
         continue;
       }
       const parts = key.split(".");
@@ -26922,10 +26933,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
       current[parts[parts.length - 1]] = value;
     }
-    const propsToDeleteWithoutTextContent = new Set([...propsToDelete].filter((key) => {
-      var _a3;
-      return !(((_a3 = flatSchema[key]) == null ? void 0 : _a3.type) === "text-content" && valuesDotNotation[key] === void 0);
-    }));
+    const propsToDeleteWithoutTextContent = new Set([...propsToDelete].filter((key) => !(flatSchema[key]?.type === "text-content" && valuesDotNotation[key] === void 0)));
     deleteNestedKey(merged, propsToDeleteWithoutTextContent);
     return merged;
   };
@@ -26945,7 +26953,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const flatSchema = getFlatSchemaWithAllKeys(schemaWithSequenceName);
     const flatKeys = Object.keys(flatSchema);
     const Wrapped = (0, import_react35.forwardRef)((props, ref) => {
-      var _a2;
       const {
         _remotionInternalStack: internalStack,
         ...propsWithoutInternalStack
@@ -26966,10 +26973,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const nodePathMapping = (0, import_react35.useContext)(OverrideIdsToNodePathsGettersContext);
       const frame = useCurrentFrame();
       const videoConfig = useUnsafeVideoConfig();
-      const durationInFrames = videoConfig == null ? void 0 : videoConfig.durationInFrames;
-      const fps = videoConfig == null ? void 0 : videoConfig.fps;
-      const height = videoConfig == null ? void 0 : videoConfig.height;
-      const width = videoConfig == null ? void 0 : videoConfig.width;
+      const durationInFrames = videoConfig?.durationInFrames;
+      const fps = videoConfig?.fps;
+      const height = videoConfig?.height;
+      const width = videoConfig?.width;
       const videoConfigValues = (0, import_react35.useMemo)(() => durationInFrames === void 0 || fps === void 0 || height === void 0 || width === void 0 ? null : {
         durationInFrames,
         fps,
@@ -26998,7 +27005,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         stackToOverrideMap[internalStack] = newOverrideId;
         return newOverrideId;
       });
-      const nodePath = env.isReadOnlyStudio ? null : (_a2 = nodePathMapping.overrideIdToNodePathMappings[overrideId]) != null ? _a2 : null;
+      const nodePath = env.isReadOnlyStudio ? null : nodePathMapping.overrideIdToNodePathMappings[overrideId] ?? null;
       const runtimeValues = flatKeys.map((key) => getRuntimeValueForSchemaKey({
         flatSchema,
         key,
@@ -27087,7 +27094,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     cropBottom,
     ...other
   }, ref) => {
-    var _a2, _b, _c, _d;
     const { layout = "absolute-fill" } = other;
     const [id] = (0, import_react22.useState)(() => String(Math.random()));
     const parentSequence = (0, import_react22.useContext)(SequenceContext);
@@ -27148,39 +27154,38 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const absoluteFrame = useTimelinePosition();
     const videoConfig = useVideoConfig();
     const effectiveRelativeFrom = from - trimBefore;
-    const absoluteFrom = ((_a2 = parentSequence == null ? void 0 : parentSequence.absoluteFrom) != null ? _a2 : 0) + effectiveRelativeFrom;
+    const absoluteFrom = (parentSequence?.absoluteFrom ?? 0) + effectiveRelativeFrom;
     const parentSequenceDuration = parentSequence ? Math.min(parentSequence.durationInFrames - effectiveRelativeFrom, durationInFrames) : durationInFrames;
     const actualDurationInFrames = Math.max(0, Math.min(videoConfig.durationInFrames - from, parentSequenceDuration));
     const sequenceRegistrationEnabled = (0, import_react22.useContext)(SequenceRegistrationContext);
     const wrapperRefForOutline = (0, import_react22.useRef)(null);
-    const refForOutline = other.layout === "none" ? passedRefForOutline != null ? passedRefForOutline : null : passedRefForOutline != null ? passedRefForOutline : wrapperRefForOutline;
+    const refForOutline = other.layout === "none" ? passedRefForOutline ?? null : passedRefForOutline ?? wrapperRefForOutline;
     const premounting = (0, import_react22.useMemo)(() => {
-      return (parentSequence == null ? void 0 : parentSequence.premounting) || Boolean(other._remotionInternalIsPremounting);
-    }, [other._remotionInternalIsPremounting, parentSequence == null ? void 0 : parentSequence.premounting]);
+      return parentSequence?.premounting || Boolean(other._remotionInternalIsPremounting);
+    }, [other._remotionInternalIsPremounting, parentSequence?.premounting]);
     const postmounting = (0, import_react22.useMemo)(() => {
-      return (parentSequence == null ? void 0 : parentSequence.postmounting) || Boolean(other._remotionInternalIsPostmounting);
-    }, [other._remotionInternalIsPostmounting, parentSequence == null ? void 0 : parentSequence.postmounting]);
+      return parentSequence?.postmounting || Boolean(other._remotionInternalIsPostmounting);
+    }, [other._remotionInternalIsPostmounting, parentSequence?.postmounting]);
     const currentSequenceStart = cumulatedFrom + effectiveRelativeFrom;
     const parentSequenceStart = parentSequence ? parentSequence.cumulatedFrom + parentSequence.relativeFrom : 0;
     const parentFirstFrame = parentSequence ? parentSequenceStart - parentSequence.cumulatedNegativeFrom : 0;
     const firstFrame = Math.max(0, parentFirstFrame, currentSequenceStart);
     const cumulatedNegativeFrom = currentSequenceStart - firstFrame;
     const contextValue = (0, import_react22.useMemo)(() => {
-      var _a3, _b2, _c2;
       return {
         absoluteFrom,
         cumulatedFrom,
         relativeFrom: effectiveRelativeFrom,
         cumulatedNegativeFrom,
         durationInFrames: actualDurationInFrames,
-        parentFrom: (_a3 = parentSequence == null ? void 0 : parentSequence.relativeFrom) != null ? _a3 : 0,
+        parentFrom: parentSequence?.relativeFrom ?? 0,
         id,
-        height: (_b2 = height != null ? height : parentSequence == null ? void 0 : parentSequence.height) != null ? _b2 : null,
-        width: (_c2 = width != null ? width : parentSequence == null ? void 0 : parentSequence.width) != null ? _c2 : null,
+        height: height ?? parentSequence?.height ?? null,
+        width: width ?? parentSequence?.width ?? null,
         premounting,
         postmounting,
-        premountDisplay: premountDisplay != null ? premountDisplay : null,
-        postmountDisplay: postmountDisplay != null ? postmountDisplay : null
+        premountDisplay: premountDisplay ?? null,
+        postmountDisplay: postmountDisplay ?? null
       };
     }, [
       cumulatedFrom,
@@ -27198,30 +27203,27 @@ Check that all your Remotion packages are on the same version. If your dependenc
       cumulatedNegativeFrom
     ]);
     const timelineClipName = (0, import_react22.useMemo)(() => {
-      return name != null ? name : "";
+      return name ?? "";
     }, [name]);
-    const resolvedDocumentationLink = documentationLink != null ? documentationLink : "https://www.remotion.dev/docs/sequence";
+    const resolvedDocumentationLink = documentationLink ?? "https://www.remotion.dev/docs/sequence";
     const env = useRemotionEnvironment();
     const isInsideSeries = (0, import_react22.useContext)(IsInsideSeriesContext);
     const stackRef = (0, import_react22.useRef)(null);
-    stackRef.current = controls ? (_c = (_b = getStackForControls(controls)) != null ? _b : stack) != null ? _c : null : stack != null ? stack : null;
+    stackRef.current = controls ? getStackForControls(controls) ?? stack ?? null : stack ?? null;
     const registeredFrozenFrame = typeof freeze === "number" ? freeze : null;
     const registeredTrimBefore = trimBefore === 0 ? null : trimBefore;
-    const parentCumulatedNegativeFrom = (_d = parentSequence == null ? void 0 : parentSequence.cumulatedNegativeFrom) != null ? _d : 0;
+    const parentCumulatedNegativeFrom = parentSequence?.cumulatedNegativeFrom ?? 0;
     const startMediaFrom = isMedia && isMedia.type !== "image" ? isMedia.data.startMediaFrom + parentCumulatedNegativeFrom - cumulatedNegativeFrom : null;
     const mediaFrameAtSequenceZero = isMedia && isMedia.type !== "image" ? isMedia.data.startMediaFrom + parentCumulatedNegativeFrom : null;
     const frozenMediaFrame = isMedia && isMedia.type !== "image" && mediaFrameAtSequenceZero !== null ? registeredFrozenFrame === null ? null : mediaFrameAtSequenceZero + (loopDisplay ? registeredFrozenFrame % loopDisplay.durationInFrames : registeredFrozenFrame) * isMedia.data.playbackRate : null;
-    const controlsSchema = controls == null ? void 0 : controls.schema;
-    const controlsRuntimeValues = controls == null ? void 0 : controls.runtimeValues;
-    const controlsOverrideId = controls == null ? void 0 : controls.overrideId;
-    const controlsSupportsEffects = controls == null ? void 0 : controls.supportsEffects;
-    const controlsComponentIdentity = controls == null ? void 0 : controls.componentIdentity;
-    const controlsComponentName = controls == null ? void 0 : controls.componentName;
-    const controlsVideoConfigValues = controls == null ? void 0 : controls.videoConfigValues;
-    const effectRuntimeValues = (0, import_react22.useMemo)(() => {
-      var _a3;
-      return (_a3 = _remotionInternalEffects == null ? void 0 : _remotionInternalEffects.runtimeValues) != null ? _a3 : null;
-    }, [_remotionInternalEffects]);
+    const controlsSchema = controls?.schema;
+    const controlsRuntimeValues = controls?.runtimeValues;
+    const controlsOverrideId = controls?.overrideId;
+    const controlsSupportsEffects = controls?.supportsEffects;
+    const controlsComponentIdentity = controls?.componentIdentity;
+    const controlsComponentName = controls?.componentName;
+    const controlsVideoConfigValues = controls?.videoConfigValues;
+    const effectRuntimeValues = (0, import_react22.useMemo)(() => _remotionInternalEffects?.runtimeValues ?? null, [_remotionInternalEffects]);
     const registrationControls = (0, import_react22.useMemo)(() => {
       if (controlsSchema === void 0 || controlsRuntimeValues === void 0 || controlsOverrideId === void 0 || controlsSupportsEffects === void 0 || controlsComponentIdentity === void 0 || controlsComponentName === void 0 || controlsVideoConfigValues === void 0) {
         return null;
@@ -27245,13 +27247,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
       controlsSupportsEffects
     ]);
     const getSequenceForRegistration = (0, import_react22.useCallback)(() => {
-      var _a3, _b2, _c2;
       if (isMedia) {
         if (isMedia.type === "image") {
           return {
             type: "image",
             controls: registrationControls,
-            effects: _remotionInternalEffects != null ? _remotionInternalEffects : EMPTY_EFFECTS,
+            effects: _remotionInternalEffects ?? EMPTY_EFFECTS,
             effectRuntimeValues,
             displayName: timelineClipName,
             documentationLink: resolvedDocumentationLink,
@@ -27260,23 +27261,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
             trimBefore: registeredTrimBefore,
             id,
             loopDisplay,
-            parent: (_a3 = parentSequence == null ? void 0 : parentSequence.id) != null ? _a3 : null,
-            postmountDisplay: postmountDisplay != null ? postmountDisplay : null,
-            premountDisplay: premountDisplay != null ? premountDisplay : null,
+            parent: parentSequence?.id ?? null,
+            postmountDisplay: postmountDisplay ?? null,
+            premountDisplay: premountDisplay ?? null,
             showInTimeline,
             timelineOrder: null,
             src: isMedia.src,
             getStack: () => stackRef.current,
-            refForOutline: refForOutline != null ? refForOutline : null,
+            refForOutline: refForOutline ?? null,
             isInsideSeries,
             frozenFrame: registeredFrozenFrame,
-            singleChildComponent: singleChildComponent != null ? singleChildComponent : null
+            singleChildComponent: singleChildComponent ?? null
           };
         }
         return {
           type: isMedia.type,
           controls: registrationControls,
-          effects: _remotionInternalEffects != null ? _remotionInternalEffects : EMPTY_EFFECTS,
+          effects: _remotionInternalEffects ?? EMPTY_EFFECTS,
           effectRuntimeValues,
           displayName: timelineClipName,
           documentationLink: resolvedDocumentationLink,
@@ -27286,23 +27287,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
           trimBefore: registeredTrimBefore,
           id,
           loopDisplay,
-          parent: (_b2 = parentSequence == null ? void 0 : parentSequence.id) != null ? _b2 : null,
+          parent: parentSequence?.id ?? null,
           playbackRate: isMedia.data.playbackRate,
-          postmountDisplay: postmountDisplay != null ? postmountDisplay : null,
-          premountDisplay: premountDisplay != null ? premountDisplay : null,
+          postmountDisplay: postmountDisplay ?? null,
+          premountDisplay: premountDisplay ?? null,
           showInTimeline,
           timelineOrder: null,
           src: isMedia.data.src,
           getStack: () => stackRef.current,
-          startMediaFrom: startMediaFrom != null ? startMediaFrom : isMedia.data.startMediaFrom,
+          startMediaFrom: startMediaFrom ?? isMedia.data.startMediaFrom,
           mediaFrameAtSequenceZero,
           volume: isMedia.data.volumes,
           muted: isMedia.data.muted,
-          refForOutline: refForOutline != null ? refForOutline : null,
+          refForOutline: refForOutline ?? null,
           isInsideSeries,
           frozenFrame: registeredFrozenFrame,
           frozenMediaFrame,
-          singleChildComponent: singleChildComponent != null ? singleChildComponent : null
+          singleChildComponent: singleChildComponent ?? null
         };
       }
       return {
@@ -27312,26 +27313,26 @@ Check that all your Remotion packages are on the same version. If your dependenc
         id,
         displayName: timelineClipName,
         documentationLink: resolvedDocumentationLink,
-        parent: (_c2 = parentSequence == null ? void 0 : parentSequence.id) != null ? _c2 : null,
+        parent: parentSequence?.id ?? null,
         type: "sequence",
         showInTimeline,
         timelineOrder: null,
         loopDisplay,
         getStack: () => stackRef.current,
-        premountDisplay: premountDisplay != null ? premountDisplay : null,
-        postmountDisplay: postmountDisplay != null ? postmountDisplay : null,
+        premountDisplay: premountDisplay ?? null,
+        postmountDisplay: postmountDisplay ?? null,
         controls: registrationControls,
-        effects: _remotionInternalEffects != null ? _remotionInternalEffects : EMPTY_EFFECTS,
+        effects: _remotionInternalEffects ?? EMPTY_EFFECTS,
         effectRuntimeValues,
-        refForOutline: refForOutline != null ? refForOutline : null,
+        refForOutline: refForOutline ?? null,
         isInsideSeries,
         frozenFrame: registeredFrozenFrame,
-        singleChildComponent: singleChildComponent != null ? singleChildComponent : null
+        singleChildComponent: singleChildComponent ?? null
       };
     }, [
       id,
       timelineClipName,
-      parentSequence == null ? void 0 : parentSequence.id,
+      parentSequence?.id,
       actualDurationInFrames,
       from,
       registeredTrimBefore,
@@ -27383,7 +27384,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         flexDirection: void 0,
         ...width ? { width } : {},
         ...height ? { height } : {},
-        ...styleIfThere != null ? styleIfThere : {},
+        ...styleIfThere ?? {},
         ...cropClipPath ? {
           clipPath: cropClipPath
         } : {}
@@ -27438,9 +27439,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       durationInFrames,
       premountFor,
       postmountFor,
-      style: passedStyle != null ? passedStyle : null,
-      styleWhilePremounted: styleWhilePremounted != null ? styleWhilePremounted : null,
-      styleWhilePostmounted: styleWhilePostmounted != null ? styleWhilePostmounted : null,
+      style: passedStyle ?? null,
+      styleWhilePremounted: styleWhilePremounted ?? null,
+      styleWhilePostmounted: styleWhilePostmounted ?? null,
       hideWhilePremounted: "opacity"
     });
     return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Freeze, {
@@ -27450,7 +27451,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         ref,
         from,
         durationInFrames,
-        style: premountingStyle != null ? premountingStyle : void 0,
+        style: premountingStyle ?? void 0,
         _remotionInternalPremountDisplay: premountFor,
         _remotionInternalPostmountDisplay: postmountFor,
         _remotionInternalIsPremounting: premountingActive,
@@ -27461,11 +27462,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var PremountedPostmountedSequence = (0, import_react22.forwardRef)(PremountedPostmountedSequenceRefForwardingFunction);
   var SequenceRefForwardingFunction = (props, ref) => {
-    var _a2;
     const env = useRemotionEnvironment();
     const { fps } = useVideoConfig();
     if (props.layout !== "none" && !env.isRendering) {
-      const effectivePremountFor = ENABLE_V5_BREAKING_CHANGES ? (_a2 = props.premountFor) != null ? _a2 : fps : props.premountFor;
+      const effectivePremountFor = ENABLE_V5_BREAKING_CHANGES ? props.premountFor ?? fps : props.premountFor;
       if (effectivePremountFor || props.postmountFor) {
         return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(PremountedPostmountedSequence, {
           ref,
@@ -27540,13 +27540,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Sequence, {
       layout: "none",
-      from: from != null ? from : 0,
+      from: from ?? 0,
       trimBefore,
       freeze,
-      durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
+      durationInFrames: durationInFrames ?? Infinity,
       hidden,
-      name: name != null ? name : "<AbsoluteFill>",
-      showInTimeline: showInTimeline != null ? showInTimeline : true,
+      name: name ?? "<AbsoluteFill>",
+      showInTimeline: showInTimeline ?? true,
       controls,
       _remotionInternalStack: stack,
       _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/absolute-fill",
@@ -27639,11 +27639,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var createWebGLContextError = (effectName) => new Error(webGlContextErrorMessage("WebGL", effectName));
   var createWebGL2ContextError = (effectName) => new Error(webGlContextErrorMessage("WebGL2", effectName));
   var CanvasPool = class {
+    width;
+    height;
+    pairs = /* @__PURE__ */ new Map();
+    lostContexts = /* @__PURE__ */ new Set();
     constructor(width, height) {
-      __publicField(this, "width");
-      __publicField(this, "height");
-      __publicField(this, "pairs", /* @__PURE__ */ new Map());
-      __publicField(this, "lostContexts", /* @__PURE__ */ new Set());
       this.width = width;
       this.height = height;
     }
@@ -27837,7 +27837,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         currentImage = dst;
         dst = dst === a22 ? b22 : a22;
       }
-      lastTarget = currentImage != null ? currentImage : lastTarget;
+      lastTarget = currentImage ?? lastTarget;
       const nextRun = runs[runIndex + 1];
       if (nextRun && nextRun.backend !== run.backend && lastTarget) {
         if (run.backend === "2d" && nextRun.backend === "webgl2") {
@@ -27901,8 +27901,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, []);
     const draw = (0, import_react41.useCallback)((imageData) => {
       const canvas = canvasRef.current;
-      const canvasWidth = width != null ? width : imageData.displayWidth;
-      const canvasHeight = height != null ? height : imageData.displayHeight;
+      const canvasWidth = width ?? imageData.displayWidth;
+      const canvasHeight = height ?? imageData.displayHeight;
       if (!canvas) {
         throw new Error("Canvas ref is not set");
       }
@@ -27943,8 +27943,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           return canvasRef.current;
         },
         clear: () => {
-          var _a2;
-          const ctx = (_a2 = canvasRef.current) == null ? void 0 : _a2.getContext("2d");
+          const ctx = canvasRef.current?.getContext("2d");
           if (!ctx) {
             throw new Error("Could not get 2d context");
           }
@@ -27966,7 +27965,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     requestInit,
     contentType
   }) => {
-    var _a2;
     if (typeof ImageDecoder === "undefined") {
       throw new Error("Your browser does not support the WebCodecs ImageDecoder API.");
     }
@@ -27977,7 +27975,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     const decoder = new ImageDecoder({
       data: body,
-      type: (_a2 = contentType != null ? contentType : response.headers.get("Content-Type")) != null ? _a2 : "image/gif"
+      type: contentType ?? response.headers.get("Content-Type") ?? "image/gif"
     });
     await Promise.all([decoder.completed, decoder.tracks.ready]);
     const { selectedTrack } = decoder.tracks;
@@ -28114,9 +28112,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     };
     return {
       close: () => {
-        var _a2;
         for (const item2 of cache22) {
-          (_a2 = item2.frame) == null ? void 0 : _a2.close();
+          item2.frame?.close();
           item2.frame = null;
         }
         decoder.close();
@@ -28199,7 +28196,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     controls,
     ...props
   }, canvasRef) => {
-    var _a2;
     const resolvedSrc = resolveAnimatedImageSource(src);
     const [imageDecoder, setImageDecoder] = (0, import_react39.useState)(null);
     const { delayRender: delayRender2, continueRender: continueRender2 } = useDelayRender();
@@ -28215,11 +28211,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const ref = (0, import_react39.useRef)(null);
     const memoizedEffects = useMemoizedEffects({
       effects,
-      overrideId: (_a2 = controls == null ? void 0 : controls.overrideId) != null ? _a2 : null
+      overrideId: controls?.overrideId ?? null
     });
     (0, import_react39.useImperativeHandle)(canvasRef, () => {
-      var _a3;
-      const c22 = (_a3 = ref.current) == null ? void 0 : _a3.getCanvas();
+      const c22 = ref.current?.getCanvas();
       if (!c22) {
         throw new Error("Canvas ref is not set");
       }
@@ -28259,7 +28254,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           return;
         }
         if (onError) {
-          onError == null ? void 0 : onError(err);
+          onError?.(err);
           continueRenderOnce();
         } else {
           cancelRender(err);
@@ -28280,7 +28275,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]);
     (0, import_react39.useEffect)(() => {
       return () => {
-        imageDecoder == null ? void 0 : imageDecoder.close();
+        imageDecoder?.close();
       };
     }, [imageDecoder]);
     (0, import_react39.useLayoutEffect)(() => {
@@ -28290,16 +28285,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const delay2 = delayRender2(`Rendering frame at ${currentTime} of <AnimatedImage src="${src}"/>`);
       let cancelled = false;
       imageDecoder.getFrame(currentTime, loopBehavior).then(async (videoFrame) => {
-        var _a3, _b;
         if (cancelled) {
           return;
         }
         if (videoFrame === null) {
-          (_a3 = ref.current) == null ? void 0 : _a3.clear();
+          ref.current?.clear();
           continueRender2(delay2);
           return;
         }
-        const completed = await ((_b = ref.current) == null ? void 0 : _b.draw(videoFrame.frame));
+        const completed = await ref.current?.draw(videoFrame.frame);
         if (completed && !cancelled) {
           continueRender2(delay2);
         }
@@ -28382,13 +28376,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       premountingActive,
       premountingStyle
     } = usePremounting({
-      from: from != null ? from : 0,
-      durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
-      premountFor: premountFor != null ? premountFor : null,
-      postmountFor: postmountFor != null ? postmountFor : null,
-      style: style2 != null ? style2 : null,
-      styleWhilePremounted: styleWhilePremounted != null ? styleWhilePremounted : null,
-      styleWhilePostmounted: styleWhilePostmounted != null ? styleWhilePostmounted : null,
+      from: from ?? 0,
+      durationInFrames: durationInFrames ?? Infinity,
+      premountFor: premountFor ?? null,
+      postmountFor: postmountFor ?? null,
+      style: style2 ?? null,
+      styleWhilePremounted: styleWhilePremounted ?? null,
+      styleWhilePostmounted: styleWhilePostmounted ?? null,
       hideWhilePremounted: "display-none"
     });
     const croppedStyle = useCropStyle({
@@ -28410,7 +28404,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       loopBehavior,
       id,
       className: className2,
-      style: croppedStyle != null ? croppedStyle : void 0,
+      style: croppedStyle ?? void 0,
       requestInit,
       ...canvasProps
     };
@@ -28419,8 +28413,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       active: isPremountingOrPostmounting,
       children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Sequence, {
         layout: "none",
-        from: from != null ? from : 0,
-        durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
+        from: from ?? 0,
+        durationInFrames: durationInFrames ?? Infinity,
         name: "<AnimatedImage>",
         _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/animatedimage",
         controls,
@@ -28455,14 +28449,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     description: "Disabled"
   };
   var createEffect = (definition) => {
-    var _a2;
     const { calculateKey: userCalculateKey, validateParams } = definition;
     const widened = {
       ...definition,
-      documentationLink: (_a2 = definition.documentationLink) != null ? _a2 : null,
+      documentationLink: definition.documentationLink ?? null,
       calculateKey: (params) => {
-        var _a3;
-        const disabled = (_a3 = params.disabled) != null ? _a3 : false;
+        const disabled = params.disabled ?? false;
         return `${userCalculateKey(params)}-disabled-${disabled}`;
       },
       schema: {
@@ -28585,7 +28577,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           filename,
           frame,
           contentType: "binary",
-          downloadBehavior: downloadBehavior != null ? downloadBehavior : null
+          downloadBehavior: downloadBehavior ?? null
         });
       } else if (content2 === ArtifactThumbnail) {
         registerRenderAsset({
@@ -28594,7 +28586,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           filename,
           frame,
           contentType: "thumbnail",
-          downloadBehavior: downloadBehavior != null ? downloadBehavior : null
+          downloadBehavior: downloadBehavior ?? null
         });
       } else {
         registerRenderAsset({
@@ -28604,7 +28596,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           filename,
           frame,
           contentType: "text",
-          downloadBehavior: downloadBehavior != null ? downloadBehavior : null
+          downloadBehavior: downloadBehavior ?? null
         });
       }
       return () => {
@@ -28700,7 +28692,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Sequence, {
         durationInFrames,
         from,
-        name: name != null ? name : "<Loop>",
+        name: name ?? "<Loop>",
         _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/loop",
         _remotionInternalLoopDisplay: loopDisplay,
         layout: props.layout,
@@ -28862,9 +28854,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     trimBefore,
     trimAfter
   }) => {
-    var _a2, _b;
-    const trimBeforeValue = (_a2 = trimBefore != null ? trimBefore : startFrom) != null ? _a2 : void 0;
-    const trimAfterValue = (_b = trimAfter != null ? trimAfter : endAt) != null ? _b : void 0;
+    const trimBeforeValue = trimBefore ?? startFrom ?? void 0;
+    const trimAfterValue = trimAfter ?? endAt ?? void 0;
     return { trimBeforeValue, trimAfterValue };
   };
   var durationReducer = (state, action) => {
@@ -29159,13 +29150,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return startPerformanceTime !== void 0 && outputTimestamp.performanceTime !== void 0 && outputTimestamp.performanceTime > startPerformanceTime && outputTimestamp.contextTime !== void 0 && outputTimestamp.contextTime > startCurrentTime;
       };
       const check = () => {
-        var _a2, _b, _c;
         animationFrame = null;
         const { currentTime } = audioContext;
         const outputTimestamp = audioContext.getOutputTimestamp();
         const elapsedWallClock = performance.now() - startWallClock;
         if (hasAudiblyStarted(startOutputPerformanceTime)) {
-          Log.verbose({ logLevel, tag: "audio" }, `waitUntilActuallyResumed: getOutputTimestamp.performanceTime advanced from ${startOutputPerformanceTime.toFixed(6)} to ${(_a2 = outputTimestamp.performanceTime) == null ? void 0 : _a2.toFixed(6)} after ${elapsedWallClock.toFixed(1)}ms. currentTime=${currentTime.toFixed(6)} (advanced by ${(currentTime - startCurrentTime).toFixed(6)}), getOutputTimestamp.performanceTime=${(_c = (_b = outputTimestamp.performanceTime) == null ? void 0 : _b.toFixed(1)) != null ? _c : "undefined"}`);
+          Log.verbose({ logLevel, tag: "audio" }, `waitUntilActuallyResumed: getOutputTimestamp.performanceTime advanced from ${startOutputPerformanceTime.toFixed(6)} to ${outputTimestamp.performanceTime?.toFixed(6)} after ${elapsedWallClock.toFixed(1)}ms. currentTime=${currentTime.toFixed(6)} (advanced by ${(currentTime - startCurrentTime).toFixed(6)}), getOutputTimestamp.performanceTime=${outputTimestamp.performanceTime?.toFixed(1) ?? "undefined"}`);
           finish("resumed");
           return;
         }
@@ -29234,7 +29224,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     _experimentalKeepAudioContextAlive
   }) => {
     const logLevel = useLogLevel();
-    const sampleRate = previewSampleRate != null ? previewSampleRate : 48e3;
+    const sampleRate = previewSampleRate ?? 48e3;
     (0, import_react53.useEffect)(() => {
       if (typeof window === "undefined") {
         return;
@@ -29360,8 +29350,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           resolve("failed");
         });
       }).finally(() => {
-        var _a2;
-        if (((_a2 = isResuming.current) == null ? void 0 : _a2.id) === resumeAttemptId) {
+        if (isResuming.current?.id === resumeAttemptId) {
           isResuming.current = null;
         }
       });
@@ -29378,12 +29367,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return resume();
     }, [resume]);
     const getIsResumingAudioContext = (0, import_react53.useCallback)(() => {
-      var _a2, _b;
-      return (_b = (_a2 = isResuming.current) == null ? void 0 : _a2.promise) != null ? _b : null;
+      return isResuming.current?.promise ?? null;
     }, []);
     const suspend = (0, import_react53.useCallback)(() => {
-      var _a2;
-      (_a2 = isResuming.current) == null ? void 0 : _a2.abortController.abort();
+      isResuming.current?.abortController.abort();
       if (!ctxAndGain) {
         return Promise.resolve();
       }
@@ -29429,14 +29416,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       };
     }, [ctxAndGain, _experimentalKeepAudioContextAlive]);
     const audioContextValue = (0, import_react53.useMemo)(() => {
-      var _a2, _b;
       return {
-        audioContext: (_a2 = ctxAndGain == null ? void 0 : ctxAndGain.audioContext) != null ? _a2 : null,
-        getAudioContextState: () => {
-          var _a3;
-          return (_a3 = ctxAndGain == null ? void 0 : ctxAndGain.getState()) != null ? _a3 : null;
-        },
-        gainNode: (_b = ctxAndGain == null ? void 0 : ctxAndGain.gainNode) != null ? _b : null,
+        audioContext: ctxAndGain?.audioContext ?? null,
+        getAudioContextState: () => ctxAndGain?.getState() ?? null,
+        gainNode: ctxAndGain?.gainNode ?? null,
         audioSyncAnchor,
         audioSyncAnchorEmitter,
         scheduleAudioNode,
@@ -29465,7 +29448,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
   };
   var SharedAudioTagsContextProvider = ({ children, numberOfAudioTags }) => {
-    var _a2, _b;
     const audios = (0, import_react53.useRef)([]);
     const [initialNumberOfAudioTags] = (0, import_react53.useState)(numberOfAudioTags);
     if (numberOfAudioTags !== initialNumberOfAudioTags) {
@@ -29475,8 +29457,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const mountTime = useMountTime();
     const env = useRemotionEnvironment();
     const audioCtx = (0, import_react53.useContext)(SharedAudioContext);
-    const audioContext = (_a2 = audioCtx == null ? void 0 : audioCtx.audioContext) != null ? _a2 : null;
-    const resume = audioCtx == null ? void 0 : audioCtx.resume;
+    const audioContext = audioCtx?.audioContext ?? null;
+    const resume = audioCtx?.resume;
     const [refs] = (0, import_react53.useState)(() => {
       return new Array(numberOfAudioTags).fill(true).map(() => {
         const ref = (0, import_react53.createRef)();
@@ -29491,14 +29473,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
       });
     });
     for (const { mediaElementSourceNode } of refs) {
-      mediaElementSourceNode == null ? void 0 : mediaElementSourceNode.setAudioContext(audioContext);
+      mediaElementSourceNode?.setAudioContext(audioContext);
     }
-    const effectToUse = (_b = import_react53.default.useInsertionEffect) != null ? _b : import_react53.default.useLayoutEffect;
+    const effectToUse = import_react53.default.useInsertionEffect ?? import_react53.default.useLayoutEffect;
     effectToUse(() => {
       return () => {
         requestAnimationFrame(() => {
           refs.forEach(({ mediaElementSourceNode }) => {
-            mediaElementSourceNode == null ? void 0 : mediaElementSourceNode.cleanup();
+            mediaElementSourceNode?.cleanup();
           });
         });
       };
@@ -29506,8 +29488,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const takenAudios = (0, import_react53.useRef)(new Array(numberOfAudioTags).fill(false));
     const rerenderAudios = (0, import_react53.useCallback)(() => {
       refs.forEach(({ ref, id }) => {
-        var _a3;
-        const data = (_a3 = audios.current) == null ? void 0 : _a3.find((a22) => a22.id === id);
+        const data = audios.current?.find((a22) => a22.id === id);
         const { current } = ref;
         if (!current) {
           return;
@@ -29529,9 +29510,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       });
     }, [refs]);
     const registerAudio = (0, import_react53.useCallback)((options) => {
-      var _a3, _b2;
       const { aud, audioId, premounting, postmounting } = options;
-      const found = (_a3 = audios.current) == null ? void 0 : _a3.find((a22) => a22.audioId === audioId);
+      const found = audios.current?.find((a22) => a22.audioId === audioId);
       if (found) {
         return found;
       }
@@ -29555,12 +29535,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
         cleanupOnMediaTagUnmount: () => {
         }
       };
-      (_b2 = audios.current) == null ? void 0 : _b2.push(newElem);
+      audios.current?.push(newElem);
       rerenderAudios();
       return newElem;
     }, [numberOfAudioTags, refs, rerenderAudios]);
     const unregisterAudio = (0, import_react53.useCallback)((id) => {
-      var _a3;
       const cloned = [...takenAudios.current];
       const index = refs.findIndex((r) => r.id === id);
       if (index === -1) {
@@ -29568,7 +29547,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
       cloned[index] = false;
       takenAudios.current = cloned;
-      audios.current = (_a3 = audios.current) == null ? void 0 : _a3.filter((a22) => a22.id !== id);
+      audios.current = audios.current?.filter((a22) => a22.id !== id);
       rerenderAudios();
     }, [refs, rerenderAudios]);
     const updateAudio = (0, import_react53.useCallback)(({
@@ -29578,9 +29557,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       premounting,
       postmounting
     }) => {
-      var _a3;
       let changed = false;
-      audios.current = (_a3 = audios.current) == null ? void 0 : _a3.map((prevA) => {
+      audios.current = audios.current?.map((prevA) => {
         const audioMounted = Boolean(prevA.el.current);
         if (prevA.audioMounted !== audioMounted) {
           changed = true;
@@ -29609,7 +29587,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const playAllAudios = (0, import_react53.useCallback)(() => {
       refs.forEach((ref) => {
         const audio = audios.current.find((a22) => a22.el === ref.ref);
-        if (audio == null ? void 0 : audio.premounting) {
+        if (audio?.premounting) {
           return;
         }
         playAndHandleNotAllowedError({
@@ -29622,7 +29600,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           isPlayer: env.isPlayer
         });
       });
-      resume == null ? void 0 : resume();
+      resume?.();
     }, [logLevel, mountTime, refs, env.isPlayer, resume]);
     const audioTagsValue = (0, import_react53.useMemo)(() => {
       return {
@@ -29662,17 +29640,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
     premounting,
     postmounting
   }) => {
-    var _a2, _b, _c;
     const audioCtx = (0, import_react53.useContext)(SharedAudioContext);
     const tagsCtx = (0, import_react53.useContext)(SharedAudioTagsContext);
     const [elem] = (0, import_react53.useState)(() => {
-      var _a3;
       if (tagsCtx && tagsCtx.numberOfAudioTags > 0) {
         return tagsCtx.registerAudio({ aud, audioId, premounting, postmounting });
       }
       const el = import_react53.default.createRef();
       const mediaElementSourceNode = makeSharedElementSourceNode({
-        audioContext: (_a3 = audioCtx == null ? void 0 : audioCtx.audioContext) != null ? _a3 : null,
+        audioContext: audioCtx?.audioContext ?? null,
         ref: el
       });
       return {
@@ -29685,12 +29661,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
         audioMounted: Boolean(el.current),
         postmounting,
         cleanupOnMediaTagUnmount: () => {
-          mediaElementSourceNode == null ? void 0 : mediaElementSourceNode.cleanup();
+          mediaElementSourceNode?.cleanup();
         }
       };
     });
-    (_b = elem.mediaElementSourceNode) == null ? void 0 : _b.setAudioContext((_a2 = audioCtx == null ? void 0 : audioCtx.audioContext) != null ? _a2 : null);
-    const effectToUse = (_c = import_react53.default.useInsertionEffect) != null ? _c : import_react53.default.useLayoutEffect;
+    elem.mediaElementSourceNode?.setAudioContext(audioCtx?.audioContext ?? null);
+    const effectToUse = import_react53.default.useInsertionEffect ?? import_react53.default.useLayoutEffect;
     if (typeof document !== "undefined") {
       effectToUse(() => {
         if (tagsCtx && tagsCtx.numberOfAudioTags > 0) {
@@ -29759,14 +29735,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     duration,
     fps
   }) => {
-    var _a2;
     if (isIOSSafariAndBlob(actualSrc)) {
       return actualSrc;
     }
     if (actualSrc.startsWith("data:")) {
       return actualSrc;
     }
-    const existingHash = Boolean(new URL(actualSrc, (_a2 = typeof window === "undefined" ? null : window.location.href) != null ? _a2 : "http://localhost:3000").hash);
+    const existingHash = Boolean(new URL(actualSrc, (typeof window === "undefined" ? null : window.location.href) ?? "http://localhost:3000").hash);
     if (existingHash) {
       return actualSrc;
     }
@@ -29843,7 +29818,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     source,
     shouldUseWebAudioApi
   }) => {
-    var _a2, _b, _c;
     const audioStuffRef = (0, import_react52.useRef)(null);
     const currentVolumeRef = (0, import_react52.useRef)(volume);
     currentVolumeRef.current = volume;
@@ -29854,7 +29828,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { audioContext, gainNode: masterGainNode } = sharedAudioContext;
     if (typeof window !== "undefined") {
       (0, import_react52.useLayoutEffect)(() => {
-        var _a3, _b2;
         if (!audioContext) {
           return;
         }
@@ -29883,7 +29856,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         audioStuffRef.current = {
           gainNode
         };
-        Log.trace({ logLevel, tag: null }, `Starting to amplify ${(_a3 = mediaRef.current) == null ? void 0 : _a3.src}. Gain = ${currentVolumeRef.current}, playbackRate = ${(_b2 = mediaRef.current) == null ? void 0 : _b2.playbackRate}`);
+        Log.trace({ logLevel, tag: null }, `Starting to amplify ${mediaRef.current?.src}. Gain = ${currentVolumeRef.current}, playbackRate = ${mediaRef.current?.playbackRate}`);
         return () => {
           audioStuffRef.current = null;
           gainNode.disconnect();
@@ -29902,20 +29875,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const valueToSet = volume;
       if (!isApproximatelyTheSame(audioStuffRef.current.gainNode.gain.value, valueToSet)) {
         audioStuffRef.current.gainNode.gain.value = valueToSet;
-        Log.trace({ logLevel, tag: null }, `Setting gain to ${valueToSet} for ${(_a2 = mediaRef.current) == null ? void 0 : _a2.src}`);
+        Log.trace({ logLevel, tag: null }, `Setting gain to ${valueToSet} for ${mediaRef.current?.src}`);
       }
     }
-    const safariCase = isSafari() && mediaRef.current && ((_b = mediaRef.current) == null ? void 0 : _b.playbackRate) !== 1;
+    const safariCase = isSafari() && mediaRef.current && mediaRef.current?.playbackRate !== 1;
     const shouldUseTraditionalVolume = safariCase || !shouldUseWebAudioApi;
-    if (shouldUseTraditionalVolume && mediaRef.current && !isApproximatelyTheSame(volume, (_c = mediaRef.current) == null ? void 0 : _c.volume)) {
+    if (shouldUseTraditionalVolume && mediaRef.current && !isApproximatelyTheSame(volume, mediaRef.current?.volume)) {
       mediaRef.current.volume = Math.min(volume, 1);
     }
     return audioStuffRef;
   };
   var useMediaStartsAt = () => {
-    var _a2;
     const parentSequence = (0, import_react57.useContext)(SequenceContext);
-    return (_a2 = parentSequence == null ? void 0 : parentSequence.cumulatedNegativeFrom) != null ? _a2 : 0;
+    return parentSequence?.cumulatedNegativeFrom ?? 0;
   };
   var useFrameForVolumeProp = (behavior) => {
     const loop = Loop.useLoop();
@@ -29927,12 +29899,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return frame + startsAt + loop.durationInFrames * loop.iteration;
   };
   var getAssetDisplayName = (filename) => {
-    var _a2;
     if (filename.startsWith("data:")) {
       return "Data URL";
     }
     if (filename.startsWith("blob:")) {
-      const staticFile = typeof window === "undefined" ? void 0 : (_a2 = window.remotion_staticFiles) == null ? void 0 : _a2.find((file) => file.src === filename);
+      const staticFile = typeof window === "undefined" ? void 0 : window.remotion_staticFiles?.find((file) => file.src === filename);
       return staticFile ? getAssetDisplayName(staticFile.name) : "Blob URL";
     }
     const splitted = filename.split("/").map((s) => s.split("\\")).flat(1);
@@ -29950,7 +29921,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return compositionDurationInFrames;
     }
     const mediaDuration = calculateMediaDuration({
-      mediaDurationInFrames: compositionDurationInFrames * playbackRate + (trimBefore != null ? trimBefore : 0),
+      mediaDurationInFrames: compositionDurationInFrames * playbackRate + (trimBefore ?? 0),
       playbackRate,
       trimBefore,
       trimAfter
@@ -30006,7 +29977,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     loop,
     muted
   }) => {
-    var _a2;
     if (!src) {
       throw new Error("No src passed");
     }
@@ -30017,7 +29987,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       playbackRate,
       trimBefore,
       trimAfter,
-      parentSequenceDurationInFrames: (_a2 = parentSequence == null ? void 0 : parentSequence.durationInFrames) != null ? _a2 : null,
+      parentSequenceDurationInFrames: parentSequence?.durationInFrames ?? null,
       loop
     });
     const volumes = (0, import_react56.useMemo)(() => {
@@ -30045,13 +30015,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, [initialVolume, mediaType, src, volume]);
     const doesVolumeChange = typeof volume === "function";
-    const startMediaFrom = 0 - mediaStartsAt + (trimBefore != null ? trimBefore : 0);
+    const startMediaFrom = 0 - mediaStartsAt + (trimBefore ?? 0);
     const memoizedResult = (0, import_react56.useMemo)(() => {
       return {
         volumes,
         duration,
         doesVolumeChange,
-        finalDisplayName: displayName != null ? displayName : getAssetDisplayName(src),
+        finalDisplayName: displayName ?? getAssetDisplayName(src),
         startMediaFrom,
         src,
         playbackRate,
@@ -30086,7 +30056,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     refForOutline,
     muted
   }) => {
-    var _a2, _b;
     const parentSequence = (0, import_react56.useContext)(SequenceContext);
     const startsAt = useMediaStartsAt();
     const sequenceRegistrationEnabled = (0, import_react56.useContext)(SequenceRegistrationContext);
@@ -30108,7 +30077,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const { isStudio } = useRemotionEnvironment();
     const getSequenceForRegistration = (0, import_react56.useCallback)(() => {
-      var _a3;
       if (!src) {
         throw new Error("No src passed");
       }
@@ -30120,7 +30088,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         duration,
         from: 0,
         trimBefore: null,
-        parent: (_a3 = parentSequence == null ? void 0 : parentSequence.id) != null ? _a3 : null,
+        parent: parentSequence?.id ?? null,
         displayName: finalDisplayName,
         documentationLink,
         volume: volumes,
@@ -30161,7 +30129,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       refForOutline,
       muted
     ]);
-    const registrationEnabled = isStudio || sequenceRegistrationEnabled || typeof window !== "undefined" && ((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test";
+    const registrationEnabled = isStudio || sequenceRegistrationEnabled || typeof window !== "undefined" && window.process?.env?.NODE_ENV === "test";
     useSequenceRegistration({
       getSequence: registrationEnabled && showInTimeline ? getSequenceForRegistration : null,
       id
@@ -30227,7 +30195,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var BufferingProvider = ({ children }) => {
     const { logLevel, mountTime } = (0, import_react61.useContext)(LogLevelContext);
     const { isBuffering, setBuffering } = (0, import_react61.useContext)(SetTimelineContext);
-    const bufferManager = useBufferManager(logLevel != null ? logLevel : "info", mountTime, setBuffering, isBuffering);
+    const bufferManager = useBufferManager(logLevel ?? "info", mountTime, setBuffering, isBuffering);
     return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(BufferingContextReact.Provider, {
       value: bufferManager,
       children
@@ -30273,7 +30241,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const bufferingRef = (0, import_react59.useRef)(false);
     const { delayPlayback } = useBufferState();
     const bufferUntilFirstFrame = (0, import_react59.useCallback)((requestedTime) => {
-      var _a2;
       if (mediaType !== "video") {
         return;
       }
@@ -30305,7 +30272,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       bufferingRef.current = true;
       playbackLogging({
         logLevel,
-        message: `Buffering ${(_a2 = mediaRef.current) == null ? void 0 : _a2.src} until the first frame is received`,
+        message: `Buffering ${mediaRef.current?.src} until the first frame is received`,
         mountTime,
         tag: "buffer"
       });
@@ -30418,12 +30385,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return { type: "none" };
   };
   var useCurrentTimeOfMediaTagWithUpdateTimeStamp = (mediaRef) => {
-    var _a2, _b, _c, _d;
     const lastUpdate = import_react62.default.useRef({
-      time: (_b = (_a2 = mediaRef.current) == null ? void 0 : _a2.currentTime) != null ? _b : 0,
+      time: mediaRef.current?.currentTime ?? 0,
       lastUpdate: performance.now()
     });
-    const nowCurrentTime = (_d = (_c = mediaRef.current) == null ? void 0 : _c.currentTime) != null ? _d : null;
+    const nowCurrentTime = mediaRef.current?.currentTime ?? null;
     if (nowCurrentTime !== null) {
       if (lastUpdate.current.time !== nowCurrentTime) {
         lastUpdate.current.time = nowCurrentTime;
@@ -30774,7 +30740,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       isPostmounting,
       logLevel,
       mountTime,
-      src: src != null ? src : null
+      src: src ?? null
     });
     const { bufferUntilFirstFrame, isBuffering } = useBufferUntilFirstFrame({
       mediaRef,
@@ -30786,11 +30752,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const playbackRate = localPlaybackRate * globalPlaybackRate;
     const acceptableTimeShiftButLessThanDuration = (() => {
-      var _a2;
-      if ((_a2 = mediaRef.current) == null ? void 0 : _a2.duration) {
-        return Math.min(mediaRef.current.duration, acceptableTimeshift != null ? acceptableTimeshift : DEFAULT_ACCEPTABLE_TIMESHIFT_WITH_AMPLIFICATION);
+      if (mediaRef.current?.duration) {
+        return Math.min(mediaRef.current.duration, acceptableTimeshift ?? DEFAULT_ACCEPTABLE_TIMESHIFT_WITH_AMPLIFICATION);
       }
-      return acceptableTimeshift != null ? acceptableTimeshift : DEFAULT_ACCEPTABLE_TIMESHIFT_WITH_AMPLIFICATION;
+      return acceptableTimeshift ?? DEFAULT_ACCEPTABLE_TIMESHIFT_WITH_AMPLIFICATION;
     })();
     const env = useRemotionEnvironment();
     (0, import_react58.useLayoutEffect)(() => {
@@ -30806,7 +30771,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, [mediaRef, playbackRate, preservePitch]);
     (0, import_react58.useEffect)(() => {
-      var _a2, _b, _c, _d;
       const tagName = mediaType === "audio" ? "<Html5Audio>" : "<Html5Video>";
       if (!mediaRef.current) {
         throw new Error(`No ${mediaType} ref found`);
@@ -30843,8 +30807,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         desiredUnclampedTime,
         mediaTagTime: mediaTagCurrentTime.current.time,
         mediaTagLastUpdate: mediaTagCurrentTime.current.lastUpdate,
-        rvcTime: (_b = (_a2 = rvcCurrentTime.current) == null ? void 0 : _a2.time) != null ? _b : null,
-        rvcLastUpdate: (_d = (_c = rvcCurrentTime.current) == null ? void 0 : _c.lastUpdate) != null ? _d : null,
+        rvcTime: rvcCurrentTime.current?.time ?? null,
+        rvcLastUpdate: rvcCurrentTime.current?.lastUpdate ?? null,
         isVariableFpsVideo: Boolean(isVariableFpsVideoMap.current[src]),
         acceptableTimeShift: acceptableTimeShiftButLessThanDuration,
         lastSeekDueToShift: lastSeekDueToShift.current,
@@ -31050,7 +31014,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
   };
   var AudioForDevelopmentForwardRefFunction = (props, ref) => {
-    var _a2, _b, _c;
     const [initialShouldPreMountAudioElements] = (0, import_react51.useState)(props.shouldPreMountAudioTags);
     if (props.shouldPreMountAudioTags !== initialShouldPreMountAudioElements) {
       throw new Error("Cannot change the behavior for pre-mounting audio tags dynamically.");
@@ -31089,7 +31052,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     const [mediaVolume] = useMediaVolumeState();
     const [playerMuted] = usePlayerMutedState();
-    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat");
+    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior ?? "repeat");
     if (!src) {
       throw new TypeError("No 'src' was passed to <Html5Audio>.");
     }
@@ -31125,11 +31088,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
       userPreferredVolume,
       crossOriginValue
     ]);
-    const id = (0, import_react51.useMemo)(() => `audio-${random(src != null ? src : "")}-${sequenceContext == null ? void 0 : sequenceContext.relativeFrom}-${sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom}-${sequenceContext == null ? void 0 : sequenceContext.durationInFrames}-muted:${props.muted}-loop:${props.loop}`, [
+    const id = (0, import_react51.useMemo)(() => `audio-${random(src ?? "")}-${sequenceContext?.relativeFrom}-${sequenceContext?.cumulatedFrom}-${sequenceContext?.durationInFrames}-muted:${props.muted}-loop:${props.loop}`, [
       src,
-      sequenceContext == null ? void 0 : sequenceContext.relativeFrom,
-      sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom,
-      sequenceContext == null ? void 0 : sequenceContext.durationInFrames,
+      sequenceContext?.relativeFrom,
+      sequenceContext?.cumulatedFrom,
+      sequenceContext?.durationInFrames,
       props.muted,
       props.loop
     ]);
@@ -31140,46 +31103,46 @@ Check that all your Remotion packages are on the same version. If your dependenc
     } = useSharedAudio({
       aud: propsToPass,
       audioId: id,
-      premounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting),
-      postmounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting)
+      premounting: Boolean(sequenceContext?.premounting),
+      postmounting: Boolean(sequenceContext?.postmounting)
     });
     const getStack = (0, import_react50.useCallback)(() => {
-      return _remotionInternalStack != null ? _remotionInternalStack : null;
+      return _remotionInternalStack ?? null;
     }, [_remotionInternalStack]);
     useMediaInTimeline({
       volume,
       mediaVolume,
       src,
       mediaType: "audio",
-      playbackRate: playbackRate != null ? playbackRate : 1,
-      displayName: name != null ? name : null,
+      playbackRate: playbackRate ?? 1,
+      displayName: name ?? null,
       id: timelineId,
       getStack,
       showInTimeline,
-      premountDisplay: (_a2 = sequenceContext == null ? void 0 : sequenceContext.premountDisplay) != null ? _a2 : null,
-      postmountDisplay: (_b = sequenceContext == null ? void 0 : sequenceContext.postmountDisplay) != null ? _b : null,
+      premountDisplay: sequenceContext?.premountDisplay ?? null,
+      postmountDisplay: sequenceContext?.postmountDisplay ?? null,
       loopDisplay: void 0,
       documentationLink: "https://www.remotion.dev/docs/html5-audio",
       refForOutline: null,
-      muted: muted != null ? muted : false
+      muted: muted ?? false
     });
     useMediaPlayback({
       mediaRef: audioRef,
       src,
       mediaType: "audio",
-      playbackRate: playbackRate != null ? playbackRate : 1,
+      playbackRate: playbackRate ?? 1,
       preservePitch,
       onlyWarnForMediaSeekingError: false,
-      acceptableTimeshift: acceptableTimeShiftInSeconds != null ? acceptableTimeShiftInSeconds : null,
-      isPremounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting),
-      isPostmounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting),
+      acceptableTimeshift: acceptableTimeShiftInSeconds ?? null,
+      isPremounting: Boolean(sequenceContext?.premounting),
+      isPostmounting: Boolean(sequenceContext?.postmounting),
       pauseWhenBuffering,
       onAutoPlayError: null
     });
     useMediaTag({
       id: timelineId,
-      isPostmounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting),
-      isPremounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting),
+      isPostmounting: Boolean(sequenceContext?.postmounting),
+      isPremounting: Boolean(sequenceContext?.premounting),
       mediaRef: audioRef,
       mediaType: "audio",
       onAutoPlayError: null
@@ -31189,9 +31152,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       mediaRef: audioRef,
       source: mediaElementSourceNode,
       volume: userPreferredVolume,
-      shouldUseWebAudioApi: useWebAudioApi != null ? useWebAudioApi : false
+      shouldUseWebAudioApi: useWebAudioApi ?? false
     });
-    const effectToUse = (_c = import_react51.default.useInsertionEffect) != null ? _c : import_react51.default.useLayoutEffect;
+    const effectToUse = import_react51.default.useInsertionEffect ?? import_react51.default.useLayoutEffect;
     effectToUse(() => {
       return () => {
         requestAnimationFrame(() => {
@@ -31205,18 +31168,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const currentOnDurationCallback = (0, import_react51.useRef)(onDuration);
     currentOnDurationCallback.current = onDuration;
     (0, import_react51.useEffect)(() => {
-      var _a3;
       const { current } = audioRef;
       if (!current) {
         return;
       }
       if (current.duration) {
-        (_a3 = currentOnDurationCallback.current) == null ? void 0 : _a3.call(currentOnDurationCallback, current.src, current.duration);
+        currentOnDurationCallback.current?.(current.src, current.duration);
         return;
       }
       const onLoadedMetadata = () => {
-        var _a4;
-        (_a4 = currentOnDurationCallback.current) == null ? void 0 : _a4.call(currentOnDurationCallback, current.src, current.duration);
+        currentOnDurationCallback.current?.(current.src, current.duration);
       };
       current.addEventListener("loadedmetadata", onLoadedMetadata);
       return () => {
@@ -31263,19 +31224,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
       ...nativeProps
     } = props;
     const absoluteFrame = useTimelinePosition();
-    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat");
+    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior ?? "repeat");
     const frame = useCurrentFrame();
     const sequenceContext = (0, import_react67.useContext)(SequenceContext);
     const { registerRenderAsset, unregisterRenderAsset } = (0, import_react67.useContext)(RenderAssetManager);
     const { delayRender: delayRender2, continueRender: continueRender2 } = useDelayRender();
-    const id = (0, import_react67.useMemo)(() => {
-      var _a2;
-      return `audio-${random((_a2 = props.src) != null ? _a2 : "")}-${sequenceContext == null ? void 0 : sequenceContext.relativeFrom}-${sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom}-${sequenceContext == null ? void 0 : sequenceContext.durationInFrames}`;
-    }, [
+    const id = (0, import_react67.useMemo)(() => `audio-${random(props.src ?? "")}-${sequenceContext?.relativeFrom}-${sequenceContext?.cumulatedFrom}-${sequenceContext?.durationInFrames}`, [
       props.src,
-      sequenceContext == null ? void 0 : sequenceContext.relativeFrom,
-      sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom,
-      sequenceContext == null ? void 0 : sequenceContext.durationInFrames
+      sequenceContext?.relativeFrom,
+      sequenceContext?.cumulatedFrom,
+      sequenceContext?.durationInFrames
     ]);
     const volume = evaluateVolume({
       volume: volumeProp,
@@ -31287,7 +31245,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return audioRef.current;
     }, []);
     (0, import_react67.useEffect)(() => {
-      var _a2, _b;
       if (!props.src) {
         throw new Error("No src passed");
       }
@@ -31307,10 +31264,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
         frame: absoluteFrame,
         volume,
         mediaFrame: frame,
-        playbackRate: (_a2 = props.playbackRate) != null ? _a2 : 1,
-        toneFrequency: toneFrequency != null ? toneFrequency : 1,
-        audioStartFrame: Math.max(0, -((_b = sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom) != null ? _b : 0)),
-        audioStreamIndex: audioStreamIndex != null ? audioStreamIndex : 0
+        playbackRate: props.playbackRate ?? 1,
+        toneFrequency: toneFrequency ?? 1,
+        audioStartFrame: Math.max(0, -(sequenceContext?.cumulatedNegativeFrom ?? 0)),
+        audioStreamIndex: audioStreamIndex ?? 0
       });
       return () => unregisterRenderAsset(id);
     }, [
@@ -31326,38 +31283,37 @@ Check that all your Remotion packages are on the same version. If your dependenc
       playbackRate,
       props.playbackRate,
       toneFrequency,
-      sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom,
+      sequenceContext?.cumulatedNegativeFrom,
       audioStreamIndex
     ]);
     const { src } = props;
     const needsToRenderAudioTag = ref || _remotionInternalNeedsDurationCalculation;
     (0, import_react67.useLayoutEffect)(() => {
-      var _a2, _b;
-      if (((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test") {
+      if (window.process?.env?.NODE_ENV === "test") {
         return;
       }
       if (!needsToRenderAudioTag) {
         return;
       }
       const newHandle = delayRender2("Loading <Html5Audio> duration with src=" + src, {
-        retries: delayRenderRetries != null ? delayRenderRetries : void 0,
-        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
+        retries: delayRenderRetries ?? void 0,
+        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
       });
       const { current } = audioRef;
       const didLoad = () => {
-        if (current == null ? void 0 : current.duration) {
+        if (current?.duration) {
           onDuration(current.src, current.duration);
         }
         continueRender2(newHandle);
       };
-      if (current == null ? void 0 : current.duration) {
+      if (current?.duration) {
         onDuration(current.src, current.duration);
         continueRender2(newHandle);
       } else {
-        current == null ? void 0 : current.addEventListener("loadedmetadata", didLoad, { once: true });
+        current?.addEventListener("loadedmetadata", didLoad, { once: true });
       }
       return () => {
-        current == null ? void 0 : current.removeEventListener("loadedmetadata", didLoad);
+        current?.removeEventListener("loadedmetadata", didLoad);
         continueRender2(newHandle);
       };
     }, [
@@ -31380,7 +31336,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var AudioForRendering = (0, import_react67.forwardRef)(AudioForRenderingRefForwardingFunction);
   var AudioRefForwardingFunction = (props, ref) => {
-    var _a2, _b, _c;
     const audioTagsContext = (0, import_react45.useContext)(SharedAudioTagsContext);
     const propsWithFreeze = props;
     const {
@@ -31421,14 +31376,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
         cancelRender(new Error(errMessage));
       } else {
-        onRemotionError == null ? void 0 : onRemotionError(new Error(errMessage));
+        onRemotionError?.(new Error(errMessage));
         console.warn(errMessage);
       }
     }, [loop, onRemotionError, preloadedSrc]);
     const onDuration = (0, import_react45.useCallback)((src, durationInSeconds) => {
       setDurations({ type: "got-duration", durationInSeconds, src });
     }, [setDurations]);
-    const durationFetched = (_a2 = durations[getAbsoluteSrc(preloadedSrc)]) != null ? _a2 : durations[getAbsoluteSrc(props.src)];
+    const durationFetched = durations[getAbsoluteSrc(preloadedSrc)] ?? durations[getAbsoluteSrc(props.src)];
     validateMediaTrimProps({ startFrom, endAt, trimBefore, trimAfter });
     const { trimBeforeValue, trimAfterValue } = resolveTrimProps({
       startFrom,
@@ -31450,7 +31405,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         durationInFrames: calculateMediaDuration({
           trimAfter: trimAfterValue,
           mediaDurationInFrames: duration,
-          playbackRate: (_b = props.playbackRate) != null ? _b : 1,
+          playbackRate: props.playbackRate ?? 1,
           trimBefore: trimBeforeValue
         }),
         children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Html5Audio, {
@@ -31463,7 +31418,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (typeof trimBeforeValue !== "undefined" || typeof trimAfterValue !== "undefined") {
       return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Sequence, {
         layout: "none",
-        from: 0 - (trimBeforeValue != null ? trimBeforeValue : 0),
+        from: 0 - (trimBeforeValue ?? 0),
         showInTimeline: false,
         durationInFrames: trimAfterValue,
         name,
@@ -31490,8 +31445,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       });
     }
     return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(AudioForPreview, {
-      _remotionInternalNativeLoopPassed: (_c = props._remotionInternalNativeLoopPassed) != null ? _c : false,
-      _remotionInternalStack: _remotionInternalStack != null ? _remotionInternalStack : null,
+      _remotionInternalNativeLoopPassed: props._remotionInternalNativeLoopPassed ?? false,
+      _remotionInternalStack: _remotionInternalStack ?? null,
       shouldPreMountAudioTags: audioTagsContext !== null && audioTagsContext.numberOfAudioTags > 0,
       ...props,
       ref,
@@ -31499,7 +31454,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       onDuration,
       pauseWhenBuffering: shouldPauseWhenBuffering,
       _remotionInternalNeedsDurationCalculation: Boolean(loop),
-      showInTimeline: showInTimeline != null ? showInTimeline : true
+      showInTimeline: showInTimeline ?? true
     });
   };
   var Html5Audio = (0, import_react45.forwardRef)(AudioRefForwardingFunction);
@@ -31569,7 +31524,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [outputCanvas, setOutputCanvas] = (0, import_react68.useState)(null);
     const memoizedEffects = useMemoizedEffects({
       effects,
-      overrideId: overrideId != null ? overrideId : null
+      overrideId: overrideId ?? null
     });
     const sourceCanvas = (0, import_react68.useMemo)(() => {
       if (typeof document === "undefined") {
@@ -31643,7 +31598,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return {
         width,
         height,
-        ...style2 != null ? style2 : {}
+        ...style2 ?? {}
       };
     }, [height, style2, width]);
     return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("canvas", {
@@ -31676,7 +31631,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     cropBottom,
     ...props2
   }, ref) => {
-    var _a2;
     const memoizedEffectDefinitions = useMemoizedEffectDefinitions(effects);
     const actualRef = (0, import_react68.useRef)(null);
     (0, import_react68.useImperativeHandle)(ref, () => {
@@ -31687,7 +31641,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       cropRight,
       cropTop,
       cropBottom,
-      style: style2 != null ? style2 : null,
+      style: style2 ?? null,
       componentName: "<Solid />"
     });
     return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Sequence, {
@@ -31700,18 +31654,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
       controls,
       _remotionInternalEffects: memoizedEffectDefinitions,
       durationInFrames,
-      name: name != null ? name : "<Solid>",
+      name: name ?? "<Solid>",
       outlineRef: actualRef,
       _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/solid",
       ...props2,
       children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(SolidInner, {
         reference: actualRef,
-        overrideId: (_a2 = controls == null ? void 0 : controls.overrideId) != null ? _a2 : null,
+        overrideId: controls?.overrideId ?? null,
         color,
         height,
         width,
         className: className2,
-        style: croppedStyle != null ? croppedStyle : void 0,
+        style: croppedStyle ?? void 0,
         effects,
         pixelDensity
       })
@@ -31746,7 +31700,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-    cachedSupport = typeof (ctx == null ? void 0 : ctx.drawElementImage) === "function" && typeof canvas.requestPaint === "function" && typeof canvas.captureElementImage === "function" && "transferControlToOffscreen" in HTMLCanvasElement.prototype;
+    cachedSupport = typeof ctx?.drawElementImage === "function" && typeof canvas.requestPaint === "function" && typeof canvas.captureElementImage === "function" && "transferControlToOffscreen" in HTMLCanvasElement.prototype;
     return cachedSupport;
   };
   var HTML_IN_CANVAS_UNSUPPORTED_MESSAGE = "HTML in Canvas is not supported. Two common causes: Chrome is older than version 148 (update Chrome), or the HTML-in-Canvas flag is disabled at chrome://flags/#canvas-draw-element (enable it and restart Chrome).";
@@ -31811,7 +31765,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     controls,
     style: style2
   }, ref) => {
-    var _a2;
     const isInsideAncestorHtmlInCanvas = (0, import_react69.useContext)(HtmlInCanvasAncestorContext);
     assertHtmlInCanvasDimensions(width, height);
     if (isInsideAncestorHtmlInCanvas) {
@@ -31842,7 +31795,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const chainState = useEffectChainState();
     const memoizedEffects = useMemoizedEffects({
       effects,
-      overrideId: (_a2 = controls == null ? void 0 : controls.overrideId) != null ? _a2 : null
+      overrideId: controls?.overrideId ?? null
     });
     const effectsRef = (0, import_react69.useRef)(memoizedEffects);
     effectsRef.current = memoizedEffects;
@@ -31993,12 +31946,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
       unmountedRef.current = false;
       placeholder.addEventListener("paint", onPaintCb);
       return () => {
-        var _a3;
         placeholder.removeEventListener("paint", onPaintCb);
         paintTargetRef.current = null;
         initializedRef.current = false;
         unmountedRef.current = true;
-        (_a3 = onInitCleanupRef.current) == null ? void 0 : _a3.call(onInitCleanupRef);
+        onInitCleanupRef.current?.();
         onInitCleanupRef.current = null;
       };
     }, [
@@ -32010,7 +31962,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]);
     const onPaintChangedRef = (0, import_react69.useRef)(false);
     (0, import_react69.useLayoutEffect)(() => {
-      var _a3;
       if (!onPaintChangedRef.current) {
         onPaintChangedRef.current = true;
         return;
@@ -32019,7 +31970,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       if (!canvas) {
         return;
       }
-      (_a3 = canvas.requestPaint) == null ? void 0 : _a3.call(canvas);
+      canvas.requestPaint?.();
     }, [onPaint, memoizedEffects]);
     (0, import_react69.useLayoutEffect)(() => {
       const canvas = canvas2dRef.current;
@@ -32044,7 +31995,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return {
         width,
         height,
-        ...style2 != null ? style2 : {}
+        ...style2 ?? {}
       };
     }, [height, style2, width]);
     return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(HtmlInCanvasAncestorContext.Provider, {
@@ -32096,12 +32047,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
       cropRight,
       cropTop,
       cropBottom,
-      style: style2 != null ? style2 : null,
+      style: style2 ?? null,
       componentName: "<HtmlInCanvas />"
     });
     return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Sequence, {
       durationInFrames,
-      name: name != null ? name : "<HtmlInCanvas>",
+      name: name ?? "<HtmlInCanvas>",
       _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/remotion/html-in-canvas",
       controls,
       _remotionInternalEffects: memoizedEffectDefinitions,
@@ -32117,7 +32068,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         onInit,
         pixelDensity,
         controls,
-        style: croppedStyle != null ? croppedStyle : void 0,
+        style: croppedStyle ?? void 0,
         children
       })
     });
@@ -32218,8 +32169,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         settle(() => reject(makeAbortError()));
       }
       image.onload = () => {
-        var _a2;
-        Promise.resolve((_a2 = image.decode) == null ? void 0 : _a2.call(image)).catch(() => {
+        Promise.resolve(image.decode?.()).catch(() => {
           return;
         }).then(() => {
           const imageWidth = image.naturalWidth || image.width;
@@ -32276,7 +32226,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     refForOutline,
     ...canvasProps
   }, ref) => {
-    var _a2;
     const { delayRender: delayRender2, continueRender: continueRender2, cancelRender: cancelRender2 } = useDelayRender();
     const { delayPlayback } = useBufferState();
     const [outputCanvas, setOutputCanvas] = (0, import_react70.useState)(null);
@@ -32285,13 +32234,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const chainState = useEffectChainState();
     const memoizedEffects = useMemoizedEffects({
       effects,
-      overrideId: (_a2 = controls == null ? void 0 : controls.overrideId) != null ? _a2 : null
+      overrideId: controls?.overrideId ?? null
     });
     const sequenceContext = (0, import_react70.useContext)(SequenceContext);
     const pendingLoadDelayRef = (0, import_react70.useRef)(null);
     const [isLoadPending, setIsLoadPending] = (0, import_react70.useState)(false);
-    const isPremounting = Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting);
-    const isPostmounting = Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting);
+    const isPremounting = Boolean(sequenceContext?.premounting);
+    const isPostmounting = Boolean(sequenceContext?.postmounting);
     const continuePendingLoadDelay = (0, import_react70.useCallback)(({ markAsReady }) => {
       const pending = pendingLoadDelayRef.current;
       if (!pending || pending.continued) {
@@ -32335,8 +32284,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]);
     (0, import_react70.useLayoutEffect)(() => {
       const handle = delayRender2(`Rendering <CanvasImage> with src="${truncateSrcForLabel(actualSrc)}"`, {
-        retries: delayRenderRetries != null ? delayRenderRetries : void 0,
-        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
+        retries: delayRenderRetries ?? void 0,
+        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
       });
       const controller = new AbortController();
       let cancelled = false;
@@ -32412,8 +32361,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         continued = true;
         continueRender2(handle);
       };
-      const canvasWidth = width != null ? width : loadedImage.width;
-      const canvasHeight = height != null ? height : loadedImage.height;
+      const canvasWidth = width ?? loadedImage.width;
+      const canvasHeight = height ?? loadedImage.height;
       const sourceContext = sourceCanvas.getContext("2d", {
         colorSpace: "srgb"
       });
@@ -32545,13 +32494,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       premountingActive,
       premountingStyle
     } = usePremounting({
-      from: from != null ? from : 0,
-      durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
-      premountFor: premountFor != null ? premountFor : null,
-      postmountFor: postmountFor != null ? postmountFor : null,
-      style: style2 != null ? style2 : null,
-      styleWhilePremounted: styleWhilePremounted != null ? styleWhilePremounted : null,
-      styleWhilePostmounted: styleWhilePostmounted != null ? styleWhilePostmounted : null,
+      from: from ?? 0,
+      durationInFrames: durationInFrames ?? Infinity,
+      premountFor: premountFor ?? null,
+      postmountFor: postmountFor ?? null,
+      style: style2 ?? null,
+      styleWhilePremounted: styleWhilePremounted ?? null,
+      styleWhilePostmounted: styleWhilePostmounted ?? null,
       hideWhilePremounted: "display-none"
     });
     const croppedStyle = useCropStyle({
@@ -32560,21 +32509,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
       cropTop,
       cropBottom,
       style: premountingStyle,
-      componentName: _remotionInternalCropComponentName != null ? _remotionInternalCropComponentName : "<CanvasImage />"
+      componentName: _remotionInternalCropComponentName ?? "<CanvasImage />"
     });
     return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(Freeze, {
       frame: freezeFrame,
       active: isPremountingOrPostmounting,
       children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(Sequence, {
         layout: "none",
-        from: from != null ? from : 0,
+        from: from ?? 0,
         trimBefore,
-        durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
+        durationInFrames: durationInFrames ?? Infinity,
         freeze,
         hidden,
-        showInTimeline: showInTimeline != null ? showInTimeline : true,
-        name: name != null ? name : "<CanvasImage>",
-        _remotionInternalDocumentationLink: _remotionInternalDocumentationLink != null ? _remotionInternalDocumentationLink : "https://www.remotion.dev/docs/canvasimage",
+        showInTimeline: showInTimeline ?? true,
+        name: name ?? "<CanvasImage>",
+        _remotionInternalDocumentationLink: _remotionInternalDocumentationLink ?? "https://www.remotion.dev/docs/canvasimage",
         controls,
         _remotionInternalEffects: memoizedEffectDefinitions,
         _remotionInternalIsMedia: { type: "image", src },
@@ -32582,7 +32531,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         _remotionInternalPostmountDisplay: effectivePostmountFor || null,
         _remotionInternalIsPremounting: premountingActive,
         _remotionInternalIsPostmounting: postmountingActive,
-        outlineRef: outlineRef != null ? outlineRef : actualRef,
+        outlineRef: outlineRef ?? actualRef,
         children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(CanvasImageContent, {
           ref: actualRef,
           src,
@@ -32592,14 +32541,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
           effects,
           controls,
           className: className2,
-          style: croppedStyle != null ? croppedStyle : void 0,
+          style: croppedStyle ?? void 0,
           id,
           onError,
           pauseWhenLoading,
           maxRetries,
           delayRenderRetries,
           delayRenderTimeoutInMilliseconds,
-          refForOutline: outlineRef != null ? outlineRef : null,
+          refForOutline: outlineRef ?? null,
           ...canvasProps
         })
       })
@@ -32623,12 +32572,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }, ref) => {
     const { delayRender: delayRender2, continueRender: continueRender2 } = useDelayRender();
     const [handle] = (0, import_react71.useState)(() => delayRender2(`Loading <IFrame> with source ${props2.src}`, {
-      retries: delayRenderRetries != null ? delayRenderRetries : void 0,
-      timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
+      retries: delayRenderRetries ?? void 0,
+      timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
     }));
     const didLoad = (0, import_react71.useCallback)((e) => {
       continueRender2(handle);
-      onLoad == null ? void 0 : onLoad(e);
+      onLoad?.(e);
     }, [handle, onLoad, continueRender2]);
     const didGetError = (0, import_react71.useCallback)((e) => {
       continueRender2(handle);
@@ -32689,11 +32638,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
       const currentSrc = imageRef.current.src;
       setTimeout(() => {
-        var _a2;
         if (!imageRef.current) {
           return;
         }
-        const newSrc = (_a2 = imageRef.current) == null ? void 0 : _a2.src;
+        const newSrc = imageRef.current?.src;
         if (newSrc !== currentSrc) {
           return;
         }
@@ -32702,27 +32650,26 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }, timeout);
     }, []);
     const { delayRender: delayRender2, continueRender: continueRender2, cancelRender: cancelRender2 } = useDelayRender();
-    const isPremounting = Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting);
-    const isPostmounting = Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting);
+    const isPremounting = Boolean(sequenceContext?.premounting);
+    const isPostmounting = Boolean(sequenceContext?.postmounting);
     const didGetError = (0, import_react72.useCallback)((e) => {
-      var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
       if (!errors.current) {
         return;
       }
-      errors.current[(_a2 = imageRef.current) == null ? void 0 : _a2.src] = ((_c = errors.current[(_b = imageRef.current) == null ? void 0 : _b.src]) != null ? _c : 0) + 1;
-      if (onError && ((_e = errors.current[(_d = imageRef.current) == null ? void 0 : _d.src]) != null ? _e : 0) > maxRetries) {
+      errors.current[imageRef.current?.src] = (errors.current[imageRef.current?.src] ?? 0) + 1;
+      if (onError && (errors.current[imageRef.current?.src] ?? 0) > maxRetries) {
         onError(e);
         return;
       }
-      if (((_g = errors.current[(_f = imageRef.current) == null ? void 0 : _f.src]) != null ? _g : 0) <= maxRetries) {
-        const backoff = exponentialBackoff2((_i = errors.current[(_h = imageRef.current) == null ? void 0 : _h.src]) != null ? _i : 0);
-        console.warn(`Could not load image with source ${truncateSrcForLabel((_j = imageRef.current) == null ? void 0 : _j.src)}, retrying again in ${backoff}ms`);
+      if ((errors.current[imageRef.current?.src] ?? 0) <= maxRetries) {
+        const backoff = exponentialBackoff2(errors.current[imageRef.current?.src] ?? 0);
+        console.warn(`Could not load image with source ${truncateSrcForLabel(imageRef.current?.src)}, retrying again in ${backoff}ms`);
         retryIn(backoff);
         return;
       }
       try {
-        cancelRender2("Error loading image with src: " + truncateSrcForLabel((_k = imageRef.current) == null ? void 0 : _k.src));
-      } catch (e2) {
+        cancelRender2("Error loading image with src: " + truncateSrcForLabel(imageRef.current?.src));
+      } catch {
       }
     }, [cancelRender2, maxRetries, onError, retryIn]);
     if (typeof window !== "undefined") {
@@ -32739,8 +32686,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         pauseWhenLoading
       ]);
       (0, import_react72.useLayoutEffect)(() => {
-        var _a2, _b;
-        if (((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test") {
+        if (window.process?.env?.NODE_ENV === "test") {
           if (imageRef.current) {
             imageRef.current.src = actualSrc;
           }
@@ -32752,22 +32698,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
         setIsLoading(true);
         const newHandle = delayRender2("Loading <Img> with src=" + truncateSrcForLabel(actualSrc), {
-          retries: delayRenderRetries != null ? delayRenderRetries : void 0,
-          timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
+          retries: delayRenderRetries ?? void 0,
+          timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
         });
         let unmounted = false;
         const onComplete = () => {
-          var _a3, _b2, _c, _d;
           if (unmounted) {
             continueRender2(newHandle);
             return;
           }
-          if (((_b2 = errors.current[(_a3 = imageRef.current) == null ? void 0 : _a3.src]) != null ? _b2 : 0) > 0) {
-            delete errors.current[(_c = imageRef.current) == null ? void 0 : _c.src];
-            console.info(`Retry successful - ${truncateSrcForLabel((_d = imageRef.current) == null ? void 0 : _d.src)} is now loaded`);
+          if ((errors.current[imageRef.current?.src] ?? 0) > 0) {
+            delete errors.current[imageRef.current?.src];
+            console.info(`Retry successful - ${truncateSrcForLabel(imageRef.current?.src)} is now loaded`);
           }
           if (current) {
-            onImageFrame == null ? void 0 : onImageFrame(current);
+            onImageFrame?.(current);
           }
           setIsLoading(false);
           continueRender2(newHandle);
@@ -32847,13 +32792,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       premountingActive,
       premountingStyle
     } = usePremounting({
-      from: from != null ? from : 0,
-      durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
-      premountFor: premountFor != null ? premountFor : null,
-      postmountFor: postmountFor != null ? postmountFor : null,
-      style: style2 != null ? style2 : null,
-      styleWhilePremounted: styleWhilePremounted != null ? styleWhilePremounted : null,
-      styleWhilePostmounted: styleWhilePostmounted != null ? styleWhilePostmounted : null,
+      from: from ?? 0,
+      durationInFrames: durationInFrames ?? Infinity,
+      premountFor: premountFor ?? null,
+      postmountFor: postmountFor ?? null,
+      style: style2 ?? null,
+      styleWhilePremounted: styleWhilePremounted ?? null,
+      styleWhilePostmounted: styleWhilePostmounted ?? null,
       hideWhilePremounted: "display-none"
     });
     const croppedStyle = useCropStyle({
@@ -32869,9 +32814,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       active: isPremountingOrPostmounting,
       children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Sequence, {
         layout: "none",
-        from: from != null ? from : 0,
+        from: from ?? 0,
         trimBefore,
-        durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
+        durationInFrames: durationInFrames ?? Infinity,
         freeze,
         _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/img",
         _remotionInternalIsMedia: { type: "image", src },
@@ -32879,15 +32824,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
         _remotionInternalPostmountDisplay: effectivePostmountFor || null,
         _remotionInternalIsPremounting: premountingActive,
         _remotionInternalIsPostmounting: postmountingActive,
-        name: name != null ? name : "<Img>",
+        name: name ?? "<Img>",
         controls,
-        showInTimeline: showInTimeline != null ? showInTimeline : true,
+        showInTimeline: showInTimeline ?? true,
         hidden,
         outlineRef: refForOutline,
         children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ImgContent, {
           src,
           refForOutline,
-          style: croppedStyle != null ? croppedStyle : void 0,
+          style: croppedStyle ?? void 0,
           ...props2
         })
       })
@@ -32946,7 +32891,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     throw new Error(`The ${formatPropList(conflictingProps)} prop${conflictingProps.length === 1 ? "" : "s"} cannot be used on <Img> when effects are passed, because <Img> renders a <canvas> instead of a native <img>. Remove ${conflictingProps.length === 1 ? "this prop" : "these props"}.`);
   };
   var getFitFromObjectFit = (style2) => {
-    const objectFit = style2 == null ? void 0 : style2.objectFit;
+    const objectFit = style2?.objectFit;
     if (objectFit === "fill" || objectFit === "contain" || objectFit === "cover") {
       return objectFit;
     }
@@ -32983,7 +32928,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     delayRenderTimeoutInMilliseconds,
     ...props2
   }) => {
-    var _a2;
     const refForOutline = (0, import_react72.useRef)(null);
     const shouldPauseWhenLoading = resolveV5Default(pauseWhenLoading);
     if (effects.length === 0) {
@@ -33031,7 +32975,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const canvasWidth = typeof width === "number" ? width : void 0;
     const canvasHeight = typeof height === "number" ? height : void 0;
     const canvasProps = props2;
-    const canvasFit = (_a2 = getFitFromObjectFit(style2)) != null ? _a2 : "fill";
+    const canvasFit = getFitFromObjectFit(style2) ?? "fill";
     return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CanvasImageWithPrivateProps, {
       src,
       width: canvasWidth,
@@ -33058,7 +33002,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       styleWhilePremounted,
       styleWhilePostmounted,
       hidden,
-      name: name != null ? name : "<Img>",
+      name: name ?? "<Img>",
       showInTimeline,
       _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/img",
       _remotionInternalCropComponentName: "<Img />",
@@ -33163,7 +33107,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         cropRight,
         cropTop,
         cropBottom,
-        style: style2 != null ? style2 : null,
+        style: style2 ?? null,
         componentName: displayName
       });
       const refForOutline = (0, import_react73.useRef)(null);
@@ -33173,19 +33117,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }, [ref]);
       return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Sequence, {
         layout: "none",
-        from: from != null ? from : 0,
+        from: from ?? 0,
         trimBefore,
-        durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
+        durationInFrames: durationInFrames ?? Infinity,
         freeze,
         hidden,
-        name: name != null ? name : displayName,
-        showInTimeline: showInTimeline != null ? showInTimeline : true,
+        name: name ?? displayName,
+        showInTimeline: showInTimeline ?? true,
         controls,
         _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/interactive",
         outlineRef: refForOutline,
         children: import_react73.default.createElement(tag, {
           ...props2,
-          style: croppedStyle != null ? croppedStyle : void 0,
+          style: croppedStyle ?? void 0,
           ref: callbackRef
         })
       });
@@ -33334,7 +33278,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const internalOrder = nextInternalOrderRef.current++;
       internalOrderRef.current.set(orderKey, internalOrder);
       updateCompositions((comps) => {
-        var _a2, _b;
         if (comps.find((c22) => c22.id === comp.id)) {
           throw new Error(`Multiple composition with id ${comp.id} are registered.`);
         }
@@ -33342,7 +33285,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           ...comps,
           {
             ...comp,
-            order: (_b = (_a2 = committedOrderRef.current) == null ? void 0 : _a2.get(orderKey)) != null ? _b : internalOrder
+            order: committedOrderRef.current?.get(orderKey) ?? internalOrder
           }
         ];
       });
@@ -33361,13 +33304,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const internalOrder = nextInternalOrderRef.current++;
       internalOrderRef.current.set(orderKey, internalOrder);
       setFolders((prevFolders) => {
-        var _a2, _b;
         return [
           ...prevFolders,
           {
             name,
             parent,
-            order: (_b = (_a2 = committedOrderRef.current) == null ? void 0 : _a2.get(orderKey)) != null ? _b : internalOrder,
+            order: committedOrderRef.current?.get(orderKey) ?? internalOrder,
             stack
           }
         ];
@@ -33408,14 +33350,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           updateCompositions((currentCompositions) => {
             let changed = false;
             const nextCompositions = currentCompositions.map((composition) => {
-              var _a2, _b;
-              const nextOrder = (_b = (_a2 = order.get(getCompositionAndFolderOrderKey({
+              const nextOrder = order.get(getCompositionAndFolderOrderKey({
                 type: "composition",
                 id: composition.id
-              }))) != null ? _a2 : internalOrderRef.current.get(getCompositionAndFolderOrderKey({
+              })) ?? internalOrderRef.current.get(getCompositionAndFolderOrderKey({
                 type: "composition",
                 id: composition.id
-              }))) != null ? _b : composition.order;
+              })) ?? composition.order;
               if (nextOrder === composition.order) {
                 return composition;
               }
@@ -33427,14 +33368,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           setFolders((currentFolders) => {
             let changed = false;
             const nextFolders = currentFolders.map((folder) => {
-              var _a2, _b;
-              const nextOrder = (_b = (_a2 = order.get(getCompositionAndFolderOrderKey({
+              const nextOrder = order.get(getCompositionAndFolderOrderKey({
                 type: "folder",
                 id: getFolderOrderId(folder)
-              }))) != null ? _a2 : internalOrderRef.current.get(getCompositionAndFolderOrderKey({
+              })) ?? internalOrderRef.current.get(getCompositionAndFolderOrderKey({
                 type: "folder",
                 id: getFolderOrderId(folder)
-              }))) != null ? _b : folder.order;
+              })) ?? folder.order;
               if (nextOrder === folder.order) {
                 return folder;
               }
@@ -33655,7 +33595,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           try {
             disposeResource(entry);
           } catch (error2) {
-            firstError != null ? firstError : firstError = error2;
+            firstError ??= error2;
           }
         }
         if (firstError !== null) {
@@ -33803,7 +33743,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           try {
             resource.dispose();
           } catch (error2) {
-            firstError != null ? firstError : firstError = error2;
+            firstError ??= error2;
           }
         }
         if (firstError !== null) {
@@ -33846,27 +33786,26 @@ Check that all your Remotion packages are on the same version. If your dependenc
     compositionWidth,
     compositionDurationInFrames
   }) => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h;
     const calculateMetadataErrorLocation = `calculated by calculateMetadata() for the composition "${compositionId}"`;
     const defaultErrorLocation = `of the "<Composition />" component with the id "${compositionId}"`;
-    const width = (_b = (_a2 = calculated == null ? void 0 : calculated.width) != null ? _a2 : compositionWidth) != null ? _b : void 0;
-    validateDimension(width, "width", (calculated == null ? void 0 : calculated.width) ? calculateMetadataErrorLocation : defaultErrorLocation);
-    const height = (_d = (_c = calculated == null ? void 0 : calculated.height) != null ? _c : compositionHeight) != null ? _d : void 0;
-    validateDimension(height, "height", (calculated == null ? void 0 : calculated.height) ? calculateMetadataErrorLocation : defaultErrorLocation);
-    const fps = (_f = (_e = calculated == null ? void 0 : calculated.fps) != null ? _e : compositionFps) != null ? _f : null;
-    validateFps(fps, (calculated == null ? void 0 : calculated.fps) ? calculateMetadataErrorLocation : defaultErrorLocation, false);
-    const durationInFrames = (_h = (_g = calculated == null ? void 0 : calculated.durationInFrames) != null ? _g : compositionDurationInFrames) != null ? _h : null;
+    const width = calculated?.width ?? compositionWidth ?? void 0;
+    validateDimension(width, "width", calculated?.width ? calculateMetadataErrorLocation : defaultErrorLocation);
+    const height = calculated?.height ?? compositionHeight ?? void 0;
+    validateDimension(height, "height", calculated?.height ? calculateMetadataErrorLocation : defaultErrorLocation);
+    const fps = calculated?.fps ?? compositionFps ?? null;
+    validateFps(fps, calculated?.fps ? calculateMetadataErrorLocation : defaultErrorLocation, false);
+    const durationInFrames = calculated?.durationInFrames ?? compositionDurationInFrames ?? null;
     validateDurationInFrames(durationInFrames, {
       allowFloats: false,
       component: `of the "<Composition />" component with the id "${compositionId}"`
     });
-    const defaultCodec = calculated == null ? void 0 : calculated.defaultCodec;
+    const defaultCodec = calculated?.defaultCodec;
     validateCodec(defaultCodec, calculateMetadataErrorLocation, "defaultCodec");
-    const defaultOutName = calculated == null ? void 0 : calculated.defaultOutName;
-    const defaultVideoImageFormat = calculated == null ? void 0 : calculated.defaultVideoImageFormat;
-    const defaultPixelFormat = calculated == null ? void 0 : calculated.defaultPixelFormat;
-    const defaultProResProfile = calculated == null ? void 0 : calculated.defaultProResProfile;
-    const defaultSampleRate = calculated == null ? void 0 : calculated.defaultSampleRate;
+    const defaultOutName = calculated?.defaultOutName;
+    const defaultVideoImageFormat = calculated?.defaultVideoImageFormat;
+    const defaultPixelFormat = calculated?.defaultPixelFormat;
+    const defaultProResProfile = calculated?.defaultProResProfile;
+    const defaultSampleRate = calculated?.defaultSampleRate;
     return {
       width,
       height,
@@ -33890,7 +33829,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     defaultProps,
     originalProps
   }) => {
-    var _a2, _b, _c, _d, _e, _f, _g;
     const data = validateCalculated({
       calculated,
       compositionDurationInFrames,
@@ -33901,22 +33839,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     return {
       metadataSource: {
-        durationInFrames: (calculated == null ? void 0 : calculated.durationInFrames) === void 0 ? "composition" : "calculate-metadata",
-        fps: (calculated == null ? void 0 : calculated.fps) === void 0 ? "composition" : "calculate-metadata",
-        height: (calculated == null ? void 0 : calculated.height) === void 0 ? "composition" : "calculate-metadata",
-        width: (calculated == null ? void 0 : calculated.width) === void 0 ? "composition" : "calculate-metadata"
+        durationInFrames: calculated?.durationInFrames === void 0 ? "composition" : "calculate-metadata",
+        fps: calculated?.fps === void 0 ? "composition" : "calculate-metadata",
+        height: calculated?.height === void 0 ? "composition" : "calculate-metadata",
+        width: calculated?.width === void 0 ? "composition" : "calculate-metadata"
       },
       videoConfig: {
         ...data,
         id: compositionId,
-        defaultProps: serializeThenDeserializeInStudio(defaultProps != null ? defaultProps : {}),
-        props: serializeThenDeserializeInStudio((_a2 = calculated == null ? void 0 : calculated.props) != null ? _a2 : originalProps),
-        defaultCodec: (_b = data.defaultCodec) != null ? _b : null,
-        defaultOutName: (_c = data.defaultOutName) != null ? _c : null,
-        defaultVideoImageFormat: (_d = data.defaultVideoImageFormat) != null ? _d : null,
-        defaultPixelFormat: (_e = data.defaultPixelFormat) != null ? _e : null,
-        defaultProResProfile: (_f = data.defaultProResProfile) != null ? _f : null,
-        defaultSampleRate: (_g = data.defaultSampleRate) != null ? _g : null
+        defaultProps: serializeThenDeserializeInStudio(defaultProps ?? {}),
+        props: serializeThenDeserializeInStudio(calculated?.props ?? originalProps),
+        defaultCodec: data.defaultCodec ?? null,
+        defaultOutName: data.defaultOutName ?? null,
+        defaultVideoImageFormat: data.defaultVideoImageFormat ?? null,
+        defaultPixelFormat: data.defaultPixelFormat ?? null,
+        defaultProResProfile: data.defaultProResProfile ?? null,
+        defaultSampleRate: data.defaultSampleRate ?? null
       }
     };
   };
@@ -34064,11 +34002,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (!src) {
       throw new TypeError("No `src` was passed to <OffthreadVideo>.");
     }
-    const id = (0, import_react84.useMemo)(() => `offthreadvideo-${random(src)}-${sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom}-${sequenceContext == null ? void 0 : sequenceContext.relativeFrom}-${sequenceContext == null ? void 0 : sequenceContext.durationInFrames}`, [
+    const id = (0, import_react84.useMemo)(() => `offthreadvideo-${random(src)}-${sequenceContext?.cumulatedFrom}-${sequenceContext?.relativeFrom}-${sequenceContext?.durationInFrames}`, [
       src,
-      sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom,
-      sequenceContext == null ? void 0 : sequenceContext.relativeFrom,
-      sequenceContext == null ? void 0 : sequenceContext.durationInFrames
+      sequenceContext?.cumulatedFrom,
+      sequenceContext?.relativeFrom,
+      sequenceContext?.durationInFrames
     ]);
     if (!videoConfig) {
       throw new Error("No video config found");
@@ -34080,7 +34018,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     warnAboutTooHighVolume(volume);
     (0, import_react84.useEffect)(() => {
-      var _a2;
       if (!src) {
         throw new Error("No src passed");
       }
@@ -34102,7 +34039,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mediaFrame: frame,
         playbackRate,
         toneFrequency,
-        audioStartFrame: Math.max(0, -((_a2 = sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom) != null ? _a2 : 0)),
+        audioStartFrame: Math.max(0, -(sequenceContext?.cumulatedNegativeFrom ?? 0)),
         audioStreamIndex
       });
       return () => unregisterRenderAsset(id);
@@ -34117,7 +34054,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       absoluteFrame,
       playbackRate,
       toneFrequency,
-      sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom,
+      sequenceContext?.cumulatedNegativeFrom,
       audioStreamIndex
     ]);
     const currentTime = (0, import_react84.useMemo)(() => {
@@ -34145,8 +34082,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       setImageSrc(null);
       const controller = new AbortController();
       const newHandle = delayRender2(`Fetching ${actualSrc} from server`, {
-        retries: delayRenderRetries != null ? delayRenderRetries : void 0,
-        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
+        retries: delayRenderRetries ?? void 0,
+        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
       });
       const execute = async () => {
         try {
@@ -34210,7 +34147,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]);
     const onErr = (0, import_react84.useCallback)(() => {
       if (onError) {
-        onError == null ? void 0 : onError(new Error("Failed to load image with src " + imageSrc));
+        onError?.(new Error("Failed to load image with src " + imageSrc));
       } else {
         cancelRender("Failed to load image with src " + imageSrc);
       }
@@ -34270,15 +34207,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [onVideoFrame, ref]);
   };
   var MediaPlaybackError = class extends Error {
+    src;
     constructor({ message, src }) {
       super(message);
-      __publicField(this, "src");
       this.name = "MediaPlaybackError";
       this.src = src;
     }
   };
   var VideoForDevelopmentRefForwardingFunction = (props2, ref) => {
-    var _a2, _b, _c, _d, _e;
     const context = (0, import_react85.useContext)(SharedAudioContext);
     if (!context) {
       throw new Error("SharedAudioContext not found");
@@ -34293,11 +34229,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
         ref: videoRef
       });
     }, [context.audioContext]);
-    const effectToUse = (_a2 = import_react85.default.useInsertionEffect) != null ? _a2 : import_react85.default.useLayoutEffect;
+    const effectToUse = import_react85.default.useInsertionEffect ?? import_react85.default.useLayoutEffect;
     effectToUse(() => {
       return () => {
         requestAnimationFrame(() => {
-          sharedSource == null ? void 0 : sharedSource.cleanup();
+          sharedSource?.cleanup();
         });
       };
     }, [sharedSource]);
@@ -34334,7 +34270,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (!_propsValid) {
       throw new Error("typecheck error");
     }
-    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat");
+    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior ?? "repeat");
     const { fps, durationInFrames } = useVideoConfig();
     const parentSequence = (0, import_react85.useContext)(SequenceContext);
     const { isStudio } = useRemotionEnvironment();
@@ -34353,52 +34289,52 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     warnAboutTooHighVolume(userPreferredVolume);
     const getStack = (0, import_react85.useCallback)(() => {
-      return _remotionInternalStack != null ? _remotionInternalStack : null;
+      return _remotionInternalStack ?? null;
     }, [_remotionInternalStack]);
     useMediaInTimeline({
       volume,
       mediaVolume,
       mediaType: "video",
       src,
-      playbackRate: (_b = props2.playbackRate) != null ? _b : 1,
-      displayName: name != null ? name : null,
+      playbackRate: props2.playbackRate ?? 1,
+      displayName: name ?? null,
       id: timelineId,
       getStack,
       showInTimeline,
-      premountDisplay: (_c = parentSequence == null ? void 0 : parentSequence.premountDisplay) != null ? _c : null,
-      postmountDisplay: (_d = parentSequence == null ? void 0 : parentSequence.postmountDisplay) != null ? _d : null,
+      premountDisplay: parentSequence?.premountDisplay ?? null,
+      postmountDisplay: parentSequence?.postmountDisplay ?? null,
       loopDisplay: void 0,
       documentationLink: onlyWarnForMediaSeekingError ? "https://www.remotion.dev/docs/offthreadvideo" : "https://www.remotion.dev/docs/html5-video",
       refForOutline: videoRef,
-      muted: muted != null ? muted : false
+      muted: muted ?? false
     });
     useMediaPlayback({
       mediaRef: videoRef,
       src,
       mediaType: "video",
-      playbackRate: (_e = props2.playbackRate) != null ? _e : 1,
+      playbackRate: props2.playbackRate ?? 1,
       preservePitch,
       onlyWarnForMediaSeekingError,
-      acceptableTimeshift: acceptableTimeShiftInSeconds != null ? acceptableTimeShiftInSeconds : null,
-      isPremounting: Boolean(parentSequence == null ? void 0 : parentSequence.premounting),
-      isPostmounting: Boolean(parentSequence == null ? void 0 : parentSequence.postmounting),
+      acceptableTimeshift: acceptableTimeShiftInSeconds ?? null,
+      isPremounting: Boolean(parentSequence?.premounting),
+      isPostmounting: Boolean(parentSequence?.postmounting),
       pauseWhenBuffering,
-      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : null
+      onAutoPlayError: onAutoPlayError ?? null
     });
     useMediaTag({
       id: timelineId,
-      isPostmounting: Boolean(parentSequence == null ? void 0 : parentSequence.postmounting),
-      isPremounting: Boolean(parentSequence == null ? void 0 : parentSequence.premounting),
+      isPostmounting: Boolean(parentSequence?.postmounting),
+      isPremounting: Boolean(parentSequence?.premounting),
       mediaRef: videoRef,
       mediaType: "video",
-      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : null
+      onAutoPlayError: onAutoPlayError ?? null
     });
     useVolume({
       logLevel,
       mediaRef: videoRef,
       volume: userPreferredVolume,
       source: sharedSource,
-      shouldUseWebAudioApi: useWebAudioApi != null ? useWebAudioApi : false
+      shouldUseWebAudioApi: useWebAudioApi ?? false
     });
     const actualFrom = parentSequence ? parentSequence.relativeFrom : 0;
     const duration = parentSequence ? Math.min(parentSequence.durationInFrames, durationInFrames) : durationInFrames;
@@ -34424,9 +34360,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return;
       }
       const errorHandler = () => {
-        var _a3;
         if (current.error) {
-          console.error("Error occurred in video", current == null ? void 0 : current.error);
+          console.error("Error occurred in video", current?.error);
           if (onError) {
             const err = new MediaPlaybackError({
               message: `Code ${current.error.code}: ${current.error.message}`,
@@ -34436,7 +34371,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             return;
           }
           throw new MediaPlaybackError({
-            message: `The browser threw an error while playing the video ${src}: Code ${current.error.code} - ${(_a3 = current == null ? void 0 : current.error) == null ? void 0 : _a3.message}. See https://remotion.dev/docs/media-playback-error for help. Pass an onError() prop to handle the error.`,
+            message: `The browser threw an error while playing the video ${src}: Code ${current.error.code} - ${current?.error?.message}. See https://remotion.dev/docs/media-playback-error for help. Pass an onError() prop to handle the error.`,
             src
           });
         } else {
@@ -34463,18 +34398,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
     currentOnDurationCallback.current = onDuration;
     useEmitVideoFrame({ ref: videoRef, onVideoFrame });
     (0, import_react85.useEffect)(() => {
-      var _a3;
       const { current } = videoRef;
       if (!current) {
         return;
       }
       if (current.duration) {
-        (_a3 = currentOnDurationCallback.current) == null ? void 0 : _a3.call(currentOnDurationCallback, src, current.duration);
+        currentOnDurationCallback.current?.(src, current.duration);
         return;
       }
       const onLoadedMetadata = () => {
-        var _a4;
-        (_a4 = currentOnDurationCallback.current) == null ? void 0 : _a4.call(currentOnDurationCallback, src, current.duration);
+        currentOnDurationCallback.current?.(src, current.duration);
       };
       current.addEventListener("loadedmetadata", onLoadedMetadata);
       return () => {
@@ -34553,7 +34486,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (typeof trimBeforeValue !== "undefined" || typeof trimAfterValue !== "undefined") {
       return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(Sequence, {
         layout: "none",
-        from: 0 - (trimBeforeValue != null ? trimBeforeValue : 0),
+        from: 0 - (trimBeforeValue ?? 0),
         showInTimeline: false,
         durationInFrames: trimAfterValue,
         name,
@@ -34595,13 +34528,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       ...propsForPreview
     } = otherProps;
     return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(VideoForPreview, {
-      _remotionInternalStack: _remotionInternalStack != null ? _remotionInternalStack : null,
+      _remotionInternalStack: _remotionInternalStack ?? null,
       onDuration,
       onlyWarnForMediaSeekingError: true,
       pauseWhenBuffering: shouldPauseWhenBuffering,
-      showInTimeline: showInTimeline != null ? showInTimeline : true,
-      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : void 0,
-      onVideoFrame: onVideoFrame != null ? onVideoFrame : null,
+      showInTimeline: showInTimeline ?? true,
+      onAutoPlayError: onAutoPlayError ?? void 0,
+      onVideoFrame: onVideoFrame ?? null,
       crossOrigin,
       ...propsForPreview,
       _remotionInternalNativeLoopPassed: false
@@ -34645,33 +34578,33 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(InnerOffthreadVideo, {
       acceptableTimeShiftInSeconds,
-      allowAmplificationDuringRender: allowAmplificationDuringRender != null ? allowAmplificationDuringRender : true,
-      audioStreamIndex: audioStreamIndex != null ? audioStreamIndex : 0,
+      allowAmplificationDuringRender: allowAmplificationDuringRender ?? true,
+      audioStreamIndex: audioStreamIndex ?? 0,
       crossOrigin,
       delayRenderRetries,
       delayRenderTimeoutInMilliseconds,
-      loopVolumeCurveBehavior: loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat",
-      muted: muted != null ? muted : false,
+      loopVolumeCurveBehavior: loopVolumeCurveBehavior ?? "repeat",
+      muted: muted ?? false,
       name,
-      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : null,
+      onAutoPlayError: onAutoPlayError ?? null,
       onError,
       onVideoFrame,
       pauseWhenBuffering: resolveV5Default(pauseWhenBuffering),
-      playbackRate: playbackRate != null ? playbackRate : 1,
+      playbackRate: playbackRate ?? 1,
       preservePitch,
-      toneFrequency: toneFrequency != null ? toneFrequency : 1,
-      showInTimeline: showInTimeline != null ? showInTimeline : true,
+      toneFrequency: toneFrequency ?? 1,
+      showInTimeline: showInTimeline ?? true,
       src,
       _remotionInternalStack,
       startFrom,
-      _remotionInternalNativeLoopPassed: _remotionInternalNativeLoopPassed != null ? _remotionInternalNativeLoopPassed : false,
+      _remotionInternalNativeLoopPassed: _remotionInternalNativeLoopPassed ?? false,
       endAt,
       style: style2,
-      toneMapped: toneMapped != null ? toneMapped : true,
-      transparent: transparent != null ? transparent : false,
+      toneMapped: toneMapped ?? true,
+      transparent: transparent ?? false,
       trimAfter,
       trimBefore,
-      useWebAudioApi: useWebAudioApi != null ? useWebAudioApi : false,
+      useWebAudioApi: useWebAudioApi ?? false,
       volume,
       ...props2
     });
@@ -34990,7 +34923,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         allowFloats: true
       });
     }
-    const offset = offsetProp != null ? offsetProp : 0;
+    const offset = offsetProp ?? 0;
     if (Number.isNaN(offset)) {
       throw new TypeError(`The "offset" property of a <Series.Sequence /> must not be NaN, but got NaN (${debugInfo}).`);
     }
@@ -35053,7 +34986,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   ref,
                   name: name || "<Series.Sequence>",
                   _remotionInternalDocumentationLink: name ? void 0 : "https://www.remotion.dev/docs/series",
-                  controls: controls != null ? controls : void 0,
+                  controls: controls ?? void 0,
                   from: currentStartFrame,
                   durationInFrames: durationInFramesProp,
                   ...passedProps,
@@ -35150,7 +35083,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return {
       wait: Promise.all([prom, waitForSeekedEvent]).then(([time]) => time),
       cancel: () => {
-        cancelSeeked == null ? void 0 : cancelSeeked();
+        cancelSeeked?.();
         element.cancelVideoFrameCallback(cancel);
       }
     };
@@ -35242,7 +35175,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }, ref) => {
     const absoluteFrame = useTimelinePosition();
     const frame = useCurrentFrame();
-    const volumePropsFrame = useFrameForVolumeProp(loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat");
+    const volumePropsFrame = useFrameForVolumeProp(loopVolumeCurveBehavior ?? "repeat");
     const videoConfig = useUnsafeVideoConfig();
     const videoRef = (0, import_react92.useRef)(null);
     const sequenceContext = (0, import_react92.useContext)(SequenceContext);
@@ -35252,14 +35185,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const mountTime = useMountTime();
     const { delayRender: delayRender2, continueRender: continueRender2 } = useDelayRender();
     const { registerRenderAsset, unregisterRenderAsset } = (0, import_react92.useContext)(RenderAssetManager);
-    const id = (0, import_react92.useMemo)(() => {
-      var _a2;
-      return `video-${random((_a2 = props2.src) != null ? _a2 : "")}-${sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom}-${sequenceContext == null ? void 0 : sequenceContext.relativeFrom}-${sequenceContext == null ? void 0 : sequenceContext.durationInFrames}`;
-    }, [
+    const id = (0, import_react92.useMemo)(() => `video-${random(props2.src ?? "")}-${sequenceContext?.cumulatedFrom}-${sequenceContext?.relativeFrom}-${sequenceContext?.durationInFrames}`, [
       props2.src,
-      sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom,
-      sequenceContext == null ? void 0 : sequenceContext.relativeFrom,
-      sequenceContext == null ? void 0 : sequenceContext.durationInFrames
+      sequenceContext?.cumulatedFrom,
+      sequenceContext?.relativeFrom,
+      sequenceContext?.durationInFrames
     ]);
     if (!videoConfig) {
       throw new Error("No video config found");
@@ -35271,7 +35201,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     warnAboutTooHighVolume(volume);
     (0, import_react92.useEffect)(() => {
-      var _a2;
       if (!props2.src) {
         throw new Error("No src passed");
       }
@@ -35291,10 +35220,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
         frame: absoluteFrame,
         volume,
         mediaFrame: frame,
-        playbackRate: playbackRate != null ? playbackRate : 1,
-        toneFrequency: toneFrequency != null ? toneFrequency : 1,
-        audioStartFrame: Math.max(0, -((_a2 = sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom) != null ? _a2 : 0)),
-        audioStreamIndex: audioStreamIndex != null ? audioStreamIndex : 0
+        playbackRate: playbackRate ?? 1,
+        toneFrequency: toneFrequency ?? 1,
+        audioStartFrame: Math.max(0, -(sequenceContext?.cumulatedNegativeFrom ?? 0)),
+        audioStreamIndex: audioStreamIndex ?? 0
       });
       return () => unregisterRenderAsset(id);
     }, [
@@ -35308,7 +35237,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       absoluteFrame,
       playbackRate,
       toneFrequency,
-      sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom,
+      sequenceContext?.cumulatedNegativeFrom,
       audioStreamIndex
     ]);
     (0, import_react92.useImperativeHandle)(ref, () => {
@@ -35316,7 +35245,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, []);
     useEmitVideoFrame({ ref: videoRef, onVideoFrame });
     (0, import_react92.useEffect)(() => {
-      var _a2, _b;
       if (!window.remotion_videoEnabled) {
         return;
       }
@@ -35331,10 +35259,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
         fps: videoConfig.fps
       });
       const handle = delayRender2(`Rendering <Html5Video /> with src="${props2.src}" at time ${currentTime}`, {
-        retries: delayRenderRetries != null ? delayRenderRetries : void 0,
-        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
+        retries: delayRenderRetries ?? void 0,
+        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
       });
-      if (((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test") {
+      if (window.process?.env?.NODE_ENV === "test") {
         continueRender2(handle);
         return;
       }
@@ -35366,14 +35294,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       });
       current.addEventListener("ended", endedHandler, { once: true });
       const errorHandler = () => {
-        var _a3;
-        if (current == null ? void 0 : current.error) {
-          console.error("Error occurred in video", current == null ? void 0 : current.error);
+        if (current?.error) {
+          console.error("Error occurred in video", current?.error);
           if (onError) {
             return;
           }
           throw new MediaPlaybackError({
-            message: `The browser threw an error while playing the video ${props2.src}: Code ${current.error.code} - ${(_a3 = current == null ? void 0 : current.error) == null ? void 0 : _a3.message}. See https://remotion.dev/docs/media-playback-error for help. Pass an onError() prop to handle the error.`,
+            message: `The browser threw an error while playing the video ${props2.src}: Code ${current.error.code} - ${current?.error?.message}. See https://remotion.dev/docs/media-playback-error for help. Pass an onError() prop to handle the error.`,
             src: props2.src
           });
         } else {
@@ -35408,29 +35335,28 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { src } = props2;
     if (environment.isRendering) {
       (0, import_react92.useLayoutEffect)(() => {
-        var _a2, _b;
-        if (((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test") {
+        if (window.process?.env?.NODE_ENV === "test") {
           return;
         }
         const newHandle = delayRender2("Loading <Html5Video> duration with src=" + src, {
-          retries: delayRenderRetries != null ? delayRenderRetries : void 0,
-          timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
+          retries: delayRenderRetries ?? void 0,
+          timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
         });
         const { current } = videoRef;
         const didLoad = () => {
-          if (current == null ? void 0 : current.duration) {
+          if (current?.duration) {
             onDuration(src, current.duration);
           }
           continueRender2(newHandle);
         };
-        if (current == null ? void 0 : current.duration) {
+        if (current?.duration) {
           onDuration(src, current.duration);
           continueRender2(newHandle);
         } else {
-          current == null ? void 0 : current.addEventListener("loadedmetadata", didLoad, { once: true });
+          current?.addEventListener("loadedmetadata", didLoad, { once: true });
         }
         return () => {
-          current == null ? void 0 : current.removeEventListener("loadedmetadata", didLoad);
+          current?.removeEventListener("loadedmetadata", didLoad);
           continueRender2(newHandle);
         };
       }, [
@@ -35450,7 +35376,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var VideoForRendering = (0, import_react92.forwardRef)(VideoForRenderingForwardFunction);
   var VideoForwardingFunction = (props2, ref) => {
-    var _a2, _b, _c;
     const {
       startFrom,
       endAt,
@@ -35483,7 +35408,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const onDuration = (0, import_react91.useCallback)((src, durationInSeconds) => {
       setDurations({ type: "got-duration", durationInSeconds, src });
     }, [setDurations]);
-    const durationFetched = (_a2 = durations[getAbsoluteSrc(preloadedSrc)]) != null ? _a2 : durations[getAbsoluteSrc(props2.src)];
+    const durationFetched = durations[getAbsoluteSrc(preloadedSrc)] ?? durations[getAbsoluteSrc(props2.src)];
     validateMediaTrimProps({ startFrom, endAt, trimBefore, trimAfter });
     const { trimBeforeValue, trimAfterValue } = resolveTrimProps({
       startFrom,
@@ -35505,7 +35430,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         durationInFrames: calculateMediaDuration({
           trimAfter: trimAfterValue,
           mediaDurationInFrames: mediaDuration,
-          playbackRate: (_b = props2.playbackRate) != null ? _b : 1,
+          playbackRate: props2.playbackRate ?? 1,
           trimBefore: trimBeforeValue
         }),
         layout: "none",
@@ -35522,9 +35447,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (typeof trimBeforeValue !== "undefined" || typeof trimAfterValue !== "undefined") {
       return /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Sequence, {
         layout: "none",
-        from: 0 - (trimBeforeValue != null ? trimBeforeValue : 0),
+        from: 0 - (trimBeforeValue ?? 0),
         showInTimeline: false,
-        durationInFrames: trimAfterValue === void 0 ? void 0 : trimAfterValue / ((_c = props2.playbackRate) != null ? _c : 1),
+        durationInFrames: trimAfterValue === void 0 ? void 0 : trimAfterValue / (props2.playbackRate ?? 1),
         name,
         children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Html5Video, {
           pauseWhenBuffering: shouldPauseWhenBuffering,
@@ -35543,7 +35468,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (environment.isRendering) {
       return /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(VideoForRendering, {
         onDuration,
-        onVideoFrame: onVideoFrame != null ? onVideoFrame : null,
+        onVideoFrame: onVideoFrame ?? null,
         ...otherProps,
         ref
       });
@@ -35552,13 +35477,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       onlyWarnForMediaSeekingError: false,
       ...otherProps,
       ref,
-      onVideoFrame: onVideoFrame != null ? onVideoFrame : null,
+      onVideoFrame: onVideoFrame ?? null,
       pauseWhenBuffering: shouldPauseWhenBuffering,
       onDuration,
-      _remotionInternalStack: _remotionInternalStack != null ? _remotionInternalStack : null,
-      _remotionInternalNativeLoopPassed: _remotionInternalNativeLoopPassed != null ? _remotionInternalNativeLoopPassed : false,
-      showInTimeline: showInTimeline != null ? showInTimeline : true,
-      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : void 0
+      _remotionInternalStack: _remotionInternalStack ?? null,
+      _remotionInternalNativeLoopPassed: _remotionInternalNativeLoopPassed ?? false,
+      showInTimeline: showInTimeline ?? true,
+      onAutoPlayError: onAutoPlayError ?? void 0
     });
   };
   var Html5Video = (0, import_react91.forwardRef)(VideoForwardingFunction);
@@ -36004,7 +35929,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         throw new Error("did not calculate natural duration, this is an error with Remotion. Please report");
       }
     };
-    const reverseProcessed = reverse ? (passedDurationInFrames != null ? passedDurationInFrames : naturalDurationGetter.get()) - passedFrame : passedFrame;
+    const reverseProcessed = reverse ? (passedDurationInFrames ?? naturalDurationGetter.get()) - passedFrame : passedFrame;
     const delayProcessed = reverseProcessed + (reverse ? delay2 : -delay2);
     const durationProcessed = passedDurationInFrames === void 0 ? delayProcessed : delayProcessed / (passedDurationInFrames / naturalDurationGetter.get());
     if (passedDurationInFrames && delayProcessed > passedDurationInFrames) {
@@ -36202,12 +36127,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var UnsupportedStringInterpolationValueError2 = class extends TypeError {
   };
   var parseStringInterpolationComponent2 = (component, value) => {
-    var _a2;
     const match = cssNumberRegex2.exec(component);
     if (match === null) {
       throw new UnsupportedStringInterpolationValueError2(`Cannot interpolate "${value}" because "${component}" is not a supported scale, translate, or rotate value`);
     }
-    const unit = (_a2 = match[2]) != null ? _a2 : null;
+    const unit = match[2] ?? null;
     const numberValue = Number(match[1]);
     if (!Number.isFinite(numberValue)) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not finite`);
@@ -36228,12 +36152,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     value,
     allowPercentage
   }) => {
-    var _a2;
     const match = cssNumberRegex2.exec(component);
     if (match === null) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not a supported transform-origin ${allowPercentage ? "length-percentage" : "z length"}`);
     }
-    const unit = (_a2 = match[2]) != null ? _a2 : null;
+    const unit = match[2] ?? null;
     const numberValue = Number(match[1]);
     if (!Number.isFinite(numberValue)) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not finite`);
@@ -36365,7 +36288,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     };
   };
   var parseStringInterpolationValue2 = (output) => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
     if (typeof output === "number") {
       if (!Number.isFinite(output)) {
         throw new Error(`outputRange must contain only finite numbers, but got [${output}]`);
@@ -36398,8 +36320,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     if (kind === "scale") {
       const x = parsed[0].value;
-      const y = (_b = (_a2 = parsed[1]) == null ? void 0 : _a2.value) != null ? _b : x;
-      const z = (_d = (_c = parsed[2]) == null ? void 0 : _c.value) != null ? _d : 1;
+      const y = parsed[1]?.value ?? x;
+      const z = parsed[2]?.value ?? 1;
       return {
         kind,
         values: [x, y, z, 0],
@@ -36410,11 +36332,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     return {
       kind,
-      values: [parsed[0].value, (_f = (_e = parsed[1]) == null ? void 0 : _e.value) != null ? _f : 0, (_h = (_g = parsed[2]) == null ? void 0 : _g.value) != null ? _h : 0, 0],
+      values: [parsed[0].value, parsed[1]?.value ?? 0, parsed[2]?.value ?? 0, 0],
       units: [
         parsed[0].unit,
-        (_j = (_i = parsed[1]) == null ? void 0 : _i.unit) != null ? _j : null,
-        (_l = (_k = parsed[2]) == null ? void 0 : _k.unit) != null ? _l : null,
+        parsed[1]?.unit ?? null,
+        parsed[2]?.unit ?? null,
         null
       ],
       dimensions: parsed.length,
@@ -36502,7 +36424,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
   var defaultEasing2 = (num2) => num2;
   var resolveOutputOption2 = (output) => {
-    return output != null ? output : "linear";
+    return output ?? "linear";
   };
   var shouldExtendRightForEasing2 = (easing) => {
     return easing.remotionShouldExtendRight === true;
@@ -36541,20 +36463,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
     outputRange,
     options
   }) => {
-    const output = resolveOutputOption2(options == null ? void 0 : options.output);
+    const output = resolveOutputOption2(options?.output);
     if (inputRange.length === 1) {
       return outputRange[0];
     }
-    const easingOption = options == null ? void 0 : options.easing;
+    const easingOption = options?.easing;
     let extrapolateLeft = "extend";
-    if ((options == null ? void 0 : options.extrapolateLeft) !== void 0) {
+    if (options?.extrapolateLeft !== void 0) {
       extrapolateLeft = options.extrapolateLeft;
     }
     let extrapolateRight = "extend";
-    if ((options == null ? void 0 : options.extrapolateRight) !== void 0) {
+    if (options?.extrapolateRight !== void 0) {
       extrapolateRight = options.extrapolateRight;
     }
-    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const range = findRange2(posterizedInput, inputRange);
     const easing = resolveEasingForSegment2({
       easing: easingOption,
@@ -36600,10 +36522,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     outputRange,
     options
   }) => {
-    var _a2;
     const initiallyParsedOutputRange = outputRange.map(parseStringInterpolationValue2);
     const hasAxisRotation = initiallyParsedOutputRange.some((parsed) => parsed.axisRotation);
-    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const segmentIndex = inputRange.length === 1 ? 0 : findRange2(posterizedInput, inputRange);
     const parsedOutputRange = hasAxisRotation ? initiallyParsedOutputRange.map((parsed, index) => {
       if (parsed.kind !== "rotate") {
@@ -36616,7 +36537,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         throw new TypeError("Cannot interpolate a multi-angle rotate value with an axis rotation");
       }
       const adjacentAxisRotation = parsed.values[0] === 0 ? index === 0 ? initiallyParsedOutputRange.find((candidate) => candidate.axisRotation) : index === initiallyParsedOutputRange.length - 1 ? [...initiallyParsedOutputRange].reverse().find((candidate) => candidate.axisRotation) : index === segmentIndex ? initiallyParsedOutputRange[index + 1] : index === segmentIndex + 1 ? initiallyParsedOutputRange[index - 1] : void 0 : void 0;
-      const axis = (adjacentAxisRotation == null ? void 0 : adjacentAxisRotation.axisRotation) ? adjacentAxisRotation.values : [0, 0, 1];
+      const axis = adjacentAxisRotation?.axisRotation ? adjacentAxisRotation.values : [0, 0, 1];
       return {
         kind: "rotate",
         values: [axis[0], axis[1], axis[2], parsed.values[0]],
@@ -36625,7 +36546,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         axisRotation: true
       };
     }) : initiallyParsedOutputRange;
-    const kind = (_a2 = parsedOutputRange[0]) == null ? void 0 : _a2.kind;
+    const kind = parsedOutputRange[0]?.kind;
     if (kind === void 0) {
       throw new Error("outputRange must have at least 1 element");
     }
@@ -36692,21 +36613,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     for (let segmentIndex = 0; segmentIndex < inputRange.length - 1; segmentIndex++) {
       if (resolveEasingForSegment2({
-        easing: options == null ? void 0 : options.easing,
+        easing: options?.easing,
         segmentIndex
       }) !== Easing2.step1) {
         throw new TypeError("Non-numeric strings can only be interpolated using Easing.step1");
       }
     }
-    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const inputMin = inputRange[0];
     const inputMax = inputRange[inputRange.length - 1];
     let resolvedInput = posterizedInput;
     if (resolvedInput < inputMin) {
-      if ((options == null ? void 0 : options.extrapolateLeft) === "identity") {
+      if (options?.extrapolateLeft === "identity") {
         throw new TypeError('extrapolateLeft: "identity" is not supported for non-numeric strings');
       }
-      if ((options == null ? void 0 : options.extrapolateLeft) === "wrap") {
+      if (options?.extrapolateLeft === "wrap") {
         const wrapRange = inputMax - inputMin;
         resolvedInput = ((resolvedInput - inputMin) % wrapRange + wrapRange) % wrapRange + inputMin;
       } else {
@@ -36714,10 +36635,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }
     if (resolvedInput > inputMax) {
-      if ((options == null ? void 0 : options.extrapolateRight) === "identity") {
+      if (options?.extrapolateRight === "identity") {
         throw new TypeError('extrapolateRight: "identity" is not supported for non-numeric strings');
       }
-      if ((options == null ? void 0 : options.extrapolateRight) === "wrap") {
+      if (options?.extrapolateRight === "wrap") {
         const wrapRange = inputMax - inputMin;
         resolvedInput = ((resolvedInput - inputMin) % wrapRange + wrapRange) % wrapRange + inputMin;
       } else {
@@ -36728,8 +36649,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return resolvedInput >= inputRange[range + 1] ? outputRange[range + 1] : outputRange[range];
   };
   var validateTupleOutputRange2 = (outputRange) => {
-    var _a2;
-    const dimensions = (_a2 = outputRange[0]) == null ? void 0 : _a2.length;
+    const dimensions = outputRange[0]?.length;
     if (dimensions === void 0) {
       throw new Error("outputRange must have at least 1 element");
     }
@@ -36828,9 +36748,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     checkInfiniteRange2("inputRange", inputRange);
     checkValidInputRange2(inputRange);
-    assertValidInterpolateEasingOption2(options == null ? void 0 : options.easing, inputRange.length);
-    assertValidInterpolatePosterizeOption2(options == null ? void 0 : options.posterize);
-    assertValidInterpolateOutputOption2(options == null ? void 0 : options.output);
+    assertValidInterpolateEasingOption2(options?.easing, inputRange.length);
+    assertValidInterpolatePosterizeOption2(options?.posterize);
+    assertValidInterpolateOutputOption2(options?.output);
     if (typeof input !== "number") {
       throw new TypeError("Cannot interpolate an input which is not a number");
     }
@@ -36948,14 +36868,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
   };
   var resolveFileTokenToUrl2 = (value) => {
-    var _a2;
     const encodedName = value.replace(FILE_TOKEN2, "");
     let name = encodedName;
     try {
       name = encodedName.split("/").map(decodeURIComponent).join("/");
-    } catch (e) {
+    } catch {
     }
-    const matchingStaticFile = (_a2 = window.remotion_staticFiles) == null ? void 0 : _a2.find((file) => file.name === name);
+    const matchingStaticFile = window.remotion_staticFiles?.find((file) => file.name === name);
     if (matchingStaticFile) {
       return matchingStaticFile.src;
     }
@@ -37444,12 +37363,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const xr = fx3 > epsilon ? fx3 : (116 * fx - 16) / kappa;
     const yr = L > kappa * epsilon ? ((L + 16) / 116) ** 3 : L / kappa;
     const zr = fz3 > epsilon ? fz3 : (116 * fz - 16) / kappa;
-    const X = xr * Xn;
+    const X2 = xr * Xn;
     const Y = yr * Yn;
     const Z = zr * Zn;
-    const rLin = 3.2404542 * X - 1.5371385 * Y - 0.4985314 * Z;
-    const gLin = -0.969266 * X + 1.8760108 * Y + 0.041556 * Z;
-    const bLin = 0.0556434 * X - 0.2040259 * Y + 1.0572252 * Z;
+    const rLin = 3.2404542 * X2 - 1.5371385 * Y - 0.4985314 * Z;
+    const gLin = -0.969266 * X2 + 1.8760108 * Y + 0.041556 * Z;
+    const bLin = 0.0556434 * X2 - 0.2040259 * Y + 1.0572252 * Z;
     return [linearToSrgb2(rLin), linearToSrgb2(gLin), linearToSrgb2(bLin)];
   }
   function hwbToSrgb2(h, w, bk) {
@@ -37731,7 +37650,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
   ];
   var defaultScaleValue = [1, 1, 1];
   var parseScaleString = (value) => {
-    var _a2, _b;
     const parts = value.trim().split(/\s+/);
     if (parts.length < 1 || parts.length > 3 || parts[0] === "") {
       return null;
@@ -37741,8 +37659,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return null;
     }
     const x = parsed[0];
-    const y = (_a2 = parsed[1]) != null ? _a2 : x;
-    const z = (_b = parsed[2]) != null ? _b : 1;
+    const y = parsed[1] ?? x;
+    const z = parsed[2] ?? 1;
     return [x, y, z];
   };
   var parseValidScaleValue = (value) => {
@@ -37755,8 +37673,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return null;
   };
   var parseScaleValue = (value) => {
-    var _a2;
-    return (_a2 = parseValidScaleValue(value)) != null ? _a2 : defaultScaleValue;
+    return parseValidScaleValue(value) ?? defaultScaleValue;
   };
   var serializeScaleValue = ([x, y, z]) => {
     const normalizedX = normalizeNumber2(x);
@@ -38173,8 +38090,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         compositionHeight: config.height,
         compositionWidth: config.width,
         currentSize: canvasSize,
-        height: style2 == null ? void 0 : style2.height,
-        width: style2 == null ? void 0 : style2.width
+        height: style2?.height,
+        width: style2?.width
       }),
       opacity: layout ? 1 : 0,
       ...style2
@@ -38244,76 +38161,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var PlayerEventEmitterContext = import_react94.default.createContext(void 0);
   var ThumbnailEmitterContext = import_react94.default.createContext(void 0);
   var PlayerEmitter = class {
-    constructor() {
-      __publicField(this, "listeners", {
-        ended: [],
-        error: [],
-        pause: [],
-        play: [],
-        ratechange: [],
-        scalechange: [],
-        seeked: [],
-        timeupdate: [],
-        frameupdate: [],
-        fullscreenchange: [],
-        volumechange: [],
-        mutechange: [],
-        waiting: [],
-        resume: []
-      });
-      __publicField(this, "dispatchSeek", (frame) => {
-        this.dispatchEvent("seeked", {
-          frame
-        });
-      });
-      __publicField(this, "dispatchVolumeChange", (volume) => {
-        this.dispatchEvent("volumechange", {
-          volume
-        });
-      });
-      __publicField(this, "dispatchPause", () => {
-        this.dispatchEvent("pause", void 0);
-      });
-      __publicField(this, "dispatchPlay", () => {
-        this.dispatchEvent("play", void 0);
-      });
-      __publicField(this, "dispatchEnded", () => {
-        this.dispatchEvent("ended", void 0);
-      });
-      __publicField(this, "dispatchRateChange", (playbackRate) => {
-        this.dispatchEvent("ratechange", {
-          playbackRate
-        });
-      });
-      __publicField(this, "dispatchScaleChange", (scale) => {
-        this.dispatchEvent("scalechange", {
-          scale
-        });
-      });
-      __publicField(this, "dispatchError", (error2) => {
-        this.dispatchEvent("error", {
-          error: error2
-        });
-      });
-      __publicField(this, "dispatchTimeUpdate", (event) => {
-        this.dispatchEvent("timeupdate", event);
-      });
-      __publicField(this, "dispatchFrameUpdate", (event) => {
-        this.dispatchEvent("frameupdate", event);
-      });
-      __publicField(this, "dispatchFullscreenChange", (event) => {
-        this.dispatchEvent("fullscreenchange", event);
-      });
-      __publicField(this, "dispatchMuteChange", (event) => {
-        this.dispatchEvent("mutechange", event);
-      });
-      __publicField(this, "dispatchWaiting", (event) => {
-        this.dispatchEvent("waiting", event);
-      });
-      __publicField(this, "dispatchResume", (event) => {
-        this.dispatchEvent("resume", event);
-      });
-    }
+    listeners = {
+      ended: [],
+      error: [],
+      pause: [],
+      play: [],
+      ratechange: [],
+      scalechange: [],
+      seeked: [],
+      timeupdate: [],
+      frameupdate: [],
+      fullscreenchange: [],
+      volumechange: [],
+      mutechange: [],
+      waiting: [],
+      resume: []
+    };
     addEventListener(name, callback) {
       this.listeners[name].push(callback);
     }
@@ -38325,26 +38188,65 @@ Check that all your Remotion packages are on the same version. If your dependenc
         callback({ detail: context });
       });
     }
+    dispatchSeek = (frame) => {
+      this.dispatchEvent("seeked", {
+        frame
+      });
+    };
+    dispatchVolumeChange = (volume) => {
+      this.dispatchEvent("volumechange", {
+        volume
+      });
+    };
+    dispatchPause = () => {
+      this.dispatchEvent("pause", void 0);
+    };
+    dispatchPlay = () => {
+      this.dispatchEvent("play", void 0);
+    };
+    dispatchEnded = () => {
+      this.dispatchEvent("ended", void 0);
+    };
+    dispatchRateChange = (playbackRate) => {
+      this.dispatchEvent("ratechange", {
+        playbackRate
+      });
+    };
+    dispatchScaleChange = (scale) => {
+      this.dispatchEvent("scalechange", {
+        scale
+      });
+    };
+    dispatchError = (error2) => {
+      this.dispatchEvent("error", {
+        error: error2
+      });
+    };
+    dispatchTimeUpdate = (event) => {
+      this.dispatchEvent("timeupdate", event);
+    };
+    dispatchFrameUpdate = (event) => {
+      this.dispatchEvent("frameupdate", event);
+    };
+    dispatchFullscreenChange = (event) => {
+      this.dispatchEvent("fullscreenchange", event);
+    };
+    dispatchMuteChange = (event) => {
+      this.dispatchEvent("mutechange", event);
+    };
+    dispatchWaiting = (event) => {
+      this.dispatchEvent("waiting", event);
+    };
+    dispatchResume = (event) => {
+      this.dispatchEvent("resume", event);
+    };
   };
   var ThumbnailEmitter = class {
-    constructor() {
-      __publicField(this, "listeners", {
-        error: [],
-        waiting: [],
-        resume: []
-      });
-      __publicField(this, "dispatchError", (error2) => {
-        this.dispatchEvent("error", {
-          error: error2
-        });
-      });
-      __publicField(this, "dispatchWaiting", (event) => {
-        this.dispatchEvent("waiting", event);
-      });
-      __publicField(this, "dispatchResume", (event) => {
-        this.dispatchEvent("resume", event);
-      });
-    }
+    listeners = {
+      error: [],
+      waiting: [],
+      resume: []
+    };
     addEventListener(name, callback) {
       this.listeners[name].push(callback);
     }
@@ -38356,6 +38258,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
         callback({ detail: context });
       });
     }
+    dispatchError = (error2) => {
+      this.dispatchEvent("error", {
+        error: error2
+      });
+    };
+    dispatchWaiting = (event) => {
+      this.dispatchEvent("waiting", event);
+    };
+    dispatchResume = (event) => {
+      this.dispatchEvent("resume", event);
+    };
   };
   var useBufferStateEmitter = (emitter) => {
     const { subscribeBuffering } = (0, import_react96.useContext)(Internals.SetTimelineContext);
@@ -38424,7 +38337,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return hovered;
   };
   var usePlayerMethods = () => {
-    var _a2;
     const setFrame = Internals.Timeline.useTimelineSetFrame();
     const setTimelinePosition = Internals.Timeline.useTimelineSetFrame();
     const {
@@ -38447,17 +38359,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
       throw new TypeError("Expected Player event emitter context");
     }
     const getCurrentFrame = (0, import_react102.useCallback)(() => {
-      var _a3, _b, _c;
       if (!video) {
-        return (_b = fallbackFrame.current) != null ? _b : typeof window === "undefined" ? 0 : (_a3 = window.remotion_initialFrame) != null ? _a3 : 0;
+        return fallbackFrame.current ?? (typeof window === "undefined" ? 0 : window.remotion_initialFrame ?? 0);
       }
-      const unclamped = (_c = frameRef.current[video.id]) != null ? _c : environment.isPlayer ? 0 : Internals.Timeline.getFrameForComposition(video.id);
+      const unclamped = frameRef.current[video.id] ?? (environment.isPlayer ? 0 : Internals.Timeline.getFrameForComposition(video.id));
       return Internals.Timeline.clampFrameToCompositionRange(unclamped, video.durationInFrames);
     }, [environment.isPlayer, frameRef, video]);
     const seek2 = (0, import_react102.useCallback)((newFrame) => {
       const frameToSeekTo = config ? Internals.TimelinePosition.clampFrameToCompositionRange(newFrame, config.durationInFrames) : Math.max(0, newFrame);
       fallbackFrame.current = frameToSeekTo;
-      if (video == null ? void 0 : video.id) {
+      if (video?.id) {
         if (frameRef.current[video.id] !== frameToSeekTo) {
           frameRef.current = {
             ...frameRef.current,
@@ -38467,22 +38378,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
         setTimelinePosition((currentFrames) => currentFrames[video.id] === frameToSeekTo ? currentFrames : { ...currentFrames, [video.id]: frameToSeekTo });
       }
       emitter.dispatchSeek(frameToSeekTo);
-    }, [config, emitter, frameRef, setTimelinePosition, video == null ? void 0 : video.id]);
+    }, [config, emitter, frameRef, setTimelinePosition, video?.id]);
     const play = (0, import_react102.useCallback)((e) => {
-      var _a3;
       const isAutoPlayAttempt = nextPlayIsAutoPlayAttempt.current;
       nextPlayIsAutoPlayAttempt.current = false;
       if (readIsPlaying()) {
         return;
       }
-      const lastFrameForPlayback = ((_a3 = config == null ? void 0 : config.durationInFrames) != null ? _a3 : 1) - 1;
+      const lastFrameForPlayback = (config?.durationInFrames ?? 1) - 1;
       if (getCurrentFrame() === lastFrameForPlayback) {
         seek2(0);
       }
       if (isAutoPlayAttempt) {
-        audioContext == null ? void 0 : audioContext.resumeAsAutoPlay();
+        audioContext?.resumeAsAutoPlay();
       } else {
-        audioContext == null ? void 0 : audioContext.resume();
+        audioContext?.resume();
       }
       if (audioTagsContext && audioTagsContext.numberOfAudioTags > 0 && e) {
         audioTagsContext.playAllAudios();
@@ -38495,7 +38405,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       audioAndVideoTags,
       audioContext,
       audioTagsContext,
-      config == null ? void 0 : config.durationInFrames,
+      config?.durationInFrames,
       emitter,
       getCurrentFrame,
       readIsPlaying,
@@ -38510,7 +38420,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       if (readIsPlaying()) {
         setPlaying(false);
         emitter.dispatchPause();
-        audioContext == null ? void 0 : audioContext.suspend();
+        audioContext?.suspend();
       }
     }, [audioContext, emitter, readIsPlaying, setPlaying]);
     const pauseAndReturnToPlayStart = (0, import_react102.useCallback)(() => {
@@ -38537,17 +38447,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
       setPlaying,
       setTimelinePosition
     ]);
-    const videoId = video == null ? void 0 : video.id;
-    const lastFrame = ((_a2 = config == null ? void 0 : config.durationInFrames) != null ? _a2 : 1) - 1;
+    const videoId = video?.id;
+    const lastFrame = (config?.durationInFrames ?? 1) - 1;
     const frameBack = (0, import_react102.useCallback)((frames) => {
-      var _a3, _b;
       if (!videoId) {
         return null;
       }
       if (readIsPlaying()) {
         return;
       }
-      const previousFrame = (_b = (_a3 = frameRef.current[videoId]) != null ? _a3 : window.remotion_initialFrame) != null ? _b : 0;
+      const previousFrame = frameRef.current[videoId] ?? window.remotion_initialFrame ?? 0;
       const newFrame = Math.max(0, previousFrame - frames);
       if (previousFrame === newFrame) {
         return;
@@ -38559,14 +38468,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       setFrame((currentFrames) => currentFrames[videoId] === newFrame ? currentFrames : { ...currentFrames, [videoId]: newFrame });
     }, [frameRef, readIsPlaying, setFrame, videoId]);
     const frameForward = (0, import_react102.useCallback)((frames) => {
-      var _a3, _b;
       if (!videoId) {
         return null;
       }
       if (readIsPlaying()) {
         return;
       }
-      const previousFrame = (_b = (_a3 = frameRef.current[videoId]) != null ? _a3 : window.remotion_initialFrame) != null ? _b : 0;
+      const previousFrame = frameRef.current[videoId] ?? window.remotion_initialFrame ?? 0;
       const newFrame = Math.min(lastFrame, previousFrame + frames);
       if (previousFrame === newFrame) {
         return;
@@ -38858,7 +38766,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, [config, frame, logLevel, playbackRate, sharedAudioContext, muted]);
     (0, import_react99.useLayoutEffect)(() => {
-      const audioContext = sharedAudioContext == null ? void 0 : sharedAudioContext.audioContext;
+      const audioContext = sharedAudioContext?.audioContext;
       if (!audioContext) {
         return;
       }
@@ -38869,7 +38777,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return;
       }
       const callback = () => {
-        const newState = sharedAudioContext == null ? void 0 : sharedAudioContext.getAudioContextState();
+        const newState = sharedAudioContext?.getAudioContextState();
         if (newState && shouldForceAnchorChange(newState)) {
           setGlobalTimeAnchor({
             audioContext,
@@ -38881,9 +38789,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           });
         }
       };
-      audioContext == null ? void 0 : audioContext.addEventListener("statechange", callback);
+      audioContext?.addEventListener("statechange", callback);
       return () => {
-        audioContext == null ? void 0 : audioContext.removeEventListener("statechange", callback);
+        audioContext?.removeEventListener("statechange", callback);
       };
     }, [
       config,
@@ -38894,15 +38802,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
       sharedAudioContext
     ]);
     (0, import_react100.useEffect)(() => {
-      var _a2;
       if (!config) {
         return;
       }
       if (!playing) {
-        (_a2 = sharedAudioContext == null ? void 0 : sharedAudioContext.suspend) == null ? void 0 : _a2.call(sharedAudioContext);
+        sharedAudioContext?.suspend?.();
         return;
       }
-      if ((sharedAudioContext == null ? void 0 : sharedAudioContext._experimentalKeepAudioContextAlive) && sharedAudioContext.audioContext && !muted) {
+      if (sharedAudioContext?._experimentalKeepAudioContextAlive && sharedAudioContext.audioContext && !muted) {
         const changed = setGlobalTimeAnchor({
           audioContext: sharedAudioContext.audioContext,
           audioSyncAnchor: sharedAudioContext.audioSyncAnchor,
@@ -38934,20 +38841,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
         cancelQueuedFrame();
       };
       const callback = () => {
-        var _a3, _b;
         if (hasBeenStopped) {
           return;
         }
         if (!isPlaying()) {
-          (_a3 = sharedAudioContext == null ? void 0 : sharedAudioContext.suspend) == null ? void 0 : _a3.call(sharedAudioContext);
+          sharedAudioContext?.suspend?.();
           return;
         }
         if (!muted && !audioContextFailed && !isBuffering()) {
-          (_b = sharedAudioContext == null ? void 0 : sharedAudioContext.resume) == null ? void 0 : _b.call(sharedAudioContext);
+          sharedAudioContext?.resume?.();
         }
         const time = performance.now() - startedTime;
-        const actualLastFrame = outFrame != null ? outFrame : config.durationInFrames - 1;
-        const actualFirstFrame = inFrame != null ? inFrame : 0;
+        const actualLastFrame = outFrame ?? config.durationInFrames - 1;
+        const actualFirstFrame = inFrame ?? 0;
         const currentFrame = getCurrentFrame();
         const { nextFrame, framesToAdvance, hasEnded } = calculateNextFrame({
           time,
@@ -38972,11 +38878,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
         queueNextFrame();
       };
       const queueNextFrame = () => {
-        var _a3, _b, _c;
         if (hasBeenStopped) {
           return;
         }
-        const getIsResumingAudioContext = audioContextFailed ? null : (_b = (_a3 = sharedAudioContext == null ? void 0 : sharedAudioContext.getIsResumingAudioContext) == null ? void 0 : _a3.call(sharedAudioContext)) != null ? _b : null;
+        const getIsResumingAudioContext = audioContextFailed ? null : sharedAudioContext?.getIsResumingAudioContext?.() ?? null;
         if (getIsResumingAudioContext !== null && !muted) {
           getIsResumingAudioContext.then((result) => {
             if (hasBeenStopped) {
@@ -38984,7 +38889,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             }
             if (result === "failed") {
               audioContextFailed = true;
-              sharedAudioContext == null ? void 0 : sharedAudioContext.suspend();
+              sharedAudioContext?.suspend();
               setPlayerMuted(true);
             }
             startedTime = performance.now();
@@ -38995,14 +38900,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
         if (isBuffering()) {
           if (!muted && !audioContextFailed) {
-            (_c = sharedAudioContext == null ? void 0 : sharedAudioContext.suspend) == null ? void 0 : _c.call(sharedAudioContext);
+            sharedAudioContext?.suspend?.();
           }
           const unsubscribe = subscribeBuffering((state) => {
             if (state.buffering) {
               return;
             }
             unsubscribe();
-            if (!muted && !audioContextFailed && (sharedAudioContext == null ? void 0 : sharedAudioContext._experimentalKeepAudioContextAlive)) {
+            if (!muted && !audioContextFailed && sharedAudioContext?._experimentalKeepAudioContextAlive) {
               sharedAudioContext.resume();
             }
             startedTime = performance.now();
@@ -39110,7 +39015,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return new ResizeObserver((entries) => {
         const { contentRect, target } = entries[0];
         const newSize = target.getClientRects();
-        if (!(newSize == null ? void 0 : newSize[0])) {
+        if (!newSize?.[0]) {
           setSize(null);
           return;
         }
@@ -39203,7 +39108,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [size, updateSize]);
   };
   var playerCssClassname = (override) => {
-    return override != null ? override : "__remotion-player";
+    return override ?? "__remotion-player";
   };
   var errorStyle = {
     display: "flex",
@@ -39214,10 +39119,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     width: "100%"
   };
   var ErrorBoundary = class extends import_react107.default.Component {
-    constructor() {
-      super(...arguments);
-      __publicField(this, "state", { hasError: null });
-    }
+    state = { hasError: null };
     static getDerivedStateFromError(error2) {
       return { hasError: error2 };
     }
@@ -39249,7 +39151,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     try {
       const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(window.location.hostname));
       return Array.from(new Uint8Array(hashBuffer)).map((b3) => b3.toString(16).padStart(2, "0")).join("");
-    } catch (e) {
+    } catch {
       return null;
     }
   };
@@ -39500,7 +39402,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return renderMuteButton ? renderMuteButton({ muted: playerMuted, volume: mediaVolume }) : renderDefaultMuteButton({ muted: playerMuted, volume: mediaVolume });
     }, [playerMuted, mediaVolume, renderDefaultMuteButton, renderMuteButton]);
     const volumeSlider = (0, import_react110.useMemo)(() => {
-      return (focused || hover) && !playerMuted && !Internals.isIosSafari() ? (renderVolumeSlider != null ? renderVolumeSlider : renderDefaultVolumeSlider)({
+      return (focused || hover) && !playerMuted && !Internals.isIosSafari() ? (renderVolumeSlider ?? renderDefaultVolumeSlider)({
         isVertical: displayVerticalVolumeSlider,
         volume: mediaVolume,
         onBlur: () => setFocused(false),
@@ -39777,7 +39679,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return current;
   };
   var PlayerSeekBar = ({ durationInFrames, onSeekEnd, onSeekStart, inFrame, outFrame }) => {
-    var _a2;
     const containerRef = (0, import_react114.useRef)(null);
     const barHovered = useHoverState(containerRef, false);
     const size = useElementSize(containerRef, {
@@ -39789,13 +39690,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [dragging, setDragging] = (0, import_react114.useState)({
       dragging: false
     });
-    const width = (_a2 = size == null ? void 0 : size.width) != null ? _a2 : 0;
+    const width = size?.width ?? 0;
     const onPointerDown = (0, import_react114.useCallback)((e) => {
-      var _a3;
       if (e.button !== 0) {
         return;
       }
-      const posLeft = (_a3 = containerRef.current) == null ? void 0 : _a3.getBoundingClientRect().left;
+      const posLeft = containerRef.current?.getBoundingClientRect().left;
       const _frame = getFrameFromX(e.clientX - posLeft, durationInFrames, width);
       const wasPlaying = isPlaying();
       pause();
@@ -39807,14 +39707,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       onSeekStart();
     }, [durationInFrames, width, isPlaying, pause, seek2, onSeekStart]);
     const onPointerMove = (0, import_react114.useCallback)((e) => {
-      var _a3;
       if (!size) {
         throw new Error("Player has no size");
       }
       if (!dragging.dragging) {
         return;
       }
-      const posLeft = (_a3 = containerRef.current) == null ? void 0 : _a3.getBoundingClientRect().left;
+      const posLeft = containerRef.current?.getBoundingClientRect().left;
       const _frame = getFrameFromX(e.clientX - posLeft, durationInFrames, size.width);
       seek2(_frame);
     }, [dragging.dragging, durationInFrames, seek2, size]);
@@ -39861,8 +39760,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return {
         height: BAR_HEIGHT2,
         backgroundColor: "rgba(255, 255, 255, 1)",
-        width: (frame - (inFrame != null ? inFrame : 0)) / (durationInFrames - 1) * width,
-        marginLeft: (inFrame != null ? inFrame : 0) / (durationInFrames - 1) * width,
+        width: (frame - (inFrame ?? 0)) / (durationInFrames - 1) * width,
+        marginLeft: (inFrame ?? 0) / (durationInFrames - 1) * width,
         borderRadius: BAR_HEIGHT2 / 2
       };
     }, [durationInFrames, frame, inFrame, width]);
@@ -39870,8 +39769,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return {
         height: BAR_HEIGHT2,
         backgroundColor: "rgba(255, 255, 255, 0.25)",
-        width: ((outFrame != null ? outFrame : durationInFrames - 1) - (inFrame != null ? inFrame : 0)) / (durationInFrames - 1) * 100 + "%",
-        marginLeft: (inFrame != null ? inFrame : 0) / (durationInFrames - 1) * 100 + "%",
+        width: ((outFrame ?? durationInFrames - 1) - (inFrame ?? 0)) / (durationInFrames - 1) * 100 + "%",
+        marginLeft: (inFrame ?? 0) / (durationInFrames - 1) * 100 + "%",
         borderRadius: BAR_HEIGHT2 / 2,
         position: "absolute"
       };
@@ -40058,13 +39957,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     toggle,
     renderCustomControls
   }) => {
-    var _a2, _b;
     const playButtonRef = (0, import_react109.useRef)(null);
     const [supportsFullscreen, setSupportsFullscreen] = (0, import_react109.useState)(false);
     const hovered = useHoverState(containerRef, hideControlsWhenPointerDoesntMove);
     const { maxTimeLabelWidth, displayVerticalVolumeSlider } = useVideoControlsResize({
       allowFullscreen,
-      playerWidth: (_a2 = canvasSize == null ? void 0 : canvasSize.width) != null ? _a2 : 0
+      playerWidth: canvasSize?.width ?? 0
     });
     const [shouldShowInitially, setInitiallyShowControls] = (0, import_react109.useState)(() => {
       if (typeof initiallyShowControls === "boolean") {
@@ -40102,8 +40000,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, [playing, spaceKeyToPlayOrPause]);
     (0, import_react109.useEffect)(() => {
-      var _a3;
-      setSupportsFullscreen((_a3 = typeof document !== "undefined" && (document.fullscreenEnabled || document.webkitFullscreenEnabled)) != null ? _a3 : false);
+      setSupportsFullscreen((typeof document !== "undefined" && (document.fullscreenEnabled || document.webkitFullscreenEnabled)) ?? false);
     }, []);
     (0, import_react109.useEffect)(() => {
       if (shouldShowInitially === false) {
@@ -40139,12 +40036,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const flexRef = (0, import_react109.useRef)(null);
     const onPointerDownIfContainer = (0, import_react109.useCallback)((e) => {
       if (e.target === ref.current || e.target === flexRef.current) {
-        onPointerDown == null ? void 0 : onPointerDown(e);
+        onPointerDown?.(e);
       }
     }, [onPointerDown]);
     const onDoubleClickIfContainer = (0, import_react109.useCallback)((e) => {
       if (e.target === ref.current || e.target === flexRef.current) {
-        onDoubleClick == null ? void 0 : onDoubleClick(e);
+        onDoubleClick?.(e);
       }
     }, [onDoubleClick]);
     return /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", {
@@ -40170,10 +40067,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: renderPlayPauseButton === null ? /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(DefaultPlayPauseButton, {
                     buffering,
                     playing
-                  }) : (_b = renderPlayPauseButton({
+                  }) : renderPlayPauseButton({
                     playing,
                     isBuffering: buffering
-                  })) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(DefaultPlayPauseButton, {
+                  }) ?? /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(DefaultPlayPauseButton, {
                     buffering,
                     playing
                   })
@@ -40371,7 +40268,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     overrideInternalClassName,
     noSuspense
   }, ref) => {
-    var _a2, _b, _c;
     const config = Internals.useUnsafeVideoConfig();
     const video = Internals.useVideo();
     const container2 = (0, import_react106.useRef)(null);
@@ -40478,8 +40374,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return;
       }
       const fullscreenChange = () => {
-        var _a3;
-        const element = (_a3 = document.webkitFullscreenElement) != null ? _a3 : document.fullscreenElement;
+        const element = document.webkitFullscreenElement ?? document.fullscreenElement;
         if (element && element === container2.current) {
           player.emitter.dispatchFullscreenChange({
             isFullscreen: true
@@ -40497,7 +40392,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         current.removeEventListener("fullscreenchange", fullscreenChange);
       };
     }, [player.emitter]);
-    const durationInFrames = (_a2 = config == null ? void 0 : config.durationInFrames) != null ? _a2 : 1;
+    const durationInFrames = config?.durationInFrames ?? 1;
     const layout = (0, import_react106.useMemo)(() => {
       if (!config || !canvasSize) {
         return null;
@@ -40509,7 +40404,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         previewSize: "auto"
       });
     }, [canvasSize, config]);
-    const scale = (_b = layout == null ? void 0 : layout.scale) != null ? _b : 1;
+    const scale = layout?.scale ?? 1;
     const initialScaleIgnored = (0, import_react106.useRef)(false);
     (0, import_react106.useEffect)(() => {
       if (!initialScaleIgnored.current) {
@@ -40749,8 +40644,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Internals.CurrentScaleContext.Provider, {
                     value: currentScale,
                     children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(VideoComponent, {
-                      ...(_c = video == null ? void 0 : video.props) != null ? _c : {},
-                      ...inputProps != null ? inputProps : {}
+                      ...video?.props ?? {},
+                      ...inputProps ?? {}
                     })
                   })
                 }) : null,
@@ -40832,7 +40727,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return;
     }
     try {
-      window.localStorage.setItem(volumePersistenceKey != null ? volumePersistenceKey : DEFAULT_VOLUME_PERSISTENCE_KEY, String(volume));
+      window.localStorage.setItem(volumePersistenceKey ?? DEFAULT_VOLUME_PERSISTENCE_KEY, String(volume));
     } catch (e) {
       Internals.Log.error({ logLevel, tag: null }, "Could not persist volume", e);
     }
@@ -40842,9 +40737,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return 1;
     }
     try {
-      const val = window.localStorage.getItem(volumePersistenceKey != null ? volumePersistenceKey : DEFAULT_VOLUME_PERSISTENCE_KEY);
+      const val = window.localStorage.getItem(volumePersistenceKey ?? DEFAULT_VOLUME_PERSISTENCE_KEY);
       return val ? Number(val) : 1;
-    } catch (e) {
+    } catch {
       return 1;
     }
   };
@@ -40915,7 +40810,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       inputProps
     ]);
     const [playerMuted, setPlayerMuted] = (0, import_react119.useState)(() => initiallyMuted);
-    const [mediaVolume, setMediaVolume] = (0, import_react119.useState)(() => persistVolumeToStorage ? getPreferredVolume(volumePersistenceKey != null ? volumePersistenceKey : null) : initialVolume);
+    const [mediaVolume, setMediaVolume] = (0, import_react119.useState)(() => persistVolumeToStorage ? getPreferredVolume(volumePersistenceKey ?? null) : initialVolume);
     const mediaVolumeContextValue = (0, import_react119.useMemo)(() => {
       return {
         playerMuted,
@@ -40928,7 +40823,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const setMediaVolumeAndPersist = (0, import_react119.useCallback)((vol) => {
       setMediaVolume(vol);
       if (persistVolumeToStorage) {
-        persistVolume(vol, logLevel, volumePersistenceKey != null ? volumePersistenceKey : null);
+        persistVolume(vol, logLevel, volumePersistenceKey ?? null);
       }
     }, [persistVolumeToStorage, logLevel, volumePersistenceKey]);
     const setMediaVolumeContextValue = (0, import_react119.useMemo)(() => {
@@ -41008,7 +40903,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var validateSingleFrame = (frame, variableName) => {
     if (typeof frame === "undefined" || frame === null) {
-      return frame != null ? frame : null;
+      return frame ?? null;
     }
     if (typeof frame !== "number") {
       throw new TypeError(`"${variableName}" must be a number, but is ${JSON.stringify(frame)}`);
@@ -41170,7 +41065,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       throw new Error("The <Player /> component does not accept `defaultProps`, but some were passed. Use `inputProps` instead.");
     }
     const componentForValidation = componentOrNullIfLazy(componentProps);
-    if ((componentForValidation == null ? void 0 : componentForValidation.type) === Composition) {
+    if (componentForValidation?.type === Composition) {
       throw new TypeError(`'component' should not be an instance of <Composition/>. Pass the React component directly, and set the duration, fps and dimensions as separate props. See https://www.remotion.dev/docs/player/examples for an example.`);
     }
     if (componentForValidation === Composition) {
@@ -41184,7 +41079,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     validateInitialFrame({ initialFrame, durationInFrames });
     const [frame, setFrame] = (0, import_react105.useState)(() => ({
-      [PLAYER_COMP_ID]: initialFrame != null ? initialFrame : 0
+      [PLAYER_COMP_ID]: initialFrame ?? 0
     }));
     const frameRef = (0, import_react105.useRef)(frame);
     frameRef.current = frame;
@@ -41311,9 +41206,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
         Internals.CSSUtils.injectCSS(Internals.CSSUtils.makeDefaultPreviewCSS(`.${playerCssClassname(overrideInternalClassName)}`, "#fff"));
       }, [overrideInternalClassName]);
     }
-    const actualInputProps = (0, import_react105.useMemo)(() => inputProps != null ? inputProps : {}, [inputProps]);
+    const actualInputProps = (0, import_react105.useMemo)(() => inputProps ?? {}, [inputProps]);
     const browserMediaControlsBehavior = (0, import_react105.useMemo)(() => {
-      return passedBrowserMediaControlsBehavior != null ? passedBrowserMediaControlsBehavior : {
+      return passedBrowserMediaControlsBehavior ?? {
         mode: "prevent-media-session"
       };
     }, [passedBrowserMediaControlsBehavior]);
@@ -41357,28 +41252,28 @@ Check that all your Remotion packages are on the same version. If your dependenc
               doubleClickToFullscreen: Boolean(doubleClickToFullscreen),
               spaceKeyToPlayOrPause: Boolean(spaceKeyToPlayOrPause),
               playbackRate: currentPlaybackRate,
-              className: className2 != null ? className2 : void 0,
+              className: className2 ?? void 0,
               showPosterWhenUnplayed: Boolean(showPosterWhenUnplayed),
               showPosterWhenEnded: Boolean(showPosterWhenEnded),
               showPosterWhenPaused: Boolean(showPosterWhenPaused),
               showPosterWhenBuffering: Boolean(showPosterWhenBuffering),
               showPosterWhenBufferingAndPaused: Boolean(showPosterWhenBufferingAndPaused),
               renderPoster,
-              inFrame: inFrame != null ? inFrame : null,
-              outFrame: outFrame != null ? outFrame : null,
-              initiallyShowControls: initiallyShowControls != null ? initiallyShowControls : true,
-              renderFullscreen: renderFullscreenButton != null ? renderFullscreenButton : null,
-              renderPlayPauseButton: renderPlayPauseButton != null ? renderPlayPauseButton : null,
-              renderMuteButton: renderMuteButton != null ? renderMuteButton : null,
-              renderVolumeSlider: renderVolumeSlider != null ? renderVolumeSlider : null,
-              renderCustomControls: renderCustomControls != null ? renderCustomControls : null,
+              inFrame: inFrame ?? null,
+              outFrame: outFrame ?? null,
+              initiallyShowControls: initiallyShowControls ?? true,
+              renderFullscreen: renderFullscreenButton ?? null,
+              renderPlayPauseButton: renderPlayPauseButton ?? null,
+              renderMuteButton: renderMuteButton ?? null,
+              renderVolumeSlider: renderVolumeSlider ?? null,
+              renderCustomControls: renderCustomControls ?? null,
               alwaysShowControls,
               showPlaybackRateControl,
-              bufferStateDelayInMilliseconds: bufferStateDelayInMilliseconds != null ? bufferStateDelayInMilliseconds : 300,
+              bufferStateDelayInMilliseconds: bufferStateDelayInMilliseconds ?? 300,
               hideControlsWhenPointerDoesntMove,
               overflowVisible,
               browserMediaControlsBehavior,
-              overrideInternalClassName: overrideInternalClassName != null ? overrideInternalClassName : void 0,
+              overrideInternalClassName: overrideInternalClassName ?? void 0,
               noSuspense: Boolean(noSuspense)
             })
           })
@@ -41429,7 +41324,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     noSuspense,
     overrideInternalClassName
   }, ref) => {
-    var _a2, _b;
     const config = Internals.useUnsafeVideoConfig();
     const video = Internals.useVideo();
     const container2 = (0, import_react121.useRef)(null);
@@ -41448,7 +41342,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         previewSize: "auto"
       });
     }, [canvasSize, config]);
-    const scale = (_a2 = layout == null ? void 0 : layout.scale) != null ? _a2 : 1;
+    const scale = layout?.scale ?? 1;
     const thumbnail = useThumbnail();
     useBufferStateEmitter(thumbnail.emitter);
     (0, import_react121.useImperativeHandle)(ref, () => {
@@ -41509,8 +41403,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(Internals.CurrentScaleContext.Provider, {
             value: currentScaleContext,
             children: /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(VideoComponent, {
-              ...(_b = video == null ? void 0 : video.props) != null ? _b : {},
-              ...inputProps != null ? inputProps : {}
+              ...video?.props ?? {},
+              ...inputProps ?? {}
             })
           })
         }) : null
@@ -41611,7 +41505,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const [emitter] = (0, import_react120.useState)(() => new ThumbnailEmitter());
     const passedInputProps = (0, import_react120.useMemo)(() => {
-      return inputProps != null ? inputProps : {};
+      return inputProps ?? {};
     }, [inputProps]);
     return /* @__PURE__ */ (0, import_jsx_runtime57.jsx)(Internals.IsPlayerContextProvider, {
       children: /* @__PURE__ */ (0, import_jsx_runtime57.jsx)(Internals.SetTimelineContext.Provider, {
@@ -41681,30 +41575,30 @@ Check that all your Remotion packages are on the same version. If your dependenc
     "flying-paper-stack",
     "checklist-editorial"
   ]);
-  var TYPEWRITER_LAYOUTS = /* @__PURE__ */ new Set(["pivot-list", "engineering-return"]);
+  var TYPEWRITER_LAYOUTS = /* @__PURE__ */ new Set(["pivot-list"]);
   var clean = (value) => typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
   var cleanMissing = (value) => typeof value === "string" ? clean(value) : void 0;
   var textSegments = (value) => clean(value).split(/[。！？；;，,\n]+/).map((item2) => item2.trim()).filter(Boolean);
   var strings = (value) => Array.isArray(value) ? value.map(clean).filter(Boolean) : [];
   var resolveContentText = (cue, props, key) => {
-    const explicit = key ? cleanMissing(props == null ? void 0 : props[key]) : void 0;
+    const explicit = key ? cleanMissing(props?.[key]) : void 0;
     if (explicit !== void 0) return explicit;
-    const effect = cleanMissing(props == null ? void 0 : props.effectZh);
+    const effect = cleanMissing(props?.effectZh);
     if (effect !== void 0) return effect;
     return clean(cue.caption.zh) || clean(cue.section.subtitle) || clean(cue.section.eyebrow);
   };
   var resolveContentItems = (cue, props, keys = ["items"]) => {
     for (const key of keys) {
-      const items2 = strings(props == null ? void 0 : props[key]);
+      const items2 = strings(props?.[key]);
       if (items2.length) return items2;
     }
-    const spoken = textSegments((props == null ? void 0 : props.effectZh) || cue.caption.zh);
+    const spoken = textSegments(props?.effectZh || cue.caption.zh);
     if (spoken.length) return spoken;
     const headline = resolveContentText(cue, props, "headline");
     return headline ? [headline] : [];
   };
   var resolveContentNumber = (props, key, fallback = 0) => {
-    const value = props == null ? void 0 : props[key];
+    const value = props?.[key];
     return typeof value === "number" && Number.isFinite(value) ? value : fallback;
   };
   var isArrayLayout = (layout) => ARRAY_LAYOUTS.has(layout);
@@ -41729,30 +41623,29 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var easeOut = Easing.bezier(0.16, 1, 0.3, 1);
   var BODY_TOP = 300;
-  var stringProp = (props, key, fallback) => typeof (props == null ? void 0 : props[key]) === "string" ? String(props[key]) : fallback;
-  var numberProp = (props, key, fallback) => typeof (props == null ? void 0 : props[key]) === "number" && Number.isFinite(props[key]) ? props[key] : fallback;
+  var stringProp = (props, key, fallback) => typeof props?.[key] === "string" ? String(props[key]) : fallback;
+  var numberProp = (props, key, fallback) => typeof props?.[key] === "number" && Number.isFinite(props[key]) ? props[key] : fallback;
   var demoEnter = (frame, start2, x = -28) => ({
     opacity: interpolate(frame, [start2, start2 + 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: easeOut }),
     translate: `${interpolate(frame, [start2, start2 + 24], [x, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: easeOut })}px 0`
   });
-  var imageProp = (props, key) => typeof (props == null ? void 0 : props[key]) === "string" && String(props[key]).trim() ? String(props[key]) : "";
-  var optionalStringProp = (props, key) => typeof (props == null ? void 0 : props[key]) === "string" ? String(props[key]).trim() : "";
+  var imageProp = (props, key) => typeof props?.[key] === "string" && String(props[key]).trim() ? String(props[key]) : "";
+  var optionalStringProp = (props, key) => typeof props?.[key] === "string" ? String(props[key]).trim() : "";
   var PersonDisc = ({ name, size, active, imageSrc }) => /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)("div", { style: { width: size, height: size, borderRadius: "50%", background: imageSrc ? "#101827" : active ? "#94a3b8" : "rgba(255,255,255,0.16)", backgroundImage: imageSrc ? `url(${imageSrc})` : void 0, backgroundSize: "cover", backgroundPosition: "center", border: `3px solid ${active ? COLORS.blue : "rgba(255,255,255,0.18)"}`, boxShadow: active ? "0 0 42px rgba(10,132,255,0.55)" : "none", position: "relative", overflow: "hidden" }, children: [
     !imageSrc && /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { style: { position: "absolute", left: "50%", top: "27%", width: size * 0.22, height: size * 0.22, borderRadius: "50%", background: "#202936", translate: "-50% 0" } }),
     !imageSrc && /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { style: { position: "absolute", left: "20%", right: "20%", bottom: "-3%", height: "34%", borderRadius: "50% 50% 0 0", background: "#202936" } }),
     /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { style: { position: "absolute", left: 0, right: 0, bottom: 14, padding: "0 8px", color: COLORS.white, textAlign: "center", fontSize: 18, lineHeight: "20px", fontWeight: 950, textShadow: imageSrc ? "0 2px 8px rgba(0,0,0,.9)" : void 0 }, children: name })
   ] });
   var DemoAvatarFlip = ({ cue, props }) => {
-    var _a2, _b, _c, _d, _e;
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const start2 = Math.round(cue.start * fps);
-    const outgoing = (_a2 = cue.people) == null ? void 0 : _a2[0];
-    const incoming = (_b = cue.people) == null ? void 0 : _b[1];
-    const thirdPerson = (_c = cue.people) == null ? void 0 : _c[2];
-    const leftName = stringProp(props, "leftName", (_d = outgoing == null ? void 0 : outgoing.name) != null ? _d : cue.section.subtitle.slice(0, 6) || "\u4EBA\u7269 A");
-    const rightName = stringProp(props, "rightName", (_e = incoming == null ? void 0 : incoming.name) != null ? _e : cue.caption.zh.slice(0, 6) || "\u4EBA\u7269 B");
-    const thirdName = optionalStringProp(props, "thirdName") || (thirdPerson == null ? void 0 : thirdPerson.name) || "";
+    const outgoing = cue.people?.[0];
+    const incoming = cue.people?.[1];
+    const thirdPerson = cue.people?.[2];
+    const leftName = stringProp(props, "leftName", outgoing?.name ?? (cue.section.subtitle.slice(0, 6) || "\u4EBA\u7269 A"));
+    const rightName = stringProp(props, "rightName", incoming?.name ?? (cue.caption.zh.slice(0, 6) || "\u4EBA\u7269 B"));
+    const thirdName = optionalStringProp(props, "thirdName") || thirdPerson?.name || "";
     const leftAvatar = imageProp(props, "leftAvatar");
     const rightAvatar = imageProp(props, "rightAvatar");
     const thirdAvatar = imageProp(props, "thirdAvatar");
@@ -41776,7 +41669,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var parseAnimatedValue = (value) => {
-    const text3 = String(value != null ? value : "").trim();
+    const text3 = String(value ?? "").trim();
     const match = text3.match(/^([^\d+\-.]*)([+-]?\d+(?:,\d{3})*(?:\.\d+)?|[+-]?\d+(?:\.\d+)?)(.*)$/);
     if (!match) return null;
     const numeric = Number(match[2].replace(/,/g, ""));
@@ -41817,10 +41710,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var CapitalDashboardNumbers = ({ cue, props }) => {
-    var _a2, _b;
     const { fps } = useVideoConfig();
     const start2 = Math.round(cue.start * fps) + 8;
-    const marketLabel = stringProp(props, "marketLabel", (_b = (_a2 = cue.metric) == null ? void 0 : _a2.label) != null ? _b : resolveContentText(cue, props));
+    const marketLabel = stringProp(props, "marketLabel", cue.metric?.label ?? resolveContentText(cue, props));
     const marketTo = resolveContentNumber(props, "marketTo", 0);
     const engineeringTo = resolveContentNumber(props, "engineeringTo", 0);
     return /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)("div", { style: { position: "absolute", right: 100, top: BODY_TOP, display: "flex", gap: 18 }, children: [
@@ -41878,7 +41770,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const start2 = Math.round(cue.start * fps) + 8;
-    const designTokens = (props == null ? void 0 : props.designTokens) && typeof props.designTokens === "object" ? props.designTokens : {};
+    const designTokens = props?.designTokens && typeof props.designTokens === "object" ? props.designTokens : {};
     const comments = resolveContentItems(cue, props, ["comments", "items", "steps"]).slice(0, Math.max(1, Math.min(3, Math.round(Number(designTokens.defaultItemCount) || 3))));
     const gap = Math.max(0, Math.min(80, Number(designTokens.gap) || 16)) * 3;
     const rawLeft = Number.isFinite(Number(designTokens.boundsX)) ? Number(designTokens.boundsX) : 1250;
@@ -41893,11 +41785,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const maxButtonWidth = Math.max(240, Math.floor((width - Math.max(0, comments.length - 1) * gap) / Math.max(1, comments.length)));
     const actionSymbols = ["\u2661", "\u2726", "\u2606"];
     return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { style: { position: "absolute", left, top, width, minHeight: height, display: "flex", alignItems: "center", justifyContent: "center", gap, overflow: "visible" }, children: comments.map((comment, index) => {
-      var _a2;
       const color = index === 1 ? COLORS.gold : COLORS.blue;
       const softGlow = index === 1 ? "rgba(255,209,102,.34)" : "rgba(10,132,255,.32)";
       return /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)("div", { style: { flex: "0 0 auto", width: "max-content", maxWidth: maxButtonWidth, minWidth: 240, minHeight: 66, padding: "11px 24px", borderRadius: 999, background: `linear-gradient(135deg, rgba(7,15,28,.94), rgba(2,8,23,.82)), radial-gradient(circle at 18% 20%, ${softGlow}, transparent 42%)`, border: `1px solid ${color}`, outline: `1px solid ${softGlow}`, outlineOffset: 3, color: COLORS.white, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, boxShadow: `0 0 18px ${color}77, inset 0 0 22px ${color}22, 0 10px 32px rgba(0,0,0,.38)`, overflow: "visible", ...demoEnter(frame, start2 + 54 + index * 10, 0) }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("span", { style: { flex: "0 0 auto", width: 24, height: 24, borderRadius: "50%", color, fontSize: 20, lineHeight: "24px", textAlign: "center", fontWeight: 950, textShadow: `0 0 12px ${color}` }, children: (_a2 = actionSymbols[index]) != null ? _a2 : "\u2022" }),
+        /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("span", { style: { flex: "0 0 auto", width: 24, height: 24, borderRadius: "50%", color, fontSize: 20, lineHeight: "24px", textAlign: "center", fontWeight: 950, textShadow: `0 0 12px ${color}` }, children: actionSymbols[index] ?? "\u2022" }),
         /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("span", { style: { color: COLORS.white, fontSize: 19, lineHeight: "24px", fontWeight: 950, whiteSpace: "normal", overflowWrap: "anywhere", textShadow: `0 0 10px ${color}55` }, children: comment })
       ] }, `${comment}-${index}`);
     }) });
@@ -41905,39 +41796,31 @@ Check that all your Remotion packages are on the same version. If your dependenc
 
   // src/JasonWu/IncompleteEffectComponents.tsx
   var import_jsx_runtime59 = __toESM(require_jsx_runtime());
-  var C = { blue: "var(--primary-accent)", gold: "#FFD166", green: "#36D399", red: "#FF5B6E", white: "#FFFFFF", dim: "rgba(255,255,255,.58)", panel: "var(--card-panel)" };
+  var C = { blue: "#0A84FF", gold: "#FFD166", green: "#38D7A6", red: "#FF5B5B", white: "#FFFFFF", dim: "rgba(255,255,255,.58)", panel: "var(--card-panel)" };
   var ease = Easing.bezier(0.16, 1, 0.3, 1);
   var BODY_TOP2 = 300;
   var startFrame = (cue, fps) => Math.round(cue.start * fps) + 8;
   var enter = (frame, start2, x = -28) => ({ opacity: interpolate(frame, [start2, start2 + 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease }), transform: `translateX(${interpolate(frame, [start2, start2 + 24], [x, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease })}px)` });
   var Panel = ({ children, color = C.blue, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { background: C.panel, border: `1px solid ${color}`, borderRadius: 10, boxShadow: `0 0 28px color-mix(in srgb, ${color} 25%, transparent)`, ...style2 }, children });
   var Mark = ({ value, color }) => /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { width: 46, height: 46, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color, fontSize: 33, fontWeight: 950, border: `2px solid ${color}`, boxShadow: `0 0 18px color-mix(in srgb, ${color} 70%, transparent)` }, children: value });
-  var textProp = (props, key, fallback) => typeof (props == null ? void 0 : props[key]) === "string" ? String(props[key]) : fallback;
-  var itemLimit = (props, fallback = 4) => {
-    var _a2;
-    return Math.max(1, Math.min(8, Math.round(Number((_a2 = props == null ? void 0 : props.designTokens) == null ? void 0 : _a2.defaultItemCount) || fallback)));
-  };
+  var textProp = (props, key, fallback) => typeof props?.[key] === "string" ? String(props[key]) : fallback;
+  var itemLimit = (props, fallback = 4) => Math.max(1, Math.min(8, Math.round(Number(props?.designTokens?.defaultItemCount) || fallback)));
   var listProp = (cue, props, key) => resolveContentItems(cue, props, [key, "items", "steps", "units", "comments", "nodes", "years"]);
   var optionalStrings = (value) => Array.isArray(value) ? value.map((item2) => typeof item2 === "string" ? item2.trim() : "").filter(Boolean) : [];
   var rows = (cue, props) => resolveContentItems(cue, props, ["items", "steps", "units", "comments"]);
   var boxColors = { purple: "#8B5CF6", blue: "#0A84FF", gold: "#FFD166", white: "#F8FAFC", green: "#36D399", red: "#FF6B6B" };
-  var boxColorProp = (props, fallback = C.blue) => {
-    var _a2;
-    return (_a2 = boxColors[textProp(props, "boxColor", "auto")]) != null ? _a2 : fallback;
-  };
+  var boxColorProp = (props, fallback = C.blue) => boxColors[textProp(props, "boxColor", "auto")] ?? fallback;
   var RejectList = ({ cue, props }) => {
-    var _a2;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const items2 = rows(cue, props).slice(0, itemLimit(props, 4));
-    const subtitles = optionalStrings((_a2 = props == null ? void 0 : props.itemSubtitles) != null ? _a2 : props == null ? void 0 : props.subLabels);
+    const subtitles = optionalStrings(props?.itemSubtitles ?? props?.subLabels);
     const fallbackSubtitle = textProp(props, "subLabel", "");
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 98, top: BODY_TOP2, width: 740, ...enter(f, s) }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.red, fontSize: 22, fontWeight: 950, letterSpacing: 3 }, children: textProp(props, "title", "REJECTED PATHS") }),
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { marginTop: 22, display: "flex", flexDirection: "column", gap: 14 }, children: items2.map((row, i) => {
-        var _a3;
-        const subtitle = (_a3 = subtitles[i]) != null ? _a3 : fallbackSubtitle;
+        const subtitle = subtitles[i] ?? fallbackSubtitle;
         return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)(Panel, { color: C.red, style: { padding: "18px 22px", display: "flex", alignItems: "center", gap: 18, ...enter(f, s + 16 + i * 18) }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Mark, { value: "\xD7", color: C.red }),
           /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { minWidth: 0 }, children: [
@@ -41949,12 +41832,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var CheckProgress = ({ cue, props }) => {
-    var _a2, _b;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const title = textProp(props, "bodyText", textProp(props, "body", textProp(props, "title", "PRODUCT RECOVERY")));
-    const target = Number((_b = (_a2 = props == null ? void 0 : props.progress) != null ? _a2 : props == null ? void 0 : props.value) != null ? _b : 82);
+    const target = Number(props?.progress ?? props?.value ?? 82);
     const safeTarget = Number.isFinite(target) ? Math.max(0, Math.min(100, target)) : 82;
     const p = interpolate(f, [s + 20, s + 132], [0, safeTarget], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
     const sourceRows = rows(cue, props);
@@ -41975,7 +41857,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
-    const designTokens = (props == null ? void 0 : props.designTokens) && typeof props.designTokens === "object" ? props.designTokens : {};
+    const designTokens = props?.designTokens && typeof props.designTokens === "object" ? props.designTokens : {};
     const gap = Math.max(0, Math.min(80, Number(designTokens.gap) || 8));
     const defaultItemCount = Math.max(1, Math.min(8, Math.round(Number(designTokens.defaultItemCount) || 4)));
     const staggerFrames = Math.max(0, Math.min(45, Math.round(Number(designTokens.staggerFrames) || Math.round(fps * 0.5))));
@@ -42002,9 +41884,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const chips = listProp(cue, props, "items").slice(0, 4);
     const pos = [[145, 250], [530, 190], [275, 525], [750, 485]];
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { position: "absolute", inset: 0 }, children: chips.map((chip, i) => {
-      var _a2, _b, _c, _d;
       const color = [C.blue, C.gold, C.green, C.blue][i];
-      return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Panel, { color, style: { position: "absolute", left: (_b = (_a2 = pos[i]) == null ? void 0 : _a2[0]) != null ? _b : 145, top: ((_d = (_c = pos[i]) == null ? void 0 : _c[1]) != null ? _d : 250) + Math.sin((f - s) / 17 + i) * 12, padding: "18px 22px", ...enter(f, s + getStaggerStartFrame(fps, i), i % 2 ? 34 : -34) }, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 29, fontWeight: 950 }, children: chip }) }, chip);
+      return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Panel, { color, style: { position: "absolute", left: pos[i]?.[0] ?? 145, top: (pos[i]?.[1] ?? 250) + Math.sin((f - s) / 17 + i) * 12, padding: "18px 22px", ...enter(f, s + getStaggerStartFrame(fps, i), i % 2 ? 34 : -34) }, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 29, fontWeight: 950 }, children: chip }) }, chip);
     }) });
   };
   var BareTypography = ({ cue }) => {
@@ -42078,29 +41959,27 @@ Check that all your Remotion packages are on the same version. If your dependenc
       ] }, unit))
     ] });
   };
-  var DrawLine = ({ cue }) => {
+  var DrawLine = ({ cue, props }) => {
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const len = interpolate(f, [s + 20, s + 130], [0, 1e3], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
+    const bodyText = textProp(props, "bodyText", textProp(props, "body", textProp(props, "effectText", textProp(props, "text", cue.section.subtitle))));
+    const subText = textProp(props, "highlightQuote", textProp(props, "annotation", textProp(props, "subLabel", cue.caption.zh)));
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 100, top: BODY_TOP2, width: 1220, ...enter(f, s) }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 68, fontWeight: 950 }, children: cue.section.subtitle }),
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 68, fontWeight: 950, overflowWrap: "break-word" }, children: bodyText }),
       /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("svg", { viewBox: "0 0 1200 260", style: { marginTop: 35, width: 1200, height: 260 }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("path", { d: "M40 190 C220 100 360 220 520 140 S830 68 1140 104", fill: "none", stroke: C.blue, strokeWidth: "8", strokeLinecap: "round", strokeDasharray: "1200", strokeDashoffset: 1200 - len }),
         /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("circle", { cx: "1140", cy: "104", r: len > 950 ? 10 : 0, fill: C.gold })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { color: C.gold, fontSize: 24, fontWeight: 950, letterSpacing: 3 }, children: [
-        "DRAWN ARGUMENT \xB7 ",
-        cue.caption.zh
-      ] })
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.blue, fontSize: 24, fontWeight: 950, letterSpacing: 3, overflowWrap: "break-word" }, children: subText })
     ] });
   };
   var ProgressDonut = ({ cue, props }) => {
-    var _a2, _b;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
-    const target = Math.max(0, Math.min(100, Number((_b = (_a2 = props == null ? void 0 : props.value) != null ? _a2 : props == null ? void 0 : props.progress) != null ? _b : 74) || 74));
+    const target = Math.max(0, Math.min(100, Number(props?.value ?? props?.progress ?? 74) || 74));
     const val = interpolate(f, [s + 20, s + 100], [0, target], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
     const dash = 2 * Math.PI * 132;
     const subtitle = textProp(props, "metric", textProp(props, "label", cue.section.eyebrow));
@@ -42153,7 +42032,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const p = spring({ frame: f - s - 18, fps, config: { damping: 11, stiffness: 170 } });
     const body = textProp(props, "body", textProp(props, "effectText", cue.caption.zh));
     const quote = textProp(props, "highlightQuote", cue.section.subtitle);
-    const designTokens = (props == null ? void 0 : props.designTokens) && typeof props.designTokens === "object" ? props.designTokens : {};
+    const designTokens = props?.designTokens && typeof props.designTokens === "object" ? props.designTokens : {};
     const contentScale = Number(designTokens.contentScale) || 1;
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 120, right: 120, top: BODY_TOP2, textAlign: "center", transform: `scale(${contentScale * interpolate(p, [0, 1], [0.64, 1.04], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })})` }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.gold, fontSize: 22, fontWeight: 950, letterSpacing: 5 }, children: "THE VIEW" }),
@@ -42166,13 +42045,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const fallback = listProp(cue, props, "items");
-    const exact = (key, fallbackValue) => typeof (props == null ? void 0 : props[key]) === "string" ? String(props == null ? void 0 : props[key]) : fallbackValue;
+    const exact = (key, fallbackValue) => typeof props?.[key] === "string" ? String(props?.[key]) : fallbackValue;
     const cards = [0, 1, 2, 3].map((_, i) => {
-      var _a2;
       const n = i + 1;
-      const title = exact(`photoTitle${n}`, (_a2 = fallback[i]) != null ? _a2 : ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA", "\u8865\u5145\u8BC1\u636E"][i]);
+      const title = exact(`photoTitle${n}`, fallback[i] ?? ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA", "\u8865\u5145\u8BC1\u636E"][i]);
       const subtitle = exact(`photoSubtitle${n}`, ["PRODUCT HISTORY", "VISUAL RHYTHM", "ACTION SIGNAL", "EXTRA PROOF"][i]);
-      const photo = typeof (props == null ? void 0 : props[`photo${n}`]) === "string" ? String(props == null ? void 0 : props[`photo${n}`]) : "";
+      const photo = typeof props?.[`photo${n}`] === "string" ? String(props?.[`photo${n}`]) : "";
       return { title, subtitle, photo };
     }).filter((card) => card.title.trim() || card.photo).slice(0, 4);
     const xs = [0, 300, 600, 900];
@@ -42189,10 +42067,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const fallbackLabels = listProp(cue, props, "items").slice(0, 4);
-    const labels = [1, 2, 3, 4].map((n, i) => {
-      var _a2;
-      return textProp(props, "productTitle" + String(n), (_a2 = fallbackLabels[i]) != null ? _a2 : "");
-    }).filter(Boolean).slice(0, 4);
+    const labels = [1, 2, 3, 4].map((n, i) => textProp(props, "productTitle" + String(n), fallbackLabels[i] ?? "")).filter(Boolean).slice(0, 4);
     const centerImage = textProp(props, "centerImage", textProp(props, "productImage", ""));
     const centerLabel = textProp(props, "centerLabel", "APPLE ECOSYSTEM");
     const slots = labels.map((label3, i) => ({ label: label3, image: textProp(props, "productImage" + String(i + 1), "") }));
@@ -42200,11 +42075,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 185, top: BODY_TOP2, width: 1180, height: 620 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { position: "absolute", left: 420, top: 162, width: 340, height: 230, borderRadius: 34, background: "linear-gradient(145deg, rgba(255,255,255,.96), rgba(207,218,232,.78))", border: "1px solid rgba(255,255,255,.84)", boxShadow: "0 24px 60px rgba(0,0,0,.36), 0 0 42px rgba(10,132,255,.22)", display: "grid", placeItems: "center", overflow: "hidden", ...enter(f, s, 0) }, children: centerImage ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("img", { src: centerImage, style: { width: "100%", height: "100%", objectFit: "contain", padding: 34, boxSizing: "border-box" } }) : /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: "#111827", fontSize: 38, fontWeight: 950, letterSpacing: 2, textAlign: "center" }, children: centerLabel }) }),
       slots.map((slot, i) => {
-        var _a2, _b;
-        const [x, y] = (_a2 = positions[i]) != null ? _a2 : [0, 0];
+        const [x, y] = positions[i] ?? [0, 0];
         const p = spring({ frame: f - s - 16 - i * 10, fps, config: { damping: 14, stiffness: 130 } });
         const scale = interpolate(p, [0, 1], [0.62, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-        const accent = (_b = [C.blue, C.gold, C.green, C.red][i]) != null ? _b : C.blue;
+        const accent = [C.blue, C.gold, C.green, C.red][i] ?? C.blue;
         return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 590 + x, top: 277 + y, width: 172, height: 172, marginLeft: -86, marginTop: -86, borderRadius: "50%", background: "rgba(7,14,26,.88)", border: "2px solid " + accent, boxShadow: "0 0 30px " + accent + "66, inset 0 0 28px rgba(255,255,255,.08)", display: "grid", placeItems: "center", opacity: Math.min(1, p), transform: "scale(" + scale + ")", overflow: "hidden" }, children: [
           slot.image ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("img", { src: slot.image, style: { width: "100%", height: "100%", objectFit: "cover" } }) : /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { padding: 18, color: C.white, fontSize: 24, lineHeight: "30px", fontWeight: 950, textAlign: "center", overflowWrap: "break-word" }, children: slot.label }),
           /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { position: "absolute", left: 12, right: 12, bottom: 12, padding: "6px 8px", borderRadius: 999, background: "rgba(2,6,12,.72)", color: C.white, fontSize: 16, lineHeight: "20px", fontWeight: 900, textAlign: "center", backdropFilter: "blur(8px)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: slot.label })
@@ -42212,19 +42086,25 @@ Check that all your Remotion packages are on the same version. If your dependenc
       })
     ] });
   };
-  var RouteMap = ({ cue }) => {
+  var RouteMap = ({ cue, props }) => {
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const draw = interpolate(f, [s + 22, s + 116], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
-    const nodes = [[170, 355, "ORIGIN", C.gold], [960, 310, "PROCESS", C.blue], [1270, 190, "SIGNAL", C.green]];
+    const labels = listProp(cue, props, "nodes").slice(0, 3);
+    const points = [[170, 355, C.gold], [960, 310, C.blue], [1270, 190, C.green]];
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 150, top: BODY_TOP2, width: 1400, height: 650, ...enter(f, s) }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("svg", { viewBox: "0 0 1400 650", style: { width: 1400, height: 650 }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("path", { d: "M170 355 C410 100 720 135 960 310 S1180 470 1270 190", stroke: C.blue, strokeWidth: "7", fill: "none", strokeDasharray: "1500", strokeDashoffset: 1500 - draw * 1500 }),
-        nodes.map(([x, y, label3, color]) => /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("g", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("circle", { cx: x, cy: y, r: "18", fill: color }),
-          /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("text", { x: x + 27, y: y + 8, fill: "white", fontSize: "26", fontWeight: "900", children: label3 })
-        ] }, label3))
+        labels.map((label3, index) => {
+          const point = points[index];
+          if (!point) return null;
+          const [x, y, color] = point;
+          return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("g", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("circle", { cx: x, cy: y, r: "18", fill: color }),
+            /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("text", { x: x + 27, y: y + 8, fill: "white", fontSize: "26", fontWeight: "900", children: label3 })
+          ] }, label3 + "-" + index);
+        })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { position: "absolute", left: 80, top: 65, color: C.white, fontSize: 48, fontWeight: 950 }, children: cue.section.subtitle })
     ] });
@@ -42332,10 +42212,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
 
   // src/JasonWu/RecoveredEffectComponents.tsx
   var import_jsx_runtime60 = __toESM(require_jsx_runtime());
-  var BLUE = "var(--primary-accent)";
+  var BLUE = "#0A84FF";
   var GOLD = "#FFD166";
   var GREEN = "#38D7A6";
-  var RED = "#FF6170";
+  var RED = "#FF5B5B";
   var WHITE = "#FFFFFF";
   var DIM = "rgba(255,255,255,.62)";
   var ease2 = Easing.bezier(0.16, 1, 0.3, 1);
@@ -42343,37 +42223,32 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var clean2 = (value) => typeof value === "string" ? value.trim() : "";
   var strings2 = (value) => Array.isArray(value) ? value.map(clean2).filter(Boolean) : [];
   var optionalStrings2 = (value) => Array.isArray(value) ? value.map((item2) => typeof item2 === "string" ? item2.trim() : "") : [];
-  var text = (cue, props, key, fallback) => typeof (props == null ? void 0 : props[key]) === "string" ? clean2(props[key]) : fallback != null ? fallback : resolveContentText(cue, props, "headline");
-  var itemLimit2 = (props, fallback = 4) => {
-    var _a2;
-    return Math.max(1, Math.min(8, Math.round(Number((_a2 = props == null ? void 0 : props.designTokens) == null ? void 0 : _a2.defaultItemCount) || fallback)));
-  };
+  var text = (cue, props, key, fallback) => typeof props?.[key] === "string" ? clean2(props[key]) : fallback ?? resolveContentText(cue, props, "headline");
+  var itemLimit2 = (props, fallback = 4) => Math.max(1, Math.min(8, Math.round(Number(props?.designTokens?.defaultItemCount) || fallback)));
   var items = (cue, props, keys = ["items"], maxItems = 4) => {
-    const rows2 = resolveContentItems(cue, props, keys);
-    return rows2.slice(0, Math.min(8, Math.max(itemLimit2(props, maxItems), rows2.length)));
+    const rows3 = resolveContentItems(cue, props, keys);
+    return rows3.slice(0, Math.min(8, Math.max(itemLimit2(props, maxItems), rows3.length)));
   };
   var start = (cue, fps) => Math.round(cue.start * fps);
   var tokenNumber = (props, key, fallback) => {
-    var _a2, _b;
-    const value = (_b = (_a2 = props == null ? void 0 : props.designTokens) == null ? void 0 : _a2[key]) != null ? _b : props == null ? void 0 : props[key];
+    const value = props?.designTokens?.[key] ?? props?.[key];
     const next = Number(value);
     return Number.isFinite(next) ? Math.max(0.6, Math.min(1.2, next)) : fallback;
   };
   var enter2 = (frame, at, x = -44, y = 20, frames = 24) => ({ opacity: interpolate(frame, [at, at + frames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }), transform: "translate(" + interpolate(frame, [at, at + frames], [x, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }) + "px," + interpolate(frame, [at, at + frames], [y, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }) + "px)" });
   var header = (cue, props) => {
     const headerScale = tokenNumber(props, "headerScale", 1);
-    return (props == null ? void 0 : props.__externalSectionLabel) ? null : /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 76, top: 58, zIndex: 3, transform: "scale(" + headerScale + ")", transformOrigin: "top left" }, children: [
+    return props?.__externalSectionLabel ? null : /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 76, top: 58, zIndex: 3, transform: "scale(" + headerScale + ")", transformOrigin: "top left" }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: BLUE, fontSize: 30, fontWeight: 950, letterSpacing: 8, textShadow: "0 0 20px rgba(0,132,255,.55)" }, children: text(cue, props, "eyebrow", cue.section.eyebrow).toUpperCase() }),
       /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 8, color: WHITE, fontSize: 25, fontWeight: 950 }, children: text(cue, props, "headline", cue.section.subtitle) })
     ] });
   };
   var CircleMark = ({ color, value }) => /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { width: 52, height: 52, borderRadius: "50%", border: "3px solid " + color, color, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 34, fontWeight: 950, boxShadow: "0 0 18px " + color + "66" }, children: value });
   var PlatformShiftLine = ({ cue, props }) => {
-    var _a2, _b;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const count = Number((_b = (_a2 = props == null ? void 0 : props.count) != null ? _a2 : props == null ? void 0 : props.metricValue) != null ? _b : 3) || 0;
+    const count = Number(props?.count ?? props?.metricValue ?? 3) || 0;
     const value = Math.round(interpolate(f, [s + 20, s + 88], [0, count], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }));
     const dots = items(cue, props, ["milestones", "items"]);
     const line = interpolate(f, [s + 34, s + 110], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
@@ -42404,14 +42279,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const rows2 = items(cue, props, ["items", "steps"], 3);
+    const rows3 = items(cue, props, ["items", "steps"], 3);
     const body = text(cue, props, "bodyText", text(cue, props, "body", text(cue, props, "effectText", cue.section.subtitle)));
     return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
       /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 96, top: BODY_TOP3, ...enter2(f, s) }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: RED, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", "\u98CE\u9669\u6392\u9664") }),
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 58, lineHeight: "68px", fontWeight: 950, maxWidth: 960, overflowWrap: "break-word" }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 30, marginTop: 42 }, children: rows2.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 22, ...enter2(f, s + 15 + i * 16, -30, 0) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 30, marginTop: 42 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 22, ...enter2(f, s + 15 + i * 16, -30, 0) }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: RED, value: "\xD7" }),
           /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { color: WHITE, fontSize: 40, fontWeight: 950 }, children: row })
         ] }, row + i)) })
@@ -42420,13 +42295,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var progressOffsets = [-12, 8, -4, 14, -9, 5, 0, 11];
   var RecoveryProgressBars = ({ cue, props }) => {
-    var _a2, _b;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const rows2 = items(cue, props);
-    const subtitles = strings2((_a2 = props == null ? void 0 : props.itemSubtitles) != null ? _a2 : props == null ? void 0 : props.subLabels);
-    const globalProgress = Number((_b = props == null ? void 0 : props.progress) != null ? _b : props == null ? void 0 : props.value);
+    const rows3 = items(cue, props);
+    const subtitles = strings2(props?.itemSubtitles ?? props?.subLabels);
+    const globalProgress = Number(props?.progress ?? props?.value);
     const baseProgress = Number.isFinite(globalProgress) ? globalProgress : 68;
     const body = text(cue, props, "bodyText", text(cue, props, "body", text(cue, props, "effectText", cue.section.subtitle)));
     const contentScale = tokenNumber(props, "contentScale", 0.66);
@@ -42436,7 +42310,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 100, top: BODY_TOP3, width: 1130, opacity: entrance.opacity, transform: entrance.transform + " scale(" + contentScale + ")", transformOrigin: "top left" }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: GREEN, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", text(cue, props, "category", "RECOVERY TRACK")) }),
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 24, color: WHITE, fontSize: 58, fontWeight: 950 }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 31, marginTop: 42 }, children: rows2.map((row, i) => {
+        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 31, marginTop: 42 }, children: rows3.map((row, i) => {
           const target = Math.max(0, Math.min(100, baseProgress + progressOffsets[i % progressOffsets.length]));
           const progress = interpolate(f, [s + 30 + i * 16, s + 96 + i * 16], [0, target], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
           return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { ...enter2(f, s + 14 + i * 16, 0, 14) }, children: [
@@ -42460,28 +42334,28 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const rows2 = items(cue, props, ["items", "steps"]);
-    const subtitleSource = Array.isArray(props == null ? void 0 : props.itemSubtitles) ? props == null ? void 0 : props.itemSubtitles : Array.isArray(props == null ? void 0 : props.subLabels) ? props == null ? void 0 : props.subLabels : void 0;
+    const rows3 = items(cue, props, ["items", "steps"]);
+    const subtitleSource = Array.isArray(props?.itemSubtitles) ? props?.itemSubtitles : Array.isArray(props?.subLabels) ? props?.subLabels : void 0;
     const subtitles = optionalStrings2(subtitleSource);
     const hasExplicitSubtitles = Array.isArray(subtitleSource);
     return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 84, top: BODY_TOP3, width: 693, display: "grid", gap: 20 }, children: rows2.map((row, i) => {
-        var _a2;
+      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 84, top: BODY_TOP3, width: 693, display: "grid", gap: 20 }, children: rows3.map((row, i) => {
         const p = spring({ frame: f - s - 14 - i * 17, fps, config: { damping: 14, stiffness: 150 } });
-        const accent = i === 1 ? GOLD : BLUE;
+        const hudPalette = [BLUE, GOLD, GREEN, "#B26BFF"];
+        const accent = hudPalette[i % hudPalette.length];
         const shine = interpolate(f, [s + 25 + i * 17, s + 55 + i * 17], [-170, 760], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.linear });
-        const subtitle = hasExplicitSubtitles ? (_a2 = subtitles[i]) != null ? _a2 : "" : text(cue, props, "subLabel", cue.section.eyebrow);
-        return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { height: 122, padding: "22px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid " + (i === 1 ? GOLD : BLUE), borderRadius: 18, overflow: "hidden", background: "rgba(3,9,18,.9)", boxShadow: "0 0 28px " + (i === 1 ? GOLD : BLUE) + "44", opacity: Math.min(1, p), transform: "translateX(" + interpolate(p, [0, 1], [-80, 0]) + "px)" }, children: [
+        const subtitle = hasExplicitSubtitles ? subtitles[i] ?? "" : text(cue, props, "subLabel", cue.section.eyebrow);
+        return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { height: 122, padding: "22px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid " + accent, borderRadius: 18, overflow: "hidden", background: "rgba(3,9,18,.9)", boxShadow: "0 0 28px " + accent + "44", opacity: Math.min(1, p), transform: "translateX(" + interpolate(p, [0, 1], [-80, 0]) + "px)" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: shine, top: -32, width: 118, height: 190, transform: "rotate(18deg)", pointerEvents: "none", background: "linear-gradient(90deg, transparent, " + accent + "66, rgba(255,255,255,.62), transparent)", mixBlendMode: "screen" } }),
           /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { width: 52, height: 52, borderRadius: "50%", background: i === 1 ? GOLD : BLUE, color: "#06111c", display: "grid", placeItems: "center", fontSize: 21 }, children: (i + 1 < 10 ? "0" : "") + String(i + 1) }),
+            /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { width: 52, height: 52, borderRadius: "50%", background: accent, color: "#06111c", display: "grid", placeItems: "center", fontSize: 21 }, children: (i + 1 < 10 ? "0" : "") + String(i + 1) }),
             /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { children: [
               /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 37, fontWeight: 950, color: WHITE }, children: row }),
-              subtitle ? /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 5, color: i === 1 ? GOLD : BLUE, fontSize: 18, fontWeight: 900, letterSpacing: 4 }, children: subtitle }) : null
+              subtitle ? /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 5, color: accent, fontSize: 18, fontWeight: 900, letterSpacing: 4 }, children: subtitle }) : null
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: i === 1 ? GOLD : BLUE, value: "" })
+          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: accent, value: "" })
         ] }, row + i);
       }) })
     ] });
@@ -42490,7 +42364,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const rows2 = items(cue, props, ["items", "steps"], 4);
+    const rows3 = items(cue, props, ["items", "steps"], 4);
     const body = text(cue, props, "body", text(cue, props, "bodyText", text(cue, props, "effectText", cue.caption.zh || cue.section.subtitle)));
     const tilt = interpolate(f, [s, s + 32], [-3, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
     const entrance = enter2(f, s, -70, 20, 32);
@@ -42500,7 +42374,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 430, top: -28, width: 250, height: 62, borderRadius: 10, background: "#667689" } }),
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 22, fontWeight: 950, letterSpacing: 7 }, children: text(cue, props, "label", "PRODUCT NOTE") }),
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 34, fontSize: 64, lineHeight: "78px", fontWeight: 950, overflowWrap: "break-word" }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 25, marginTop: 35 }, children: rows2.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", gap: 18, alignItems: "center", fontSize: 35, fontWeight: 900, ...enter2(f, s + 18 + i * 15, -20, 0) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 25, marginTop: 35 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", gap: 18, alignItems: "center", fontSize: 35, fontWeight: 900, ...enter2(f, s + 18 + i * 15, -20, 0) }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { color: "#149D68", fontSize: 38 }, children: "\u2611" }),
           /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { minWidth: 0, overflowWrap: "break-word" }, children: row })
         ] }, row + i)) })
@@ -42508,12 +42382,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var RewindMilestones = ({ cue, props }) => {
-    var _a2;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const years = items(cue, props, ["years", "items"], 5);
-    const subtitles = strings2((_a2 = props == null ? void 0 : props.itemSubtitles) != null ? _a2 : props == null ? void 0 : props.subLabels);
+    const subtitles = strings2(props?.itemSubtitles ?? props?.subLabels);
     return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
       /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 118, top: BODY_TOP3, width: 1180 }, children: [
@@ -42538,7 +42411,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const cards = [[-90, -45, BLUE], [0, 0, BLUE], [90, 45, RED]];
+    const cards = [[-90, -45, GOLD], [0, 0, GOLD], [90, 45, GOLD]];
     return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
       /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 190, top: BODY_TOP3, width: 1050, height: 470 }, children: cards.map(([x, y, color], i) => {
@@ -42556,13 +42429,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const rows2 = items(cue, props);
+    const rows3 = items(cue, props);
     return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
       /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 105, top: BODY_TOP3, width: 860, ...enter2(f, s) }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: GOLD, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", cue.section.eyebrow) }),
         /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 72, lineHeight: "86px", fontWeight: 950 }, children: "\u91CD\u70B9\u7B80\u8981\u5185\u5BB9" }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 24, marginTop: 38 }, children: rows2.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, ...enter2(f, s + 18 + i * 17, -24, 0) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 24, marginTop: 38 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, ...enter2(f, s + 18 + i * 17, -24, 0) }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { width: 54, height: 54, border: "3px solid " + BLUE, color: BLUE, fontSize: 40, lineHeight: "48px", textAlign: "center" }, children: "\u2713" }),
           /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { fontSize: 42, color: WHITE }, children: row })
         ] }, row + i)) })
@@ -43266,7 +43139,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
     accentColor = "#22D3EE",
     backgroundColor = "transparent"
   }) => {
-    var _a2, _b, _c, _d, _e;
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const lines = [];
@@ -43274,9 +43146,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     let cursorFrame = 0;
     for (const step of steps) {
       if (step.kind === "cmd") {
-        const speed = (_a2 = step.typeSpeed) != null ? _a2 : 0.035;
+        const speed = step.typeSpeed ?? 0.035;
         const typeFrames = Math.ceil(step.text.length * speed * fps);
-        const hold = Math.ceil(((_b = step.holdSeconds) != null ? _b : 0.3) * fps);
+        const hold = Math.ceil((step.holdSeconds ?? 0.3) * fps);
         lines.push({
           text: step.text,
           isCmd: true,
@@ -43286,7 +43158,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         cursorFrame += typeFrames + hold;
       } else if (step.kind === "out") {
         const revealFrames = Math.max(2, Math.ceil(0.08 * fps));
-        const hold = Math.ceil(((_c = step.holdSeconds) != null ? _c : 0.15) * fps);
+        const hold = Math.ceil((step.holdSeconds ?? 0.15) * fps);
         lines.push({
           text: step.text,
           isCmd: false,
@@ -43297,10 +43169,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       } else if (step.kind === "pause") {
         cursorFrame += Math.ceil(step.seconds * fps);
       } else if (step.kind === "pill") {
-        const dur = Math.ceil(((_d = step.durationSeconds) != null ? _d : 2.2) * fps);
+        const dur = Math.ceil((step.durationSeconds ?? 2.2) * fps);
         pills.push({
           text: step.text,
-          color: (_e = step.color) != null ? _e : accentColor,
+          color: step.color ?? accentColor,
           startFrame: cursorFrame,
           endFrame: cursorFrame + dur
         });
@@ -44496,7 +44368,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame();
     const { fps, durationInFrames } = useVideoConfig();
     const cols = Math.min(columns, metrics.length);
-    const rows2 = Math.ceil(metrics.length / cols);
+    const rows3 = Math.ceil(metrics.length / cols);
     const gridPadding = 100;
     const cardGap = 28;
     const titleHeight = title ? 120 : 0;
@@ -44505,10 +44377,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const gridHeight = 1080 - gridTop - 80;
     const cardWidth = (gridWidth - cardGap * (cols - 1)) / cols;
     const cardHeight = Math.min(
-      (gridHeight - cardGap * (rows2 - 1)) / rows2,
+      (gridHeight - cardGap * (rows3 - 1)) / rows3,
       320
     );
-    const totalGridHeight = rows2 * cardHeight + (rows2 - 1) * cardGap;
+    const totalGridHeight = rows3 * cardHeight + (rows3 - 1) * cardGap;
     const gridTopOffset = gridTop + (gridHeight - totalGridHeight) / 2;
     const fadeOut = interpolate(
       frame,
@@ -44786,30 +44658,30 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var GRID = "#334155";
   var str = (props, keys, fallback) => {
     for (const key of keys) {
-      const value = props == null ? void 0 : props[key];
+      const value = props?.[key];
       if (typeof value === "string" && value.trim()) return value;
     }
     return fallback;
   };
   var num = (props, keys, fallback) => {
     for (const key of keys) {
-      const value = Number(props == null ? void 0 : props[key]);
+      const value = Number(props?.[key]);
       if (Number.isFinite(value)) return value;
     }
     return fallback;
   };
   var list = (props, keys, fallback) => {
     for (const key of keys) {
-      const value = props == null ? void 0 : props[key];
+      const value = props?.[key];
       if (Array.isArray(value)) {
-        const rows2 = value.map((item2) => String(item2 != null ? item2 : "").trim()).filter(Boolean);
-        if (rows2.length) return rows2;
+        const rows3 = value.map((item2) => String(item2 ?? "").trim()).filter(Boolean);
+        if (rows3.length) return rows3;
       }
     }
     return fallback;
   };
   var values = (props, fallback) => {
-    const raw = props == null ? void 0 : props.values;
+    const raw = props?.values;
     if (Array.isArray(raw)) {
       const nums = raw.map(Number).filter(Number.isFinite);
       if (nums.length) return nums;
@@ -44819,17 +44691,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var chartData = (props, fallbackLabels, fallbackValues) => {
     const labels = list(props, ["items", "steps", "nodes"], fallbackLabels);
     const nums = values(props, fallbackValues);
-    return labels.slice(0, Math.max(labels.length, nums.length)).map((label3, index) => {
-      var _a2;
-      return { label: label3 || fallbackLabels[index % fallbackLabels.length], value: (_a2 = nums[index]) != null ? _a2 : fallbackValues[index % fallbackValues.length] };
-    });
+    return labels.slice(0, Math.max(labels.length, nums.length)).map((label3, index) => ({ label: label3 || fallbackLabels[index % fallbackLabels.length], value: nums[index] ?? fallbackValues[index % fallbackValues.length] }));
   };
   var CopyOpenHeroTitle = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(HeroTitle, { title: str(props, ["body", "bodyText", "effectText", "text"], cue.section.subtitle), subtitle: str(props, ["highlightQuote", "subtitle", "subLabel"], ""), accentColor: BLUE2, textColor: TEXT, subtitleColor: PURPLE, scrimBackground: "transparent" });
   var CopyOpenProgressBar = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ProgressBar, { progress: num(props, ["progress", "value", "marketTo"], 76), label: str(props, ["label", "bodyText", "body", "effectText", "metricLabel"], cue.section.subtitle), backgroundColor: "transparent", trackColor: "#1E293B", textColor: TEXT, color: GREEN2, animationStyle: "pulse" });
   var CopyOpenComparisonCard = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ComparisonCard, { title: str(props, ["headline", "title"], cue.section.subtitle), leftLabel: str(props, ["leftLabel", "marketLabel"], "Long video"), rightLabel: str(props, ["rightLabel", "engineeringLabel"], "Short clips"), leftValue: str(props, ["leftValue"], String(num(props, ["from"], 58))), rightValue: str(props, ["rightValue"], String(num(props, ["to", "value", "progress"], 8))), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, leftColor: "#F59E0B", rightColor: GREEN2, changeIndicator: str(props, ["body", "effectText"], "ready"), changeDirection: "up" });
   var CopyOpenTerminalScene = ({ cue, props }) => {
-    const rows2 = list(props, ["steps", "items"], ["openmontage clip input.mp4", "transcribing audio...", "ranking highlight candidates...", "8 clips ready", "remotion render JcMotionCards", "done -> out/shorts"]);
-    const steps = rows2.map((text3, index) => index % 3 === 0 ? { kind: "cmd", text: text3, typeSpeed: 0.025 } : index % 3 === 2 ? { kind: "pill", text: text3, color: GREEN2 } : { kind: "out", text: text3 });
+    const rows3 = list(props, ["steps", "items"], ["openmontage clip input.mp4", "transcribing audio...", "ranking highlight candidates...", "8 clips ready", "remotion render JcMotionCards", "done -> out/shorts"]);
+    const steps = rows3.map((text3, index) => index % 3 === 0 ? { kind: "cmd", text: text3, typeSpeed: 0.025 } : index % 3 === 2 ? { kind: "pill", text: text3, color: GREEN2 } : { kind: "out", text: text3 });
     return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(TerminalScene, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", accentColor: GREEN2, steps });
   };
   var CopyOpenEndTag = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(EndTag, { text: str(props, ["body", "effectText", "headline", "title"], cue.section.subtitle), palette: "cool_offwhite_on_black", fadeInSeconds: 0.5, holdSeconds: 3.2, fadeOutSeconds: 0.5, overlay: true });
@@ -44844,159 +44713,49 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(KPIGrid, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, columns: Math.min(3, Math.max(2, data.length)), animationStyle: "cascade", metrics: data.map((item2, index) => ({ label: item2.label, value: item2.value, suffix: index === 1 ? "%" : void 0, change: [12.4, 5.2, 18.1][index % 3] })) });
   };
 
+  // src/design/tokens.ts
+  var ACCENT_THEMES = {
+    blue: { primary: "#38BDF8", bg: "rgba(56,189,248,.14)", glow: "rgba(37,99,235,.58)", deep: "#2563EB" },
+    green: { primary: "#34D399", bg: "rgba(52,211,153,.14)", glow: "rgba(5,150,105,.58)", deep: "#059669" },
+    yellow: { primary: "#FBBF24", bg: "rgba(251,191,36,.14)", glow: "rgba(217,119,6,.58)", deep: "#D97706" },
+    red: { primary: "#F87171", bg: "rgba(248,113,113,.14)", glow: "rgba(220,38,38,.58)", deep: "#DC2626" }
+  };
+  var getAccentTheme = (accent = "blue") => ACCENT_THEMES[accent] ?? ACCENT_THEMES.blue;
+
   // src/JasonWu/ValueVerdict.tsx
   var import_jsx_runtime71 = __toESM(require_jsx_runtime());
   var clean3 = (value, fallback = "") => typeof value === "string" ? value : fallback;
   var metricText = (value) => value === void 0 || value === null ? "" : String(value).trim();
+  var accentOf = (value) => ["blue", "green", "yellow", "red"].includes(String(value)) ? String(value) : "blue";
   var ValueVerdict = ({ cue, props }) => {
-    var _a2, _b, _c, _d, _e, _f, _g;
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const start2 = Math.round(cue.start * fps) + 8;
-    const title = clean3(props == null ? void 0 : props.headline, cue.section.subtitle);
-    const body = clean3(props == null ? void 0 : props.body, clean3(props == null ? void 0 : props.effectText, cue.caption.zh));
-    const value = metricText((_c = (_a2 = props == null ? void 0 : props.metricValue) != null ? _a2 : props == null ? void 0 : props.value) != null ? _c : (_b = cue.metric) == null ? void 0 : _b.value);
-    const label3 = clean3(props == null ? void 0 : props.metricLabel, clean3(props == null ? void 0 : props.label, (_e = (_d = cue.metric) == null ? void 0 : _d.label) != null ? _e : "KEY SIGNAL"));
-    const unit = clean3(props == null ? void 0 : props.metricUnit, clean3(props == null ? void 0 : props.unit, (_g = (_f = cue.metric) == null ? void 0 : _f.suffix) != null ? _g : ""));
+    const title = clean3(props?.headline, cue.section.subtitle);
+    const body = clean3(props?.body, clean3(props?.effectText, cue.caption.zh));
+    const value = metricText(props?.metricValue ?? props?.value ?? cue.metric?.value);
+    const label3 = clean3(props?.metricLabel, clean3(props?.label, cue.metric?.label ?? "KEY SIGNAL"));
+    const unit = clean3(props?.metricUnit, clean3(props?.unit, cue.metric?.suffix ?? ""));
     const hasMetric = Boolean(value);
+    const theme = getAccentTheme(accentOf(props?.accent));
     const opacity2 = interpolate(frame, [start2, start2 + 18], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
     const translateX = interpolate(frame, [start2, start2 + 24], [-42, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", left: 86, top: 300, width: hasMetric ? 760 : 620, padding: "26px 30px 24px", borderRadius: 14, color: "#FFFFFF", background: "rgba(5,12,21,.76)", border: "1px solid rgba(10,132,255,.68)", boxShadow: "0 12px 34px rgba(0,0,0,.32), 0 0 26px rgba(10,132,255,.18)", opacity: opacity2, transform: "translateX(" + translateX + "px)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { color: "var(--primary-accent)", fontSize: 17, fontWeight: 950, letterSpacing: 4 }, children: "VALUE VERDICT" }),
+    return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", left: 86, top: 300, width: hasMetric ? 760 : 620, padding: "26px 30px 24px", borderRadius: 14, color: "#FFFFFF", background: "rgba(5,12,21,.76)", border: "1px solid " + theme.primary, boxShadow: "0 12px 34px rgba(0,0,0,.32), 0 0 26px " + theme.glow, opacity: opacity2, transform: "translateX(" + translateX + "px)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { color: theme.primary, fontSize: 17, fontWeight: 950, letterSpacing: 4 }, children: "VALUE VERDICT" }),
       /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 10, maxWidth: hasMetric ? 430 : 560, fontSize: 42, lineHeight: "52px", fontWeight: 950, overflowWrap: "break-word" }, children: title }),
       body ? /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 12, maxWidth: hasMetric ? 430 : 560, color: "rgba(255,255,255,.78)", fontSize: 25, lineHeight: "34px", fontWeight: 750, overflowWrap: "break-word" }, children: body }) : null,
-      hasMetric ? /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", right: 24, top: 24, minWidth: 210, padding: "16px 18px", borderRadius: 12, background: "rgba(10,132,255,.14)", border: "1px solid rgba(10,132,255,.56)", textAlign: "right", opacity: interpolate(frame, [start2 + 12, start2 + 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }), transform: "scale(" + interpolate(frame, [start2 + 12, start2 + 28], [0.9, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + ")" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 14, fontWeight: 950, letterSpacing: 2, color: "var(--primary-accent)" }, children: label3 }),
+      hasMetric ? /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", right: 24, top: 24, minWidth: 210, padding: "16px 18px", borderRadius: 12, background: theme.bg, border: "1px solid " + theme.primary, textAlign: "right", opacity: interpolate(frame, [start2 + 12, start2 + 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }), transform: "scale(" + interpolate(frame, [start2 + 12, start2 + 28], [0.9, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + ")" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 14, fontWeight: 950, letterSpacing: 2, color: theme.primary }, children: label3 }),
         /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 2, fontSize: 52, lineHeight: "58px", fontWeight: 950 }, children: value }),
         unit ? /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 21, fontWeight: 900, color: "rgba(255,255,255,.8)" }, children: unit }) : null
       ] }) : null
     ] });
   };
 
-  // src/JasonWu/layoutRegistry.ts
-  var copy = [{ key: "headline", label: "\u4E3B\u6807\u9898", type: "text" }];
-  var checkboxColorField = { key: "boxColor", label: "\u786E\u8BA4\u6846\u989C\u8272", type: "select", options: [{ label: "\u81EA\u52A8", value: "auto" }, { label: "\u7D2B\u8272", value: "purple" }, { label: "\u84DD\u8272", value: "blue" }, { label: "\u91D1\u8272", value: "gold" }, { label: "\u767D\u8272", value: "white" }, { label: "\u7EFF\u8272", value: "green" }, { label: "\u7EA2\u8272", value: "red" }] };
-  var text2 = (key, label3) => ({ key, label: label3, type: "text" });
-  var prose = (key, label3) => ({ key, label: label3, type: "textarea" });
-  var list2 = (key, label3, description) => ({ key, label: label3, type: "string-list", description });
-  var CONTROLLED_FIELDS = {
-    "person-rank": [text2("leftName", "\u5DE6\u4FA7\u4EBA\u7269"), text2("leftRole", "\u5DE6\u4FA7\u5934\u8854"), text2("rightName", "\u53F3\u4FA7\u4EBA\u7269"), text2("rightRole", "\u53F3\u4FA7\u5934\u8854")],
-    "event-timeline": [list2("years", "\u65F6\u95F4\u8282\u70B9", "\u6A2A\u7EBF\u4F9D\u6B21\u63A8\u8FDB\u81F3\u6BCF\u4E2A\u8282\u70B9")],
-    "pivot-list": [prose("text", "\u6253\u5B57\u673A\u6587\u672C")],
-    "capital-dashboard": [text2("marketLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "marketTo", label: "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("marketSuffix", "\u6570\u5B57\u5355\u4F4D"), text2("engineeringLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "engineeringTo", label: "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("engineeringSuffix", "\u6570\u5B57\u5355\u4F4D")],
-    "cook-machine": [text2("title", "\u9876\u7AEF\u6807\u7B7E"), text2("leftLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), text2("leftValue", "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011"), text2("rightLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), text2("rightValue", "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011"), { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }],
-    "engineering-return": [prose("text", "\u6253\u5B57\u673A\u6587\u672C")],
-    "market-battlefield": [text2("headline", "\u5730\u56FE\u6807\u9898"), list2("nodes", "\u8DEF\u7EBF\u8282\u70B9")],
-    "finale-kinetic": [text2("headline", "\u51B2\u51FB\u5927\u5B57"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
-    "reject-list": [text2("title", "\u6E05\u5355\u6807\u9898"), list2("items", "\u6B63\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u53C9\u53F7\uFF0C\u53EF\u914D\u5408\u526F\u6807\u9898\u663E\u793A"), text2("subLabel", "\u9ED8\u8BA4\u526F\u6807\u9898"), checkboxColorField],
-    "check-progress": [text2("bodyText", "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number" }, list2("items", "\u6B63\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u6253\u52FE\u7684\u7070\u8272\u6587\u5B57\u5217\u8868"), checkboxColorField],
-    "diagonal-chips": [list2("items", "Chip \u6587\u6848", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u659C\u5165\u6807\u7B7E")],
-    "floating-chips": [list2("items", "\u6D6E\u52A8 Chip \u6587\u6848")],
-    "bare-typography": [text2("headline", "\u5927\u6807\u9898"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E"), prose("body", "\u8BF4\u660E\u6587\u6848")],
-    "chapter-card": [text2("chapterLabel", "\u7AE0\u8282\u6807\u7B7E"), text2("headline", "\u7AE0\u8282\u6807\u9898"), prose("body", "\u7AE0\u8282\u8BF4\u660E")],
-    "logo-wordmark": [text2("mark", "\u6807\u5FD7\u5B57\u6BCD"), text2("headline", "\u6807\u5FD7\u6807\u9898"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
-    "ordered-sequence": [text2("categoryTag", "\u9636\u6BB5\u6807\u7B7E"), list2("steps", "\u6B65\u9AA4\u5217\u8868", "\u6B65\u9AA4\u6309\u987A\u5E8F\u9010\u4E00\u5F39\u51FA")],
-    "org-chart": [text2("leader", "\u6838\u5FC3\u8282\u70B9"), text2("leaderRole", "\u6838\u5FC3\u8282\u70B9\u8BF4\u660E"), list2("units", "\u7EC4\u7EC7\u5355\u5143")],
-    "draw-line": [text2("headline", "\u8BBA\u70B9\u6807\u9898"), prose("annotation", "\u753B\u7EBF\u6CE8\u91CA")],
-    "progress-donut": [text2("label", "\u5C0F\u6807\u9898"), { key: "value", label: "\u6570\u503C", type: "number" }, text2("bodyText", "\u6B63\u6587\u5185\u5BB9")],
-    "avatar-handoff": [text2("leftName", "\u4EA4\u51FA\u65B9"), text2("leftRole", "\u4EA4\u51FA\u65B9\u5934\u8854"), text2("rightName", "\u63A5\u4EFB\u65B9"), text2("rightRole", "\u63A5\u4EFB\u65B9\u5934\u8854")],
-    "bull-bear": [text2("bullLabel", "\u591A\u65B9\u89C2\u70B9\u6807\u7B7E"), prose("bullText", "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011"), text2("bearLabel", "\u7A7A\u65B9\u89C2\u70B9\u6807\u7B7E"), prose("bearText", "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011"), prose("highlightQuote", "\u5E95\u90E8\u91D1\u8272\u5F3A\u8C03\u6587\u5B57")],
-    "opinion-hero": [text2("label", "\u89C2\u70B9\u6807\u7B7E"), text2("headline", "\u89C2\u70B9\u5927\u5B57"), prose("body", "\u89C2\u70B9\u8BF4\u660E")],
-    "photo-wall": [text2("photoTitle1", "\u7167\u72471\u6807\u9898"), text2("photoSubtitle1", "\u7167\u72471\u526F\u6807\u9898"), text2("photo1", "\u7167\u72471\u56FE\u7247URL"), text2("photoTitle2", "\u7167\u72472\u6807\u9898"), text2("photoSubtitle2", "\u7167\u72472\u526F\u6807\u9898"), text2("photo2", "\u7167\u72472\u56FE\u7247URL"), text2("photoTitle3", "\u7167\u72473\u6807\u9898"), text2("photoSubtitle3", "\u7167\u72473\u526F\u6807\u9898"), text2("photo3", "\u7167\u72473\u56FE\u7247URL"), text2("photoTitle4", "\u7167\u72474\u6807\u9898"), text2("photoSubtitle4", "\u7167\u72474\u526F\u6807\u9898"), text2("photo4", "\u7167\u72474\u56FE\u7247URL")],
-    "product-explosion": [text2("centerLabel", "\u4E2D\u5FC3\u4EA7\u54C1\u6807\u9898"), text2("centerImage", "\u4E2D\u5FC3\u4EA7\u54C1\u56FE\u7247"), text2("productTitle1", "\u4EA7\u54C11\u540D\u79F0"), text2("productImage1", "\u4EA7\u54C11\u56FE\u7247"), text2("productTitle2", "\u4EA7\u54C12\u540D\u79F0"), text2("productImage2", "\u4EA7\u54C12\u56FE\u7247"), text2("productTitle3", "\u4EA7\u54C13\u540D\u79F0"), text2("productImage3", "\u4EA7\u54C13\u56FE\u7247"), text2("productTitle4", "\u4EA7\u54C14\u540D\u79F0"), text2("productImage4", "\u4EA7\u54C14\u56FE\u7247")],
-    "route-map": [text2("headline", "\u5730\u56FE\u6807\u9898"), list2("nodes", "\u8DEF\u7EBF\u8282\u70B9")],
-    "data-flow": [text2("title", "\u9876\u7AEF\u6807\u7B7E"), text2("leftLabel", "\u5DE6\u4FA7\u6807\u7B7E"), text2("leftValue", "\u5DE6\u4FA7\u6570\u503C"), text2("rightLabel", "\u53F3\u4FA7\u6807\u7B7E"), text2("rightValue", "\u53F3\u4FA7\u6570\u503C"), { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }],
-    "screen-recording": [text2("headline", "\u7A97\u53E3\u6807\u9898"), list2("items", "\u7A97\u53E3\u6570\u636E\u5361")],
-    "zoom-statement": [text2("headline", "\u63A8\u62C9\u5927\u5B57"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
-    "desktop-folders": [list2("items", "\u6587\u4EF6\u5939\u540D\u79F0")],
-    "time-rewind": [text2("headline", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u65F6\u95F4\u8282\u70B9"), prose("bodyText", "\u65F6\u95F4\u56DE\u6EAF\u5185\u5BB9\u6B63\u6587")],
-    "clipboard-note": [text2("label", "\u4FBF\u7B7E\u6807\u7B7E"), prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField],
-    "closing-checklist": [text2("title", "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846"), checkboxColorField],
-    "platform-shift-line": [text2("metricLabel", "\u589E\u957F\u6307\u6807\u6807\u7B7E"), { key: "count", label: "\u589E\u957F\u6570\u91CF", type: "number" }, prose("summary", "\u589E\u957F\u8BF4\u660E"), list2("milestones", "\u4EA7\u54C1\u7EBF\u8282\u70B9"), text2("startLabel", "\u8D77\u70B9\u6807\u7B7E"), text2("endLabel", "\u7EC8\u70B9\u6807\u7B7E")],
-    "tradeoff-reject-round": [text2("label", "\u5426\u5B9A\u9879\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u5426\u5B9A\u9879", "\u4E09\u9879\u4F1A\u663E\u793A\u5728\u98CE\u9669\u6392\u9664\u4E0B\u65B9\u7684\u7EA2\u8272\u53C9\u53F7\u5217\u8868\u4E2D")],
-    "recovery-progress-bars": [text2("label", "\u8FDB\u5EA6\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u8FDB\u5EA6\u9879\u76EE"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number", description: "\u6BCF\u6761\u8FDB\u5EA6\u4F1A\u5728\u8BE5\u6570\u5B57\u6B63\u8D1F 15% \u5185\u7A33\u5B9A\u6D6E\u52A8" }],
-    "hud-glow-stack": [text2("subLabel", "\u5361\u7247\u8F85\u52A9\u6807\u7B7E"), list2("items", "HUD \u5361\u7247\u5185\u5BB9")],
-    "briefing-poster": [text2("label", "\u7B80\u62A5\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u526F\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A checkbox \u52FE\u9009\u9879")],
-    "rewind-milestones": [text2("label", "\u56DE\u6EAF\u6807\u7B7E"), text2("title", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u5E74\u4EFD\u8282\u70B9"), text2("milestoneLabel", "\u8282\u70B9\u8BF4\u660E")],
-    "flying-paper-stack": [text2("headline", "\u4E3B\u5361\u6807\u9898"), text2("ghostTitle", "\u80CC\u666F\u5361\u6807\u9898"), prose("body", "\u5361\u7247\u6B63\u6587")],
-    "checklist-editorial": [text2("label", "\u6E05\u5355\u6807\u7B7E"), text2("title", "\u6E05\u5355\u6807\u9898"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u65B9\u5F62\u786E\u8BA4\u6846")],
-    "spotlight-question": [list2("comments", "\u8BC4\u8BBA\u5185\u5BB9")],
-    "copyopen-hero-title": [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9")],
-    "copyopen-progress-bar": [{ key: "progress", label: "\u8FDB\u5EA6\u6570\u503C", type: "number" }, prose("body", "\u8FDB\u5EA6\u8BF4\u660E")],
-    "copyopen-comparison-card": [text2("leftLabel", "\u5DE6\u4FA7\u6807\u7B7E"), text2("leftValue", "\u5DE6\u4FA7\u6570\u503C"), text2("rightLabel", "\u53F3\u4FA7\u6807\u7B7E"), text2("rightValue", "\u53F3\u4FA7\u6570\u503C"), prose("body", "\u4E2D\u95F4\u53D8\u5316\u8BF4\u660E")],
-    "copyopen-terminal-scene": [list2("steps", "\u7EC8\u7AEF\u547D\u4EE4\u4E0E\u8F93\u51FA")],
-    "copyopen-end-tag": [prose("body", "\u7ED3\u5C3E\u6807\u8BED")],
-    "copyopen-bar-chart": [list2("items", "\u67F1\u72B6\u6807\u7B7E"), { key: "values", label: "\u67F1\u72B6\u6570\u503C", type: "string-list" }],
-    "copyopen-line-chart": [list2("items", "\u6298\u7EBF\u6A2A\u8F74"), { key: "values", label: "\u6298\u7EBF\u6570\u503C", type: "string-list" }],
-    "copyopen-pie-chart": [list2("items", "\u5206\u533A\u6807\u7B7E"), { key: "values", label: "\u5206\u533A\u6570\u503C", type: "string-list" }],
-    "copyopen-kpi-grid": [list2("items", "\u6307\u6807\u6807\u7B7E"), { key: "values", label: "\u6307\u6807\u6570\u503C", type: "string-list" }]
-  };
-  var mergeFields = (key, editableFields) => {
-    var _a2;
-    const merged = [...(_a2 = CONTROLLED_FIELDS[key]) != null ? _a2 : [], ...editableFields];
-    return merged.filter((field, index) => merged.findIndex((candidate) => candidate.key === field.key) === index);
-  };
-  var item = (key, component, label3, description, category, renderLayer = "primary", editableFields = copy, defaultProps = {}) => ({ key, component, editableFields: mergeFields(key, editableFields), defaultProps, meta: { category, label: label3, description }, renderLayer });
-  var LAYOUT_DEFINITIONS = [
-    item("person-rank", DemoAvatarFlip, "\u4EBA\u7269\u4EA4\u63A5", "\u53CC\u4EBA\u7269\u4EA4\u63A5\u4E0E\u6743\u529B\u8F6C\u6362", "story", "primary", [{ key: "leftName", label: "\u5DE6\u4FA7\u4EBA\u7269", type: "text" }, { key: "rightName", label: "\u53F3\u4FA7\u4EBA\u7269", type: "text" }], { leftName: "\u4EBA\u7269 A", rightName: "\u4EBA\u7269 B" }),
-    item("event-timeline", GrowthTimelineLine, "\u589E\u957F\u65F6\u95F4\u8F74", "\u6A2A\u5411\u8282\u70B9\u7EBF\u4E0E\u5149\u70B9\u63A8\u8FDB", "data", "enhancement", [list2("years", "\u65F6\u95F4\u8282\u70B9")], { years: ["\u8D77\u6B65", "\u8FED\u4EE3", "\u89C4\u6A21\u5316", "\u76EE\u6807"] }),
-    item("value-verdict", ValueVerdict, "\u4EF7\u503C\u7ED3\u8BBA", "\u7ED3\u8BBA\u4E0E\u5173\u952E\u6307\u6807\u5361", "story", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("metricLabel", "\u6307\u6807\u6807\u7B7E"), text2("metricValue", "\u6570\u503C"), text2("metricUnit", "\u5355\u4F4D")], { metricLabel: "KEY SIGNAL" }),
-    item("pivot-list", SpecBadgeAndTypewriter, "\u89C4\u683C\u6253\u5B57\u673A", "\u7EFF\u8272\u7EC8\u7AEF\u9010\u5B57\u51FA\u73B0", "interactive", "enhancement", [{ key: "text", label: "\u6253\u5B57\u673A\u6587\u672C", type: "textarea" }], {}),
-    item("capital-dashboard", CapitalDashboardNumbers, "\u8D44\u672C\u4EEA\u8868\u76D8", "\u53CC\u6570\u5B57\u5361\u6EDA\u52A8\u589E\u957F", "data", "primary", [text2("marketLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "marketTo", label: "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("marketSuffix", "\u6570\u5B57\u5355\u4F4D"), text2("engineeringLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "engineeringTo", label: "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("engineeringSuffix", "\u6570\u5B57\u5355\u4F4D")], { marketLabel: "\u5E02\u573A\u89C4\u6A21", marketTo: 4600, marketSuffix: "\u4EBF", engineeringLabel: "\u589E\u957F\u7387", engineeringTo: 25, engineeringSuffix: "%" }),
-    item("cook-machine", SplitScreenAccent, "\u7ECF\u8425\u673A\u5668", "\u8FD0\u8425\u6548\u7387\u548C\u5229\u6DA6\u5BF9\u7167", "story", "primary", copy, { leftLabel: "PROFIT", rightLabel: "SHIPMENT", from: 20, to: 85 }),
-    item("engineering-return", SpecBadgeAndTypewriter, "\u5DE5\u7A0B\u56DE\u5F52", "\u5DE5\u7A0B\u89C4\u683C\u4E0E\u6253\u5B57\u673A\u53C2\u6570", "story", "primary", copy, { text: "\u5173\u952E\u8DEF\u5F84 / \u6838\u5FC3\u52A8\u4F5C / \u4E0B\u4E00\u6B65" }),
-    item("market-battlefield", RouteMap, "\u5E02\u573A\u5BF9\u5792", "\u4F9B\u5E94\u94FE\u8DEF\u7EBF\u548C\u533A\u57DF\u8282\u70B9", "data"),
-    item("finale-kinetic", KineticTypographyAccent, "\u7ED3\u5C3E\u51B2\u51FB", "\u7ED3\u8BBA\u578B\u5927\u5B57\u8282\u594F", "typography", "primary"),
-    item("reject-list", RejectList, "\u9519\u8BEF\u6E05\u5355", "\u53C9\u53F7\u5426\u5B9A\u4E0E\u7EA0\u9519\u5217\u8868", "story", "primary", [checkboxColorField], { boxColor: "auto", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"], itemSubtitles: ["CUT FROM THE PRODUCT PATH", "REMOVE FROM THE FLOW", "BLOCK BEFORE RELEASE"] }),
-    item("check-progress", CheckProgress, "\u8FDB\u5EA6\u786E\u8BA4", "\u8FDB\u5EA6\u6761\u548C\u52FE\u9009\u786E\u8BA4", "interactive", "primary", [checkboxColorField], { boxColor: "auto" }),
-    item("diagonal-chips", DiagonalChips, "\u659C\u5165\u6807\u7B7E", "\u659C\u5411\u98DE\u5165\u7684\u89C4\u683C\u6807\u7B7E", "interactive", "primary", [{ key: "items", label: "Chip \u6587\u6848", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u659C\u5165\u6807\u7B7E" }], {}),
-    item("floating-chips", FloatingChips, "\u53D1\u5149\u6D6E\u52A8\u6807\u7B7E", "\u53D1\u5149\u6F02\u6D6E\u7684 Chip \u6807\u7B7E", "interactive"),
-    item("bare-typography", BareTypography, "\u7EAF\u6587\u5B57\u6392\u7248", "\u65E0\u6846\u5927\u5B57\u4FE1\u606F\u5C42", "typography"),
-    item("chapter-card", ChapterCard, "\u7AE0\u8282\u5361", "\u7AE0\u8282\u6807\u9898\u4E0E\u4FE1\u606F\u6458\u8981", "story"),
-    item("logo-wordmark", LogoWordmark, "\u6807\u5FD7\u6587\u5B57", "\u56FE\u5F62\u6807\u5FD7\u4E0E\u6587\u5B57\u7EC4\u5408", "story"),
-    item("ordered-sequence", OrderedSequence, "\u987A\u5E8F\u6B65\u9AA4", "\u7F16\u53F7\u4FE1\u606F\u9010\u9879\u51FA\u73B0", "story", "primary", [{ key: "categoryTag", label: "\u9636\u6BB5\u6807\u7B7E", type: "text" }, { key: "steps", label: "\u6B65\u9AA4\u5217\u8868", type: "string-list", description: "\u6B65\u9AA4\u6309\u987A\u5E8F\u9010\u4E00\u5F39\u51FA" }], {}),
-    item("org-chart", OrgChart, "\u7EC4\u7EC7\u67B6\u6784", "\u7EC4\u7EC7\u5173\u7CFB\u4E0E\u4E2D\u8F74\u7EBF\u52A8\u753B", "story"),
-    item("draw-line", DrawLine, "\u753B\u7EBF\u5F3A\u8C03", "\u66F2\u7EBF\u7ED8\u5236\u548C\u91CD\u70B9\u6807\u8BB0", "interactive"),
-    item("progress-donut", ProgressDonut, "\u73AF\u5F62\u8FDB\u5EA6", "\u73AF\u5F62\u8FDB\u5EA6\u4E0E\u5B8C\u6210\u5EA6", "data"),
-    item("avatar-handoff", DemoAvatarFlip, "\u5934\u50CF\u4EA4\u63A5", "\u53CC\u5934\u50CF\u5207\u6362\u4E0E\u63A5\u4EFB", "story", "primary", [{ key: "leftName", label: "\u4EA4\u51FA\u65B9", type: "text" }, { key: "rightName", label: "\u63A5\u4EFB\u65B9", type: "text" }], { leftName: "\u4EBA\u7269 A", leftRole: "\u8D77\u59CB\u89D2\u8272", rightName: "\u4EBA\u7269 B", rightRole: "\u76EE\u6807\u89D2\u8272" }),
-    item("bull-bear", BullBear, "\u591A\u7A7A\u5BF9\u6BD4", "\u5DE6\u53F3\u89C2\u70B9\u4E0E\u4E2D\u7EBF\u5BF9\u7167", "data", "primary", [{ key: "bullLabel", label: "\u591A\u65B9\u89C2\u70B9\u6807\u7B7E", type: "text" }, { key: "bullText", label: "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011", type: "textarea" }, { key: "bearLabel", label: "\u7A7A\u65B9\u89C2\u70B9\u6807\u7B7E", type: "text" }, { key: "bearText", label: "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011", type: "textarea" }, { key: "highlightQuote", label: "\u5E95\u90E8\u91D1\u8272\u5F3A\u8C03\u6587\u5B57", type: "textarea" }], { bullLabel: "\u770B\u591A\u89C2\u70B9", bearLabel: "\u98CE\u9669\u63D0\u793A", highlightQuote: "\u5173\u952E\u5206\u6B67\u51B3\u5B9A\u6700\u7EC8\u8D70\u52BF" }),
-    item("opinion-hero", OpinionHero, "\u89C2\u70B9\u4E3B\u89C6\u89C9", "\u91CD\u70B9\u89C2\u70B9\u5927\u5B57\u5F3A\u8C03", "typography"),
-    item("photo-wall", PhotoWall, "\u7167\u7247\u5899", "\u591A\u5C42\u4EA7\u54C1\u56FE\u7247\u5361\u7247\u7EC4\u5408", "story", "primary", [], { photoTitle1: "\u6838\u5FC3\u4FE1\u606F", photoSubtitle1: "PRODUCT HISTORY", photo1: "", photoTitle2: "\u89C6\u89C9\u8282\u594F", photoSubtitle2: "VISUAL RHYTHM", photo2: "", photoTitle3: "\u884C\u52A8\u7ED3\u8BBA", photoSubtitle3: "ACTION SIGNAL", photo3: "", photoTitle4: "\u8865\u5145\u8BC1\u636E", photoSubtitle4: "EXTRA PROOF", photo4: "" }),
-    item("product-explosion", ProductExplosion, "\u4EA7\u54C1\u7206\u70B8\u56FE", "\u4EA7\u54C1\u751F\u6001\u7206\u70B8\u5C55\u793A", "data", "primary", [], { centerLabel: "APPLE", productTitle1: "iPhone", productTitle2: "iPad", productTitle3: "Mac", productTitle4: "AirPods", items: ["iPhone", "iPad", "Mac", "AirPods"] }),
-    item("route-map", RouteMap, "\u4E8C\u7EF4\u5730\u56FE", "\u8DEF\u7EBF\u548C\u533A\u57DF\u8BF4\u660E", "data"),
-    item("data-flow", SplitScreenAccent, "\u6570\u636E\u5206\u5C4F", "\u8F6F\u4EF6\u786C\u4EF6\u5206\u5C4F\u6570\u636E\u5BF9\u7167", "data", "enhancement", [{ key: "leftLabel", label: "\u5DE6\u4FA7\u6807\u7B7E", type: "text" }, { key: "leftValue", label: "\u5DE6\u4FA7\u6570\u503C", type: "text" }, { key: "rightLabel", label: "\u53F3\u4FA7\u6807\u7B7E", type: "text" }, { key: "rightValue", label: "\u53F3\u4FA7\u6570\u503C", type: "text" }, { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }], {}),
-    item("screen-recording", ScreenRecording, "\u5C4F\u5E55\u5F55\u5236\u6846", "\u4EA7\u54C1\u754C\u9762\u4E0E\u64CD\u4F5C\u7A97\u53E3", "interactive"),
-    item("zoom-statement", KineticTypographyAccent, "\u955C\u5934\u63A8\u62C9\u5927\u5B57", "\u955C\u5934\u63A8\u62C9\u4E0E\u5927\u5B57\u51B2\u51FB", "typography", "enhancement"),
-    item("desktop-folders", DesktopFolders, "\u684C\u9762\u6587\u4EF6\u5939", "\u684C\u9762\u6587\u4EF6\u4E0E\u5185\u5BB9\u6574\u7406", "interactive"),
-    item("time-rewind", TimeRewind, "\u65F6\u95F4\u56DE\u6EAF", "\u9006\u5411\u65F6\u95F4\u7EBF\u53D9\u4E8B", "story", "primary", [], { bodyText: "\u65F6\u95F4\u56DE\u5F52" }),
-    item("clipboard-note", ClipboardNote, "\u526A\u8D34\u677F\u6279\u6CE8", "\u4FBF\u7B7E\u4E0E\u6279\u6CE8\u4FE1\u606F", "interactive", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField], { boxColor: "auto", body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E" }),
-    item("closing-checklist", ClosingChecklist, "\u7ED3\u5C3E\u6E05\u5355", "\u7ED3\u8BBA\u9879\u76EE\u9010\u9879\u786E\u8BA4", "story", "primary", [{ key: "title", label: "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09", type: "text" }, { key: "items", label: "\u6E05\u5355\u5185\u5BB9", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846" }, checkboxColorField], { title: "\u6838\u5FC3\u7ED3\u8BBA", boxColor: "auto" }),
-    item("platform-shift-line", PlatformShiftLine, "\u4EA7\u54C1\u7EBF\u589E\u957F", "\u84DD\u8272\u589E\u957F\u6570\u5B57\u4E0E\u4EA7\u54C1\u7EBF\u8282\u70B9", "data", "primary", [], { count: 3, metricLabel: "\u4EA7\u54C1\u7EBF", milestones: ["\u57FA\u7840\u80FD\u529B", "\u4EA7\u54C1\u6269\u5C55", "\u89C4\u6A21\u589E\u957F"], startLabel: "\u8D77\u70B9", endLabel: "\u76EE\u6807\u9636\u6BB5" }),
-    item("tradeoff-reject-round", TradeoffRejectRound, "\u5706\u5F62\u7EA2\u8272\u5426\u5B9A\u9879", "\u65E0\u8FB9\u6846\u7EA2\u8272\u5706\u53C9\u7684\u98CE\u9669\u6E05\u5355", "story", "primary", [{ key: "label", label: "\u5426\u5B9A\u9879\u6807\u7B7E", type: "text" }, { key: "bodyText", label: "\u6B63\u6587\u5185\u5BB9", type: "textarea" }, { key: "items", label: "\u5426\u5B9A\u9879", type: "string-list" }], { label: "\u98CE\u9669\u6392\u9664", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"] }),
-    item("recovery-progress-bars", RecoveryProgressBars, "\u8FDB\u5EA6\u786E\u8BA4\u6761", "\u8FDB\u5EA6\u6761\u4E0E\u53F3\u4FA7\u786E\u8BA4\u6807\u8BB0", "data", "primary", [], { label: "\u6267\u884C\u8FDB\u5EA6", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u9700\u6C42\u786E\u8BA4", "\u80FD\u529B\u5EFA\u8BBE", "\u7ED3\u679C\u9A8C\u8BC1"], progress: 76 }),
-    item("hud-glow-stack", HudGlowStack, "HUD \u6D6E\u52A8\u53D1\u5149", "\u53E0\u653E\u7684\u9AD8\u4EAE HUD \u4FE1\u606F\u5361", "interactive", "primary", [], { subLabel: "LIVE SIGNAL", items: ["\u6838\u5FC3\u4FE1\u53F7", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65\u52A8\u4F5C"] }),
-    item("briefing-poster", BriefingPoster, "\u62A5\u7EB8\u7B80\u62A5\u4E8C\u53F7", "\u5939\u677F\u5F0F\u79D1\u6280\u7B80\u62A5\u6D77\u62A5", "story", "primary", [prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u526F\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A checkbox \u52FE\u9009\u9879")], { label: "\u7B80\u62A5\u6458\u8981", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u5224\u65AD", "\u4EA7\u54C1\u8DEF\u5F84", "\u4E0B\u4E00\u6B65\u884C\u52A8"] }),
-    item("rewind-milestones", RewindMilestones, "\u65F6\u95F4\u56DE\u6EAF\u5BBD\u7248", "\u5BBD\u5E45\u65F6\u95F4\u7EBF\u4E0E\u56DE\u6EAF\u8282\u70B9", "story", "primary", [], { label: "\u65F6\u95F4\u56DE\u6EAF", years: ["\u8D77\u70B9", "\u63A2\u7D22", "\u8FED\u4EE3", "\u73B0\u5728", "\u4E0B\u4E00\u6B65"], milestoneLabel: "\u80FD\u529B\u6F14\u8FDB" }),
-    item("flying-paper-stack", FlyingPaperStack, "\u98DE\u5165\u7EB8\u5361\u4E8C\u53F7", "\u4E09\u5C42\u91CD\u53E0\u98DE\u5165\u7684\u7B80\u62A5\u7EB8\u5361", "story", "primary", [], { ghostTitle: "\u9636\u6BB5\u89C2\u5BDF", body: "\u63D0\u70BC\u5F53\u524D\u62CD\u7684\u6838\u5FC3\u89C2\u70B9\u4E0E\u884C\u52A8\u4FE1\u606F\u3002" }),
-    item("checklist-editorial", ChecklistEditorial, "\u7F16\u8F91\u6E05\u5355\u4E8C\u53F7", "\u7559\u767D\u66F4\u5F3A\u7684\u84DD\u8272\u65B9\u6846\u786E\u8BA4\u6E05\u5355", "story", "primary", [], { label: "\u6700\u7EC8\u786E\u8BA4", items: ["\u6838\u5FC3\u4EF7\u503C", "\u6267\u884C\u8DEF\u5F84", "\u7ED3\u679C\u9A8C\u8BC1"] }),
-    item("spotlight-question", FloatingCommentCards, "\u6D6E\u52A8\u8BC4\u8BBA", "\u4E92\u52A8\u8BC4\u8BBA\u5361", "interactive", "enhancement", [{ key: "comments", label: "\u8BC4\u8BBA\u5185\u5BB9", type: "string-list", description: "\u4E09\u9879\u5206\u522B\u5BF9\u5E94\u4E09\u4E2A\u53D1\u5149\u4E92\u52A8\u6309\u94AE" }], { comments: ["\u6838\u5FC3\u89C2\u70B9", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65"] }),
-    item("copyopen-hero-title", CopyOpenHeroTitle, "CopyOpen HeroTitle", "CopyOpen \u539F\u7248\u9010\u5B57\u5F39\u7C27\u4E3B\u6807\u9898", "typography", "primary", [], { body: "clip factory" }),
-    item("copyopen-progress-bar", CopyOpenProgressBar, "CopyOpen ProgressBar", "CopyOpen \u539F\u7248\u8109\u51B2\u8FDB\u5EA6\u6761", "data", "primary", [], { progress: 76, body: "Highlight extraction" }),
-    item("copyopen-comparison-card", CopyOpenComparisonCard, "CopyOpen ComparisonCard", "CopyOpen \u539F\u7248\u5DE6\u53F3\u6307\u6807\u5BF9\u6BD4\u5361", "data", "primary", [], { leftLabel: "Long video", rightLabel: "Short clips", leftValue: "58 min", rightValue: "8 clips", body: "ready" }),
-    item("copyopen-terminal-scene", CopyOpenTerminalScene, "CopyOpen TerminalScene", "CopyOpen \u539F\u7248\u7EC8\u7AEF\u547D\u4EE4\u56DE\u653E", "interactive", "primary", [], { steps: ["openmontage clip input.mp4", "transcribing audio...", "ranking highlight candidates...", "8 clips ready", "remotion render JcMotionCards", "done -> out/shorts"] }),
-    item("copyopen-end-tag", CopyOpenEndTag, "CopyOpen EndTag", "CopyOpen \u539F\u7248\u7ED3\u5C3E\u95EA\u5149\u6807\u8BED", "typography", "primary", [], { body: "Make the clip worth watching" }),
-    item("copyopen-bar-chart", CopyOpenBarChart, "CopyOpen BarChart", "CopyOpen \u539F\u7248\u52A8\u753B\u67F1\u72B6\u56FE", "data", "primary", [], { items: ["Hook", "Value", "Pace", "Share"], values: [94, 82, 76, 69] }),
-    item("copyopen-line-chart", CopyOpenLineChart, "CopyOpen LineChart", "CopyOpen \u539F\u7248\u6298\u7EBF\u7ED8\u5236\u56FE", "data", "primary", [], { items: ["0", "10", "20", "30"], values: [100, 91, 86, 78] }),
-    item("copyopen-pie-chart", CopyOpenPieChart, "CopyOpen PieChart", "CopyOpen \u539F\u7248\u73AF\u5F62\u5206\u5E03\u56FE", "data", "primary", [], { items: ["Hook", "Proof", "Story", "CTA"], values: [35, 30, 20, 15], value: 8, label: "clips" }),
-    item("copyopen-kpi-grid", CopyOpenKPIGrid, "CopyOpen KPIGrid", "CopyOpen \u539F\u7248 KPI \u4EEA\u8868\u7F51\u683C", "data", "primary", [], { items: ["clips", "avg score", "minutes saved"], values: [8, 86, 74] })
-  ];
-  var LAYOUT_BY_KEY = new Map(LAYOUT_DEFINITIONS.map((definition) => [definition.key, definition]));
-  var LAYOUT_METADATA = LAYOUT_DEFINITIONS.map(({ key, editableFields, defaultProps, meta, renderLayer }) => ({ key, editableFields, defaultProps, meta, renderLayer }));
-
   // src/design/components.registry.json
   var components_registry_default = {
     schemaVersion: 4,
-    updatedAt: "2026-09-13T22:50:23.336Z",
+    updatedAt: "2026-09-15T01:37:09.883Z",
     families: [
       {
         id: "metrics",
@@ -45017,6 +44776,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
       {
         id: "entities",
         name: "\u4EBA\u7269\u4E0E\u4EA7\u54C1"
+      },
+      {
+        id: "process",
+        name: "\u6D41\u7A0B\u4E0E\u65F6\u5E8F"
+      },
+      {
+        id: "contrast",
+        name: "\u5BF9\u6BD4\u4E0E\u98CE\u9669"
+      },
+      {
+        id: "system",
+        name: "\u7CFB\u7EDF\u4E0E\u7ED3\u6784"
       }
     ],
     components: [
@@ -45034,7 +44805,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 14,
+        version: 18,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
@@ -45049,7 +44820,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           scale: 0.9,
           spring: "spring-up",
           sfx: "none",
-          accentColor: "#00F2FE",
+          accentColor: "#1877F2",
           defaultItemCount: 3,
           staggerFrames: 15,
           headerScale: 1,
@@ -45117,7 +44888,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           metricLabel: "\u6838\u5FC3\u4FE1\u606F",
           unit: "%"
         },
-        updatedAt: "2026-09-13T21:16:13.040Z",
+        updatedAt: "2026-09-14T20:58:35.002Z",
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
@@ -45151,121 +44922,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
-        }
-      },
-      {
-        id: "engineering-return",
-        name: "\u5DE5\u7A0B\u56DE\u5F52",
-        family: "narrative",
-        description: "story \xB7 typewriter \xB7 product",
-        tags: [
-          "story",
-          "typewriter",
-          "product"
-        ],
-        data: [
-          "text"
-        ],
-        version: 11,
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 1120,
-          boundsY: 300,
-          boundsWidth: 700,
-          boundsHeight: 130,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 0.86,
-          spring: "spring-up",
-          sfx: "none",
-          accentColor: "#00F2FE",
-          defaultItemCount: 1,
-          staggerFrames: 15,
-          headerScale: 1,
-          contentScale: 1
         },
-        sfx: {
-          enter: "none",
-          exit: "none",
-          volume: 0.65
-        },
-        mockData: {
-          headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          eyebrow: "DESIGN SYSTEM",
-          effectText: "Design tokens update the live component preview.",
-          text: "Design tokens update the live component preview.",
-          items: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          steps: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          years: [
-            "\u8D77\u70B9",
-            "\u73B0\u5728",
-            "\u4E0B\u4E00\u6B65"
-          ],
-          nodes: [
-            "\u8F93\u5165",
-            "\u5904\u7406",
-            "\u8F93\u51FA"
-          ],
-          comments: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          category: "DESIGN SYSTEM",
-          contentPayload: {
-            type: "narrative",
-            bodyText: "Design tokens update the live component preview.",
-            highlightQuote: ""
+        manifest: {
+          id: "capital-dashboard",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 2
           },
-          categoryTag: "DESIGN SYSTEM",
-          label: "\u6838\u5FC3\u4FE1\u606F",
-          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          value: 71,
-          progress: 71,
-          values: [
-            71,
-            71,
-            71
+          keywords: [
+            "\u6570\u636E",
+            "\u589E\u957F",
+            "\u5E02\u503C",
+            "\u8425\u6536",
+            "\u767E\u5206\u6BD4",
+            "\u6307\u6807"
           ],
-          metric: "\u6838\u5FC3\u4FE1\u606F",
-          marketTo: 71,
-          marketLabel: "\u6838\u5FC3\u4FE1\u606F",
-          metricLabel: "\u6838\u5FC3\u4FE1\u606F",
-          unit: "\u89C6\u89C9\u8282\u594F",
-          marketSuffix: "\u89C6\u89C9\u8282\u594F",
-          body: "Design tokens update the live component preview.",
-          effectZh: "Design tokens update the live component preview."
-        },
-        updatedAt: "2026-09-12T22:11:52.655Z",
-        occupancyScore: 0.32,
-        faceAvoidanceEligible: true,
-        displayIntent: "side-overlay",
-        editorSchema: {
-          version: 1,
-          kind: "narrative",
-          fields: [
-            {
-              key: "bodyText",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "textarea"
-            },
-            {
-              key: "highlightQuote",
-              label: "\u526F\u6587\u5185\u5BB9",
-              control: "text"
-            }
-          ]
+          visualWeight: "medium"
         }
       },
       {
@@ -45341,7 +45014,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
             type: "metrics",
             value: 92,
             label: "\u7EA2\u8272",
-            bodyText: "GOODS"
+            bodyText: "GOODS",
+            detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
           },
           categoryTag: "DESIGNRENEW",
           label: "\u7EA2\u8272",
@@ -45362,7 +45036,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           engineeringTo: 9,
           engineeringSuffix: "SAFASDFAS",
           bodyText: "GOODS",
-          unit: "GOODS"
+          unit: "GOODS",
+          detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
         },
         occupancyScore: 0.56,
         faceAvoidanceEligible: true,
@@ -45388,11 +45063,27 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "progress-donut",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u8FDB\u5EA6",
+            "\u5B8C\u6210\u5EA6",
+            "\u767E\u5206\u6BD4",
+            "\u8F6C\u5316\u7387",
+            "%"
+          ],
+          visualWeight: "light"
         }
       },
       {
         id: "recovery-progress-bars",
-        name: "\u8FDB\u5EA6\u786E\u8BA4\u6761",
+        name: "\u591A\u8FDB\u5EA6\u6761",
         family: "metrics",
         description: "metrics \xB7 process \xB7 progress",
         tags: [
@@ -45404,7 +45095,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "list",
           "percentage"
         ],
-        version: 14,
+        version: 15,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
@@ -45513,7 +45204,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T22:49:32.321Z",
+        updatedAt: "2026-09-14T01:13:39.978Z",
         editorSchema: {
           version: 1,
           kind: "steps",
@@ -45538,6 +45229,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
               description: "\u5DE6\u4FA7\u6BCF\u6761\u8FDB\u5EA6\u4F1A\u5728\u8BE5\u6570\u5B57\u6B63\u8D1F 15% \u5185\u7A33\u5B9A\u6D6E\u52A8"
             }
           ]
+        },
+        manifest: {
+          id: "recovery-progress-bars",
+          intent: "metrics",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u8FDB\u5EA6",
+            "\u6062\u590D",
+            "\u5B8C\u6210",
+            "\u63A8\u8FDB",
+            "\u767E\u5206\u6BD4"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -45673,6 +45380,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "platform-shift-line",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u4EA7\u54C1\u7EBF",
+            "\u5E73\u53F0",
+            "\u6F14\u8FDB",
+            "\u6269\u5C55",
+            "\u94FE\u8DEF"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -45814,6 +45537,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ]
+        },
+        manifest: {
+          id: "hud-glow-stack",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u7CFB\u7EDF",
+            "\u4FE1\u53F7",
+            "\u94FE\u8DEF",
+            "\u6A21\u5757",
+            "\u95ED\u73AF"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -45929,6 +45668,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
+        },
+        manifest: {
+          id: "ordered-sequence",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u7B2C\u4E00\u6B65",
+            "\u7B2C\u4E8C\u6B65",
+            "\u9636\u6BB5",
+            "\u6B65\u9AA4",
+            "\u6D41\u7A0B"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -46055,6 +45810,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
+        },
+        manifest: {
+          id: "event-timeline",
+          intent: "process",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u65F6\u95F4\u7EBF",
+            "\u9636\u6BB5",
+            "\u6F14\u8FDB",
+            "\u8282\u70B9"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -46172,6 +45942,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 5
             }
           ]
+        },
+        manifest: {
+          id: "rewind-milestones",
+          intent: "process",
+          capacity: {
+            minItems: 4,
+            maxItems: 6
+          },
+          keywords: [
+            "\u56DE\u6EAF",
+            "\u8FC7\u53BB",
+            "\u6F14\u8FDB",
+            "\u8282\u70B9"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -46294,6 +46079,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
+        },
+        manifest: {
+          id: "time-rewind",
+          intent: "process",
+          capacity: {
+            minItems: 1,
+            maxItems: 5
+          },
+          keywords: [
+            "\u56DE\u6EAF",
+            "\u65F6\u95F4",
+            "\u8FC7\u53BB",
+            "\u5386\u53F2"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -46409,6 +46209,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
+        },
+        manifest: {
+          id: "route-map",
+          intent: "process",
+          capacity: {
+            minItems: 3,
+            maxItems: 4
+          },
+          keywords: [
+            "\u8DEF\u7EBF",
+            "\u8DEF\u5F84",
+            "\u6D41\u7A0B",
+            "\u5730\u56FE"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -46547,6 +46362,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               maximum: 100
             }
           ]
+        },
+        manifest: {
+          id: "check-progress",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u786E\u8BA4",
+            "\u68C0\u67E5",
+            "\u5B8C\u6210",
+            "\u6B65\u9AA4"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -46663,6 +46493,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
+        },
+        manifest: {
+          id: "org-chart",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u7EC4\u7EC7",
+            "\u90E8\u95E8",
+            "\u5206\u5DE5",
+            "\u67B6\u6784"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -46744,7 +46589,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u6838\u5FC3\u4FE1\u606Fggg",
           effectZh: "\u6838\u5FC3\u4FE1\u606Fggg",
-          highlightQuote: "\u89C6\u89C9\u8282\u594F"
+          highlightQuote: "\u89C6\u89C9\u8282\u594F",
+          bodyText: "\u6838\u5FC3\u4FE1\u606Fggg"
         },
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
@@ -46765,6 +46611,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "draw-line",
+          intent: "process",
+          capacity: {
+            minItems: 1,
+            maxItems: 2
+          },
+          keywords: [
+            "\u8DEF\u5F84",
+            "\u63A8\u5BFC",
+            "\u753B\u7EBF",
+            "\u8BBA\u8BC1"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -46846,7 +46707,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u6838\u5FC3\u4FE1\u606F",
           effectZh: "\u6838\u5FC3\u4FE1\u606F",
-          highlightQuote: "\u89C6\u89C9\u8282\u594F"
+          highlightQuote: "\u89C6\u89C9\u8282\u594F",
+          bodyText: "\u6838\u5FC3\u4FE1\u606F"
         },
         updatedAt: "2026-09-12T22:12:22.921Z",
         occupancyScore: 0.56,
@@ -46867,6 +46729,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "zoom-statement",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u89C2\u70B9",
+            "\u5224\u65AD",
+            "\u7ED3\u8BBA",
+            "\u5173\u952E"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -46948,7 +46825,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u8FD9\u4E2A\u662F\u6B63\u6587\u7684\u5185\u5BB9",
           effectZh: "\u8FD9\u4E2A\u662F\u6B63\u6587\u7684\u5185\u5BB9",
-          highlightQuote: "\u8FD9\u4E2A\u662F\u6B63\u6587\u4E0B\u9762\u7684\u526F\u6587"
+          highlightQuote: "\u8FD9\u4E2A\u662F\u6B63\u6587\u4E0B\u9762\u7684\u526F\u6587",
+          bodyText: "\u8FD9\u4E2A\u662F\u6B63\u6587\u7684\u5185\u5BB9"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
@@ -46969,6 +46847,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "opinion-hero",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u89C2\u70B9",
+            "\u6838\u5FC3",
+            "\u91D1\u53E5",
+            "\u4E3B\u5F20"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -47049,7 +46942,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           body: "\u6838\u5FC3\u4FE1\u606F",
           effectZh: "\u6838\u5FC3\u4FE1\u606F",
-          highlightQuote: "\u89C6\u89C9\u8282\u594F"
+          highlightQuote: "\u89C6\u89C9\u8282\u594F",
+          bodyText: "\u6838\u5FC3\u4FE1\u606F"
         },
         updatedAt: "2026-09-12T22:05:15.409Z",
         occupancyScore: 0.82,
@@ -47070,6 +46964,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "bare-typography",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u5927\u5B57",
+            "\u5224\u65AD",
+            "\u7ED3\u8BBA"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -47201,6 +47109,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ]
+        },
+        manifest: {
+          id: "spotlight-question",
+          intent: "narrative",
+          capacity: {
+            minItems: 2,
+            maxItems: 3
+          },
+          keywords: [
+            "\u95EE\u9898",
+            "\u8BC4\u8BBA",
+            "\u4E3A\u4EC0\u4E48",
+            "\u4E92\u52A8"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -47216,7 +47139,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         data: [
           "comparison"
         ],
-        version: 4,
+        version: 5,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
@@ -47246,7 +47169,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           eyebrow: "DESIGN SYSTEM",
           effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          text: "Signal confirmed. Visual system ready.",
+          text: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
           items: [
             "\u6838\u5FC3\u4FE1\u606F",
             "\u89C6\u89C9\u8282\u594F",
@@ -47276,18 +47199,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
             type: "narrative",
             bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
             bearText: "\u98CE\u9669\u63D0\u793A\u4E0B\u7684\u767D\u8272\u6587\u5B57",
-            highlightQuote: "\u5173\u952E\u5206\u6B67\u51B3\u5B9A\u6700\u7EC8\u8D70\u52BF"
+            highlightQuote: "\u9ED1\u732B\u767D\u732B\uFF0C\u80FD\u6293\u8001\u9F20\u7684\u662F\u597D\u732B"
           },
           bullLabel: "\u770B\u591A\u89C2\u70B9",
           bearLabel: "\u98CE\u9669\u63D0\u793A",
           bullText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
           bearText: "\u98CE\u9669\u63D0\u793A\u4E0B\u7684\u767D\u8272\u6587\u5B57",
-          highlightQuote: "\u5173\u952E\u5206\u6B67\u51B3\u5B9A\u6700\u7EC8\u8D70\u52BF"
+          highlightQuote: "\u9ED1\u732B\u767D\u732B\uFF0C\u80FD\u6293\u8001\u9F20\u7684\u662F\u597D\u732B",
+          categoryTag: "DESIGN SYSTEM",
+          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
+          body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T15:26:42.186Z",
+        updatedAt: "2026-09-13T23:46:04.81Z",
         editorSchema: {
           version: 1,
           kind: "narrative",
@@ -47308,6 +47236,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "bull-bear",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 2
+          },
+          keywords: [
+            "\u770B\u591A",
+            "\u98CE\u9669",
+            "\u5BF9\u6BD4",
+            "\u591A\u7A7A"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -47383,7 +47326,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentPayload: {
             type: "narrative",
             bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
-          }
+          },
+          bodyText: "Signal confirmed. Visual system ready.",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
@@ -47404,6 +47349,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "market-battlefield",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u7ADE\u4E89",
+            "\u5BF9\u624B",
+            "\u5E02\u573A\u5BF9\u5792",
+            "\u6218\u573A"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -47518,6 +47478,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
+        },
+        manifest: {
+          id: "tradeoff-reject-round",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u98CE\u9669",
+            "\u5426\u5B9A",
+            "\u6392\u9664",
+            "\u4E0D\u8981"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -47645,6 +47620,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ]
+        },
+        manifest: {
+          id: "reject-list",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u9519\u8BEF",
+            "\u95EE\u9898",
+            "\u98CE\u9669",
+            "\u907F\u5751"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -47754,6 +47744,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "person-rank",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 3
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u56E2\u961F",
+            "\u4EA4\u63A5",
+            "\u7EC4\u7EC7"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -47806,7 +47811,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
             type: "narrative",
             bodyText: "\u964D\u4F4E\u7B2C\u4E00\u6B21\u8D2D\u4E70\u7684\u5FC3\u7406\u95E8\u69DB\uFF0C\u624D\u80FD\u4E3A\u540E\u7EED\u4EA4\u6613\u5EFA\u7ACB\u4FE1\u4EFB\u3002",
             highlightQuote: "\u7528\u4F4E\u95E8\u69DB\u6253\u5F00\u6301\u7EED\u5173\u7CFB"
-          }
+          },
+          bodyText: "\u964D\u4F4E\u7B2C\u4E00\u6B21\u8D2D\u4E70\u7684\u5FC3\u7406\u95E8\u69DB\uFF0C\u624D\u80FD\u4E3A\u540E\u7EED\u4EA4\u6613\u5EFA\u7ACB\u4FE1\u4EFB\u3002",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         editorSchema: {
           version: 1,
@@ -47823,6 +47830,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "value-verdict",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 2
+          },
+          keywords: [
+            "\u4EF7\u503C",
+            "\u7ED3\u8BBA",
+            "\u5224\u65AD",
+            "\u6307\u6807"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -47988,6 +48010,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "image"
             }
           ]
+        },
+        manifest: {
+          id: "product-explosion",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u4EA7\u54C1",
+            "\u751F\u6001",
+            "\u786C\u4EF6",
+            "\u7CFB\u5217"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -48099,6 +48136,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "cook-machine",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u7ECF\u8425",
+            "\u673A\u5668",
+            "\u5546\u4E1A",
+            "\u95ED\u73AF"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -48257,6 +48309,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "image"
             }
           ]
+        },
+        manifest: {
+          id: "photo-wall",
+          intent: "narrative",
+          capacity: {
+            minItems: 3,
+            maxItems: 4
+          },
+          keywords: [
+            "\u7167\u7247",
+            "\u8BC1\u636E",
+            "\u6848\u4F8B",
+            "\u4EA7\u54C1"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -48338,12 +48405,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "DESIGN SYSTEM",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           effectZh: "\u6807\u5FD7\u6587\u5B57\u7684\u6B63\u6587\u5927\u5B57",
-          bullText: "\u6807\u5FD7\u6587\u5B57\u7684\u6B63\u6587\u5927\u5B57"
+          bullText: "\u6807\u5FD7\u6587\u5B57\u7684\u6B63\u6587\u5927\u5B57",
+          bodyText: "\u6807\u5FD7\u6587\u5B57\u7684\u6B63\u6587\u5927\u5B57"
         },
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T21:09:27.910Z",
+        updatedAt: "2026-09-13T21:09:27.91Z",
         editorSchema: {
           version: 1,
           kind: "narrative",
@@ -48359,6 +48427,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "logo-wordmark",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u54C1\u724C",
+            "\u6807\u5FD7",
+            "\u5173\u952E\u8BCD"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -48486,6 +48568,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ]
+        },
+        manifest: {
+          id: "diagonal-chips",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u89C4\u683C",
+            "\u8981\u70B9",
+            "\u53C2\u6570",
+            "\u6A21\u5757"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -48616,6 +48713,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ]
+        },
+        manifest: {
+          id: "floating-chips",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u6807\u7B7E",
+            "\u8981\u70B9",
+            "\u6A21\u5757",
+            "\u4FE1\u53F7"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -48743,6 +48855,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ]
+        },
+        manifest: {
+          id: "desktop-folders",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 4
+          },
+          keywords: [
+            "\u6587\u4EF6",
+            "\u5206\u7C7B",
+            "\u6574\u7406",
+            "\u7CFB\u7EDF"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -48824,7 +48951,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "DESIGN SYSTEM",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u6492\u65E6\u98DE\u6D12",
-          bullText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u6492\u65E6\u98DE\u6D12"
+          bullText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u6492\u65E6\u98DE\u6D12",
+          bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u6492\u65E6\u98DE\u6D12"
         },
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
@@ -48845,6 +48973,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "clipboard-note",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u4FBF\u7B7E",
+            "\u6279\u6CE8",
+            "\u7ED3\u8BBA",
+            "\u786E\u8BA4"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -48947,17 +49090,27 @@ Check that all your Remotion packages are on the same version. If your dependenc
           kind: "steps",
           fields: [
             {
-              key: "bodyText",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "textarea"
-            },
-            {
               key: "steps",
               label: "\u526F\u6587\u5185\u5BB9",
               control: "string-list",
               capacity: 4
             }
           ]
+        },
+        manifest: {
+          id: "briefing-poster",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 4
+          },
+          keywords: [
+            "\u7B80\u62A5",
+            "\u6458\u8981",
+            "\u89C2\u70B9",
+            "\u6848\u4F8B"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -49085,6 +49238,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ]
+        },
+        manifest: {
+          id: "screen-recording",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u754C\u9762",
+            "\u64CD\u4F5C",
+            "\u4EA7\u54C1",
+            "\u7A97\u53E3"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -49159,7 +49327,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentPayload: {
             type: "narrative",
             bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
-          }
+          },
+          bodyText: "Signal confirmed. Visual system ready.",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
@@ -49180,6 +49350,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "flying-paper-stack",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u7EB8\u5361",
+            "\u8D44\u6599",
+            "\u7B80\u62A5",
+            "\u89C2\u70B9"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -49262,7 +49447,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           body: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n",
           effectZh: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n",
           highlightQuote: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u526F\u6587",
-          bullText: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n"
+          bullText: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n",
+          bodyText: "\u8FD9\u4E2A\u662F\u7EC4\u4EF6\u5185\u5BB9\u7684\u6B63\u6587\uFF0C\u8BD5\u8BD5\u770B\u53D8\u62102\u884C\u7684\u8BDD\u4F1A\u662F\u4EC0\u4E48\u6837\u7684\u6548\u679C\n"
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: true,
@@ -49283,6 +49469,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "chapter-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u7AE0\u8282",
+            "\u5F00\u573A",
+            "\u4E3B\u9898"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -49388,6 +49588,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
+        },
+        manifest: {
+          id: "closing-checklist",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u6536\u5C3E",
+            "\u6E05\u5355",
+            "\u786E\u8BA4",
+            "\u603B\u7ED3"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -49493,108 +49708,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
-        }
-      },
-      {
-        id: "finale-kinetic",
-        name: "\u7ED3\u5C3E\u51B2\u51FB",
-        family: "narrative",
-        description: "chapter \xB7 statement \xB7 verdict",
-        tags: [
-          "chapter",
-          "statement",
-          "verdict"
-        ],
-        data: [
-          "text"
-        ],
-        version: 7,
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 1,
-          spring: "spring-up",
-          sfx: "none",
-          accentColor: "#00F2FE",
-          defaultItemCount: 1,
-          staggerFrames: 15,
-          headerScale: 1,
-          contentScale: 1
         },
-        sfx: {
-          enter: "none",
-          exit: "none",
-          volume: 0.65
-        },
-        mockData: {
-          headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          eyebrow: "DESIGN SYSTEM",
-          effectText: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-          text: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-          items: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          steps: [
-            "\u5B9A\u4E49\u76EE\u6807",
-            "\u7EC4\u7EC7\u4FE1\u606F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
-          ],
-          years: [
-            "\u8D77\u70B9",
-            "\u73B0\u5728",
-            "\u4E0B\u4E00\u6B65"
-          ],
-          nodes: [
-            "\u8F93\u5165",
-            "\u5904\u7406",
-            "\u8F93\u51FA"
-          ],
-          comments: [
-            "\u91CD\u70B9\u4FE1\u606F",
-            "\u6301\u7EED\u89C2\u5BDF"
-          ],
-          category: "DESIGN SYSTEM",
-          contentPayload: {
-            type: "narrative",
-            bodyText: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-            highlightQuote: "\u767E\u5E74\u6811\u4EBA1324"
+        manifest: {
+          id: "checklist-editorial",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
           },
-          categoryTag: "DESIGN SYSTEM",
-          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          body: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-          effectZh: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5",
-          highlightQuote: "\u767E\u5E74\u6811\u4EBA1324",
-          bullText: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u7528\u7684\u6492\u65E6\u53D1\u751F\u8303\u5FB7\u8428\u53D1\u7B97\u6CD5\u5927\u53D1\u8428\u6CD5"
-        },
-        occupancyScore: 0.82,
-        faceAvoidanceEligible: true,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T22:47:54.597Z",
-        editorSchema: {
-          version: 1,
-          kind: "narrative",
-          fields: [
-            {
-              key: "bodyText",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "textarea"
-            },
-            {
-              key: "highlightQuote",
-              label: "\u526F\u6587\u5185\u5BB9",
-              control: "text"
-            }
-          ]
+          keywords: [
+            "\u6E05\u5355",
+            "\u786E\u8BA4",
+            "\u6B65\u9AA4",
+            "\u603B\u7ED3"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -49670,7 +49798,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentPayload: {
             type: "narrative",
             bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
-          }
+          },
+          bodyText: "Design tokens update the live component preview.",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
@@ -49691,6 +49821,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "pivot-list",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 4
+          },
+          keywords: [
+            "\u6253\u5B57\u673A",
+            "\u89C2\u70B9",
+            "\u5217\u8868"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -49702,8 +49846,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T21:13:25.041Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-hero-title",
         name: "CopyOpen HeroTitle",
         family: "narrative",
@@ -49717,24 +49861,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "text"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 1246,
+          boundsY: 300,
+          boundsWidth: 760,
+          boundsHeight: 360,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 0.76,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 1,
           staggerFrames: 8,
           headerScale: 1,
-          contentScale: 1
+          contentScale: 0.76
         },
         mockData: {
           category: "COPYOPEN",
@@ -49752,7 +49896,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "COPYOPEN",
           title: "OpenMontage",
           effectZh: "\u84DD\u767D\u76F8\u95F4\u7684\u6B63\u6587\u5185\u5BB9",
-          bullText: "\u84DD\u767D\u76F8\u95F4\u7684\u6B63\u6587\u5185\u5BB9"
+          bullText: "\u84DD\u767D\u76F8\u95F4\u7684\u6B63\u6587\u5185\u5BB9",
+          bodyText: "\u84DD\u767D\u76F8\u95F4\u7684\u6B63\u6587\u5185\u5BB9"
         },
         editorSchema: {
           version: 1,
@@ -49769,10 +49914,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-hero-title",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u5F00\u573A",
+            "\u6807\u9898",
+            "\u4E3B\u89C6\u89C9"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
-        version: 11,
+        version: 12,
         sfx: {
           enter: "none",
           exit: "none",
@@ -49780,8 +49939,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T20:48:48.063Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-15T01:13:08.106Z",
         id: "copyopen-progress-bar",
         name: "\u8FDB\u5EA6\u67612",
         family: "metrics",
@@ -49795,31 +49954,31 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "percentage"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 1246,
+          boundsY: 300,
+          boundsWidth: 760,
+          boundsHeight: 320,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 0.76,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 1,
           staggerFrames: 8,
           headerScale: 1,
-          contentScale: 1
+          contentScale: 0.76
         },
         mockData: {
-          category: "COPYOPEN",
-          headline: "Highlight extraction",
+          category: "COPYOPEN 001",
+          headline: "Highlight extraction 002",
           progress: 86,
           value: 86,
-          label: "Highlight",
+          label: "COPYOPEN 001",
           body: "Highlight extraction",
           effectText: "Highlight extraction",
           contentPayload: {
@@ -49830,9 +49989,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
             bodyText: "%",
             detailText: "Highlight extraction"
           },
-          eyebrow: "COPYOPEN",
-          categoryTag: "COPYOPEN",
-          title: "Highlight extraction",
+          eyebrow: "COPYOPEN 001",
+          categoryTag: "COPYOPEN 001",
+          title: "Highlight extraction 002",
           values: [],
           metric: "Highlight",
           metricLabel: "Highlight",
@@ -49875,6 +50034,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "textarea"
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-progress-bar",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u8FDB\u5EA6",
+            "\u767E\u5206\u6BD4",
+            "\u5B8C\u6210",
+            "%"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -49886,8 +50060,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T20:10:04.299Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-comparison-card",
         name: "\u524D\u540E\u5BF9\u6BD4\u5361",
         family: "metrics",
@@ -49902,24 +50076,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "comparison"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 1216,
+          boundsY: 300,
+          boundsWidth: 800,
+          boundsHeight: 420,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 0.76,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 1,
           staggerFrames: 8,
           headerScale: 1,
-          contentScale: 1
+          contentScale: 0.76
         },
         mockData: {
           category: "COPYOPEN",
@@ -49936,7 +50110,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
             unit: "clips",
             label: "Short clips",
             detailText: "ready"
-          }
+          },
+          label: "Before / After",
+          value: 76,
+          unit: "Before / After",
+          detailText: "Before / After"
         },
         editorSchema: {
           version: 1,
@@ -49963,6 +50141,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "textarea"
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-comparison-card",
+          intent: "metrics",
+          capacity: {
+            minItems: 2,
+            maxItems: 2
+          },
+          keywords: [
+            "\u5BF9\u6BD4",
+            "\u5DEE\u5F02",
+            "\u6570\u503C",
+            "\u589E\u957F"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -49974,8 +50167,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T18:29:50.235Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-terminal-scene",
         name: "CopyOpen TerminalScene",
         family: "chips",
@@ -49989,24 +50182,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "list"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 1201,
+          boundsY: 300,
+          boundsWidth: 820,
+          boundsHeight: 500,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 0.76,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 6,
           staggerFrames: 8,
           headerScale: 1,
-          contentScale: 1
+          contentScale: 0.76
         },
         mockData: {
           category: "COPYOPEN",
@@ -50068,6 +50261,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 6
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-terminal-scene",
+          intent: "process",
+          capacity: {
+            minItems: 3,
+            maxItems: 6
+          },
+          keywords: [
+            "\u547D\u4EE4",
+            "\u6D41\u7A0B",
+            "\u6267\u884C",
+            "\u5DE5\u4F5C\u6D41"
+          ],
+          visualWeight: "heavy"
         }
       },
       {
@@ -50079,8 +50287,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T21:12:35.312Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-end-tag",
         name: "EndTag",
         family: "narrative",
@@ -50094,24 +50302,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "text"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 686,
+          boundsY: 418,
+          boundsWidth: 720,
+          boundsHeight: 320,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 0.76,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 1,
           staggerFrames: 8,
           headerScale: 1,
-          contentScale: 1
+          contentScale: 0.76
         },
         mockData: {
           category: "COPYOPEN",
@@ -50127,7 +50335,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           categoryTag: "COPYOPEN",
           title: "Closing Tag",
           effectZh: "Make the clip worth watching yourself\n",
-          bullText: "Make the clip worth watching yourself\n"
+          bullText: "Make the clip worth watching yourself\n",
+          bodyText: "Make the clip worth watching yourself\n",
+          highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E"
         },
         editorSchema: {
           version: 1,
@@ -50144,6 +50354,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
               control: "text"
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-end-tag",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u7ED3\u5C3E",
+            "\u6807\u8BED",
+            "\u6536\u675F"
+          ],
+          visualWeight: "light"
         }
       },
       {
@@ -50155,8 +50379,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T21:30:20.103Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-bar-chart",
         name: "\u67F1\u72B6\u56FE\u663E\u793A",
         family: "metrics",
@@ -50171,24 +50395,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 1216,
+          boundsY: 300,
+          boundsWidth: 800,
+          boundsHeight: 460,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 0.76,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 4,
           staggerFrames: 8,
           headerScale: 1,
-          contentScale: 1
+          contentScale: 0.76
         },
         mockData: {
           category: "\u7AE0\u828205",
@@ -50267,6 +50491,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 4
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-bar-chart",
+          intent: "metrics",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u67F1\u72B6",
+            "\u6392\u540D",
+            "\u6570\u636E",
+            "\u5BF9\u6BD4"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -50278,8 +50517,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T21:30:57.407Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-line-chart",
         name: "\u6298\u7EBF\u56FE-2",
         family: "metrics",
@@ -50294,24 +50533,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 1216,
+          boundsY: 300,
+          boundsWidth: 800,
+          boundsHeight: 460,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 0.76,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 4,
           staggerFrames: 8,
           headerScale: 1,
-          contentScale: 1
+          contentScale: 0.76
         },
         mockData: {
           category: "\u7AE0\u828206",
@@ -50371,10 +50610,25 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 4
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-line-chart",
+          intent: "metrics",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u8D8B\u52BF",
+            "\u589E\u957F",
+            "\u66F2\u7EBF",
+            "\u65F6\u95F4"
+          ],
+          visualWeight: "medium"
         }
       },
       {
-        version: 3,
+        version: 8,
         sfx: {
           enter: "none",
           exit: "none",
@@ -50382,8 +50636,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T21:31:37.521Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-15T01:13:41.484Z",
         id: "copyopen-pie-chart",
         name: "\u591A\u5F69\u73AF\u5F62\u56FE",
         family: "metrics",
@@ -50398,28 +50652,28 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "percentage"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 96,
+          boundsY: 300,
+          boundsWidth: 720,
+          boundsHeight: 460,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 1.2,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 4,
           staggerFrames: 8,
-          headerScale: 1,
-          contentScale: 1
+          headerScale: 1.2,
+          contentScale: 1.2
         },
         mockData: {
           category: "\u7AE0\u828209",
-          headline: "Clip mix",
+          headline: "\u591A\u5F69\u73AF\u5F62\u56FE",
           items: [
             "Hook",
             "Proof",
@@ -50462,7 +50716,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
             ]
           },
           eyebrow: "\u7AE0\u828209",
-          categoryTag: "\u7AE0\u828209"
+          categoryTag: "\u7AE0\u828209",
+          title: "\u591A\u5F69\u73AF\u5F62\u56FE"
         },
         editorSchema: {
           version: 1,
@@ -50475,6 +50730,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 4
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-pie-chart",
+          intent: "metrics",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u5360\u6BD4",
+            "\u6BD4\u4F8B",
+            "\u5206\u5E03",
+            "\u4EFD\u989D"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -50486,8 +50756,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
-        displayIntent: "fullscreen-modal",
-        updatedAt: "2026-09-13T20:13:54.875Z",
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
         id: "copyopen-kpi-grid",
         name: "KPI\u56FE",
         family: "metrics",
@@ -50502,24 +50772,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number"
         ],
         tokens: {
-          mountMode: "center",
+          mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 0,
-          boundsY: 0,
-          boundsWidth: 1920,
-          boundsHeight: 1080,
-          padding: 0,
+          boundsX: 1201,
+          boundsY: 300,
+          boundsWidth: 820,
+          boundsHeight: 500,
+          padding: 48,
           gap: 16,
           position: "center",
-          scale: 1,
+          scale: 0.76,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
           defaultItemCount: 3,
           staggerFrames: 8,
           headerScale: 1,
-          contentScale: 1
+          contentScale: 0.76
         },
         mockData: {
           category: "COPYOPEN",
@@ -50568,6 +50838,4490 @@ Check that all your Remotion packages are on the same version. If your dependenc
               capacity: 3
             }
           ]
+        },
+        manifest: {
+          id: "copyopen-kpi-grid",
+          intent: "metrics",
+          capacity: {
+            minItems: 3,
+            maxItems: 6
+          },
+          keywords: [
+            "KPI",
+            "\u6307\u6807",
+            "\u6570\u636E",
+            "\u589E\u957F"
+          ],
+          visualWeight: "medium"
+        }
+      },
+      {
+        id: "avatar-handoff",
+        name: "\u5934\u50CF\u4EA4\u63A5",
+        family: "system",
+        description: "\u8FD0\u884C\u65F6\u5DF2\u6709\u7684\u53CC\u4EBA\u7269\u4EA4\u63A5\u6548\u679C",
+        tags: [
+          "person",
+          "handoff",
+          "system"
+        ],
+        data: [
+          "person",
+          "comparison"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 76,
+          boundsY: 250,
+          boundsWidth: 860,
+          boundsHeight: 620,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 0.76
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "TEAM",
+          headline: "\u5173\u952E\u89D2\u8272\u4EA4\u63A5",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u524D\u5E8F\u89D2\u8272",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u76EE\u6807\u89D2\u8272",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            {
+              title: "\u524D\u5E8F\u89D2\u8272",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u76EE\u6807\u89D2\u8272",
+              subtitle: ""
+            }
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u524D\u5E8F\u89D2\u8272",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u76EE\u6807\u89D2\u8272",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u89D2\u8272\u4FE1\u606F",
+              control: "string-list",
+              capacity: 2
+            }
+          ]
+        },
+        manifest: {
+          id: "avatar-handoff",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 2
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u4EA4\u63A5",
+            "\u56E2\u961F",
+            "\u89D2\u8272"
+          ],
+          visualWeight: "medium"
+        }
+      },
+      {
+        id: "data-flow",
+        name: "\u6570\u636E\u5206\u5C4F",
+        family: "system",
+        description: "\u8FD0\u884C\u65F6\u5DF2\u6709\u7684\u5DE6\u53F3\u6570\u636E\u5206\u5C4F\u6548\u679C",
+        tags: [
+          "data",
+          "system",
+          "comparison"
+        ],
+        data: [
+          "number",
+          "comparison"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 76,
+          boundsY: 250,
+          boundsWidth: 920,
+          boundsHeight: 620,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 0.76
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.42,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "DATA FLOW",
+          headline: "\u4E24\u4FA7\u6570\u636E\u5BF9\u7167",
+          contentPayload: {
+            type: "metrics",
+            value: 72,
+            unit: "%",
+            label: "\u8F6C\u5316\u63D0\u5347",
+            detailText: "\u6838\u5FC3\u6307\u6807\u5F62\u6210\u660E\u786E\u5206\u5DEE\u3002"
+          },
+          label: "\u8F6C\u5316\u63D0\u5347",
+          value: 72,
+          unit: "%",
+          detailText: "\u6838\u5FC3\u6307\u6807\u5F62\u6210\u660E\u786E\u5206\u5DEE\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 72,
+          unit: "%",
+          label: "\u8F6C\u5316\u63D0\u5347",
+          detailText: "\u6838\u5FC3\u6307\u6807\u5F62\u6210\u660E\u786E\u5206\u5DEE\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "data-flow",
+          intent: "system",
+          capacity: {
+            minItems: 2,
+            maxItems: 2
+          },
+          keywords: [
+            "\u6570\u636E",
+            "\u5BF9\u7167",
+            "\u7CFB\u7EDF",
+            "\u94FE\u8DEF"
+          ],
+          visualWeight: "medium"
+        }
+      },
+      {
+        id: "jc-narrative-badge-card",
+        name: "[JC] \u5FBD\u7AE0\u7ED3\u8BBA\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u5FBD\u7AE0\u7ED3\u8BBA\u5361",
+          effectText: "\u7528\u4E00\u4E2A\u660E\u786E\u7ED3\u8BBA\u6536\u675F\u5F53\u524D\u5546\u4E1A\u5224\u65AD\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u7528\u4E00\u4E2A\u660E\u786E\u7ED3\u8BBA\u6536\u675F\u5F53\u524D\u5546\u4E1A\u5224\u65AD\u3002",
+            highlightQuote: "TIER ONE"
+          },
+          bodyText: "\u7528\u4E00\u4E2A\u660E\u786E\u7ED3\u8BBA\u6536\u675F\u5F53\u524D\u5546\u4E1A\u5224\u65AD\u3002",
+          highlightQuote: "TIER ONE"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u7528\u4E00\u4E2A\u660E\u786E\u7ED3\u8BBA\u6536\u675F\u5F53\u524D\u5546\u4E1A\u5224\u65AD\u3002",
+          highlightQuote: "TIER ONE"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-badge-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u7ED3\u8BBA",
+            "\u5224\u65AD",
+            "\u5B9A\u4F4D",
+            "\u7B2C\u4E00"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BadgeCard",
+          adapter: "jc-narrative-badge-card"
+        }
+      },
+      {
+        id: "jc-metrics-bar-chart",
+        name: "[JC] \u52A8\u6001\u67F1\u72B6\u56FE",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "list"
+        ],
+        version: 2,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u52A8\u6001\u67F1\u72B6\u56FE",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u91C7\u8D2D\u6210\u672C001"
+              },
+              {
+                stepNumber: 2,
+                text: "\u5C65\u7EA6\u6210\u672C002"
+              },
+              {
+                stepNumber: 3,
+                text: "\u6BDB\u5229\u7A7A\u95F4003"
+              }
+            ],
+            progress: 72
+          },
+          steps: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          items: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          progress: 72,
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u52A8\u6001\u67F1\u72B6\u56FE",
+          years: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          nodes: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          units: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          comments: [
+            "\u91C7\u8D2D\u6210\u672C001",
+            "\u5C65\u7EA6\u6210\u672C002",
+            "\u6BDB\u5229\u7A7A\u95F4003"
+          ],
+          label: "METRICS",
+          body: "",
+          bodyText: "",
+          effectZh: "",
+          text: "",
+          value: 72,
+          values: [
+            72,
+            72,
+            72
+          ]
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u91C7\u8D2D\u6210\u672C"
+            },
+            {
+              stepNumber: 2,
+              text: "\u5C65\u7EA6\u6210\u672C"
+            },
+            {
+              stepNumber: 3,
+              text: "\u6BDB\u5229\u7A7A\u95F4"
+            }
+          ],
+          progress: 72
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-bar-chart",
+          intent: "metrics",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u6570\u636E",
+            "\u5BF9\u6BD4",
+            "\u6392\u540D",
+            "\u589E\u957F"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BarChart",
+          adapter: "jc-metrics-bar-chart"
+        },
+        updatedAt: "2026-09-15T01:15:25.214Z"
+      },
+      {
+        id: "jc-metrics-big-number",
+        name: "[JC] \u5927\u6570\u5B57\u8BA1\u6570",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u5927\u6570\u5B57\u8BA1\u6570",
+          effectText: "",
+          contentPayload: {
+            type: "metrics",
+            value: 72,
+            unit: "%",
+            label: "\u8F6C\u5316\u63D0\u5347",
+            detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+          },
+          label: "\u8F6C\u5316\u63D0\u5347",
+          value: 72,
+          unit: "%",
+          detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 72,
+          unit: "%",
+          label: "\u8F6C\u5316\u63D0\u5347",
+          detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-big-number",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u6570\u636E",
+            "\u6570\u5B57",
+            "\u589E\u957F",
+            "\u767E\u5206\u6BD4"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BigNumber",
+          adapter: "jc-metrics-big-number"
+        }
+      },
+      {
+        id: "jc-narrative-bilingual-sub",
+        name: "[JC] \u53CC\u8BED\u5B57\u5E55\u6761",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u53CC\u8BED\u5B57\u5E55\u6761",
+          effectText: "\u5148\u7ED9\u89C2\u70B9\uFF0C\u518D\u7ED9\u8BC1\u636E\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u5148\u7ED9\u89C2\u70B9\uFF0C\u518D\u7ED9\u8BC1\u636E\u3002",
+            highlightQuote: "POINT THEN PROOF"
+          },
+          bodyText: "\u5148\u7ED9\u89C2\u70B9\uFF0C\u518D\u7ED9\u8BC1\u636E\u3002",
+          highlightQuote: "POINT THEN PROOF"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u5148\u7ED9\u89C2\u70B9\uFF0C\u518D\u7ED9\u8BC1\u636E\u3002",
+          highlightQuote: "POINT THEN PROOF"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-bilingual-sub",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u5B57\u5E55",
+            "\u89C2\u70B9",
+            "\u8BF4\u660E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BilingualSub",
+          adapter: "jc-narrative-bilingual-sub"
+        }
+      },
+      {
+        id: "jc-narrative-breathe",
+        name: "[JC] \u547C\u5438\u5F3A\u8C03",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u547C\u5438\u5F3A\u8C03",
+          effectText: "\u6838\u5FC3\u4FE1\u606F\u4FDD\u6301\u6301\u7EED\u547C\u5438\u611F\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u6838\u5FC3\u4FE1\u606F\u4FDD\u6301\u6301\u7EED\u547C\u5438\u611F\u3002"
+          },
+          bodyText: "\u6838\u5FC3\u4FE1\u606F\u4FDD\u6301\u6301\u7EED\u547C\u5438\u611F\u3002",
+          highlightQuote: ""
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u6838\u5FC3\u4FE1\u606F\u4FDD\u6301\u6301\u7EED\u547C\u5438\u611F\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-breathe",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u5F3A\u8C03",
+            "\u547C\u5438",
+            "\u89C2\u70B9"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Breathe",
+          adapter: "jc-narrative-breathe"
+        }
+      },
+      {
+        id: "jc-system-brick-wall",
+        name: "[JC] \u7816\u5899\u7EA6\u675F",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u7816\u5899\u7EA6\u675F",
+          effectText: "\u4F9B\u7ED9\u7EA6\u675F\u51B3\u5B9A\u4E86\u6269\u5F20\u4E0A\u9650\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4F9B\u7ED9\u7EA6\u675F\u51B3\u5B9A\u4E86\u6269\u5F20\u4E0A\u9650\u3002",
+            highlightQuote: "HARD WALL"
+          },
+          bodyText: "\u4F9B\u7ED9\u7EA6\u675F\u51B3\u5B9A\u4E86\u6269\u5F20\u4E0A\u9650\u3002",
+          highlightQuote: "HARD WALL"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4F9B\u7ED9\u7EA6\u675F\u51B3\u5B9A\u4E86\u6269\u5F20\u4E0A\u9650\u3002",
+          highlightQuote: "HARD WALL"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-brick-wall",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u58C1\u5792",
+            "\u7EA6\u675F",
+            "\u4F9B\u7ED9",
+            "\u98CE\u9669"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "BrickWall",
+          adapter: "jc-system-brick-wall"
+        }
+      },
+      {
+        id: "jc-system-card-wall",
+        name: "[JC] \u4FE1\u606F\u5361\u5899",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 6,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u4FE1\u606F\u5361\u5899",
+          effectText: "",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u6E20\u9053\u7ED3\u6784",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u4F9B\u7ED9\u80FD\u529B",
+                subtitle: ""
+              },
+              {
+                title: "\u590D\u8D2D\u8868\u73B0",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            "\u6E20\u9053\u7ED3\u6784",
+            "\u4F9B\u7ED9\u80FD\u529B",
+            "\u590D\u8D2D\u8868\u73B0"
+          ],
+          itemSubtitles: [
+            "KEY SIGNAL",
+            "",
+            ""
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u6E20\u9053\u7ED3\u6784",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u4F9B\u7ED9\u80FD\u529B",
+              subtitle: ""
+            },
+            {
+              title: "\u590D\u8D2D\u8868\u73B0",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u6807\u7B7E\u9879",
+              control: "chip-list",
+              capacity: 3,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-card-wall",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 6
+          },
+          keywords: [
+            "\u7ED3\u6784",
+            "\u6A21\u5757",
+            "\u4FE1\u606F",
+            "\u7CFB\u7EDF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "CardWall",
+          adapter: "jc-system-card-wall"
+        }
+      },
+      {
+        id: "jc-process-checklist",
+        name: "[JC] \u9010\u9879\u6E05\u5355",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u9010\u9879\u6E05\u5355",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u660E\u786E\u91C7\u8D2D\u5E95\u4EF7"
+              },
+              {
+                stepNumber: 2,
+                text: "\u9501\u5B9A\u5C65\u7EA6\u6210\u672C"
+              },
+              {
+                stepNumber: 3,
+                text: "\u9A8C\u8BC1\u590D\u8D2D\u8DEF\u5F84"
+              }
+            ],
+            progress: 78
+          },
+          steps: [
+            "\u660E\u786E\u91C7\u8D2D\u5E95\u4EF7",
+            "\u9501\u5B9A\u5C65\u7EA6\u6210\u672C",
+            "\u9A8C\u8BC1\u590D\u8D2D\u8DEF\u5F84"
+          ],
+          items: [
+            "\u660E\u786E\u91C7\u8D2D\u5E95\u4EF7",
+            "\u9501\u5B9A\u5C65\u7EA6\u6210\u672C",
+            "\u9A8C\u8BC1\u590D\u8D2D\u8DEF\u5F84"
+          ],
+          progress: 78
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u660E\u786E\u91C7\u8D2D\u5E95\u4EF7"
+            },
+            {
+              stepNumber: 2,
+              text: "\u9501\u5B9A\u5C65\u7EA6\u6210\u672C"
+            },
+            {
+              stepNumber: 3,
+              text: "\u9A8C\u8BC1\u590D\u8D2D\u8DEF\u5F84"
+            }
+          ],
+          progress: 78
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-checklist",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u6E05\u5355",
+            "\u6B65\u9AA4",
+            "\u6267\u884C",
+            "\u786E\u8BA4"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Checklist",
+          adapter: "jc-process-checklist"
+        }
+      },
+      {
+        id: "jc-system-chip",
+        name: "[JC] \u8BED\u4E49\u6807\u7B7E",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u8BED\u4E49\u6807\u7B7E",
+          effectText: "",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u4F4E\u4EF7\u5165\u53E3",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u9AD8\u9891\u590D\u8D2D",
+                subtitle: ""
+              },
+              {
+                title: "\u5C65\u7EA6\u95ED\u73AF",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            "\u4F4E\u4EF7\u5165\u53E3",
+            "\u9AD8\u9891\u590D\u8D2D",
+            "\u5C65\u7EA6\u95ED\u73AF"
+          ],
+          itemSubtitles: [
+            "KEY SIGNAL",
+            "",
+            ""
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u4F4E\u4EF7\u5165\u53E3",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u9AD8\u9891\u590D\u8D2D",
+              subtitle: ""
+            },
+            {
+              title: "\u5C65\u7EA6\u95ED\u73AF",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u6807\u7B7E\u9879",
+              control: "chip-list",
+              capacity: 3,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-chip",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u6807\u7B7E",
+            "\u6A21\u5757",
+            "\u8981\u70B9",
+            "\u94FE\u8DEF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Chip",
+          adapter: "jc-system-chip"
+        }
+      },
+      {
+        id: "jc-contrast-clone-cascade",
+        name: "[JC] \u514B\u9686\u98CE\u9669\u7EA7\u8054",
+        family: "contrast",
+        description: "JC imported contrast visual component",
+        tags: [
+          "jc",
+          "contrast"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "CONTRAST",
+          headline: "\u514B\u9686\u98CE\u9669\u7EA7\u8054",
+          effectText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+            highlightQuote: "COPY RISK"
+          },
+          bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+          highlightQuote: "COPY RISK"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+          highlightQuote: "COPY RISK"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-contrast-clone-cascade",
+          intent: "contrast",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u98CE\u9669",
+            "\u590D\u5236",
+            "\u540C\u8D28\u5316",
+            "\u7ADE\u4E89"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "CloneCascade",
+          adapter: "jc-contrast-clone-cascade"
+        }
+      },
+      {
+        id: "jc-contrast-compare-card",
+        name: "[JC] \u5BF9\u7167\u4FE1\u606F\u5361",
+        family: "contrast",
+        description: "JC imported contrast visual component",
+        tags: [
+          "jc",
+          "contrast"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 4,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "CONTRAST",
+          headline: "\u5BF9\u7167\u4FE1\u606F\u5361",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u4F20\u7EDF\u9AD8\u6BDB\u5229"
+              },
+              {
+                stepNumber: 2,
+                text: "\u4F4E\u4EF7\u9AD8\u5468\u8F6C"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u9A71\u52A8"
+              }
+            ],
+            progress: 68
+          },
+          steps: [
+            "\u4F20\u7EDF\u9AD8\u6BDB\u5229",
+            "\u4F4E\u4EF7\u9AD8\u5468\u8F6C",
+            "\u590D\u8D2D\u9A71\u52A8"
+          ],
+          items: [
+            "\u4F20\u7EDF\u9AD8\u6BDB\u5229",
+            "\u4F4E\u4EF7\u9AD8\u5468\u8F6C",
+            "\u590D\u8D2D\u9A71\u52A8"
+          ],
+          progress: 68
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u4F20\u7EDF\u9AD8\u6BDB\u5229"
+            },
+            {
+              stepNumber: 2,
+              text: "\u4F4E\u4EF7\u9AD8\u5468\u8F6C"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u9A71\u52A8"
+            }
+          ],
+          progress: 68
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-contrast-compare-card",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u5BF9\u6BD4",
+            "\u5DEE\u5F02",
+            "\u53D6\u820D",
+            "\u53D8\u5316"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "CompareCard",
+          adapter: "jc-contrast-compare-card"
+        }
+      },
+      {
+        id: "jc-metrics-curve-overlay",
+        name: "[JC] \u589E\u957F\u66F2\u7EBF",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u589E\u957F\u66F2\u7EBF",
+          effectText: "",
+          contentPayload: {
+            type: "metrics",
+            value: 74,
+            unit: "%",
+            label: "\u589E\u957F\u66F2\u7EBF",
+            detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+          },
+          label: "\u589E\u957F\u66F2\u7EBF",
+          value: 74,
+          unit: "%",
+          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 74,
+          unit: "%",
+          label: "\u589E\u957F\u66F2\u7EBF",
+          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-curve-overlay",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u8D8B\u52BF",
+            "\u66F2\u7EBF",
+            "\u589E\u957F",
+            "\u6570\u636E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "CurveOverlay",
+          adapter: "jc-metrics-curve-overlay"
+        }
+      },
+      {
+        id: "jc-narrative-dm-card-stack",
+        name: "[JC] \u5BF9\u8BDD\u5361\u53E0\u5C42",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 4,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u5BF9\u8BDD\u5361\u53E0\u5C42",
+          effectText: "",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u5148\u964D\u4F4E\u51B3\u7B56\u963B\u529B",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u518D\u5EFA\u7ACB\u590D\u8D2D\u7406\u7531",
+                subtitle: ""
+              },
+              {
+                title: "\u6700\u540E\u6269\u5F20\u6E20\u9053",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            "\u5148\u964D\u4F4E\u51B3\u7B56\u963B\u529B",
+            "\u518D\u5EFA\u7ACB\u590D\u8D2D\u7406\u7531",
+            "\u6700\u540E\u6269\u5F20\u6E20\u9053"
+          ],
+          itemSubtitles: [
+            "KEY SIGNAL",
+            "",
+            ""
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u5148\u964D\u4F4E\u51B3\u7B56\u963B\u529B",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u518D\u5EFA\u7ACB\u590D\u8D2D\u7406\u7531",
+              subtitle: ""
+            },
+            {
+              title: "\u6700\u540E\u6269\u5F20\u6E20\u9053",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u6807\u7B7E\u9879",
+              control: "chip-list",
+              capacity: 3,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-dm-card-stack",
+          intent: "narrative",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u5BF9\u8BDD",
+            "\u53D9\u4E8B",
+            "\u89C2\u70B9",
+            "\u7528\u6237"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "DMCardStack",
+          adapter: "jc-narrative-dm-card-stack"
+        }
+      },
+      {
+        id: "jc-process-flow-chain",
+        name: "[JC] \u5546\u4E1A\u94FE\u8DEF",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u5546\u4E1A\u94FE\u8DEF",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u4F4E\u4EF7\u5165\u53E3"
+              },
+              {
+                stepNumber: 2,
+                text: "\u8BD5\u7528\u8F6C\u5316"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u56DE\u6D41"
+              }
+            ],
+            progress: 76
+          },
+          steps: [
+            "\u4F4E\u4EF7\u5165\u53E3",
+            "\u8BD5\u7528\u8F6C\u5316",
+            "\u590D\u8D2D\u56DE\u6D41"
+          ],
+          items: [
+            "\u4F4E\u4EF7\u5165\u53E3",
+            "\u8BD5\u7528\u8F6C\u5316",
+            "\u590D\u8D2D\u56DE\u6D41"
+          ],
+          progress: 76
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u4F4E\u4EF7\u5165\u53E3"
+            },
+            {
+              stepNumber: 2,
+              text: "\u8BD5\u7528\u8F6C\u5316"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u56DE\u6D41"
+            }
+          ],
+          progress: 76
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-flow-chain",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u94FE\u8DEF",
+            "\u6D41\u7A0B",
+            "\u95ED\u73AF",
+            "\u4F20\u5BFC"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "FlowChain",
+          adapter: "jc-process-flow-chain"
+        }
+      },
+      {
+        id: "jc-system-flywheel",
+        name: "[JC] \u589E\u957F\u98DE\u8F6E",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u589E\u957F\u98DE\u8F6E",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u4F9B\u7ED9\u7A33\u5B9A"
+              },
+              {
+                stepNumber: 2,
+                text: "\u6210\u672C\u4E0B\u964D"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u589E\u957F"
+              }
+            ],
+            progress: 80
+          },
+          steps: [
+            "\u4F9B\u7ED9\u7A33\u5B9A",
+            "\u6210\u672C\u4E0B\u964D",
+            "\u590D\u8D2D\u589E\u957F"
+          ],
+          items: [
+            "\u4F9B\u7ED9\u7A33\u5B9A",
+            "\u6210\u672C\u4E0B\u964D",
+            "\u590D\u8D2D\u589E\u957F"
+          ],
+          progress: 80
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u4F9B\u7ED9\u7A33\u5B9A"
+            },
+            {
+              stepNumber: 2,
+              text: "\u6210\u672C\u4E0B\u964D"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u589E\u957F"
+            }
+          ],
+          progress: 80
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-flywheel",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u98DE\u8F6E",
+            "\u5FAA\u73AF",
+            "\u589E\u957F",
+            "\u7CFB\u7EDF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Flywheel",
+          adapter: "jc-system-flywheel"
+        }
+      },
+      {
+        id: "jc-narrative-hero-text",
+        name: "[JC] \u4E3B\u89C6\u89C9\u65AD\u8A00",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.88,
+        faceAvoidanceEligible: false,
+        displayIntent: "fullscreen-modal",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4E3B\u89C6\u89C9\u65AD\u8A00",
+          effectText: "\u4F4E\u4EF7\u4E0D\u662F\u4F18\u52BF\uFF0C\u662F\u51B3\u7B56\u963B\u529B\u5F52\u96F6\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4F4E\u4EF7\u4E0D\u662F\u4F18\u52BF\uFF0C\u662F\u51B3\u7B56\u963B\u529B\u5F52\u96F6\u3002",
+            highlightQuote: "BUSINESS THESIS"
+          },
+          bodyText: "\u4F4E\u4EF7\u4E0D\u662F\u4F18\u52BF\uFF0C\u662F\u51B3\u7B56\u963B\u529B\u5F52\u96F6\u3002",
+          highlightQuote: "BUSINESS THESIS"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4F4E\u4EF7\u4E0D\u662F\u4F18\u52BF\uFF0C\u662F\u51B3\u7B56\u963B\u529B\u5F52\u96F6\u3002",
+          highlightQuote: "BUSINESS THESIS"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-hero-text",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u89C2\u70B9",
+            "\u5224\u65AD",
+            "\u7ED3\u8BBA",
+            "\u4E3B\u89C6\u89C9"
+          ],
+          visualWeight: "heavy"
+        },
+        runtime: {
+          exportName: "HeroText",
+          adapter: "jc-narrative-hero-text"
+        }
+      },
+      {
+        id: "jc-narrative-info-card",
+        name: "[JC] \u4FE1\u606F\u8BF4\u660E\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4FE1\u606F\u8BF4\u660E\u5361",
+          effectText: "\u4EF7\u683C\u4F4E\u5230\u7ED5\u8FC7\u7406\u6027\u6BD4\u4EF7\uFF0C\u76F4\u63A5\u89E6\u53D1\u5373\u65F6\u8D2D\u4E70\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4EF7\u683C\u4F4E\u5230\u7ED5\u8FC7\u7406\u6027\u6BD4\u4EF7\uFF0C\u76F4\u63A5\u89E6\u53D1\u5373\u65F6\u8D2D\u4E70\u3002",
+            highlightQuote: "KEY INSIGHT"
+          },
+          bodyText: "\u4EF7\u683C\u4F4E\u5230\u7ED5\u8FC7\u7406\u6027\u6BD4\u4EF7\uFF0C\u76F4\u63A5\u89E6\u53D1\u5373\u65F6\u8D2D\u4E70\u3002",
+          highlightQuote: "KEY INSIGHT"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4EF7\u683C\u4F4E\u5230\u7ED5\u8FC7\u7406\u6027\u6BD4\u4EF7\uFF0C\u76F4\u63A5\u89E6\u53D1\u5373\u65F6\u8D2D\u4E70\u3002",
+          highlightQuote: "KEY INSIGHT"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-info-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u8BF4\u660E",
+            "\u89C2\u70B9",
+            "\u6D1E\u5BDF",
+            "\u4FE1\u606F"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "InfoCard",
+          adapter: "jc-narrative-info-card"
+        }
+      },
+      {
+        id: "jc-narrative-info-scrim",
+        name: "[JC] \u4FE1\u606F\u906E\u7F69",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4FE1\u606F\u906E\u7F69",
+          effectText: "\u7528\u7559\u767D\u7A81\u51FA\u5173\u952E\u4FE1\u606F\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u7528\u7559\u767D\u7A81\u51FA\u5173\u952E\u4FE1\u606F\u3002"
+          },
+          bodyText: "\u7528\u7559\u767D\u7A81\u51FA\u5173\u952E\u4FE1\u606F\u3002",
+          highlightQuote: ""
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u7528\u7559\u767D\u7A81\u51FA\u5173\u952E\u4FE1\u606F\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-info-scrim",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u906E\u7F69",
+            "\u4FE1\u606F",
+            "\u7559\u767D"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "InfoScrim",
+          adapter: "jc-narrative-info-scrim"
+        }
+      },
+      {
+        id: "jc-system-loop-diagram",
+        name: "[JC] \u95ED\u73AF\u56FE\u89E3",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u95ED\u73AF\u56FE\u89E3",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u6D41\u91CF\u5165\u53E3"
+              },
+              {
+                stepNumber: 2,
+                text: "\u6210\u4EA4\u8F6C\u5316"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u6C89\u6DC0"
+              }
+            ],
+            progress: 82
+          },
+          steps: [
+            "\u6D41\u91CF\u5165\u53E3",
+            "\u6210\u4EA4\u8F6C\u5316",
+            "\u590D\u8D2D\u6C89\u6DC0"
+          ],
+          items: [
+            "\u6D41\u91CF\u5165\u53E3",
+            "\u6210\u4EA4\u8F6C\u5316",
+            "\u590D\u8D2D\u6C89\u6DC0"
+          ],
+          progress: 82
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u6D41\u91CF\u5165\u53E3"
+            },
+            {
+              stepNumber: 2,
+              text: "\u6210\u4EA4\u8F6C\u5316"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u6C89\u6DC0"
+            }
+          ],
+          progress: 82
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-loop-diagram",
+          intent: "system",
+          capacity: {
+            minItems: 3,
+            maxItems: 5
+          },
+          keywords: [
+            "\u95ED\u73AF",
+            "\u7CFB\u7EDF",
+            "\u5FAA\u73AF",
+            "\u94FE\u8DEF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "LoopDiagram",
+          adapter: "jc-system-loop-diagram"
+        }
+      },
+      {
+        id: "jc-system-matrix-icon",
+        name: "[JC] \u77E9\u9635\u56FE\u6807",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u77E9\u9635\u56FE\u6807",
+          effectText: "",
+          contentPayload: {
+            type: "metrics",
+            value: 75,
+            unit: "%",
+            label: "\u80FD\u529B\u77E9\u9635",
+            detailText: "\u7528\u77E9\u9635\u5F3A\u8C03\u80FD\u529B\u5BC6\u5EA6\u4E0E\u534F\u540C\u3002"
+          },
+          label: "\u80FD\u529B\u77E9\u9635",
+          value: 75,
+          unit: "%",
+          detailText: "\u7528\u77E9\u9635\u5F3A\u8C03\u80FD\u529B\u5BC6\u5EA6\u4E0E\u534F\u540C\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 75,
+          unit: "%",
+          label: "\u80FD\u529B\u77E9\u9635",
+          detailText: "\u7528\u77E9\u9635\u5F3A\u8C03\u80FD\u529B\u5BC6\u5EA6\u4E0E\u534F\u540C\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-matrix-icon",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u77E9\u9635",
+            "\u80FD\u529B",
+            "\u7CFB\u7EDF",
+            "\u6A21\u5757"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "MatrixIcon",
+          adapter: "jc-system-matrix-icon"
+        }
+      },
+      {
+        id: "jc-narrative-name-plate",
+        name: "[JC] \u4EBA\u7269\u540D\u724C",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4EBA\u7269\u540D\u724C",
+          effectText: "\u5173\u952E\u89D2\u8272\u51B3\u5B9A\u4E86\u6267\u884C\u4E0A\u9650\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u5173\u952E\u89D2\u8272\u51B3\u5B9A\u4E86\u6267\u884C\u4E0A\u9650\u3002",
+            highlightQuote: "KEY OPERATOR"
+          },
+          bodyText: "\u5173\u952E\u89D2\u8272\u51B3\u5B9A\u4E86\u6267\u884C\u4E0A\u9650\u3002",
+          highlightQuote: "KEY OPERATOR"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u5173\u952E\u89D2\u8272\u51B3\u5B9A\u4E86\u6267\u884C\u4E0A\u9650\u3002",
+          highlightQuote: "KEY OPERATOR"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-name-plate",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u89D2\u8272",
+            "\u8D1F\u8D23\u4EBA",
+            "\u540D\u724C"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "NamePlate",
+          adapter: "jc-narrative-name-plate"
+        }
+      },
+      {
+        id: "jc-narrative-person-badge",
+        name: "[JC] \u4EBA\u7269\u5FBD\u7AE0",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4EBA\u7269\u5FBD\u7AE0",
+          effectText: "\u64CD\u76D8\u624B\u7684\u9009\u62E9\u4F1A\u6539\u53D8\u6574\u6761\u94FE\u8DEF\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u64CD\u76D8\u624B\u7684\u9009\u62E9\u4F1A\u6539\u53D8\u6574\u6761\u94FE\u8DEF\u3002",
+            highlightQuote: "OPERATOR"
+          },
+          bodyText: "\u64CD\u76D8\u624B\u7684\u9009\u62E9\u4F1A\u6539\u53D8\u6574\u6761\u94FE\u8DEF\u3002",
+          highlightQuote: "OPERATOR"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u64CD\u76D8\u624B\u7684\u9009\u62E9\u4F1A\u6539\u53D8\u6574\u6761\u94FE\u8DEF\u3002",
+          highlightQuote: "OPERATOR"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-person-badge",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u89D2\u8272",
+            "\u56E2\u961F",
+            "\u8D1F\u8D23\u4EBA"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "PersonBadge",
+          adapter: "jc-narrative-person-badge"
+        }
+      },
+      {
+        id: "jc-narrative-person-card",
+        name: "[JC] \u4EBA\u7269\u4FE1\u606F\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4EBA\u7269\u4FE1\u606F\u5361",
+          effectText: "\u89D2\u8272\u5206\u5DE5\u8981\u4E0E\u5546\u4E1A\u76EE\u6807\u4FDD\u6301\u4E00\u81F4\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u89D2\u8272\u5206\u5DE5\u8981\u4E0E\u5546\u4E1A\u76EE\u6807\u4FDD\u6301\u4E00\u81F4\u3002",
+            highlightQuote: "ROLE FIT"
+          },
+          bodyText: "\u89D2\u8272\u5206\u5DE5\u8981\u4E0E\u5546\u4E1A\u76EE\u6807\u4FDD\u6301\u4E00\u81F4\u3002",
+          highlightQuote: "ROLE FIT"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u89D2\u8272\u5206\u5DE5\u8981\u4E0E\u5546\u4E1A\u76EE\u6807\u4FDD\u6301\u4E00\u81F4\u3002",
+          highlightQuote: "ROLE FIT"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-person-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EBA\u7269",
+            "\u56E2\u961F",
+            "\u89D2\u8272",
+            "\u5206\u5DE5"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "PersonCard",
+          adapter: "jc-narrative-person-card"
+        }
+      },
+      {
+        id: "jc-system-phone-mockup",
+        name: "[JC] \u624B\u673A\u754C\u9762\u6846",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u624B\u673A\u754C\u9762\u6846",
+          effectText: "\u4EA7\u54C1\u4F53\u9A8C\u5FC5\u987B\u628A\u8DEF\u5F84\u538B\u7F29\u5230\u6700\u77ED\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4EA7\u54C1\u4F53\u9A8C\u5FC5\u987B\u628A\u8DEF\u5F84\u538B\u7F29\u5230\u6700\u77ED\u3002",
+            highlightQuote: "MOBILE FLOW"
+          },
+          bodyText: "\u4EA7\u54C1\u4F53\u9A8C\u5FC5\u987B\u628A\u8DEF\u5F84\u538B\u7F29\u5230\u6700\u77ED\u3002",
+          highlightQuote: "MOBILE FLOW"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4EA7\u54C1\u4F53\u9A8C\u5FC5\u987B\u628A\u8DEF\u5F84\u538B\u7F29\u5230\u6700\u77ED\u3002",
+          highlightQuote: "MOBILE FLOW"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-phone-mockup",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EA7\u54C1",
+            "\u624B\u673A",
+            "\u754C\u9762",
+            "\u4F53\u9A8C"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "PhoneMockup",
+          adapter: "jc-system-phone-mockup"
+        }
+      },
+      {
+        id: "jc-narrative-quote-doc",
+        name: "[JC] \u5F15\u6587\u8D44\u6599\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u5F15\u6587\u8D44\u6599\u5361",
+          effectText: "\u5173\u952E\u539F\u8BDD\u80FD\u4E3A\u5224\u65AD\u63D0\u4F9B\u6700\u76F4\u63A5\u7684\u8BC1\u636E\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u5173\u952E\u539F\u8BDD\u80FD\u4E3A\u5224\u65AD\u63D0\u4F9B\u6700\u76F4\u63A5\u7684\u8BC1\u636E\u3002",
+            highlightQuote: "SOURCE NOTE"
+          },
+          bodyText: "\u5173\u952E\u539F\u8BDD\u80FD\u4E3A\u5224\u65AD\u63D0\u4F9B\u6700\u76F4\u63A5\u7684\u8BC1\u636E\u3002",
+          highlightQuote: "SOURCE NOTE"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u5173\u952E\u539F\u8BDD\u80FD\u4E3A\u5224\u65AD\u63D0\u4F9B\u6700\u76F4\u63A5\u7684\u8BC1\u636E\u3002",
+          highlightQuote: "SOURCE NOTE"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-quote-doc",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u5F15\u6587",
+            "\u8D44\u6599",
+            "\u8BC1\u636E",
+            "\u89C2\u70B9"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "QuoteDoc",
+          adapter: "jc-narrative-quote-doc"
+        }
+      },
+      {
+        id: "jc-contrast-score-board",
+        name: "[JC] \u5BF9\u6BD4\u8BB0\u5206\u724C",
+        family: "contrast",
+        description: "JC imported contrast visual component",
+        tags: [
+          "jc",
+          "contrast"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "CONTRAST",
+          headline: "\u5BF9\u6BD4\u8BB0\u5206\u724C",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u6210\u672C\u66F4\u4F4E"
+              },
+              {
+                stepNumber: 2,
+                text: "\u5C65\u7EA6\u66F4\u5FEB"
+              },
+              {
+                stepNumber: 3,
+                text: "\u590D\u8D2D\u66F4\u7A33"
+              }
+            ],
+            progress: 83
+          },
+          steps: [
+            "\u6210\u672C\u66F4\u4F4E",
+            "\u5C65\u7EA6\u66F4\u5FEB",
+            "\u590D\u8D2D\u66F4\u7A33"
+          ],
+          items: [
+            "\u6210\u672C\u66F4\u4F4E",
+            "\u5C65\u7EA6\u66F4\u5FEB",
+            "\u590D\u8D2D\u66F4\u7A33"
+          ],
+          progress: 83
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u6210\u672C\u66F4\u4F4E"
+            },
+            {
+              stepNumber: 2,
+              text: "\u5C65\u7EA6\u66F4\u5FEB"
+            },
+            {
+              stepNumber: 3,
+              text: "\u590D\u8D2D\u66F4\u7A33"
+            }
+          ],
+          progress: 83
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-contrast-score-board",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u8BC4\u5206",
+            "\u5BF9\u6BD4",
+            "\u7ADE\u4E89",
+            "\u4F18\u52BF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "ScoreBoard",
+          adapter: "jc-contrast-score-board"
+        }
+      },
+      {
+        id: "jc-narrative-shot-card",
+        name: "[JC] \u622A\u56FE\u6CE8\u91CA\u5361",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u622A\u56FE\u6CE8\u91CA\u5361",
+          effectText: "\u753B\u9762\u8BC1\u636E\u8981\u670D\u52A1\u4E8E\u5F53\u524D\u5224\u65AD\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u753B\u9762\u8BC1\u636E\u8981\u670D\u52A1\u4E8E\u5F53\u524D\u5224\u65AD\u3002",
+            highlightQuote: "VISUAL PROOF"
+          },
+          bodyText: "\u753B\u9762\u8BC1\u636E\u8981\u670D\u52A1\u4E8E\u5F53\u524D\u5224\u65AD\u3002",
+          highlightQuote: "VISUAL PROOF"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u753B\u9762\u8BC1\u636E\u8981\u670D\u52A1\u4E8E\u5F53\u524D\u5224\u65AD\u3002",
+          highlightQuote: "VISUAL PROOF"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-shot-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u622A\u56FE",
+            "\u8BC1\u636E",
+            "\u753B\u9762",
+            "\u8BF4\u660E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "ShotCard",
+          adapter: "jc-narrative-shot-card"
+        }
+      },
+      {
+        id: "jc-narrative-side-label",
+        name: "[JC] \u4FA7\u8FB9\u6807\u7B7E",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u4FA7\u8FB9\u6807\u7B7E",
+          effectText: "\u628A\u5173\u952E\u5224\u65AD\u56FA\u5B9A\u5728\u5B89\u5168\u4FA7\u8FB9\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u628A\u5173\u952E\u5224\u65AD\u56FA\u5B9A\u5728\u5B89\u5168\u4FA7\u8FB9\u3002",
+            highlightQuote: "SIDE SIGNAL"
+          },
+          bodyText: "\u628A\u5173\u952E\u5224\u65AD\u56FA\u5B9A\u5728\u5B89\u5168\u4FA7\u8FB9\u3002",
+          highlightQuote: "SIDE SIGNAL"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u628A\u5173\u952E\u5224\u65AD\u56FA\u5B9A\u5728\u5B89\u5168\u4FA7\u8FB9\u3002",
+          highlightQuote: "SIDE SIGNAL"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-side-label",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u6807\u7B7E",
+            "\u4FA7\u8FB9",
+            "\u5224\u65AD",
+            "\u5F3A\u8C03"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "SideLabel",
+          adapter: "jc-narrative-side-label"
+        }
+      },
+      {
+        id: "jc-system-solvent-tank",
+        name: "[JC] \u6EB6\u5242\u53CD\u5E94\u69FD",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u6EB6\u5242\u53CD\u5E94\u69FD",
+          effectText: "\u6548\u7387\u63D0\u5347\u6765\u81EA\u7ED3\u6784\u6027\u6EB6\u89E3\u6210\u672C\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u6548\u7387\u63D0\u5347\u6765\u81EA\u7ED3\u6784\u6027\u6EB6\u89E3\u6210\u672C\u3002",
+            highlightQuote: "COST REACTION"
+          },
+          bodyText: "\u6548\u7387\u63D0\u5347\u6765\u81EA\u7ED3\u6784\u6027\u6EB6\u89E3\u6210\u672C\u3002",
+          highlightQuote: "COST REACTION"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u6548\u7387\u63D0\u5347\u6765\u81EA\u7ED3\u6784\u6027\u6EB6\u89E3\u6210\u672C\u3002",
+          highlightQuote: "COST REACTION"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-solvent-tank",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u6210\u672C",
+            "\u6548\u7387",
+            "\u7CFB\u7EDF",
+            "\u53D8\u5316"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "SolventTank",
+          adapter: "jc-system-solvent-tank"
+        }
+      },
+      {
+        id: "jc-narrative-stamp",
+        name: "[JC] \u7ED3\u8BBA\u5370\u7AE0",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "NARRATIVE",
+          headline: "\u7ED3\u8BBA\u5370\u7AE0",
+          effectText: "\u7ED3\u8BBA\u6210\u7ACB\uFF0C\u8FDB\u5165\u4E0B\u4E00\u6B65\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u7ED3\u8BBA\u6210\u7ACB\uFF0C\u8FDB\u5165\u4E0B\u4E00\u6B65\u3002",
+            highlightQuote: "VERDICT"
+          },
+          bodyText: "\u7ED3\u8BBA\u6210\u7ACB\uFF0C\u8FDB\u5165\u4E0B\u4E00\u6B65\u3002",
+          highlightQuote: "VERDICT"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u7ED3\u8BBA\u6210\u7ACB\uFF0C\u8FDB\u5165\u4E0B\u4E00\u6B65\u3002",
+          highlightQuote: "VERDICT"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-stamp",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u7ED3\u8BBA",
+            "\u5370\u7AE0",
+            "\u786E\u8BA4",
+            "\u5224\u65AD"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "Stamp",
+          adapter: "jc-narrative-stamp"
+        }
+      },
+      {
+        id: "jc-process-step-list",
+        name: "[JC] \u6B65\u9AA4\u6E05\u5355",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u6B65\u9AA4\u6E05\u5355",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u786E\u5B9A\u76EE\u6807\u4EBA\u7FA4"
+              },
+              {
+                stepNumber: 2,
+                text: "\u9A8C\u8BC1\u5355\u6B21\u5229\u6DA6"
+              },
+              {
+                stepNumber: 3,
+                text: "\u653E\u5927\u590D\u8D2D\u6548\u7387"
+              }
+            ],
+            progress: 78
+          },
+          steps: [
+            "\u786E\u5B9A\u76EE\u6807\u4EBA\u7FA4",
+            "\u9A8C\u8BC1\u5355\u6B21\u5229\u6DA6",
+            "\u653E\u5927\u590D\u8D2D\u6548\u7387"
+          ],
+          items: [
+            "\u786E\u5B9A\u76EE\u6807\u4EBA\u7FA4",
+            "\u9A8C\u8BC1\u5355\u6B21\u5229\u6DA6",
+            "\u653E\u5927\u590D\u8D2D\u6548\u7387"
+          ],
+          progress: 78
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u786E\u5B9A\u76EE\u6807\u4EBA\u7FA4"
+            },
+            {
+              stepNumber: 2,
+              text: "\u9A8C\u8BC1\u5355\u6B21\u5229\u6DA6"
+            },
+            {
+              stepNumber: 3,
+              text: "\u653E\u5927\u590D\u8D2D\u6548\u7387"
+            }
+          ],
+          progress: 78
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-step-list",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u6B65\u9AA4",
+            "\u6D41\u7A0B",
+            "\u6267\u884C",
+            "\u884C\u52A8"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "StepList",
+          adapter: "jc-process-step-list"
+        }
+      },
+      {
+        id: "jc-process-timeline-card",
+        name: "[JC] \u65F6\u95F4\u5361\u7247",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 4,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u65F6\u95F4\u5361\u7247",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u4F4E\u4EF7\u8BD5\u63A2"
+              },
+              {
+                stepNumber: 2,
+                text: "\u590D\u8D2D\u9A8C\u8BC1"
+              },
+              {
+                stepNumber: 3,
+                text: "\u6E20\u9053\u653E\u5927"
+              }
+            ],
+            progress: 74
+          },
+          steps: [
+            "\u4F4E\u4EF7\u8BD5\u63A2",
+            "\u590D\u8D2D\u9A8C\u8BC1",
+            "\u6E20\u9053\u653E\u5927"
+          ],
+          items: [
+            "\u4F4E\u4EF7\u8BD5\u63A2",
+            "\u590D\u8D2D\u9A8C\u8BC1",
+            "\u6E20\u9053\u653E\u5927"
+          ],
+          progress: 74
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u4F4E\u4EF7\u8BD5\u63A2"
+            },
+            {
+              stepNumber: 2,
+              text: "\u590D\u8D2D\u9A8C\u8BC1"
+            },
+            {
+              stepNumber: 3,
+              text: "\u6E20\u9053\u653E\u5927"
+            }
+          ],
+          progress: 74
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-timeline-card",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u65F6\u95F4",
+            "\u9636\u6BB5",
+            "\u6F14\u8FDB",
+            "\u8282\u70B9"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "TimelineCard",
+          adapter: "jc-process-timeline-card"
+        }
+      },
+      {
+        id: "jc-process-timeline-events",
+        name: "[JC] \u65F6\u95F4\u4E8B\u4EF6\u8F74",
+        family: "process",
+        description: "JC imported process visual component",
+        tags: [
+          "jc",
+          "process"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "PROCESS",
+          headline: "\u65F6\u95F4\u4E8B\u4EF6\u8F74",
+          effectText: "",
+          contentPayload: {
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "\u8D77\u6B65"
+              },
+              {
+                stepNumber: 2,
+                text: "\u4F18\u5316"
+              },
+              {
+                stepNumber: 3,
+                text: "\u6269\u5F20"
+              }
+            ],
+            progress: 70
+          },
+          steps: [
+            "\u8D77\u6B65",
+            "\u4F18\u5316",
+            "\u6269\u5F20"
+          ],
+          items: [
+            "\u8D77\u6B65",
+            "\u4F18\u5316",
+            "\u6269\u5F20"
+          ],
+          progress: 70
+        },
+        defaultPayload: {
+          type: "steps",
+          steps: [
+            {
+              stepNumber: 1,
+              text: "\u8D77\u6B65"
+            },
+            {
+              stepNumber: 2,
+              text: "\u4F18\u5316"
+            },
+            {
+              stepNumber: 3,
+              text: "\u6269\u5F20"
+            }
+          ],
+          progress: 70
+        },
+        editorSchema: {
+          version: 1,
+          kind: "steps",
+          fields: [
+            {
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-process-timeline-events",
+          intent: "process",
+          capacity: {
+            minItems: 2,
+            maxItems: 5
+          },
+          keywords: [
+            "\u65F6\u95F4\u7EBF",
+            "\u4E8B\u4EF6",
+            "\u9636\u6BB5",
+            "\u8282\u70B9"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "TimelineEvents",
+          adapter: "jc-process-timeline-events"
+        }
+      },
+      {
+        id: "jc-narrative-tweet-card",
+        name: "[JC] \u89C2\u70B9\u5F15\u7528\u5E16",
+        family: "narrative",
+        description: "JC imported narrative visual component",
+        tags: [
+          "jc",
+          "narrative"
+        ],
+        data: [
+          "text"
+        ],
+        version: 3,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 3,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "\u89C2\u70B9\u4F5C\u8005ID",
+          headline: "\u606D\u559CTesla CyberCab",
+          effectText: "\u4E00\u6761\u89C2\u70B9\u5FC5\u987B\u843D\u5230\u53EF\u4EE5\u9A8C\u8BC1\u7684\u5546\u4E1A\u4E8B\u5B9E\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u4E00\u6761\u89C2\u70B9\u5FC5\u987B\u843D\u5230\u53EF\u4EE5\u9A8C\u8BC1\u7684\u5546\u4E1A\u4E8B\u5B9E\u3002",
+            highlightQuote: "PUBLIC TAKE"
+          },
+          bodyText: "\u4E00\u6761\u89C2\u70B9\u5FC5\u987B\u843D\u5230\u53EF\u4EE5\u9A8C\u8BC1\u7684\u5546\u4E1A\u4E8B\u5B9E\u3002",
+          highlightQuote: "PUBLIC TAKE",
+          eyebrow: "\u89C2\u70B9\u4F5C\u8005ID",
+          categoryTag: "\u89C2\u70B9\u4F5C\u8005ID",
+          label: "\u89C2\u70B9\u4F5C\u8005ID",
+          title: "\u606D\u559CTesla CyberCab"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u4E00\u6761\u89C2\u70B9\u5FC5\u987B\u843D\u5230\u53EF\u4EE5\u9A8C\u8BC1\u7684\u5546\u4E1A\u4E8B\u5B9E\u3002",
+          highlightQuote: "PUBLIC TAKE"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-narrative-tweet-card",
+          intent: "narrative",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u89C2\u70B9",
+            "\u5F15\u7528",
+            "\u8BC4\u8BBA",
+            "\u5224\u65AD"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "TweetCard",
+          adapter: "jc-narrative-tweet-card"
+        },
+        updatedAt: "2026-09-15T01:37:09.883Z"
+      },
+      {
+        id: "jc-metrics-unit-matrix",
+        name: "[JC] \u5355\u5143\u77E9\u9635",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u5355\u5143\u77E9\u9635",
+          effectText: "",
+          contentPayload: {
+            type: "metrics",
+            value: 68,
+            unit: "%",
+            label: "\u7ED3\u6784\u5360\u6BD4",
+            detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
+          },
+          label: "\u7ED3\u6784\u5360\u6BD4",
+          value: 68,
+          unit: "%",
+          detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 68,
+          unit: "%",
+          label: "\u7ED3\u6784\u5360\u6BD4",
+          detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-unit-matrix",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u77E9\u9635",
+            "\u5360\u6BD4",
+            "\u89C4\u6A21",
+            "\u6570\u636E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "UnitMatrix",
+          adapter: "jc-metrics-unit-matrix"
+        }
+      },
+      {
+        id: "jc-contrast-verdict-box",
+        name: "[JC] \u98CE\u9669\u88C1\u51B3\u6846",
+        family: "contrast",
+        description: "JC imported contrast visual component",
+        tags: [
+          "jc",
+          "contrast"
+        ],
+        data: [
+          "list"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 4,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "CONTRAST",
+          headline: "\u98CE\u9669\u88C1\u51B3\u6846",
+          effectText: "",
+          contentPayload: {
+            type: "chips",
+            items: [
+              {
+                title: "\u4F9B\u7ED9\u4E0D\u7A33",
+                subtitle: "KEY SIGNAL"
+              },
+              {
+                title: "\u5C65\u7EA6\u5931\u63A7",
+                subtitle: ""
+              },
+              {
+                title: "\u590D\u8D2D\u4E0D\u8DB3",
+                subtitle: ""
+              }
+            ]
+          },
+          items: [
+            "\u4F9B\u7ED9\u4E0D\u7A33",
+            "\u5C65\u7EA6\u5931\u63A7",
+            "\u590D\u8D2D\u4E0D\u8DB3"
+          ],
+          itemSubtitles: [
+            "KEY SIGNAL",
+            "",
+            ""
+          ]
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u4F9B\u7ED9\u4E0D\u7A33",
+              subtitle: "KEY SIGNAL"
+            },
+            {
+              title: "\u5C65\u7EA6\u5931\u63A7",
+              subtitle: ""
+            },
+            {
+              title: "\u590D\u8D2D\u4E0D\u8DB3",
+              subtitle: ""
+            }
+          ]
+        },
+        editorSchema: {
+          version: 1,
+          kind: "chips",
+          fields: [
+            {
+              key: "items",
+              label: "\u6807\u7B7E\u9879",
+              control: "chip-list",
+              capacity: 3,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-contrast-verdict-box",
+          intent: "contrast",
+          capacity: {
+            minItems: 2,
+            maxItems: 4
+          },
+          keywords: [
+            "\u98CE\u9669",
+            "\u88C1\u51B3",
+            "\u5BF9\u6BD4",
+            "\u53D6\u820D"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "VerdictBox",
+          adapter: "jc-contrast-verdict-box"
+        }
+      },
+      {
+        id: "jc-metrics-views-badge",
+        name: "[JC] \u89C2\u770B\u91CF\u5FBD\u7AE0",
+        family: "metrics",
+        description: "JC imported metrics visual component",
+        tags: [
+          "jc",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "percentage"
+        ],
+        version: 3,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "METRICS",
+          headline: "\u89C2\u770B\u91CF\u5FBD\u7AE0",
+          effectText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          contentPayload: {
+            type: "metrics",
+            value: 80,
+            unit: "M+",
+            label: "\u7F8E\u5143\u57FA\u91D1",
+            bodyText: "M+",
+            detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002"
+          },
+          label: "\u7F8E\u5143\u57FA\u91D1",
+          value: 80,
+          unit: "M+",
+          detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u89C2\u770B\u91CF\u5FBD\u7AE0",
+          progress: 80,
+          values: [],
+          metric: "\u7F8E\u5143\u57FA\u91D1",
+          metricLabel: "\u7F8E\u5143\u57FA\u91D1",
+          marketLabel: "\u89E6\u8FBE\u89C4\u6A21",
+          marketTo: 8,
+          marketSuffix: "M+",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 8,
+          engineeringSuffix: "M+",
+          bodyText: "M+",
+          body: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          effectZh: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          items: [],
+          steps: [],
+          comments: []
+        },
+        defaultPayload: {
+          type: "metrics",
+          value: 20,
+          unit: "M+",
+          label: "\u89E6\u8FBE\u89C4\u6A21",
+          detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-metrics-views-badge",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u64AD\u653E",
+            "\u89C2\u770B",
+            "\u89C4\u6A21",
+            "\u6570\u636E"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "ViewsBadge",
+          adapter: "jc-metrics-views-badge"
+        },
+        updatedAt: "2026-09-15T01:17:42.023Z"
+      },
+      {
+        id: "jc-system-window-card",
+        name: "[JC] \u4EA7\u54C1\u7A97\u53E3\u5361",
+        family: "system",
+        description: "JC imported system visual component",
+        tags: [
+          "jc",
+          "system"
+        ],
+        data: [
+          "text"
+        ],
+        version: 1,
+        tokens: {
+          mountMode: "center",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 0,
+          boundsY: 0,
+          boundsWidth: 1920,
+          boundsHeight: 1080,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 1,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.36,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        mockData: {
+          category: "SYSTEM",
+          headline: "\u4EA7\u54C1\u7A97\u53E3\u5361",
+          effectText: "\u754C\u9762\u6BCF\u4E00\u6B65\u90FD\u8981\u7F29\u77ED\u7528\u6237\u51B3\u7B56\u3002",
+          contentPayload: {
+            type: "narrative",
+            bodyText: "\u754C\u9762\u6BCF\u4E00\u6B65\u90FD\u8981\u7F29\u77ED\u7528\u6237\u51B3\u7B56\u3002",
+            highlightQuote: "PRODUCT WINDOW"
+          },
+          bodyText: "\u754C\u9762\u6BCF\u4E00\u6B65\u90FD\u8981\u7F29\u77ED\u7528\u6237\u51B3\u7B56\u3002",
+          highlightQuote: "PRODUCT WINDOW"
+        },
+        defaultPayload: {
+          type: "narrative",
+          bodyText: "\u754C\u9762\u6BCF\u4E00\u6B65\u90FD\u8981\u7F29\u77ED\u7528\u6237\u51B3\u7B56\u3002",
+          highlightQuote: "PRODUCT WINDOW"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "narrative",
+          fields: [
+            {
+              key: "bodyText",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "textarea"
+            },
+            {
+              key: "highlightQuote",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "jc-system-window-card",
+          intent: "system",
+          capacity: {
+            minItems: 1,
+            maxItems: 1
+          },
+          keywords: [
+            "\u4EA7\u54C1",
+            "\u7A97\u53E3",
+            "\u754C\u9762",
+            "\u7CFB\u7EDF"
+          ],
+          visualWeight: "medium"
+        },
+        runtime: {
+          exportName: "WindowCard",
+          adapter: "jc-system-window-card"
         }
       }
     ],
@@ -50594,48 +55348,5210 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]
   };
 
+  // src/JasonWu/components/common/MotionWrapper.tsx
+  var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+  var BOTTOM_SUBTITLE_SAFE_PCT = 22;
+  var anchors = {
+    center: [0, 0],
+    "bottom-left": [-470, 260],
+    "bottom-right": [470, 260],
+    "top-right": [470, -245],
+    "center-right": [520, 0]
+  };
+  var DEFAULT_COMMON_PROPS = {
+    enterOffset: 0,
+    exitOffset: 0,
+    position: "center",
+    offsetX: 0,
+    offsetY: 0,
+    scale: 1,
+    enterAnimation: "spring-up",
+    exitAnimation: "none",
+    sfx: "none"
+  };
+  var MotionWrapper = ({ commonProps, designTokens, beatDuration, entranceDurationSeconds = 2.2, textRole, preserveNativeMotion = false, children }) => {
+    const frame = useCurrentFrame();
+    const { fps } = useVideoConfig();
+    const props = { ...DEFAULT_COMMON_PROPS, ...commonProps ?? {} };
+    const enterFrames = Math.max(0, Math.round(props.enterOffset * fps));
+    const fixedFrames = props.duration ? Math.max(1, Math.round(props.duration * fps)) : Math.max(1, Math.round(beatDuration * fps) - enterFrames - Math.round((props.exitOffset ?? 0) * fps));
+    const exitStart = Math.min(Math.max(enterFrames + 1, Math.round(beatDuration * fps) - Math.round((props.exitOffset ?? 0) * fps)), enterFrames + fixedFrames);
+    const entranceFrames = Math.max(1, Math.round(entranceDurationSeconds * fps));
+    const enterProgress = preserveNativeMotion ? 1 : interpolate(frame, [enterFrames, enterFrames + entranceFrames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+    const exitProgress = props.exitAnimation === "none" ? 0 : interpolate(frame, [exitStart, exitStart + 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+    const hiddenBeforeEnter = !preserveNativeMotion && frame < enterFrames;
+    const [anchorX, anchorY] = anchors[props.position] ?? anchors.center;
+    const mountMode = designTokens?.mountMode ?? "center";
+    const mountX = Number.isFinite(designTokens?.mountX) ? Number(designTokens?.mountX) : 0;
+    const mountY = Number.isFinite(designTokens?.mountY) ? Number(designTokens?.mountY) : 0;
+    const boundsX = Number.isFinite(designTokens?.boundsX) ? Number(designTokens?.boundsX) : 0;
+    const boundsY = Number.isFinite(designTokens?.boundsY) ? Number(designTokens?.boundsY) : 0;
+    const boundsWidth = Math.max(1, Number.isFinite(designTokens?.boundsWidth) ? Number(designTokens?.boundsWidth) : 1920);
+    const boundsHeight = Math.max(1, Number.isFinite(designTokens?.boundsHeight) ? Number(designTokens?.boundsHeight) : 1080);
+    const presenterSafeMaxWidth = Number.isFinite(designTokens?.presenterSafeMaxWidth) ? Number(designTokens?.presenterSafeMaxWidth) : 0;
+    const presenterSafeLogicalWidth = presenterSafeMaxWidth > 0 ? Math.min(boundsWidth, Math.max(1, Number(designTokens?.presenterSafeLogicalWidth) || Math.round(presenterSafeMaxWidth / Math.max(0.01, props.scale ?? 1)))) : 0;
+    const presenterSafeInset = designTokens?.presenterSafeInset;
+    const safeClipX = presenterSafeInset === "right" ? boundsX + Math.max(0, boundsWidth - presenterSafeLogicalWidth) : boundsX;
+    const safeClipRight = presenterSafeLogicalWidth > 0 ? Math.max(0, 1920 - safeClipX - presenterSafeLogicalWidth) : 0;
+    const safeClipPath = presenterSafeLogicalWidth > 0 ? "inset(" + Math.max(0, boundsY) + "px " + safeClipRight + "px " + Math.max(0, 1080 - boundsY - boundsHeight) + "px " + Math.max(0, safeClipX) + "px)" : void 0;
+    const centeredOffsetX = 960 - (boundsX + boundsWidth / 2) + mountX;
+    const centeredOffsetY = 540 - (boundsY + boundsHeight / 2) + mountY;
+    const mountOffsetX = mountMode === "top-left" ? mountX : mountMode === "left" ? 96 - boundsX + mountX : mountMode === "right" ? 1824 - (boundsX + boundsWidth) + mountX : centeredOffsetX;
+    const rawMountOffsetY = mountMode === "top-left" ? mountY : mountMode === "top" ? 216 - boundsY + mountY : mountMode === "bottom" ? 864 - (boundsY + boundsHeight) + mountY : centeredOffsetY;
+    const bottomSubtitleSafePx = 1080 * ((Number.isFinite(designTokens?.bottomSubtitleSafePct) ? Number(designTokens?.bottomSubtitleSafePct) : BOTTOM_SUBTITLE_SAFE_PCT) / 100);
+    const maxSafeBottomY = 1080 - bottomSubtitleSafePx;
+    const maxMountOffsetY = maxSafeBottomY - boundsY - boundsHeight;
+    const isFullCanvasBounds = boundsX === 0 && boundsY === 0 && boundsWidth >= 1920 && boundsHeight >= 1080;
+    const clampedMountOffsetY = isFullCanvasBounds ? rawMountOffsetY : Math.min(rawMountOffsetY, maxMountOffsetY);
+    const enterX = props.enterAnimation === "slide-left" ? interpolate(enterProgress, [0, 1], [-110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "slide-right" ? interpolate(enterProgress, [0, 1], [110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
+    const enterY = props.enterAnimation === "spring-up" ? interpolate(enterProgress, [0, 1], [76, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
+    const enterScale = props.enterAnimation === "fade-scale" ? interpolate(enterProgress, [0, 1], [0.86, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "glitch" ? 1 + Math.sin(frame * 2.2) * (frame < enterFrames + 10 ? 0.015 : 0) : 1;
+    const exitY = props.exitAnimation === "slide-down" ? interpolate(exitProgress, [0, 1], [0, 96]) : 0;
+    const exitScale = props.exitAnimation === "scale-down" ? interpolate(exitProgress, [0, 1], [1, 0.86]) : 1;
+    const opacity2 = hiddenBeforeEnter ? 0 : props.exitAnimation === "fade-out" ? 1 - exitProgress : interpolate(enterProgress, [0, 1], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    const scale = Math.min(1.2, Math.max(0.6, props.scale ?? 1)) * enterScale * exitScale;
+    const presenterSafeCss = presenterSafeLogicalWidth > 0 ? [
+      ".presenter-safe-overlay .layout-effect-root{width:var(--presenter-safe-logical-width)!important;max-width:100%!important;overflow:hidden;}",
+      ".presenter-safe-overlay .layout-effect-root > *{width:100%;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;}",
+      ".presenter-safe-overlay .layout-effect-root [style]{max-width:100%!important;box-sizing:border-box!important;}"
+    ].join("") : "";
+    const commercialTextCss = !textRole ? "" : [
+      ".motion-commercial-analysis [style*='color: rgb(255, 255, 255)'],.motion-commercial-analysis [style*='color: rgb(248, 250, 252)'],.motion-commercial-analysis [style*='color: #F8FAFC'],.motion-commercial-analysis [style*='color: white']{",
+      "-webkit-text-stroke:none!important;text-shadow:0 5px 18px rgba(0,0,0,0.52)!important;",
+      "}",
+      ".motion-text-role-risk [style*='color: rgb(255, 107, 107)'],.motion-text-role-risk [style*='color: #FF6B6B']{",
+      "background:rgba(162,36,48,0.92);padding:4px 10px;border-radius:5px;-webkit-text-stroke:none!important;",
+      "}"
+    ].join("");
+    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(AbsoluteFill, { className: [textRole ? "motion-commercial-analysis motion-text-role-" + textRole : "", presenterSafeLogicalWidth > 0 ? "presenter-safe-overlay" : ""].filter(Boolean).join(" "), style: {
+      pointerEvents: "none",
+      opacity: opacity2,
+      transform: "translate(" + (mountOffsetX + anchorX + (props.offsetX ?? 0) + enterX) + "px," + (clampedMountOffsetY + anchorY + (props.offsetY ?? 0) + enterY + exitY) + "px) scale(" + scale + ")",
+      transformOrigin: (mountMode === "top-left" || presenterSafeInset === "left" ? boundsX : presenterSafeInset === "right" ? boundsX + boundsWidth : boundsX + boundsWidth / 2) + "px " + (mountMode === "top-left" ? boundsY : boundsY + boundsHeight / 2) + "px",
+      clipPath: safeClipPath,
+      "--presenter-safe-logical-width": presenterSafeLogicalWidth + "px",
+      "--cinematic-center-corridor-pct": String(designTokens?.cinematicCenterCorridorPct ?? 0),
+      wordBreak: "keep-all",
+      overflowWrap: "break-word"
+    }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("style", { children: presenterSafeCss + commercialTextCss }),
+      children
+    ] });
+  };
+
+  // src/JasonWu/JcNativeRecipes.tsx
+  var import_react129 = __toESM(require_react());
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/createLucideIcon.mjs
+  var import_react125 = __toESM(require_react(), 1);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs
+  var toKebabCase = (string) => string?.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs
+  function toLucideIconData(iconName, iconNode, aliases = []) {
+    if (iconNode == null) {
+      throw new Error("[lucide]: iconNode is required when icon name is used");
+    }
+    return {
+      name: toKebabCase(iconName),
+      size: 24,
+      node: iconNode,
+      ...aliases.length > 0 ? { aliases } : {}
+    };
+  }
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs
+  var toCamelCase = (string) => {
+    let out = "";
+    let upperNext = false;
+    for (const ch of string) {
+      if (ch === "-" || ch === "_" || ch <= " ") {
+        upperNext = out.length > 0;
+        continue;
+      }
+      if (out.length === 0) {
+        out += ch.toLowerCase();
+      } else {
+        out += upperNext ? ch.toUpperCase() : ch;
+      }
+      upperNext = false;
+    }
+    return out;
+  };
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs
+  var toPascalCase = (string) => {
+    const camelCase = toCamelCase(string);
+    return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
+  };
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/Icon.mjs
+  var import_react124 = __toESM(require_react(), 1);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs
+  var mergeClasses = (...classes) => classes.filter((className2, index, array) => {
+    return Boolean(className2) && className2.trim() !== "" && array.indexOf(className2) === index;
+  }).join(" ").trim();
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/build/defaultAttributes.mjs
+  var defaultAttributes = {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 24,
+    height: 24,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    "stroke-width": 2,
+    "stroke-linecap": "round",
+    "stroke-linejoin": "round"
+  };
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs
+  function isDefined(value) {
+    return value !== null && value !== void 0;
+  }
+  function buildLucideIconNode(icon, params = {}) {
+    const attributeNames = params.attributeNames ?? {};
+    const getAttributeName = (attributeName) => attributeNames[attributeName] ?? attributeName;
+    const viewBoxWidth = icon.size ?? icon.width ?? defaultAttributes["width"];
+    const viewBoxHeight = icon.size ?? icon.height ?? defaultAttributes["height"];
+    const aliasClassNames = icon.aliases?.filter((alias) => typeof alias === "string" && alias.trim() !== "").map((alias) => `lucide-${alias}`) ?? [];
+    const iconClassNames = [...icon.name ? [`lucide-${icon.name}`] : [], ...aliasClassNames];
+    const classNamesFromClassName = params.className?.split(" ").filter(Boolean) ?? [];
+    const className2 = params.includeDefaultClasses === false ? mergeClasses(...classNamesFromClassName) : mergeClasses("lucide", ...iconClassNames, ...classNamesFromClassName);
+    const calculatedStrokeWidth = params.absoluteStrokeWidth ? Number(params.strokeWidth ?? defaultAttributes["stroke-width"]) * Number(icon.size ?? icon.width ?? defaultAttributes["width"]) / Number(params.size ?? params.width ?? defaultAttributes["width"]) : params.strokeWidth ?? defaultAttributes["stroke-width"];
+    const attributes = {
+      ...Object.entries(defaultAttributes).reduce((attrs, [attrName, value]) => {
+        attrs[getAttributeName(attrName)] = value;
+        return attrs;
+      }, {}),
+      ..."color" in params && params.color && {
+        [getAttributeName("stroke")]: params.color
+      },
+      ..."size" in params && isDefined(params.size) && {
+        [getAttributeName("width")]: params.size,
+        [getAttributeName("height")]: params.size
+      },
+      ..."width" in params && isDefined(params.width) && {
+        [getAttributeName("width")]: params.width
+      },
+      ..."height" in params && isDefined(params.height) && {
+        [getAttributeName("height")]: params.height
+      },
+      [getAttributeName("stroke-width")]: calculatedStrokeWidth,
+      ...className2 && {
+        [getAttributeName("class")]: className2
+      },
+      [getAttributeName("viewBox")]: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
+      ...params.hasA11yProp === false ? {
+        [getAttributeName("aria-hidden")]: "true"
+      } : {},
+      ..."attributes" in params && params.attributes
+    };
+    return [
+      "svg",
+      attributes,
+      icon.node.map((child) => {
+        const [name, attrs, children] = child;
+        const nextAttrs = params.nonScalingStroke ? { [getAttributeName("vector-effect")]: "non-scaling-stroke", ...attrs } : attrs;
+        return children ? [name, nextAttrs, children] : [name, nextAttrs];
+      })
+    ];
+  }
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconForReact.mjs
+  function buildLucideIconForReact(icon, params = {}) {
+    return buildLucideIconNode(icon, {
+      ...params,
+      attributeNames: {
+        ...params.attributeNames,
+        class: "className",
+        "stroke-width": "strokeWidth",
+        "stroke-linecap": "strokeLinecap",
+        "stroke-linejoin": "strokeLinejoin",
+        "vector-effect": "vectorEffect"
+      }
+    });
+  }
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs
+  var hasA11yProp = (props) => {
+    for (const prop in props) {
+      if (prop.startsWith("aria-") || prop === "role" || prop === "title") {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/context.mjs
+  var import_react123 = __toESM(require_react(), 1);
+  var LucideContext = (0, import_react123.createContext)({});
+  var useLucideContext = () => (0, import_react123.useContext)(LucideContext);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/Icon.mjs
+  var Icon = (0, import_react124.forwardRef)(
+    ({
+      color,
+      size,
+      width,
+      height,
+      strokeWidth,
+      absoluteStrokeWidth,
+      nonScalingStroke,
+      className: className2 = "",
+      children,
+      iconNode = [],
+      icon = {
+        node: iconNode,
+        aliases: [],
+        size: 24
+      },
+      ...rest
+    }, ref) => {
+      const {
+        size: contextSize = 24,
+        strokeWidth: contextStrokeWidth = 2,
+        absoluteStrokeWidth: contextAbsoluteStrokeWidth = false,
+        nonScalingStroke: contextNonScalingStroke = false,
+        color: contextColor = "currentColor",
+        className: contextClass = ""
+      } = useLucideContext() ?? {};
+      const hasAccessibleProp = Boolean(children) || hasA11yProp(rest);
+      const [name, svgAttributes, builtIconNode = []] = buildLucideIconForReact(icon, {
+        color: color ?? contextColor,
+        width: width ?? size ?? contextSize,
+        height: height ?? size ?? contextSize,
+        strokeWidth: strokeWidth ?? contextStrokeWidth,
+        absoluteStrokeWidth: absoluteStrokeWidth ?? contextAbsoluteStrokeWidth,
+        nonScalingStroke: nonScalingStroke ?? contextNonScalingStroke,
+        className: mergeClasses(contextClass, className2),
+        hasA11yProp: hasAccessibleProp,
+        attributes: rest
+      });
+      return (0, import_react124.createElement)(
+        name,
+        {
+          ref,
+          ...svgAttributes
+        },
+        [
+          ...builtIconNode.map(([tag, attrs]) => (0, import_react124.createElement)(tag, attrs)),
+          ...Array.isArray(children) ? children : [children]
+        ]
+      );
+    }
+  );
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/createLucideIcon.mjs
+  function createLucideIcon(iconDataOrName, iconNode = [], aliases = []) {
+    const iconData = typeof iconDataOrName === "string" ? toLucideIconData(iconDataOrName, iconNode, aliases) : iconDataOrName;
+    const Component = (0, import_react125.forwardRef)(
+      ({ className: className2, ...props }, ref) => (0, import_react125.createElement)(Icon, {
+        ref,
+        icon: iconData,
+        className: className2,
+        ...props
+      })
+    );
+    if (iconData.name) {
+      Component.displayName = toPascalCase(iconData.name);
+    }
+    return Component;
+  }
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/arrow-down.mjs
+  var __iconData = {
+    name: "arrow-down",
+    size: 24,
+    node: [
+      ["path", { d: "M12 5v14", key: "s699le" }],
+      ["path", { d: "m19 12-7 7-7-7", key: "1idqje" }]
+    ]
+  };
+  __iconData.node;
+  var ArrowDown = createLucideIcon(__iconData);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/badge-check.mjs
+  var __iconData2 = {
+    name: "badge-check",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z",
+          key: "3c2336"
+        }
+      ],
+      ["path", { d: "m16 9-5.5 5.5L8 12", key: "xofnsj" }]
+    ],
+    aliases: ["verified"]
+  };
+  __iconData2.node;
+  var BadgeCheck = createLucideIcon(__iconData2);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/bot.mjs
+  var __iconData3 = {
+    name: "bot",
+    size: 24,
+    node: [
+      ["path", { d: "M12 8V4H8", key: "hb8ula" }],
+      ["rect", { width: "16", height: "12", x: "4", y: "8", rx: "2", key: "enze0r" }],
+      ["path", { d: "M2 14h2", key: "vft8re" }],
+      ["path", { d: "M20 14h2", key: "4cs60a" }],
+      ["path", { d: "M15 13v2", key: "1xurst" }],
+      ["path", { d: "M9 13v2", key: "rq6x2g" }]
+    ]
+  };
+  __iconData3.node;
+  var Bot = createLucideIcon(__iconData3);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/check.mjs
+  var __iconData4 = {
+    name: "check",
+    size: 24,
+    node: [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]]
+  };
+  __iconData4.node;
+  var Check = createLucideIcon(__iconData4);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/code-xml.mjs
+  var __iconData5 = {
+    name: "code-xml",
+    size: 24,
+    node: [
+      ["path", { d: "m18 16 4-4-4-4", key: "1inbqp" }],
+      ["path", { d: "m6 8-4 4 4 4", key: "15zrgr" }],
+      ["path", { d: "m14.5 4-5 16", key: "e7oirm" }]
+    ],
+    aliases: ["code-2"]
+  };
+  __iconData5.node;
+  var CodeXml = createLucideIcon(__iconData5);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/crown.mjs
+  var __iconData6 = {
+    name: "crown",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z",
+          key: "1vdc57"
+        }
+      ],
+      ["path", { d: "M5 21h14", key: "11awu3" }]
+    ]
+  };
+  __iconData6.node;
+  var Crown = createLucideIcon(__iconData6);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/eye.mjs
+  var __iconData7 = {
+    name: "eye",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
+          key: "1nclc0"
+        }
+      ],
+      ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+    ]
+  };
+  __iconData7.node;
+  var Eye = createLucideIcon(__iconData7);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/file-text.mjs
+  var __iconData8 = {
+    name: "file-text",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+          key: "1oefj6"
+        }
+      ],
+      ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
+      ["path", { d: "M10 9H8", key: "b1mrlr" }],
+      ["path", { d: "M16 13H8", key: "t4e002" }],
+      ["path", { d: "M16 17H8", key: "z1uh3a" }]
+    ]
+  };
+  __iconData8.node;
+  var FileText = createLucideIcon(__iconData8);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/flame.mjs
+  var __iconData9 = {
+    name: "flame",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4",
+          key: "1slcih"
+        }
+      ]
+    ]
+  };
+  __iconData9.node;
+  var Flame = createLucideIcon(__iconData9);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/git-branch.mjs
+  var __iconData10 = {
+    name: "git-branch",
+    size: 24,
+    node: [
+      ["path", { d: "M15 6a9 9 0 0 0-9 9V3", key: "1cii5b" }],
+      ["circle", { cx: "18", cy: "6", r: "3", key: "1h7g24" }],
+      ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }]
+    ]
+  };
+  __iconData10.node;
+  var GitBranch = createLucideIcon(__iconData10);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/lightbulb.mjs
+  var __iconData11 = {
+    name: "lightbulb",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5",
+          key: "1gvzjb"
+        }
+      ],
+      ["path", { d: "M9 18h6", key: "x1upvd" }],
+      ["path", { d: "M10 22h4", key: "ceow96" }]
+    ]
+  };
+  __iconData11.node;
+  var Lightbulb = createLucideIcon(__iconData11);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/package.mjs
+  var __iconData12 = {
+    name: "package",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z",
+          key: "1a0edw"
+        }
+      ],
+      ["path", { d: "M12 22V12", key: "d0xqtd" }],
+      ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
+      ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
+    ]
+  };
+  __iconData12.node;
+  var Package = createLucideIcon(__iconData12);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/play.mjs
+  var __iconData13 = {
+    name: "play",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z",
+          key: "10ikf1"
+        }
+      ]
+    ]
+  };
+  __iconData13.node;
+  var Play = createLucideIcon(__iconData13);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/scale.mjs
+  var __iconData14 = {
+    name: "scale",
+    size: 24,
+    node: [
+      ["path", { d: "M12 3v18", key: "108xh3" }],
+      ["path", { d: "m19 8 3 8a5 5 0 0 1-6 0zV7", key: "zcdpyk" }],
+      ["path", { d: "M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1", key: "1yorad" }],
+      ["path", { d: "m5 8 3 8a5 5 0 0 1-6 0zV7", key: "eua70x" }],
+      ["path", { d: "M7 21h10", key: "1b0cd5" }]
+    ]
+  };
+  __iconData14.node;
+  var Scale = createLucideIcon(__iconData14);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/shield-check.mjs
+  var __iconData15 = {
+    name: "shield-check",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+          key: "oel41y"
+        }
+      ],
+      ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+    ]
+  };
+  __iconData15.node;
+  var ShieldCheck = createLucideIcon(__iconData15);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/sparkles.mjs
+  var __iconData16 = {
+    name: "sparkles",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
+          key: "1s2grr"
+        }
+      ],
+      ["path", { d: "M20 2v4", key: "1rf3ol" }],
+      ["path", { d: "M22 4h-4", key: "gwowj6" }],
+      ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
+    ],
+    aliases: ["stars"]
+  };
+  __iconData16.node;
+  var Sparkles = createLucideIcon(__iconData16);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/square-terminal.mjs
+  var __iconData17 = {
+    name: "square-terminal",
+    size: 24,
+    node: [
+      ["path", { d: "m7 11 2-2-2-2", key: "1lz0vl" }],
+      ["path", { d: "M11 13h4", key: "1p7l4v" }],
+      ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }]
+    ],
+    aliases: ["terminal-square"]
+  };
+  __iconData17.node;
+  var SquareTerminal = createLucideIcon(__iconData17);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/star.mjs
+  var __iconData18 = {
+    name: "star",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
+          key: "r04s7s"
+        }
+      ]
+    ]
+  };
+  __iconData18.node;
+  var Star = createLucideIcon(__iconData18);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/wand-sparkles.mjs
+  var __iconData19 = {
+    name: "wand-sparkles",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72",
+          key: "ul74o6"
+        }
+      ],
+      ["path", { d: "m14 7 3 3", key: "1r5n42" }],
+      ["path", { d: "M5 6v4", key: "ilb8ba" }],
+      ["path", { d: "M19 14v4", key: "blhpug" }],
+      ["path", { d: "M10 2v2", key: "7u0qdc" }],
+      ["path", { d: "M7 8H3", key: "zfb6yr" }],
+      ["path", { d: "M21 16h-4", key: "1cnmox" }],
+      ["path", { d: "M11 3H9", key: "1obp7u" }]
+    ],
+    aliases: ["wand-2"]
+  };
+  __iconData19.node;
+  var WandSparkles = createLucideIcon(__iconData19);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/x.mjs
+  var __iconData20 = {
+    name: "x",
+    size: 24,
+    node: [
+      ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+      ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
+    ]
+  };
+  __iconData20.node;
+  var X = createLucideIcon(__iconData20);
+
+  // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/icons/zap.mjs
+  var __iconData21 = {
+    name: "zap",
+    size: 24,
+    node: [
+      [
+        "path",
+        {
+          d: "M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z",
+          key: "1v7up4"
+        }
+      ]
+    ]
+  };
+  __iconData21.node;
+  var Zap = createLucideIcon(__iconData21);
+
+  // src/design/component-content.ts
+  var stringValue = (value, fallback = "") => typeof value === "string" ? value : fallback;
+  var rows2 = (value) => Array.isArray(value) ? value.map((item2) => stringValue(item2)).filter((item2) => item2.trim()) : [];
+  var numbers = (value) => Array.isArray(value) ? value.map((item2) => Number(item2)).filter(Number.isFinite) : [];
+  var isPayload = (value) => !!value && typeof value === "object" && ["narrative", "chips", "metrics", "steps"].indexOf(String(value.type)) >= 0;
+  var normalizeComponentContent = (source) => {
+    const input = source ?? {};
+    const projectLayer = input.__projectLayer === true;
+    const category = stringValue(input.category, stringValue(input.eyebrow, stringValue(input.categoryTag, projectLayer ? "" : "DESIGN SYSTEM")));
+    const headline = stringValue(input.headline, stringValue(input.title, projectLayer ? "" : "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7"));
+    const payload = input.contentPayload;
+    if (isPayload(payload)) {
+      if (payload.type === "narrative") return { category, headline, contentPayload: { type: "narrative", bodyText: stringValue(payload.bodyText, stringValue(input.bullText, stringValue(input.body, stringValue(input.effectText, stringValue(input.text, projectLayer ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))))), ...typeof payload.bearText === "string" || stringValue(input.bearText) ? { bearText: typeof payload.bearText === "string" ? payload.bearText : stringValue(input.bearText) } : {}, ...typeof payload.highlightQuote === "string" || stringValue(input.highlightQuote) ? { highlightQuote: typeof payload.highlightQuote === "string" ? payload.highlightQuote : stringValue(input.highlightQuote) } : {} } };
+      if (payload.type === "chips") return { category, headline, contentPayload: { type: "chips", items: (Array.isArray(payload.items) ? payload.items : []).map((item2) => ({ title: stringValue(item2?.title), subtitle: typeof item2?.subtitle === "string" ? item2.subtitle : "" })) } };
+      if (payload.type === "metrics") return { category, headline, contentPayload: { type: "metrics", value: payload.value ?? input.value ?? input.progress ?? (projectLayer ? "" : 71), unit: stringValue(payload.unit), label: stringValue(payload.label, stringValue(input.label, stringValue(input.metric, projectLayer ? "" : "\u5173\u952E\u6307\u6807"))), ...typeof payload.bodyText === "string" || typeof input.bodyText === "string" || typeof input.unit === "string" ? { bodyText: stringValue(payload.bodyText, stringValue(input.bodyText, stringValue(input.unit))) } : {}, ...typeof payload.detailText === "string" || typeof input.detailText === "string" || typeof input.body === "string" || typeof input.effectText === "string" ? { detailText: stringValue(payload.detailText, stringValue(input.detailText, stringValue(input.body, stringValue(input.effectText)))) } : {} } };
+      return { category, headline, contentPayload: { type: "steps", steps: (Array.isArray(payload.steps) ? payload.steps : []).map((item2, index) => ({ stepNumber: Number(item2?.stepNumber) || index + 1, text: stringValue(item2?.text) })), ...Number.isFinite(Number(payload.progress)) ? { progress: Number(payload.progress) } : {}, ...typeof payload.bodyText === "string" ? { bodyText: payload.bodyText } : {} } };
+    }
+    const list3 = rows2(input.steps).length ? rows2(input.steps) : rows2(input.items).length ? rows2(input.items) : rows2(input.years).length ? rows2(input.years) : rows2(input.nodes).length ? rows2(input.nodes) : rows2(input.units);
+    return { category, headline, contentPayload: list3.length ? { type: "steps", steps: list3.map((text3, index) => ({ stepNumber: index + 1, text: text3 })) } : { type: "narrative", bodyText: stringValue(input.body, stringValue(input.effectText, stringValue(input.text, "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))) } };
+  };
+  var toRendererContentProps = (source) => {
+    const normalized = normalizeComponentContent(source);
+    const base = { category: normalized.category, eyebrow: normalized.category, categoryTag: normalized.category, headline: normalized.headline, title: normalized.headline };
+    const payload = normalized.contentPayload;
+    if (payload.type === "narrative") return { ...base, body: payload.bodyText, effectText: payload.bodyText, effectZh: payload.bodyText, text: payload.bodyText, bullText: payload.bodyText, bearText: payload.bearText, highlightQuote: payload.highlightQuote };
+    if (payload.type === "chips") {
+      const values3 = payload.items.map((item2) => item2.title);
+      const subtitles = payload.items.map((item2) => typeof item2.subtitle === "string" ? item2.subtitle : "");
+      return { ...base, items: values3, steps: values3, comments: values3, itemSubtitles: subtitles, subLabels: subtitles, subLabel: subtitles.find((value) => value.trim()) || "" };
+    }
+    if (payload.type === "metrics") {
+      const list3 = rows2(source?.items).length ? rows2(source?.items) : rows2(source?.steps);
+      const numeric = Number(payload.value);
+      const bodyText2 = stringValue(payload.bodyText, stringValue(payload.unit, normalized.headline));
+      const detailText = stringValue(payload.detailText, stringValue(source?.body, stringValue(source?.effectText, source?.__projectLayer === true ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE")));
+      return { ...base, value: payload.value, progress: payload.value, values: list3.length && Number.isFinite(numeric) ? list3.map(() => numeric) : numbers(source?.values), metric: payload.label, label: payload.label, metricLabel: payload.label, unit: payload.unit, marketLabel: stringValue(source?.marketLabel, payload.label), marketTo: source?.marketTo ?? payload.value, marketSuffix: stringValue(source?.marketSuffix, payload.unit), engineeringLabel: stringValue(source?.engineeringLabel, source?.__projectLayer === true ? "" : "\u589E\u957F\u6307\u6807"), engineeringTo: source?.engineeringTo ?? source?.value2 ?? payload.value, engineeringSuffix: stringValue(source?.engineeringSuffix, payload.unit), bodyText: bodyText2, detailText, body: detailText, effectText: detailText, effectZh: detailText, items: list3, steps: list3, comments: list3 };
+    }
+    const values2 = payload.steps.map((item2) => item2.text);
+    const bodyText = typeof payload.bodyText === "string" ? payload.bodyText : stringValue(source?.body, stringValue(source?.effectText, stringValue(source?.text)));
+    return { ...base, steps: values2, items: values2, years: values2, nodes: values2, units: values2, comments: values2, label: stringValue(source?.label, normalized.category), title: stringValue(source?.title, normalized.headline), body: bodyText, bodyText, effectText: bodyText, effectZh: bodyText, text: bodyText, ...typeof payload.progress === "number" ? { progress: payload.progress, value: payload.progress, values: values2.map(() => payload.progress) } : { values: numbers(source?.values) } };
+  };
+
+  // src/JasonWu/JcFontGate.tsx
+  var import_react126 = __toESM(require_react());
+  var specs = [
+    ...["500", "700", "900"].map((weight) => `${weight} 32px "Noto Sans SC"`),
+    ...["300", "600", "700", "800"].map((weight) => `${weight} 32px "Inter"`),
+    '400 32px "Archivo Black"'
+  ];
+  var sample = "JC font verification AI0123456789";
+  var JcFontGate = () => {
+    const [handle] = (0, import_react126.useState)(() => delayRender("Waiting for JC design fonts"));
+    (0, import_react126.useEffect)(() => {
+      let cancelled = false;
+      const waitForFonts = async () => {
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        for (let attempt = 0; attempt < 60; attempt += 1) {
+          await Promise.all(specs.map((spec) => document.fonts.load(spec, sample).catch(() => {
+          })));
+          await document.fonts.ready;
+          if (specs.every((spec) => document.fonts.check(spec, sample))) {
+            if (!cancelled) continueRender(handle);
+            return;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 200));
+        }
+        cancelRender(new Error("JC fonts did not become ready"));
+      };
+      void waitForFonts().catch((error2) => cancelRender(error2));
+      return () => {
+        cancelled = true;
+      };
+    }, [handle]);
+    return null;
+  };
+
+  // src/JasonWu/components/jc/tokens.ts
+  var COLOR = {
+    // 四色语义（唯一允许的强调色）
+    blue: "#4D9EFF",
+    // 定义 / 方法 / 中性推进
+    green: "#3DDC84",
+    // 正面 / 低门槛 / 已生效
+    yellow: "#FFC53D",
+    // 机会 / 警示 / 争议 / 转折
+    red: "#FF4D4D",
+    // 负面 / 陷阱 / 危机
+    // 基础
+    white: "#FFFFFF",
+    grey: "#B7BDC6",
+    // 次要文字
+    greyDim: "#7A8089",
+    // 更弱的说明文字
+    cardBg: "rgba(12,14,18,0.78)",
+    cardStroke: "rgba(255,255,255,0.10)"
+  };
+  var SURFACE = {
+    light: {
+      bg: "rgba(255,255,255,0.92)",
+      fg: "#1A1D24",
+      stroke: "rgba(0,0,0,0.12)",
+      shadow: "0 6px 20px rgba(0,0,0,0.18)"
+    },
+    darkPlate: "rgba(10,10,12,0.72)"
+  };
+  var FONT = {
+    zh: '"Noto Sans SC"',
+    // 思源黑体
+    en: '"Inter"',
+    // 英文 kicker / 正文 / 数字
+    enTitle: '"Archivo Black"',
+    // 英文标题与大字结论（CRUSHED / 人名），窄方超黑，weight 一律 400
+    // 底部字幕专用字族（2026-07-26 裁定，唯一例外）：字幕是跟读层不是包装层，用 PingFang SC
+    // Regular 取苹果字幕的细体气质；MG 包装层仍一律 FONT.zh。PingFang 为 macOS 系统字体，
+    // 不走 @fontsource 打包 —— Windows/Linux 渲染时回退到打包的 Noto Sans SC 400（fonts.ts
+    // 已引入 400 细档，近似但非同款；跨机器交付前先渲一帧确认字幕观感）。
+    subZh: '"PingFang SC", "Noto Sans SC"',
+    subEn: '"Inter"',
+    // 字幕英文行必须用比例西文字体：用中文字体渲英文，字宽字距全错
+    zhHeavy: 900,
+    zhMedium: 500,
+    enBold: 700,
+    subZhWeight: 400,
+    subEnWeight: 300
+  };
+  var GRADIENT = {
+    blue: ["#6FB4FF", "#2F7FE0"],
+    green: ["#5CE89A", "#1FA85D"],
+    yellow: ["#FFD666", "#E8A81E"],
+    red: ["#FF6B6B", "#E22D2D"]
+  };
+  var SIZE = {
+    kicker: 22,
+    // 英文 kicker / 侧标英文
+    subSmall: 20,
+    // 侧标第二行等最小说明字
+    chip: 30,
+    // ⚠ 已废弃（2026-07-25）：30 落 typography §7.7 空档带 26-31。存量片沿用，新片改用下方 T 档
+    // ---- T 档字阶（2026-07-25 基准片八维实测，typography §7.7 唯一真源）----
+    // 五档 + 空档带：T1 106-138 / [91-105 禁] / T2 51-71 / [43-50 禁] / T3 32-42 / [26-31 禁] / T4 17-25 / [13-16 禁] / T5 10-12
+    // 现有 token 归档：h1=108→T1｜h2=64 & subZh=52→T2｜card=40→T3｜kicker=22 & subSmall=20→T4｜mega=180 独立冲击档
+    navTitle: 52,
+    // 章节侧标 title 变体的中文大标（导航层）。2026-07-27 新增：旧值 SIZE.kicker*2=44
+    // 落 typography §7.7 的 43-50 禁用空档带；52 落 T2 档 51-71 内，与 kicker 22 成 2.36:1。
+    // 独立成 token 而非复用 subZh（同为 52）——subZh 是底部字幕跟读层专用，两者语义无关，
+    // 合用会让「调字幕字号」连带动侧标（impl-S08 提出）。
+    t3: 32,
+    // 清单条目 / 小标题（取代 chip 30）
+    t4Lg: 25,
+    // 贴行 / 徽章标签 / 次级 chip（T4 上沿）
+    t4Sm: 17,
+    // 条目级 EN 小标（T4 下沿，取代 16）
+    subZh: 52,
+    // 底部字幕中文（2026-07-16 裁决：对齐基准片 ≈53px、屏高 4.9%）
+    subEn: 28,
+    // 底部字幕英文（与中文行比例对齐基准片）
+    card: 40,
+    // 卡片标题
+    h2: 64,
+    // 段落 hero
+    h1: 108,
+    // 章节 hero / 大数字（2026-07-16 裁决：88→108，对齐基准片单字 100-110px）
+    mega: 180
+    // 全屏冲击数字
+  };
+  var GRID2 = 8;
+  var RADIUS = { chip: 12, card: 20, phone: 56 };
+  var SAFE = {
+    sideLabel: { x: 72, y: 88 },
+    // 章节侧标锚点（竖线左缘 / kicker 基线区顶）
+    stackX: 72,
+    // 左侧信息卡堆栈左缘
+    subtitleBottom: 30,
+    // 字幕距底（2026-07-16 规格表：基准片英文箱底距画底 26-30px，旧值 84 偏高约 50px）
+    faceZoneXPct: 0.55,
+    // x > 55% 不放常驻卡
+    subtitleZoneYPct: 0.82
+    // y > 82% 不放卡片
+  };
+  var MOTION = {
+    // 合成是 30fps（勿按 60fps 写帧数——2026-07-16 校准：旧值 18/14 是 60fps 口径，
+    // 在 30fps 下所有入场慢一倍、stagger 拖 0.47s，是「PPT 感」的系统性来源）。
+    popInFrames: 9,
+    // 入场时长（30fps ≈ 0.3s）
+    popInShift: 40,
+    // 入场位移 px（明显的滑入感）
+    stagger: 7,
+    // 先后入场的默认间隔帧数（≈0.23s）
+    dimOpacity: 0.35
+    // 旧信息常驻透明度
+  };
+
+  // src/JasonWu/components/jc/motion.ts
+  var useEnter = (enterAt = 0, dir = "left") => {
+    const frame = useCurrentFrame();
+    const local = frame - enterAt;
+    const move = interpolate(local, [0, MOTION.popInFrames], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const opacity2 = interpolate(local, [0, MOTION.popInFrames * 0.7], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.quad)
+    });
+    const shift = (1 - move) * MOTION.popInShift;
+    return {
+      opacity: opacity2,
+      transform: dir === "left" ? `translateX(${-shift}px)` : `translateY(${shift}px)`
+    };
+  };
+  var usePop = (enterAt = 0, durFrames = 13) => {
+    const frame = useCurrentFrame();
+    const local = frame - enterAt;
+    const t = interpolate(local, [0, durFrames], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    return {
+      opacity: t,
+      transform: `scale(${0.95 + t * 0.05})`
+    };
+  };
+
+  // src/JasonWu/components/jc/BadgeCard.tsx
+  var import_jsx_runtime73 = __toESM(require_jsx_runtime());
+  var BadgeCard = ({ icon, zhTitle, zhResult, enKicker, accent = "yellow", enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const c3 = COLOR[accent];
+    return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 12,
+          padding: "26px 34px",
+          background: "rgba(10,12,16,0.88)",
+          border: `2px solid ${c3}`,
+          borderRadius: 18,
+          boxShadow: `0 0 30px ${c3}33, 0 14px 40px rgba(0,0,0,0.5), inset 0 0 26px ${c3}14`,
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: zhTitle }),
+          /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(ArrowDown, { size: 22, strokeWidth: 2.8, color: c3 }),
+            /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: c3 }, children: zhResult })
+          ] }),
+          enKicker ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.3em", color: `${c3}CC` }, children: enKicker.toUpperCase() }) : null
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/BarChart.tsx
+  var import_jsx_runtime74 = __toESM(require_jsx_runtime());
+  var BarChart2 = ({ items: items2, accent = "yellow", width = 420, enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const max = Math.max(...items2.map((i) => i.value));
+    return /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 2 }, children: items2.map((item2, i) => {
+      const start2 = enterAt + i * MOTION.stagger;
+      const t = interpolate(frame, [start2, start2 + 24], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.cubic)
+      });
+      const barW = item2.value / max * width * t;
+      return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 14, opacity: t === 0 ? 0 : 1 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+          "div",
+          {
+            style: {
+              width: 120,
+              textAlign: "right",
+              fontFamily: FONT.en,
+              fontWeight: 700,
+              fontSize: SIZE.subSmall,
+              color: COLOR.grey,
+              whiteSpace: "nowrap"
+            },
+            children: item2.label
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+          "div",
+          {
+            style: {
+              width: barW,
+              height: 16,
+              borderRadius: 8,
+              background: item2.highlight ? COLOR[accent] : "rgba(255,255,255,0.22)"
+            }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+          "div",
+          {
+            style: {
+              fontFamily: FONT.en,
+              fontWeight: 800,
+              fontSize: SIZE.subSmall,
+              color: item2.highlight ? COLOR[accent] : COLOR.grey,
+              opacity: t
+            },
+            children: item2.display
+          }
+        )
+      ] }, i);
+    }) });
+  };
+
+  // src/JasonWu/components/jc/BigNumber.tsx
+  var import_jsx_runtime75 = __toESM(require_jsx_runtime());
+  var BigNumber = ({
+    value,
+    countFrom = 0,
+    prefix = "",
+    suffix = "",
+    decimals = 0,
+    color = "white",
+    enKicker,
+    zhSub,
+    size = "h1",
+    enterAt = 0,
+    countFrames = 45,
+    grouping = true
+  }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "up");
+    const v = interpolate(frame, [enterAt, enterAt + countFrames], [countFrom, value], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const text3 = grouping ? v.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) : v.toFixed(decimals);
+    const c3 = color === "white" ? COLOR.white : COLOR[color];
+    return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
+        "div",
+        {
+          style: {
+            fontFamily: FONT.en,
+            fontWeight: 800,
+            fontSize: SIZE[size],
+            color: c3,
+            lineHeight: 1.05,
+            fontVariantNumeric: "tabular-nums"
+          },
+          children: [
+            prefix,
+            text3,
+            suffix
+          ]
+        }
+      ),
+      enKicker ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+        "div",
+        {
+          style: {
+            marginTop: 8,
+            fontFamily: FONT.en,
+            fontWeight: 800,
+            fontSize: SIZE.kicker,
+            letterSpacing: "0.3em",
+            color: COLOR.grey
+          },
+          children: enKicker.toUpperCase()
+        }
+      ) : null,
+      zhSub ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+        "div",
+        {
+          style: {
+            marginTop: 6,
+            fontFamily: FONT.zh,
+            fontWeight: 700,
+            fontSize: 24,
+            // 双语层级：白色粗体中文 > 灰色英文——中文是观众读的行（报告排印 sev2/zoom zhu-125m）
+            color: COLOR.white
+          },
+          children: zhSub
+        }
+      ) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/BilingualSub.tsx
+  var import_jsx_runtime76 = __toESM(require_jsx_runtime());
+  var SUB_ZH_SIZE = SIZE.subZh;
+  var SUB_EN_SIZE = SIZE.subEn;
+  var SUB_PLATE = "rgba(4,6,8,0.84)";
+  var SUB_PLATE_SHADOW = "0 4px 15px rgba(0,0,0,0.22)";
+  var BilingualSub = ({
+    zh,
+    en,
+    zhSize = SUB_ZH_SIZE,
+    bottom = SAFE.subtitleBottom
+  }) => {
+    const { height } = useVideoConfig();
+    return /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          height,
+          pointerEvents: "none"
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              // 两行箱子各自按内容宽度居中
+              rowGap: 9
+              // 两行箱子分离，间距 8-10px（specs.md 字幕行）
+            },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  "data-qc": "subtitle",
+                  "data-qc-id": "sub-zh",
+                  style: {
+                    display: "inline-block",
+                    background: SUB_PLATE,
+                    // 略深于旧 0.72：细体要靠底板补对比，不靠加粗
+                    borderRadius: 12,
+                    padding: "12px 27px 15px",
+                    // 底比顶多 3px：细体视觉重心偏上，等距会显得贴底
+                    fontFamily: FONT.subZh,
+                    fontWeight: FONT.subZhWeight,
+                    fontSize: zhSize,
+                    lineHeight: 1.08,
+                    color: COLOR.white,
+                    textShadow: "0 1px 2px rgba(0,0,0,0.30)",
+                    // 弱化：底衬箱已保证对比度
+                    boxShadow: SUB_PLATE_SHADOW,
+                    letterSpacing: "0.008em",
+                    textAlign: "center"
+                  },
+                  children: zh
+                }
+              ),
+              en ? /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  style: {
+                    display: "inline-block",
+                    background: SUB_PLATE,
+                    borderRadius: 10,
+                    padding: "6px 20px 9px",
+                    // 英文行底衬箱更窄
+                    fontFamily: FONT.subEn,
+                    // 比例西文字体；用中文字体渲英文是旧版「不好看」的主因
+                    fontWeight: FONT.subEnWeight,
+                    // 有底衬箱后不靠加粗补对比（specs.md）
+                    fontSize: SUB_EN_SIZE,
+                    lineHeight: 1.08,
+                    color: COLOR.white,
+                    // 纯白：#E8EAED 在成片里发灰（字幕 sev3）
+                    textShadow: "0 1px 2px rgba(0,0,0,0.30)",
+                    // 弱化：底衬箱已保证对比度
+                    boxShadow: SUB_PLATE_SHADOW,
+                    letterSpacing: "0.004em",
+                    textAlign: "center"
+                  },
+                  children: en
+                }
+              ) : null
+            ]
+          }
+        )
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Breathe.tsx
+  var import_jsx_runtime77 = __toESM(require_jsx_runtime());
+  var Breathe = ({ children, phase = 0, amp = 1 }) => {
+    const frame = useCurrentFrame();
+    const s = 1 + 6e-3 * amp * Math.sin((frame + phase) / 22);
+    const y = 3 * amp * Math.sin((frame + phase) / 28);
+    return /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { transform: `translateY(${y}px) scale(${s})`, transformOrigin: "center" }, children });
+  };
+
+  // src/JasonWu/components/jc/BrickWall.tsx
+  var import_jsx_runtime78 = __toESM(require_jsx_runtime());
+  var BRICK_W = 150;
+  var BRICK_H = 56;
+  var GAP = GRID2;
+  var GLOW_YELLOW = "rgba(255,197,61,0.4)";
+  var BrickWall = ({ label: label3, enLabel, rows: rows3 = 2, width = 620, enterAt }) => {
+    const frame = useCurrentFrame();
+    const cols = Math.max(2, Math.round((width + GAP) / (BRICK_W + GAP)));
+    const W = cols * BRICK_W + (cols - 1) * GAP;
+    const H = rows3 * BRICK_H + (rows3 - 1) * GAP;
+    const totalBricks = rows3 * cols;
+    const [g0, g1] = GRADIENT.yellow;
+    const chipEnter = useEnter(enterAt + totalBricks * 3 + 6, "up");
+    return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW_YELLOW})` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { position: "absolute", inset: 0, overflow: "hidden", borderRadius: GRID2 * 0.75 }, children: Array.from({ length: rows3 }).map((_, row) => {
+        const offset = row % 2 === 1;
+        const rowCols = offset ? cols + 1 : cols;
+        return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              bottom: row * (BRICK_H + GAP),
+              left: offset ? -(BRICK_W + GAP) / 2 : 0,
+              display: "flex",
+              gap: GAP
+            },
+            children: Array.from({ length: rowCols }).map((_2, col) => {
+              const idx = row * cols + col;
+              const p = interpolate(frame, [enterAt + idx * 3, enterAt + idx * 3 + 10], [0, 1], {
+                extrapolateLeft: "clamp",
+                extrapolateRight: "clamp",
+                easing: Easing.out(Easing.cubic)
+              });
+              return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+                "div",
+                {
+                  style: {
+                    width: BRICK_W,
+                    height: BRICK_H,
+                    borderRadius: GRID2 * 0.75,
+                    background: `linear-gradient(160deg, ${g0} 0%, ${g1} 100%)`,
+                    boxShadow: "inset 0 1.5px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.25)",
+                    opacity: p,
+                    transform: `translateY(${(1 - p) * 24}px)`
+                  }
+                },
+                col
+              );
+            })
+          },
+          row
+        );
+      }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: `translate(-50%, -50%) ${chipEnter.transform}`,
+            opacity: chipEnter.opacity,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 4,
+            padding: `${GRID2}px ${GRID2 * 3}px`,
+            background: COLOR.cardBg,
+            border: `1.5px solid ${COLOR.yellow}`,
+            borderRadius: RADIUS.chip,
+            boxShadow: "0 6px 20px rgba(0,0,0,0.45)",
+            whiteSpace: "nowrap"
+          },
+          children: [
+            enLabel ? /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.en,
+                  fontWeight: FONT.enBold,
+                  fontSize: SIZE.kicker,
+                  letterSpacing: 3,
+                  textTransform: "uppercase",
+                  color: COLOR.yellow
+                },
+                children: enLabel
+              }
+            ) : null,
+            /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: SIZE.chip, color: COLOR.white }, children: label3 })
+          ]
+        }
+      )
+    ] });
+  };
+
+  // src/JasonWu/components/jc/CardWall.tsx
+  var import_jsx_runtime79 = __toESM(require_jsx_runtime());
+  var AVATAR_COLORS = ["#3B82F6", "#F59E0B", "#22C55E", "#EF4444", "#8B5CF6", "#F97316"];
+  var CardWall = ({ items: items2, cols = 4, cardWidth = 424, gap = 18, enterAt = 0, staggerFrames = 4 }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+      "div",
+      {
+        style: {
+          display: "grid",
+          gridTemplateColumns: `repeat(${cols}, ${cardWidth}px)`,
+          gap
+        },
+        children: items2.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(WallCardView, { card: c3, index: i, enterAt: enterAt + i * staggerFrames }, i))
+      }
+    );
+  };
+  var WallCardView = ({ card, index, enterAt }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const color = card.avatarColor ?? AVATAR_COLORS[index % AVATAR_COLORS.length];
+    const initial = /[a-zA-Z]/.test(card.name[0]) ? card.name[0].toUpperCase() : card.name[0];
+    return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(
+      "div",
+      {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          background: "#FBFBFA",
+          borderRadius: 12,
+          padding: "16px 18px",
+          boxShadow: "0 10px 28px rgba(0,0,0,0.4)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+            "div",
+            {
+              style: {
+                width: 52,
+                height: 52,
+                borderRadius: 12,
+                background: color,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhHeavy,
+                fontSize: 24,
+                color: "#fff",
+                flexShrink: 0
+              },
+              children: initial
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { style: { minWidth: 0 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 500, fontSize: 17, color: "#8B9098" }, children: card.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+              "div",
+              {
+                style: {
+                  marginTop: 2,
+                  fontFamily: FONT.zh,
+                  fontWeight: 700,
+                  fontSize: 22,
+                  color: "#16181D",
+                  whiteSpace: "nowrap"
+                },
+                children: card.text
+              }
+            )
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Chip.tsx
+  var import_jsx_runtime80 = __toESM(require_jsx_runtime());
+  var Chip = ({ segments, icon, accent = "blue", outlined = false, dimmed = false, surface = "dark", enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "left");
+    const isLight = surface === "light";
+    return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 12,
+          padding: "10px 18px",
+          background: isLight ? SURFACE.light.bg : COLOR.cardBg,
+          border: `1.5px solid ${outlined ? COLOR[accent] : isLight ? SURFACE.light.stroke : COLOR.cardStroke}`,
+          borderRadius: RADIUS.chip,
+          opacity: (dimmed ? MOTION.dimOpacity : 1) * enter3.opacity,
+          transform: enter3.transform,
+          boxShadow: isLight ? SURFACE.light.shadow : "0 4px 18px rgba(0,0,0,0.35)"
+        },
+        children: [
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { fontSize: SIZE.chip - 4, color: COLOR[accent], lineHeight: 1, display: "inline-flex", alignItems: "center" }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { whiteSpace: "nowrap" }, children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: 700,
+                fontSize: SIZE.chip,
+                color: s.color ? COLOR[s.color] : isLight ? SURFACE.light.fg : COLOR.white
+              },
+              children: s.t
+            },
+            i
+          )) })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Checklist.tsx
+  var import_jsx_runtime81 = __toESM(require_jsx_runtime());
+  var Checklist = ({ items: items2, accent = "blue", outlined = false, top = 200, staggerFrames = MOTION.stagger }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: SAFE.stackX,
+          top,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: GRID2 * 2
+        },
+        children: items2.map((item2, i) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+          Chip,
+          {
+            segments: item2.segments,
+            icon: item2.icon,
+            accent,
+            outlined,
+            dimmed: item2.dimmed,
+            enterAt: item2.enterAt ?? i * staggerFrames
+          },
+          i
+        ))
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/CloneCascade.tsx
+  var import_jsx_runtime82 = __toESM(require_jsx_runtime());
+  var CARD2 = GRID2 * 15;
+  var SourceCard = ({
+    icon,
+    label: label3,
+    enterAt
+  }) => {
+    const enter3 = useEnter(enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: GRID2,
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "div",
+            {
+              style: {
+                width: CARD2,
+                height: CARD2,
+                borderRadius: RADIUS.card,
+                background: "linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92))",
+                border: "2.5px solid rgba(255,255,255,0.92)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: COLOR.white,
+                boxShadow: "0 14px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.18)"
+              },
+              children: icon
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhHeavy,
+                fontSize: SIZE.chip,
+                color: COLOR.white,
+                whiteSpace: "nowrap"
+              },
+              children: label3
+            }
+          )
+        ]
+      }
+    );
+  };
+  var CloneCard = ({
+    icon,
+    index,
+    fade,
+    enterAt
+  }) => {
+    const enter3 = useEnter(enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: GRID2,
+          opacity: enter3.opacity * fade,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "div",
+            {
+              style: {
+                width: CARD2,
+                height: CARD2,
+                borderRadius: RADIUS.card,
+                background: COLOR.cardBg,
+                border: `2px dashed ${COLOR.cardStroke}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: COLOR.grey,
+                boxShadow: "0 8px 24px rgba(0,0,0,0.4)"
+              },
+              children: icon
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhMedium,
+                fontSize: SIZE.subSmall,
+                color: COLOR.greyDim,
+                whiteSpace: "nowrap"
+              },
+              children: `\u4EFF\u54C1 ${index + 1}`
+            }
+          )
+        ]
+      }
+    );
+  };
+  var CloneCascade = ({ icon, label: label3, cloneCount = 3, warnText = "\u7B2C\u4E8C\u5929 \xB7 \u5168\u662F\u4EFF\u54C1", accent = "red", enterAt }) => {
+    const warnAt = enterAt + MOTION.stagger * (cloneCount + 1);
+    const warnEnter = useEnter(warnAt, "left");
+    const arrowEnter = useEnter(enterAt + MOTION.stagger, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: GRID2 * 2 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(SourceCard, { icon, label: label3, enterAt }),
+      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+        "span",
+        {
+          style: {
+            fontFamily: FONT.en,
+            fontWeight: FONT.enBold,
+            fontSize: SIZE.chip,
+            color: COLOR.grey,
+            opacity: arrowEnter.opacity,
+            marginBottom: GRID2 * 4
+            // 对齐卡片中心（仿品有下方小字）
+          },
+          children: "\u2192"
+        }
+      ),
+      Array.from({ length: cloneCount }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+        CloneCard,
+        {
+          icon,
+          index: i,
+          fade: Math.max(0.4, 0.85 - i * 0.15),
+          enterAt: enterAt + MOTION.stagger * (i + 1)
+        },
+        i
+      )),
+      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+        "div",
+        {
+          style: {
+            display: "inline-flex",
+            alignItems: "center",
+            padding: `${GRID2}px ${GRID2 * 2}px`,
+            background: COLOR.cardBg,
+            border: `1.5px solid ${COLOR[accent]}`,
+            borderRadius: RADIUS.chip,
+            boxShadow: "0 4px 18px rgba(0,0,0,0.35)",
+            opacity: warnEnter.opacity,
+            transform: warnEnter.transform,
+            marginBottom: GRID2 * 4
+          },
+          children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: 700,
+                fontSize: SIZE.chip,
+                color: COLOR[accent],
+                whiteSpace: "nowrap"
+              },
+              children: warnText
+            }
+          )
+        }
+      )
+    ] });
+  };
+
+  // src/JasonWu/components/jc/CompareCard.tsx
+  var import_jsx_runtime83 = __toESM(require_jsx_runtime());
+  var CompareCard = ({ items: items2, width = 700, enterAt = 0, staggerFrames = MOTION.stagger }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 20 }, children: items2.map((it, i) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(ItemView, { item: it, width, enterAt: enterAt + i * staggerFrames }, i)) });
+  };
+  var ItemView = ({ item: item2, width, enterAt }) => {
+    const enter3 = useEnter(enterAt, "left");
+    const strong = COLOR[item2.strongColor ?? "blue"];
+    return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+      "div",
+      {
+        style: {
+          width,
+          display: "flex",
+          alignItems: "center",
+          gap: 20,
+          padding: "18px 22px",
+          background: "rgba(14,16,20,0.88)",
+          border: `1.5px solid ${COLOR.cardStroke}`,
+          borderRadius: 16,
+          boxShadow: "0 12px 36px rgba(0,0,0,0.45)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+            "div",
+            {
+              style: {
+                width: 68,
+                height: 68,
+                borderRadius: 15,
+                background: "#FFFFFF",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#16181D",
+                flexShrink: 0,
+                overflow: "hidden"
+              },
+              children: item2.logo
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: item2.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { style: { display: "flex", gap: 12, marginTop: 10 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 7,
+                    border: "1.5px solid rgba(255,255,255,0.22)",
+                    borderRadius: 999,
+                    padding: "4px 14px",
+                    fontFamily: FONT.zh,
+                    fontWeight: 700,
+                    fontSize: 20,
+                    color: COLOR.grey
+                  },
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(X, { size: 17, strokeWidth: 3 }),
+                    item2.weak
+                  ]
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 7,
+                    border: `1.5px solid ${strong}`,
+                    borderRadius: 999,
+                    padding: "4px 14px",
+                    fontFamily: FONT.zh,
+                    fontWeight: 700,
+                    fontSize: 20,
+                    color: COLOR.white
+                  },
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Check, { size: 17, strokeWidth: 3, color: strong }),
+                    item2.strong
+                  ]
+                }
+              )
+            ] })
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/CurveOverlay.tsx
+  var import_jsx_runtime84 = __toESM(require_jsx_runtime());
+  var CurveOverlay = ({ width, height, color = "yellow", strokeWidth = 6, exponent = 2.2, growFrames = 70, enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const p = interpolate(frame, [enterAt, enterAt + growFrames], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.inOut(Easing.cubic)
+    });
+    const N2 = 48;
+    const pts = Array.from({ length: N2 + 1 }, (_, i) => {
+      const x = i / N2;
+      const y = Math.pow(x, exponent);
+      return `${(x * width).toFixed(1)},${(height * (0.96 - 0.9 * y)).toFixed(1)}`;
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("svg", { width, height, style: { display: "block" }, children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+      "polyline",
+      {
+        points: pts.join(" "),
+        fill: "none",
+        stroke: COLOR[color],
+        strokeWidth,
+        strokeLinecap: "round",
+        pathLength: 1,
+        strokeDasharray: 1,
+        strokeDashoffset: 1 - p
+      }
+    ) });
+  };
+
+  // src/JasonWu/components/jc/DMCardStack.tsx
+  var import_jsx_runtime85 = __toESM(require_jsx_runtime());
+  var DMCardStack = ({ cards, enterAt = 0, staggerFrames = MOTION.stagger }) => {
+    const rots = [-3, 2.5, -1.5, 2];
+    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { position: "relative" }, children: cards.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+      DMCardView,
+      {
+        card: c3,
+        rotate: rots[i % rots.length],
+        offsetX: i * 46,
+        offsetY: i * 92,
+        enterAt: enterAt + i * staggerFrames
+      },
+      i
+    )) });
+  };
+  var DMCardView = ({ card, rotate: rotate2, offsetX, offsetY, enterAt }) => {
+    const enter3 = useEnter(enterAt, "up");
+    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: offsetX,
+          top: offsetY,
+          width: card.width ?? 440,
+          opacity: enter3.opacity,
+          transform: `${enter3.transform} rotate(${rotate2}deg)`
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+          "div",
+          {
+            style: {
+              position: "relative",
+              background: "#FFFFFF",
+              borderRadius: 14,
+              padding: "18px 20px",
+              boxShadow: "0 18px 50px rgba(0,0,0,0.55)",
+              display: "flex",
+              gap: 14,
+              alignItems: "flex-start"
+            },
+            children: [
+              card.chip ? /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    top: -16,
+                    left: -12,
+                    background: COLOR[card.chip.color ?? "blue"],
+                    borderRadius: 999,
+                    padding: "5px 16px",
+                    fontFamily: FONT.zh,
+                    fontWeight: FONT.zhHeavy,
+                    fontSize: 19,
+                    color: "#fff",
+                    boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
+                    whiteSpace: "nowrap"
+                  },
+                  children: card.chip.text
+                }
+              ) : null,
+              card.avatarSrc ? /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                Img,
+                {
+                  src: card.avatarSrc,
+                  style: { width: 44, height: 44, borderRadius: 8, objectFit: "cover", flexShrink: 0 }
+                }
+              ) : /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                "div",
+                {
+                  style: {
+                    width: 44,
+                    height: 44,
+                    borderRadius: 8,
+                    background: card.avatarColor ?? "#31363E",
+                    flexShrink: 0
+                  }
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                "div",
+                {
+                  style: {
+                    fontFamily: FONT.zh,
+                    fontWeight: FONT.zhMedium,
+                    fontSize: 21,
+                    lineHeight: 1.55,
+                    color: "#16181D"
+                  },
+                  children: card.text
+                }
+              )
+            ]
+          }
+        )
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/FlowChain.tsx
+  var import_react127 = __toESM(require_react());
+  var import_jsx_runtime86 = __toESM(require_jsx_runtime());
+  var FlowChain = ({ nodes, nodeWidth = 190, surface = "dark", enterAt = 0, staggerFrames = MOTION.stagger }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: nodes.map((nd, i) => /* @__PURE__ */ (0, import_jsx_runtime86.jsxs)(import_react127.default.Fragment, { children: [
+      i > 0 ? /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(Arrow, { enterAt: enterAt + i * staggerFrames }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(NodeView, { node: nd, width: nodeWidth, surface, enterAt: enterAt + i * staggerFrames })
+    ] }, i)) });
+  };
+  var Arrow = ({ enterAt }) => {
+    const enter3 = useEnter(enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(
+      "span",
+      {
+        style: {
+          fontFamily: FONT.en,
+          fontWeight: 700,
+          fontSize: 34,
+          color: COLOR.greyDim,
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: "\u2192"
+      }
+    );
+  };
+  var NodeView = ({
+    node,
+    width,
+    surface,
+    enterAt
+  }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const c3 = COLOR[node.accent ?? "blue"];
+    const isLight = surface === "light";
+    return /* @__PURE__ */ (0, import_jsx_runtime86.jsxs)(
+      "div",
+      {
+        style: {
+          width,
+          minHeight: width * 0.86,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 14,
+          padding: "18px 14px",
+          background: isLight ? SURFACE.light.bg : "rgba(12,14,18,0.85)",
+          border: `1.5px solid ${isLight ? SURFACE.light.stroke : `${c3}66`}`,
+          borderRadius: 14,
+          boxShadow: isLight ? SURFACE.light.shadow : "0 10px 30px rgba(0,0,0,0.45)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          node.icon ? /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: node.icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { textAlign: "center" }, children: node.lines.map((l, i) => /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 24, lineHeight: 1.5, color: isLight ? SURFACE.light.fg : COLOR.white }, children: l }, i)) })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Flywheel.tsx
+  var import_jsx_runtime87 = __toESM(require_jsx_runtime());
+  var Flywheel = ({
+    size = 340,
+    color = "green",
+    icon,
+    enterAt = 0
+  }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "up");
+    const accent = COLOR[color];
+    const radius = size * 0.39;
+    const circumference = Math.PI * 2 * radius;
+    const segment = circumference * (39 / 360);
+    return /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
+      "div",
+      {
+        style: {
+          position: "relative",
+          width: size,
+          height: size,
+          opacity: enter3.opacity,
+          transform: enter3.transform,
+          filter: `drop-shadow(0 0 26px ${color === "green" ? "rgba(61,220,132,0.4)" : `${accent}66`})`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
+            "svg",
+            {
+              width: size,
+              height: size,
+              viewBox: `0 0 ${size} ${size}`,
+              style: { transform: `rotate(${frame * 1}deg)` },
+              children: [
+                Array.from({ length: 8 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                  "circle",
+                  {
+                    cx: size / 2,
+                    cy: size / 2,
+                    r: radius,
+                    fill: "none",
+                    stroke: accent,
+                    strokeWidth: 4,
+                    strokeOpacity: 0.85,
+                    strokeLinecap: "round",
+                    strokeDasharray: `${segment} ${circumference - segment}`,
+                    transform: `rotate(${index * 45 - 90} ${size / 2} ${size / 2})`
+                  },
+                  index
+                )),
+                Array.from({ length: 8 }, (_, index) => {
+                  const a3 = (index * 45 - 90) * Math.PI / 180;
+                  const cx = size / 2, cy = size / 2;
+                  const r0 = size * 0.19, r1 = radius - GRID2;
+                  return /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)("g", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                      "line",
+                      {
+                        x1: cx + r0 * Math.cos(a3),
+                        y1: cy + r0 * Math.sin(a3),
+                        x2: cx + r1 * Math.cos(a3),
+                        y2: cy + r1 * Math.sin(a3),
+                        stroke: accent,
+                        strokeWidth: 1.5,
+                        opacity: 0.75
+                      }
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                      "circle",
+                      {
+                        cx: cx + radius * Math.cos(a3 + 0.28),
+                        cy: cy + radius * Math.sin(a3 + 0.28),
+                        r: index === 0 ? 8 : 4,
+                        fill: index === 0 ? COLOR.white : accent
+                      }
+                    )
+                  ] }, `s${index}`);
+                })
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                width: size * 0.34,
+                height: size * 0.34,
+                transform: "translate(-50%, -50%)",
+                borderRadius: "50%",
+                background: COLOR.cardBg,
+                border: `2px solid ${COLOR.white}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: COLOR.white,
+                boxShadow: "0 14px 40px rgba(0,0,0,0.55)"
+              },
+              children: icon
+            }
+          )
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/HeroText.tsx
+  var import_jsx_runtime88 = __toESM(require_jsx_runtime());
+  var scaleShift = (e, shiftPx) => {
+    if (shiftPx === MOTION.popInShift) return e;
+    const k = shiftPx / MOTION.popInShift;
+    return {
+      opacity: e.opacity,
+      transform: e.transform.replace(/-?[\d.]+(?=px)/g, (m) => `${parseFloat(m) * k}`)
+    };
+  };
+  var HeroText = ({
+    kicker,
+    segments,
+    size = "h2",
+    top = 200,
+    enterAt = 0,
+    kickerEnterAt,
+    echo,
+    zhSub,
+    shiftPx = MOTION.popInShift
+  }) => {
+    const frame = useCurrentFrame();
+    const { fps } = useVideoConfig();
+    const kickerAt = kickerEnterAt ?? Math.max(0, enterAt - 10);
+    const kickerEnter = scaleShift(useEnter(kickerAt, "up"), shiftPx);
+    const mainEnter = scaleShift(useEnter(enterAt, "up"), shiftPx);
+    const tailEnter = scaleShift(useEnter(enterAt + 8, "up"), shiftPx);
+    const strikeT = spring({
+      frame: frame - enterAt - 8,
+      fps,
+      config: { damping: 200 },
+      durationInFrames: 12
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
+      "div",
+      {
+        "data-qc": "text",
+        "data-qc-id": `Hero:${segments.map((s) => s.t).join("").slice(0, 8)}`,
+        style: {
+          position: "absolute",
+          left: SAFE.stackX,
+          top,
+          textShadow: "0 2px 12px rgba(0,0,0,0.6)"
+        },
+        children: [
+          kicker ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+            "div",
+            {
+              style: {
+                fontFamily: `${FONT.en}, ${FONT.zh}`,
+                fontWeight: 800,
+                fontSize: SIZE.kicker,
+                letterSpacing: "0.34em",
+                color: COLOR.greyDim,
+                marginBottom: 10,
+                opacity: kickerEnter.opacity,
+                transform: kickerEnter.transform
+              },
+              children: typeof kicker === "string" ? kicker.toUpperCase() : kicker.map((k, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+                "span",
+                {
+                  style: { color: k.color ? COLOR[k.color] : COLOR.white },
+                  children: k.t.toUpperCase()
+                },
+                i
+              ))
+            }
+          ) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+            "div",
+            {
+              style: {
+                whiteSpace: "nowrap",
+                opacity: mainEnter.opacity,
+                transform: mainEnter.transform
+              },
+              children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
+                "span",
+                {
+                  style: {
+                    position: "relative",
+                    fontFamily: FONT.zh,
+                    fontWeight: FONT.zhHeavy,
+                    fontSize: SIZE[size],
+                    color: s.color ? COLOR[s.color] : s.dim ? COLOR.greyDim : COLOR.white,
+                    display: "inline-block"
+                  },
+                  children: [
+                    s.t,
+                    s.strike ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+                      "span",
+                      {
+                        style: {
+                          position: "absolute",
+                          left: "-2%",
+                          top: "52%",
+                          height: Math.max(6, SIZE[size] * 0.07),
+                          width: `${strikeT * 104}%`,
+                          background: COLOR.red,
+                          borderRadius: 4
+                        }
+                      }
+                    ) : null
+                  ]
+                },
+                i
+              ))
+            }
+          ),
+          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+            "div",
+            {
+              style: {
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhMedium,
+                fontSize: SIZE.chip,
+                color: COLOR.grey,
+                marginTop: 10,
+                opacity: tailEnter.opacity,
+                transform: tailEnter.transform
+              },
+              children: zhSub
+            }
+          ) : null,
+          echo ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+            "div",
+            {
+              style: {
+                fontFamily: FONT.en,
+                fontWeight: FONT.enBold,
+                fontSize: SIZE.kicker,
+                letterSpacing: "0.3em",
+                color: COLOR.grey,
+                marginTop: 12,
+                opacity: tailEnter.opacity,
+                transform: tailEnter.transform
+              },
+              children: echo.toUpperCase()
+            }
+          ) : null
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/InfoCard.tsx
+  var import_jsx_runtime89 = __toESM(require_jsx_runtime());
+  var InfoCard = ({ icon, en, zh, accent = "blue", surface = "dark", enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "left");
+    const c3 = COLOR[accent];
+    const isLight = surface === "light";
+    return /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 16,
+          padding: "16px 24px",
+          background: isLight ? SURFACE.light.bg : "rgba(12,14,18,0.82)",
+          border: `1.5px solid ${isLight ? SURFACE.light.stroke : `${c3}88`}`,
+          borderRadius: 14,
+          boxShadow: isLight ? SURFACE.light.shadow : `0 10px 30px rgba(0,0,0,0.45), inset 0 0 26px ${c3}14`,
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("span", { style: { color: c3, display: "inline-flex", flexShrink: 0 }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.kicker, letterSpacing: "0.26em", color: c3 }, children: en.toUpperCase() }),
+            /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("div", { style: { marginTop: 5, fontFamily: FONT.zh, fontWeight: 700, fontSize: 26, color: isLight ? SURFACE.light.fg : COLOR.white }, children: zh })
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/InfoScrim.tsx
+  var import_jsx_runtime90 = __toESM(require_jsx_runtime());
+  var InfoScrim = ({
+    strength = 1,
+    side = "right"
+  }) => {
+    const deg = side === "right" ? 90 : 270;
+    return /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
+      AbsoluteFill,
+      {
+        style: {
+          background: `linear-gradient(${deg}deg, transparent 40%, rgba(4,6,9,${0.5 * strength}) 58%, rgba(4,6,9,${0.8 * strength}) 100%)`,
+          pointerEvents: "none"
+        }
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/LoopDiagram.tsx
+  var import_jsx_runtime91 = __toESM(require_jsx_runtime());
+  var LoopNode = ({ label: label3, index, size, enterAt }) => {
+    const frame = useCurrentFrame();
+    const angle = -Math.PI / 2 + index * (Math.PI / 2);
+    const radius = size * 0.39;
+    const nodeWidth = size * 0.3;
+    const nodeHeight = size * 0.12;
+    const progress = interpolate(
+      frame,
+      [enterAt + index * (MOTION.stagger / 2), enterAt + index * (MOTION.stagger / 2) + MOTION.popInFrames],
+      [0, 1],
+      {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.cubic)
+      }
+    );
+    return /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: size / 2 + Math.cos(angle) * radius - nodeWidth / 2,
+          top: size / 2 + Math.sin(angle) * radius - nodeHeight / 2,
+          width: nodeWidth,
+          height: nodeHeight,
+          borderRadius: GRID2,
+          background: COLOR.cardBg,
+          border: `1px solid ${COLOR.cardStroke}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: FONT.en,
+          fontWeight: FONT.enBold,
+          fontSize: SIZE.subSmall,
+          color: COLOR.white,
+          opacity: progress,
+          transform: `scale(${0.72 + progress * 0.28})`,
+          boxShadow: "0 8px 24px rgba(0,0,0,0.42)"
+        },
+        children: label3
+      }
+    );
+  };
+  var LoopDiagram = ({
+    size = 320,
+    labels = ["GOAL", "WORK", "CHECK", "STOP"],
+    color = "blue",
+    enterAt = 0
+  }) => {
+    const frame = useCurrentFrame();
+    const accent = COLOR[color];
+    const ringSize = size * 0.68;
+    const ringOffset = (size - ringSize) / 2;
+    const bodyOpacity = interpolate(frame, [enterAt, enterAt + MOTION.popInFrames], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.quad)
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime91.jsxs)("div", { style: { position: "relative", width: size, height: size, opacity: bodyOpacity }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+        "svg",
+        {
+          width: ringSize,
+          height: ringSize,
+          viewBox: `0 0 ${ringSize} ${ringSize}`,
+          style: {
+            position: "absolute",
+            left: ringOffset,
+            top: ringOffset,
+            overflow: "visible",
+            transform: `rotate(${frame * 0.25}deg)`,
+            filter: `drop-shadow(0 0 18px ${accent}66)`
+          },
+          children: /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+            "circle",
+            {
+              cx: ringSize / 2,
+              cy: ringSize / 2,
+              r: ringSize * 0.43,
+              fill: "none",
+              stroke: accent,
+              strokeWidth: GRID2 / 2,
+              strokeDasharray: `${GRID2 * 2} ${GRID2}`,
+              strokeLinecap: "round"
+            }
+          )
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            border: `2px solid ${accent}`,
+            borderRadius: GRID2 * 3,
+            padding: `${GRID2}px ${GRID2 * 2}px`,
+            background: COLOR.cardBg,
+            fontFamily: FONT.en,
+            fontWeight: FONT.enBold,
+            fontSize: SIZE.subSmall,
+            letterSpacing: "0.16em",
+            color: accent,
+            boxShadow: `0 0 24px ${accent}44`
+          },
+          children: "LOOP"
+        }
+      ),
+      labels.slice(0, 4).map((label3, index) => /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(LoopNode, { label: label3, index, size, enterAt }, `${label3}-${index}`))
+    ] });
+  };
+
+  // src/JasonWu/components/jc/MatrixIcon.tsx
+  var import_jsx_runtime92 = __toESM(require_jsx_runtime());
+  var CELL_GRADIENT = {
+    green: ["#55E698", "#1FA85D"],
+    red: ["#FF6B6B", "#D92B35"],
+    blue: ["#6FB4FF", "#2F7FE0"],
+    yellow: ["#FFD666", "#E8A81E"]
+  };
+  var GLOW = {
+    green: "rgba(61,220,132,0.4)",
+    red: "rgba(255,77,77,0.4)",
+    blue: "rgba(77,158,255,0.4)",
+    yellow: "rgba(255,197,61,0.4)"
+  };
+  var MatrixIcon = ({ color = "green", rows: rows3 = 5, cols = 5, cell = 46, gap = 9, icon, enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const [g0, g1] = CELL_GRADIENT[color];
+    const W = cols * cell + (cols - 1) * gap;
+    const H = rows3 * cell + (rows3 - 1) * gap;
+    return /* @__PURE__ */ (0, import_jsx_runtime92.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW[color]})` }, children: [
+      Array.from({ length: rows3 * cols }, (_, i) => {
+        const t = interpolate(frame, [enterAt + i * 1.4, enterAt + i * 1.4 + 12], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: Easing.out(Easing.cubic)
+        });
+        return /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: i % cols * (cell + gap),
+              top: Math.floor(i / cols) * (cell + gap),
+              width: cell,
+              height: cell,
+              borderRadius: cell * 0.26,
+              background: `linear-gradient(160deg, ${g0} 0%, ${g1} 100%)`,
+              boxShadow: "inset 0 1.5px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.25)",
+              opacity: t * (0.78 + i * 37 % 22 / 100),
+              transform: `scale(${0.5 + 0.5 * t})`
+            }
+          },
+          i
+        );
+      }),
+      icon ? /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            width: cell * 2.6,
+            height: cell * 2.6,
+            borderRadius: cell * 0.6,
+            background: "linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92))",
+            border: "2.5px solid rgba(255,255,255,0.92)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            boxShadow: "0 14px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.18)"
+          },
+          children: icon
+        }
+      ) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/NamePlate.tsx
+  var import_react128 = __toESM(require_react());
+  var import_jsx_runtime93 = __toESM(require_jsx_runtime());
+  var GOLD2 = "#C9A227";
+  var NamePlate = ({ name, slug, avatarText, avatarSrc: avatarSrc2, avatarImgStyle, enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const [imgFailed, setImgFailed] = import_react128.default.useState(false);
+    const showImg = Boolean(avatarSrc2) && !imgFailed;
+    return /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 16,
+          minWidth: 285,
+          height: 88,
+          padding: "0 22px",
+          borderRadius: 16,
+          background: "rgba(14,16,21,0.9)",
+          border: `1px solid ${COLOR.cardStroke}`,
+          boxShadow: "0 14px 40px rgba(0,0,0,0.5)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+            "div",
+            {
+              style: {
+                position: "relative",
+                width: 52,
+                height: 52,
+                flexShrink: 0,
+                borderRadius: 26,
+                overflow: "hidden",
+                border: `2px solid ${GOLD2}`,
+                background: "linear-gradient(160deg, #2A2E38, #14161A)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhHeavy,
+                fontSize: 26,
+                color: GOLD2
+              },
+              children: showImg ? /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+                Img,
+                {
+                  src: avatarSrc2,
+                  onError: () => setImgFailed(true),
+                  style: {
+                    position: "absolute",
+                    width: "135%",
+                    height: "135%",
+                    left: "-13%",
+                    top: "-3%",
+                    objectFit: "cover",
+                    // 低分辨率源图的轻度补偿（别过度）
+                    filter: "contrast(1.06) saturate(1.05)",
+                    ...avatarImgStyle
+                  }
+                }
+              ) : avatarText
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime93.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.t3, color: COLOR.white, lineHeight: 1 }, children: name }),
+            /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.en,
+                  fontWeight: 700,
+                  fontSize: 17,
+                  color: GOLD2,
+                  fontVariant: "small-caps",
+                  letterSpacing: "0.14em",
+                  lineHeight: 1
+                },
+                children: slug
+              }
+            )
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/PersonBadge.tsx
+  var import_jsx_runtime94 = __toESM(require_jsx_runtime());
+  var PersonBadge = ({ avatarSrc: avatarSrc2, name, zhSub, accent = "blue", enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "left");
+    if (frame < enterAt) return null;
+    return /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 12,
+          padding: "8px 14px 8px 10px",
+          borderRadius: 14,
+          background: "rgba(14,16,21,0.88)",
+          border: `1px solid ${COLOR.cardStroke}`,
+          boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(Img, { src: avatarSrc2, style: { width: 44, height: 44, borderRadius: 22, objectFit: "cover", display: "block" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime94.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.08em", color: COLOR.white, lineHeight: 1.1 }, children: name.toUpperCase() }),
+              /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(BadgeCheck, { size: 20, color: COLOR[accent], strokeWidth: 2.4 })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime94.jsx)("div", { style: { marginTop: 3, fontFamily: FONT.zh, fontWeight: 700, fontSize: 18, color: COLOR.grey, lineHeight: 1.1 }, children: zhSub })
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/PersonCard.tsx
+  var import_jsx_runtime95 = __toESM(require_jsx_runtime());
+  var PersonCard = ({ name, zhRole, avatarSrc: avatarSrc2, avatarText, avatarColor = "#3E6FB0", ringColor = COLOR.blue, orgChip, kickerNote, enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 12px rgba(0,0,0,0.55)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: [
+        avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
+          Img,
+          {
+            src: avatarSrc2,
+            style: {
+              width: 110,
+              height: 110,
+              borderRadius: 55,
+              objectFit: "cover",
+              border: `3px solid ${ringColor}`,
+              flexShrink: 0
+            }
+          }
+        ) : /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
+          "div",
+          {
+            style: {
+              width: 84,
+              height: 84,
+              borderRadius: 42,
+              background: avatarColor,
+              border: `3px solid ${ringColor}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: FONT.en,
+              fontWeight: 800,
+              fontSize: 32,
+              color: "#fff",
+              flexShrink: 0
+            },
+            children: avatarText ?? name.slice(0, 1)
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: SIZE.card - 4, color: COLOR.white, letterSpacing: "0.02em" }, children: name.toUpperCase() }),
+          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: zhRole })
+        ] })
+      ] }),
+      orgChip || kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 16, marginTop: 14, marginLeft: (avatarSrc2 ? 110 : 84) + 18 }, children: [
+        orgChip ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(Chip, { segments: [{ t: orgChip.text }], accent: orgChip.color ?? "blue", outlined: true, enterAt: enterAt + 8 }) : null,
+        kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.22em", color: COLOR.greyDim }, children: kickerNote.toUpperCase() }) : null
+      ] }) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/PhoneMockup.tsx
+  var import_jsx_runtime96 = __toESM(require_jsx_runtime());
+  var PhoneMockup = ({
+    children,
+    header: header2,
+    width = 340,
+    glow = "purple",
+    scrollFrom = 0,
+    scrollTo = 0,
+    scrollStart = 30,
+    scrollFrames = 120,
+    enterAt = 0
+  }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "up");
+    const height = width * 2.05;
+    const glowColor = glow === "purple" ? "#B26BFF" : COLOR[glow];
+    const y = interpolate(frame, [scrollStart, scrollStart + scrollFrames], [scrollFrom, scrollTo], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.inOut(Easing.cubic)
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
+      "div",
+      {
+        style: {
+          width,
+          height,
+          borderRadius: RADIUS.phone,
+          padding: 10,
+          background: "#0B0D11",
+          border: "2.5px solid rgba(255,255,255,0.25)",
+          boxShadow: `0 0 34px ${glowColor}66, 0 0 90px ${glowColor}33`,
+          opacity: enter3.opacity,
+          transform: enter3.transform,
+          position: "relative"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime96.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                top: 18,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: width * 0.32,
+                height: 22,
+                borderRadius: 12,
+                background: "#000",
+                zIndex: 2
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
+            "div",
+            {
+              style: {
+                width: "100%",
+                height: "100%",
+                borderRadius: RADIUS.phone - 12,
+                overflow: "hidden",
+                background: "#F5F6F7",
+                position: "relative"
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { transform: `translateY(${y}px)` }, children }),
+                header2 ? /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }, children: header2 }) : null
+              ]
+            }
+          )
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/QuoteDoc.tsx
+  var import_jsx_runtime97 = __toESM(require_jsx_runtime());
+  var QuoteDoc = ({ title, blocks, zhNote, zhNoteYPct, zhNoteX = -18, source, width = 1100, enterAt = 0, highlightAt, noteAt }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const frame = useCurrentFrame();
+    const hlT = highlightAt === void 0 ? 1 : interpolate(frame, [highlightAt, highlightAt + 12], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const noteT = noteAt === void 0 ? 1 : interpolate(frame, [noteAt + 4, noteAt + 16], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { position: "relative", width, opacity: enter3.opacity, transform: enter3.transform }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)(
+        "div",
+        {
+          style: {
+            background: "#FDFDFB",
+            borderRadius: 14,
+            padding: "38px 44px 44px",
+            boxShadow: "0 24px 80px rgba(0,0,0,0.6)"
+          },
+          children: [
+            title ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+              "div",
+              {
+                style: {
+                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontWeight: 700,
+                  fontSize: 32,
+                  color: "#1F3E62",
+                  lineHeight: 1.25,
+                  marginBottom: 22
+                },
+                children: title
+              }
+            ) : null,
+            /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16 }, children: blocks.map(
+              (b3, i) => b3.heading ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                "div",
+                {
+                  style: {
+                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontWeight: 700,
+                    fontSize: 26,
+                    color: "#1F3E62",
+                    marginTop: 10
+                  },
+                  children: b3.t
+                },
+                i
+              ) : b3.hl ? (
+                // 高亮段：黄底层 scaleX 扫过（origin 左），文字随扫过变深
+                /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { position: "relative", padding: "10px 12px" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                    "div",
+                    {
+                      style: {
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: 4,
+                        background: "#F9E27A",
+                        transformOrigin: "left center",
+                        transform: `scaleX(${hlT})`,
+                        opacity: hlT > 0 ? 1 : 0
+                      }
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                    "div",
+                    {
+                      style: {
+                        position: "relative",
+                        fontFamily: FONT.en,
+                        fontWeight: 500,
+                        fontSize: 20,
+                        lineHeight: 1.55,
+                        color: hlT > 0.05 ? "#16181D" : "#4A505A"
+                      },
+                      children: b3.t
+                    }
+                  )
+                ] }, i)
+              ) : /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                "div",
+                {
+                  style: {
+                    fontFamily: FONT.en,
+                    fontWeight: 500,
+                    fontSize: 20,
+                    lineHeight: 1.55,
+                    color: "#4A505A"
+                  },
+                  children: b3.t
+                },
+                i
+              )
+            ) }),
+            source ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { marginTop: 24, fontFamily: FONT.en, fontWeight: 700, fontSize: 17, color: "#9AA0A8" }, children: source }) : null
+          ]
+        }
+      ),
+      zhNote && noteT > 0 ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+        "div",
+        {
+          style: {
+            opacity: noteT,
+            transform: `translateY(${(1 - noteT) * 10}px) scale(${0.96 + noteT * 0.04})`,
+            position: "absolute",
+            left: zhNoteX,
+            top: zhNoteYPct !== void 0 ? `${zhNoteYPct}%` : void 0,
+            bottom: zhNoteYPct === void 0 ? -24 : void 0,
+            maxWidth: width * 0.82,
+            background: "rgba(10,12,15,0.94)",
+            borderRadius: 10,
+            padding: "14px 22px",
+            fontFamily: FONT.zh,
+            fontWeight: FONT.zhHeavy,
+            fontSize: SIZE.chip,
+            lineHeight: 1.55,
+            color: COLOR.white,
+            boxShadow: "0 10px 34px rgba(0,0,0,0.55)"
+          },
+          children: zhNote
+        }
+      ) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/ScoreBoard.tsx
+  var import_jsx_runtime98 = __toESM(require_jsx_runtime());
+  var ScoreRowView = ({ row, start: start2 }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(start2, "up");
+    const t = interpolate(frame, [start2, start2 + 36], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const l = Math.round(row.left * t);
+    const r = Math.round(row.right * t);
+    return /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
+          "span",
+          {
+            style: {
+              fontFamily: FONT.en,
+              fontWeight: 800,
+              fontSize: SIZE.kicker,
+              letterSpacing: "0.3em",
+              color: COLOR.grey
+            },
+            children: row.enKicker.toUpperCase()
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: row.zhLabel })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "baseline",
+            gap: 16,
+            fontFamily: FONT.en,
+            fontWeight: 800,
+            fontSize: SIZE.h1,
+            lineHeight: 1,
+            fontVariantNumeric: "tabular-nums",
+            textShadow: "0 2px 14px rgba(0,0,0,0.6)"
+          },
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.green }, children: l }),
+            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.grey, fontSize: SIZE.h2 }, children: ":" }),
+            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.red }, children: r })
+          ]
+        }
+      ),
+      row.note ? /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
+        "div",
+        {
+          style: {
+            marginTop: 8,
+            fontFamily: FONT.zh,
+            fontWeight: 700,
+            fontSize: SIZE.subSmall,
+            color: COLOR.greyDim
+          },
+          children: row.note
+        }
+      ) : null
+    ] });
+  };
+  var ScoreBoard = ({ rows: rows3, enterAt = 0 }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 4 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(ScoreRowView, { row, start: enterAt + i * (MOTION.stagger * 2) }, i)) });
+  };
+
+  // src/JasonWu/components/jc/ShotCard.tsx
+  var import_jsx_runtime99 = __toESM(require_jsx_runtime());
+  var ShotCard = ({
+    src,
+    children,
+    width,
+    radius = 18,
+    stroke,
+    strokeWidth = 0,
+    glow = "none",
+    rotate: rotate2 = 0,
+    highlight,
+    zhBar,
+    highlights,
+    zhBars,
+    punch,
+    enterAt = 0
+  }) => {
+    const frame = useCurrentFrame();
+    const enter3 = usePop(enterAt);
+    const glowColor = glow === "none" ? void 0 : glow === "purple" ? "#B26BFF" : COLOR[glow];
+    const punchT = punch ? interpolate(frame, [punch.at, punch.at + (punch.durFrames ?? 15)], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.inOut(Easing.cubic)
+    }) : 0;
+    const punchScale = 1 + punchT * ((punch?.scale ?? 1.6) - 1);
+    return /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
+      "div",
+      {
+        style: {
+          position: "relative",
+          width,
+          opacity: enter3.opacity,
+          transform: `${enter3.transform} rotate(${rotate2}deg)`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+            "div",
+            {
+              style: {
+                borderRadius: radius,
+                overflow: "hidden",
+                border: strokeWidth ? `${strokeWidth}px solid ${stroke ?? "rgba(255,255,255,0.9)"}` : void 0,
+                boxShadow: glowColor ? `0 0 30px ${glowColor}66, 0 0 80px ${glowColor}33, 0 24px 70px rgba(0,0,0,0.6)` : "0 24px 70px rgba(0,0,0,0.6)",
+                lineHeight: 0,
+                background: "#fff"
+              },
+              children: /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
+                "div",
+                {
+                  style: {
+                    position: "relative",
+                    transform: punch ? `scale(${punchScale})` : void 0,
+                    transformOrigin: punch ? `${punch.originX ?? "0%"} ${punch.originY ?? "0%"}` : void 0
+                  },
+                  children: [
+                    src ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(Img, { src, style: { width: "100%", display: "block" } }) : children,
+                    (highlights ?? []).map((h, i) => {
+                      const sweep = interpolate(frame, [h.at ?? 0, (h.at ?? 0) + 12], [0, 1], {
+                        extrapolateLeft: "clamp",
+                        extrapolateRight: "clamp",
+                        easing: Easing.out(Easing.cubic)
+                      });
+                      if (sweep <= 0) return null;
+                      return /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                        "div",
+                        {
+                          style: {
+                            position: "absolute",
+                            left: `${h.xPct}%`,
+                            top: `${h.yPct}%`,
+                            width: `${h.wPct}%`,
+                            height: `${h.hPct}%`,
+                            background: "#F9E27A",
+                            opacity: 0.55 * sweep,
+                            transform: `scaleX(${sweep})`,
+                            transformOrigin: "left center",
+                            mixBlendMode: "multiply",
+                            borderRadius: 4
+                          }
+                        },
+                        `hl${i}`
+                      );
+                    }),
+                    (zhBars ?? []).map((b3, i) => {
+                      const t = interpolate(frame, [b3.at ?? 0, (b3.at ?? 0) + MOTION.popInFrames], [0, 1], {
+                        extrapolateLeft: "clamp",
+                        extrapolateRight: "clamp",
+                        easing: Easing.out(Easing.cubic)
+                      });
+                      if (t <= 0) return null;
+                      return /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                        "div",
+                        {
+                          style: {
+                            position: "absolute",
+                            left: `${b3.xPct ?? 2}%`,
+                            top: `${b3.yPct ?? 80}%`,
+                            maxWidth: "86%",
+                            background: "rgba(10,12,15,0.92)",
+                            borderRadius: 8,
+                            padding: "10px 16px",
+                            fontFamily: FONT.zh,
+                            fontWeight: FONT.zhHeavy,
+                            fontSize: SIZE.subSmall + 2,
+                            lineHeight: 1.5,
+                            color: COLOR.white,
+                            boxShadow: "0 8px 26px rgba(0,0,0,0.5)",
+                            opacity: t,
+                            transform: `translateY(${(1 - t) * 10}px)`
+                          },
+                          children: b3.text
+                        },
+                        `bar${i}`
+                      );
+                    }),
+                    highlight ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                      "div",
+                      {
+                        style: {
+                          position: "absolute",
+                          left: `${highlight.xPct}%`,
+                          top: `${highlight.yPct}%`,
+                          width: `${highlight.wPct}%`,
+                          height: `${highlight.hPct}%`,
+                          background: "#F9E27A",
+                          opacity: 0.55,
+                          mixBlendMode: "multiply",
+                          borderRadius: 4
+                        }
+                      }
+                    ) : null
+                  ]
+                }
+              )
+            }
+          ),
+          zhBar ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 24,
+                top: zhBar.yPct !== void 0 ? `${zhBar.yPct}%` : void 0,
+                bottom: zhBar.yPct === void 0 ? 26 : void 0,
+                maxWidth: width - 80,
+                background: "rgba(10,12,15,0.92)",
+                borderRadius: 8,
+                padding: "10px 16px",
+                fontFamily: FONT.zh,
+                fontWeight: FONT.zhHeavy,
+                fontSize: SIZE.subSmall + 2,
+                lineHeight: 1.5,
+                color: COLOR.white,
+                boxShadow: "0 8px 26px rgba(0,0,0,0.5)"
+              },
+              children: zhBar.text
+            }
+          ) : null
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/SideLabel.tsx
+  var import_jsx_runtime100 = __toESM(require_jsx_runtime());
+  var SideLabel = ({ color, en, zh, sub, icon, side = "left", enterAt = 0, variant = "label" }) => {
+    const accent = COLOR[color];
+    const enter3 = useEnter(enterAt, "left");
+    const kickerRow = /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
+      "div",
+      {
+        style: {
+          display: "flex",
+          alignItems: "baseline",
+          whiteSpace: "nowrap",
+          textShadow: "0 1px 8px rgba(0,0,0,0.55)"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+            "span",
+            {
+              style: {
+                fontFamily: FONT.en,
+                fontWeight: 800,
+                fontSize: SIZE.kicker,
+                letterSpacing: "0.34em",
+                color: accent
+              },
+              children: en.toUpperCase()
+            }
+          ),
+          variant === "label" ? /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(import_jsx_runtime100.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.en,
+                  fontWeight: FONT.enBold,
+                  fontSize: SIZE.kicker,
+                  color: accent,
+                  margin: "0 16px"
+                },
+                children: "\xB7"
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.zh,
+                  fontWeight: FONT.zhHeavy,
+                  fontSize: SIZE.kicker,
+                  letterSpacing: "0.30em",
+                  color: accent
+                },
+                children: zh
+              }
+            )
+          ] }) : null
+        ]
+      }
+    );
+    const subRow = sub ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+      "div",
+      {
+        style: {
+          marginTop: 8,
+          fontFamily: FONT.zh,
+          fontWeight: 700,
+          fontSize: SIZE.subSmall,
+          color: "#E8EAED",
+          textShadow: "0 1px 6px rgba(0,0,0,0.55)"
+        },
+        children: sub
+      }
+    ) : null;
+    return /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
+      "div",
+      {
+        "data-qc": "text",
+        "data-qc-id": `SideLabel:${en}`,
+        style: {
+          position: "absolute",
+          ...side === "left" ? { left: SAFE.sideLabel.x } : { right: SAFE.sideLabel.x },
+          top: SAFE.sideLabel.y,
+          opacity: enter3.opacity,
+          transform: enter3.transform,
+          display: "flex",
+          gap: 14
+        },
+        children: [
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+            "span",
+            {
+              style: {
+                color: accent,
+                display: "inline-flex",
+                alignItems: "flex-start",
+                marginTop: variant === "title" ? 8 : 1
+              },
+              children: icon
+            }
+          ) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+            "div",
+            {
+              style: {
+                width: 4,
+                borderRadius: 2,
+                background: accent,
+                alignSelf: "stretch",
+                marginBottom: variant === "label" && sub ? 30 : 0,
+                marginTop: 2
+                // label：竖线只陪第一行；title：竖线贯穿大标+kicker
+              }
+            }
+          ),
+          variant === "title" ? /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+              "div",
+              {
+                style: {
+                  fontFamily: FONT.zh,
+                  fontWeight: FONT.zhHeavy,
+                  // 2026-07-27 勘误：旧值 SIZE.kicker*2 = 44，正落 typography §7.7 的 43-50 禁用空档带
+                  // （§7.7 是 07-25 逐帧实测定的五档字阶，自称优先于规则 8；§2 与 specs §3 里记录的
+                  // 「title 中文 44」是它之前的旧口径，未勘误 —— 0727-01 四个段独立撞上同一冲突）。
+                  // 改取 SIZE.navTitle(52) 落 T2 档 51-71 内；两层比 52:22 = 2.36:1，仍在 §2 说的「约 2:1」。
+                  // 存量片（0715/0721/0722/0724）已交付定稿不重渲，故直接改默认值而非并存两套
+                  // —— 与 motion.ts 的 useExit 15→9 帧同一处理方式。
+                  fontSize: SIZE.navTitle,
+                  lineHeight: 1.15,
+                  color: COLOR.white,
+                  whiteSpace: "nowrap",
+                  textShadow: "0 2px 10px rgba(0,0,0,0.55)"
+                },
+                children: zh
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("div", { style: { marginTop: 10 }, children: kickerRow }),
+            subRow
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { children: [
+            kickerRow,
+            subRow
+          ] })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/SolventTank.tsx
+  var import_jsx_runtime101 = __toESM(require_jsx_runtime());
+  var CUBE = 62;
+  var CGAP = 14;
+  var GLASS_L = 48;
+  var GLASS_W = 464;
+  var GLASS_TOP = 96;
+  var GLASS_BOTTOM = 548;
+  var ROW_Y = 292;
+  var N = 6;
+  var ROW_W = N * CUBE + (N - 1) * CGAP;
+  var START_X = GLASS_L + (GLASS_W - ROW_W) / 2;
+  var GRAD = {
+    grey: "linear-gradient(160deg,#8A929E 0%,#565E6A 100%)",
+    red: "linear-gradient(160deg,#FF6B6B 0%,#D92B35 100%)",
+    green: "linear-gradient(160deg,#55E698 0%,#1FA85D 100%)"
+  };
+  var Cube = ({ i, pourAt, dissolveAt, resistAt }) => {
+    const frame = useCurrentFrame();
+    const soluble = i < 3;
+    const baseX = START_X + i * (CUBE + CGAP);
+    const drop = interpolate(frame, [pourAt + i * 3, pourAt + i * 3 + 15], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    if (drop <= 0) return null;
+    const dropY = (1 - drop) * -150;
+    const act = soluble ? dissolveAt : resistAt;
+    const tint = interpolate(frame, [act - 6, act + 4], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    const bg = tint <= 0 ? GRAD.grey : soluble ? GRAD.red : GRAD.green;
+    let extraY = 0;
+    let scale = 0.55 + 0.45 * drop;
+    let opacity2 = 1;
+    let outline = "transparent";
+    let outlineW = 0;
+    if (soluble) {
+      const dt = interpolate(frame, [dissolveAt + i * 5, dissolveAt + i * 5 + 26], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.in(Easing.quad)
+      });
+      extraY = -dt * 120;
+      scale = (0.55 + 0.45 * drop) * (1 - dt * 0.85);
+      opacity2 = 1 - dt;
+    } else {
+      const rt = interpolate(frame, [resistAt + (i - 3) * 5, resistAt + (i - 3) * 5 + 20], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.cubic)
+      });
+      const settle = Math.sin(rt * Math.PI) * 6;
+      extraY = rt * (GLASS_BOTTOM - CUBE - 22 - ROW_Y) - settle;
+      outline = COLOR.green;
+      outlineW = rt * 3;
+    }
+    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(import_jsx_runtime101.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: baseX,
+            top: ROW_Y + dropY + extraY,
+            width: CUBE,
+            height: CUBE,
+            borderRadius: CUBE * 0.26,
+            background: bg,
+            border: outlineW > 0 ? `${outlineW}px solid ${outline}` : void 0,
+            boxSizing: "border-box",
+            boxShadow: `inset 0 1.5px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.28)${!soluble && outlineW > 1 ? `, 0 0 22px ${COLOR.green}55` : ""}`,
+            transform: `scale(${scale})`,
+            opacity: opacity2
+          }
+        }
+      ),
+      soluble ? [0, 1, 2].map((b3) => {
+        const bt = interpolate(frame, [dissolveAt + i * 5 + b3 * 5, dissolveAt + i * 5 + b3 * 5 + 24], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp"
+        });
+        if (bt <= 0 || bt >= 1) return null;
+        const bs = 7 + b3 * 3;
+        return /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: baseX + CUBE * 0.5 + (b3 - 1) * 14,
+              top: ROW_Y + dropY - bt * 150,
+              width: bs,
+              height: bs,
+              borderRadius: bs,
+              border: `1.5px solid ${COLOR.red}`,
+              background: "rgba(255,77,77,0.18)",
+              opacity: (1 - bt) * 0.9
+            }
+          },
+          b3
+        );
+      }) : null
+    ] });
+  };
+  var CampTag = ({
+    zh,
+    en,
+    color,
+    at,
+    row
+  }) => {
+    const frame = useCurrentFrame();
+    const t = interpolate(frame, [at, at + 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+    if (t <= 0) return null;
+    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: GLASS_L + 6,
+          top: GLASS_BOTTOM + 16 + row * 46 + (1 - t) * 10,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "8px 16px",
+          borderRadius: 10,
+          border: `2px solid ${COLOR[color]}`,
+          background: color === "red" ? "rgba(255,77,77,0.16)" : "rgba(61,220,132,0.16)",
+          opacity: t
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { width: 14, height: 14, borderRadius: 4, background: GRAD[color], flexShrink: 0 } }),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 900, fontSize: 24, color: COLOR[color], whiteSpace: "nowrap" }, children: zh }),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.16em", color: COLOR[color], opacity: 0.85 }, children: en })
+        ]
+      }
+    );
+  };
+  var SolventTank = ({ enterAt, pourAt, dissolveAt, resistAt }) => {
+    const frame = useCurrentFrame();
+    const glassT = interpolate(frame, [enterAt, enterAt + 13], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const level = interpolate(frame, [pourAt, pourAt + 30], [GLASS_BOTTOM - 8, 168], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const wave = Math.sin(frame / 9) * 3;
+    const stream = interpolate(frame, [pourAt - 2, pourAt + 12], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
+      "div",
+      {
+        style: {
+          position: "relative",
+          width: 560,
+          height: 664,
+          opacity: glassT,
+          transform: `scale(${0.94 + glassT * 0.06})`,
+          transformOrigin: "center 60%"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: GLASS_L + 3,
+                right: 560 - (GLASS_L + GLASS_W) + 3,
+                top: level + wave,
+                bottom: 664 - GLASS_BOTTOM + 6,
+                borderRadius: "6px 6px 34px 34px",
+                background: "linear-gradient(180deg, rgba(77,158,255,0.30) 0%, rgba(47,127,224,0.16) 100%)",
+                boxShadow: `inset 0 2px 0 ${COLOR.blue}66`
+              }
+            }
+          ),
+          stream > 0.02 ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 560 / 2 - 3,
+                top: GLASS_TOP - 70,
+                width: 6,
+                height: 90,
+                borderRadius: 3,
+                background: `linear-gradient(180deg, transparent, ${COLOR.blue}cc)`,
+                opacity: stream
+              }
+            }
+          ) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: GLASS_L,
+                top: GLASS_TOP,
+                width: GLASS_W,
+                height: GLASS_BOTTOM - GLASS_TOP,
+                borderLeft: "3px solid rgba(255,255,255,0.55)",
+                borderRight: "3px solid rgba(255,255,255,0.55)",
+                borderBottom: "3px solid rgba(255,255,255,0.55)",
+                borderRadius: "4px 4px 40px 40px",
+                background: "linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))",
+                boxShadow: "0 24px 60px rgba(0,0,0,0.45)"
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("div", { style: { position: "absolute", left: GLASS_L - 8, top: GLASS_TOP - 2, width: GLASS_W + 16, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.62)" } }),
+          [0.28, 0.46, 0.64, 0.82].map((p) => /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: GLASS_L + 4,
+                top: GLASS_TOP + (GLASS_BOTTOM - GLASS_TOP) * p,
+                width: 22,
+                height: 2,
+                background: "rgba(255,255,255,0.32)"
+              }
+            },
+            p
+          )),
+          Array.from({ length: N }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(Cube, { i, pourAt, dissolveAt, resistAt }, i)),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(CampTag, { zh: "\u80FD\u88AB\u6EB6\u89E3", en: "DISSOLVED", color: "red", at: dissolveAt + 6, row: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(CampTag, { zh: "\u4E0D\u80FD\u88AB\u6EB6\u89E3", en: "RESISTANT", color: "green", at: resistAt + 6, row: 1 })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/Stamp.tsx
+  var import_jsx_runtime102 = __toESM(require_jsx_runtime());
+  var plateBg = (color) => {
+    const hex = GRADIENT[color][1].replace("#", "");
+    const r = Math.round(parseInt(hex.slice(0, 2), 16) * 0.35);
+    const g = Math.round(parseInt(hex.slice(2, 4), 16) * 0.35);
+    const b3 = Math.round(parseInt(hex.slice(4, 6), 16) * 0.35);
+    return `rgba(${r},${g},${b3},0.88)`;
+  };
+  var Stamp = ({
+    text: text3,
+    color = "green",
+    rotate: rotate2 = -7,
+    fontSize = 48,
+    enterAt = 0,
+    icon,
+    enSub
+  }) => {
+    const frame = useCurrentFrame();
+    const t = interpolate(frame, [enterAt, enterAt + 10], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    const settle = frame - (enterAt + 10);
+    const shake = settle > 0 && settle < 12 ? Math.sin(settle * 1.3) * Math.exp(-settle * 0.35) * 1.2 : 0;
+    const accent = COLOR[color];
+    return /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: enSub ? Math.round(fontSize * 0.14) : 0,
+          border: `2px solid ${accent}`,
+          borderRadius: RADIUS.chip,
+          padding: "12px 28px",
+          background: plateBg(color),
+          fontFamily: FONT.zh,
+          fontWeight: FONT.zhHeavy,
+          fontSize,
+          color: accent,
+          opacity: Math.min(1, t * 2.5) * 0.95,
+          transform: `rotate(${rotate2 + shake}deg) scale(${1.3 - 0.3 * t})`,
+          textShadow: `0 0 12px ${accent}44`,
+          boxShadow: `0 0 14px ${accent}22, inset 0 0 12px ${accent}14`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
+            "div",
+            {
+              style: {
+                display: "flex",
+                alignItems: "center",
+                gap: Math.round(fontSize * 0.3),
+                letterSpacing: "0.18em"
+              },
+              children: [
+                icon ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("span", { style: { display: "inline-flex", alignItems: "center" }, children: icon }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("span", { children: text3 })
+              ]
+            }
+          ),
+          enSub ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
+            "div",
+            {
+              style: {
+                fontFamily: FONT.en,
+                fontWeight: FONT.enBold,
+                fontSize: Math.round(fontSize * 0.3),
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                color: `${accent}B3`
+              },
+              children: enSub
+            }
+          ) : null
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/StepList.tsx
+  var import_jsx_runtime103 = __toESM(require_jsx_runtime());
+  var StepList = ({ steps, accent = "blue", enterAt = 0, staggerFrames = MOTION.stagger }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }, children: steps.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(StepView, { step: s, n: i + 1, accent, enterAt: enterAt + i * staggerFrames }, i)) });
+  };
+  var StepView = ({
+    step,
+    n,
+    accent,
+    enterAt
+  }) => {
+    const enter3 = useEnter(enterAt, "left");
+    const c3 = COLOR[accent];
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 16,
+          padding: "13px 22px",
+          background: COLOR.cardBg,
+          border: `1.5px solid ${COLOR.cardStroke}`,
+          borderRadius: RADIUS.chip,
+          boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
+            "span",
+            {
+              style: {
+                width: 34,
+                height: 34,
+                borderRadius: 17,
+                border: `2px solid ${c3}`,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT.en,
+                fontWeight: 800,
+                fontSize: 19,
+                color: c3,
+                flexShrink: 0
+              },
+              children: n
+            }
+          ),
+          step.icon ? /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center" }, children: step.icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 28, color: COLOR.white, whiteSpace: "nowrap" }, children: step.text })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/TimelineCard.tsx
+  var import_jsx_runtime104 = __toESM(require_jsx_runtime());
+  var TimelineCard = ({ title = "THE DEAL", subtitle = "\u7ED3\u5C40", nodes, enterAt, stagger = 10, width = 340 }) => {
+    const frame = useCurrentFrame();
+    const card = useEnter(enterAt, "up");
+    const rows3 = nodes.slice(0, 4);
+    return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
+      "div",
+      {
+        "data-qc": "box",
+        "data-qc-id": "timeline-card",
+        style: {
+          width,
+          padding: "22px 26px",
+          background: "rgba(12,12,15,0.92)",
+          // 黑半透（规格实测值）
+          border: `1px solid ${COLOR.cardStroke}`,
+          borderRadius: RADIUS.card,
+          // 20
+          boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+          opacity: card.opacity,
+          transform: card.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 10, marginBottom: 16 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: FONT.en,
+                  fontWeight: 800,
+                  fontSize: 24,
+                  letterSpacing: "0.16em",
+                  color: COLOR.white
+                },
+                children: title
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.grey }, children: [
+              "\xB7 ",
+              subtitle
+            ] })
+          ] }),
+          rows3.map((n, i) => {
+            const local = frame - (enterAt + 6 + i * stagger);
+            const t = interpolate(local, [0, MOTION.popInFrames], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+              easing: Easing.out(Easing.cubic)
+            });
+            const op = interpolate(local, [0, MOTION.popInFrames * 0.7], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp"
+            });
+            const shift = (1 - t) * 24;
+            const c3 = COLOR[n.color ?? "red"];
+            return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 14,
+                  height: 52,
+                  marginBottom: i < rows3.length - 1 ? 20 : 0,
+                  // 行距 ~72
+                  opacity: op,
+                  transform: `translateY(${shift}px)`
+                },
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
+                    "span",
+                    {
+                      style: {
+                        fontFamily: FONT.en,
+                        fontWeight: 800,
+                        fontSize: 20,
+                        color: c3,
+                        minWidth: 40,
+                        fontVariantNumeric: "tabular-nums"
+                      },
+                      children: n.date
+                    }
+                  ),
+                  n.icon ? /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center", flexShrink: 0 }, children: n.icon }) : null,
+                  /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.white, whiteSpace: "nowrap" }, children: n.label })
+                ]
+              },
+              i
+            );
+          })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/TimelineEvents.tsx
+  var import_jsx_runtime105 = __toESM(require_jsx_runtime());
+  var TimelineEvents = ({ events, width = 760, enterAt = 0 }) => {
+    const frame = useCurrentFrame();
+    const lineT = interpolate(frame, [enterAt, enterAt + 30], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+      easing: Easing.out(Easing.cubic)
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "relative", width, height: 150 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width, height: 3, borderRadius: 2, background: "rgba(255,255,255,0.15)" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width: width * lineT, height: 3, borderRadius: 2, background: COLOR.blue } }),
+      events.map((ev, i) => {
+        const start2 = enterAt + 10 + i * (MOTION.stagger + 6);
+        const t = interpolate(frame, [start2, start2 + MOTION.popInFrames], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: Easing.out(Easing.cubic)
+        });
+        const x = ev.xPct / 100 * width;
+        return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "absolute", left: x, top: 0, opacity: t, transform: `translateY(${(1 - t) * 14}px)` }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                top: 34,
+                left: -7,
+                width: 15,
+                height: 15,
+                borderRadius: 8,
+                background: COLOR.blue,
+                boxShadow: "0 0 12px rgba(77,158,255,0.8)"
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "absolute", top: -8, left: -6, whiteSpace: "nowrap" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.chip, color: COLOR.white }, children: ev.title }),
+            ev.sub ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { marginLeft: 10, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: ev.sub }) : null
+          ] }),
+          ev.chip ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                top: 66,
+                left: -6,
+                whiteSpace: "nowrap",
+                padding: "6px 12px",
+                borderRadius: RADIUS.chip,
+                border: `1.5px solid ${COLOR[ev.chip.color]}`,
+                background: COLOR.cardBg,
+                fontFamily: FONT.zh,
+                fontWeight: 700,
+                fontSize: SIZE.subSmall,
+                color: COLOR[ev.chip.color]
+              },
+              children: ev.chip.text
+            }
+          ) : null
+        ] }, i);
+      })
+    ] });
+  };
+
+  // src/JasonWu/components/jc/TweetCard.tsx
+  var import_jsx_runtime106 = __toESM(require_jsx_runtime());
+  var TweetCard = ({
+    name,
+    zhIdentity,
+    avatarSrc: avatarSrc2,
+    avatarText,
+    avatarColor = "#E05A33",
+    badgeSrc,
+    headlineTop,
+    headlineMain,
+    headlineColor = "red",
+    zhSub,
+    headlineSub,
+    chips = [],
+    enterAt = 0,
+    identityAt,
+    kickerAt,
+    mainAt
+  }) => {
+    const idEnter = useEnter(identityAt ?? enterAt, "left");
+    const kickerEnter = useEnter(kickerAt ?? enterAt, "left");
+    const mainEnter = useEnter(mainAt ?? enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, opacity: idEnter.opacity, transform: idEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { position: "relative", flexShrink: 0 }, children: [
+          avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(Img, { src: avatarSrc2, style: { width: 116, height: 116, borderRadius: 58, objectFit: "cover", display: "block" } }) : /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+            "div",
+            {
+              style: {
+                width: 116,
+                height: 116,
+                borderRadius: 58,
+                background: avatarColor,
+                border: `3px solid ${COLOR.blue}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT.en,
+                fontWeight: 800,
+                fontSize: 44,
+                color: "#fff"
+              },
+              children: avatarText ?? name.slice(0, 1)
+            }
+          ),
+          badgeSrc ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+            Img,
+            {
+              src: badgeSrc,
+              style: {
+                position: "absolute",
+                right: -6,
+                bottom: -4,
+                width: 44,
+                height: 44,
+                borderRadius: 12,
+                boxShadow: "0 4px 12px rgba(0,0,0,0.5)"
+              }
+            }
+          ) : null
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 36, color: COLOR.white, letterSpacing: "0.03em" }, children: name.toUpperCase() }),
+          /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall + 2, color: COLOR.grey }, children: zhIdentity })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { opacity: kickerEnter.opacity, transform: kickerEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+          "div",
+          {
+            style: {
+              marginTop: 34,
+              fontFamily: "Georgia, serif",
+              fontWeight: 700,
+              fontSize: 88,
+              color: COLOR.blue,
+              lineHeight: 0.4
+            },
+            children: "\u201C"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { marginTop: 26, fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 42, color: COLOR.white, letterSpacing: "0.01em", whiteSpace: "nowrap" }, children: headlineTop.toUpperCase() })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { opacity: mainEnter.opacity, transform: mainEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+          "div",
+          {
+            style: {
+              marginTop: 2,
+              fontFamily: FONT.enTitle,
+              fontWeight: 400,
+              fontSize: SIZE.h1,
+              letterSpacing: "0.01em",
+              lineHeight: 1.05,
+              whiteSpace: "nowrap",
+              color: COLOR[headlineColor],
+              textShadow: "0 6px 24px rgba(0,0,0,0.65)"
+            },
+            children: headlineMain.toUpperCase()
+          }
+        ),
+        zhSub || headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 18, marginTop: 12 }, children: [
+          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white, whiteSpace: "nowrap" }, children: zhSub }) : null,
+          headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.24em", color: COLOR.grey, whiteSpace: "nowrap" }, children: headlineSub.toUpperCase() }) : null
+        ] }) : null
+      ] }),
+      chips.length ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { display: "flex", gap: 12, marginTop: 24 }, children: chips.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(Chip, { segments: [{ t: c3.text }], accent: c3.color ?? "blue", enterAt: enterAt + 10 + i * 8 }, i)) }) : null
+    ] });
+  };
+
+  // src/JasonWu/components/jc/UnitMatrix.tsx
+  var import_jsx_runtime107 = __toESM(require_jsx_runtime());
+  var GLOW2 = {
+    green: "rgba(61,220,132,0.4)",
+    red: "rgba(255,77,77,0.4)",
+    blue: "rgba(77,158,255,0.4)",
+    yellow: "rgba(255,197,61,0.4)"
+  };
+  var gcd = (a3, b3) => b3 === 0 ? a3 : gcd(b3, a3 % b3);
+  var pickStride = (total) => {
+    for (const s of [37, 29, 23, 17, 13, 11, 7, 3]) {
+      if (gcd(total, s) === 1) return s;
+    }
+    return 1;
+  };
+  var MatrixGroup = ({ rows: rows3, cols, color, cell, gap, fillRatio, enterAt, stages }) => {
+    const frame = useCurrentFrame();
+    const [g0, g1] = GRADIENT[color];
+    const [gg0, gg1] = GRADIENT.green;
+    const total = rows3 * cols;
+    const stride = pickStride(total);
+    const litCount = fillRatio == null ? total : Math.round(Math.max(0, Math.min(1, fillRatio)) * total);
+    const greenCount = stages?.greenCount ?? 0;
+    const fillFrames = stages?.fillFrames ?? 45;
+    const stagger = stages ? Math.max(0.15, fillFrames / Math.max(1, litCount)) : Math.min(1.4, 110 / Math.max(1, litCount));
+    const baseAt = stages ? stages.placeholderAt : enterAt;
+    const fillAt = stages ? stages.fillAt : enterAt;
+    const W = cols * cell + (cols - 1) * gap;
+    const H = rows3 * cell + (rows3 - 1) * gap;
+    return /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW2[color]})` }, children: Array.from({ length: total }, (_, i) => {
+      const rank = i * stride % total;
+      const isRed = rank < litCount;
+      const isGreen = stages != null && !isRed && rank < litCount + greenCount;
+      const left = i % cols * (cell + gap);
+      const top = Math.floor(i / cols) * (cell + gap);
+      const base = interpolate(frame, [baseAt, baseAt + MOTION.popInFrames], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.quad)
+      });
+      const greyOpacity = base * (stages ? 1 : MOTION.dimOpacity);
+      const greyBg = stages ? "rgba(190,196,206,0.32)" : COLOR.cardStroke;
+      let t = 0;
+      let grad = null;
+      if (isRed) {
+        t = interpolate(frame, [fillAt + rank * stagger, fillAt + rank * stagger + 10], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: Easing.out(Easing.cubic)
+        });
+        grad = [g0, g1];
+      } else if (isGreen && stages?.greenAt != null) {
+        const gRank = rank - litCount;
+        t = interpolate(frame, [stages.greenAt + gRank * 1.2, stages.greenAt + gRank * 1.2 + 8], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+          easing: Easing.out(Easing.cubic)
+        });
+        grad = [gg0, gg1];
+      }
+      return /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "absolute", left, top, width: cell, height: cell }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              inset: 0,
+              borderRadius: cell * 0.26,
+              background: greyBg,
+              opacity: greyOpacity * (1 - t)
+            }
+          }
+        ),
+        grad && t > 0 ? /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              inset: 0,
+              borderRadius: cell * 0.26,
+              background: `linear-gradient(160deg, ${grad[0]} 0%, ${grad[1]} 100%)`,
+              boxShadow: "inset 0 1.5px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.25)",
+              opacity: t * (0.78 + i * 37 % 22 / 100),
+              transform: `scale(${0.5 + 0.5 * t})`
+            }
+          }
+        ) : null
+      ] }, i);
+    }) });
+  };
+  var UnitMatrix = ({ groups = 3, rows: rows3 = 5, cols = 8, color = "red", cell = 30, gap = 6, fillRatio, enterAt, stages }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { display: "flex", gap: GRID2 * 3, alignItems: "flex-start" }, children: Array.from({ length: groups }, (_, g) => /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+      MatrixGroup,
+      {
+        rows: rows3,
+        cols,
+        color,
+        cell,
+        gap,
+        fillRatio,
+        enterAt: enterAt + g * MOTION.stagger,
+        stages
+      },
+      g
+    )) });
+  };
+
+  // src/JasonWu/components/jc/VerdictBox.tsx
+  var import_jsx_runtime108 = __toESM(require_jsx_runtime());
+  var ChipTile = ({
+    icon,
+    label: label3,
+    revealAt,
+    accent
+  }) => {
+    const enter3 = useEnter(revealAt, "up");
+    return /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8, width: 76 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+        "div",
+        {
+          style: {
+            width: 76,
+            height: 76,
+            borderRadius: 12,
+            border: `2px solid ${accent}`,
+            background: COLOR.cardBg,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: accent,
+            opacity: enter3.opacity,
+            transform: enter3.transform
+          },
+          children: icon
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+        "div",
+        {
+          style: {
+            fontFamily: FONT.zh,
+            fontWeight: 700,
+            fontSize: 16,
+            lineHeight: 1.1,
+            color: COLOR.white,
+            whiteSpace: "nowrap",
+            opacity: enter3.opacity
+          },
+          children: label3
+        }
+      )
+    ] });
+  };
+  var VerdictBox = ({
+    color,
+    side,
+    headerZh,
+    headerEn,
+    headerIcon,
+    chips,
+    boxEnterAt,
+    top = 420,
+    offsetX = 72,
+    phase = 0,
+    width = 400,
+    height = 170,
+    qcId
+  }) => {
+    const accent = COLOR[color];
+    const pop = usePop(boxEnterAt);
+    return /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          top,
+          ...side === "left" ? { left: offsetX } : { right: offsetX }
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(Breathe, { phase, children: /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)(
+          "div",
+          {
+            "data-qc": "box",
+            "data-qc-id": qcId ?? `verdict-${color}`,
+            style: {
+              position: "relative",
+              width,
+              height,
+              boxSizing: "border-box",
+              padding: "14px 20px",
+              borderRadius: 16,
+              border: `2px solid ${accent}`,
+              background: "rgba(12,14,18,0.55)",
+              boxShadow: `inset 0 0 26px ${accent}14`,
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+              opacity: pop.opacity,
+              transform: pop.transform
+            },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { display: "inline-flex", alignItems: "center", color: accent }, children: headerIcon }),
+                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: accent, whiteSpace: "nowrap" }, children: headerZh }),
+                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+                  "span",
+                  {
+                    style: {
+                      position: "absolute",
+                      top: 14,
+                      right: 20,
+                      fontFamily: FONT.en,
+                      fontWeight: 700,
+                      fontSize: 12,
+                      letterSpacing: "0.2em",
+                      textTransform: "uppercase",
+                      color: accent,
+                      opacity: 0.4
+                    },
+                    children: headerEn
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { display: "flex", gap: 14, justifyContent: "center" }, children: chips.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(ChipTile, { icon: c3.icon, label: c3.label, revealAt: c3.revealAt, accent }, i)) })
+            ]
+          }
+        ) })
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/ViewsBadge.tsx
+  var import_jsx_runtime109 = __toESM(require_jsx_runtime());
+  var ViewsBadge = ({ from = 0, to, unit = "M+", label: label3 = "VIEWS", enterAt = 0, countFrames = 20 }) => {
+    const frame = useCurrentFrame();
+    const enter3 = useEnter(enterAt, "left");
+    if (frame < enterAt) return null;
+    const n = Math.round(
+      interpolate(frame, [enterAt, enterAt + countFrames], [from, to], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.out(Easing.cubic)
+      })
+    );
+    return /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)(
+      "div",
+      {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "12px 16px",
+          borderRadius: 16,
+          border: `2px solid rgba(255,197,61,0.55)`,
+          background: "rgba(10,12,15,0.72)",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(Eye, { size: 28, color: COLOR.yellow, strokeWidth: 2.4 }),
+          /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 36, color: COLOR.yellow, lineHeight: 1, fontVariantNumeric: "tabular-nums" }, children: [
+            n,
+            unit
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime109.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 700, fontSize: 20, letterSpacing: "0.22em", color: COLOR.grey, lineHeight: 1 }, children: label3 })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/components/jc/WindowCard.tsx
+  var import_jsx_runtime110 = __toESM(require_jsx_runtime());
+  var WindowCard = ({ title, icon, chip, width, height, children, enterAt = 0 }) => {
+    const enter3 = useEnter(enterAt, "up");
+    const chipColor = chip ? chip.color === "purple" ? "#B26BFF" : COLOR[chip.color] : void 0;
+    return /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
+      "div",
+      {
+        style: {
+          width,
+          height,
+          display: "flex",
+          flexDirection: "column",
+          background: "rgba(18,20,24,0.92)",
+          border: "1.5px solid rgba(255,255,255,0.16)",
+          borderRadius: 16,
+          boxShadow: "0 22px 60px rgba(0,0,0,0.55)",
+          overflow: "hidden",
+          opacity: enter3.opacity,
+          transform: enter3.transform
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
+            "div",
+            {
+              style: {
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                padding: "14px 18px",
+                borderBottom: "1px solid rgba(255,255,255,0.08)",
+                flexShrink: 0
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { display: "flex", gap: 7 }, children: ["#FF5F57", "#FEBC2E", "#28C840"].map((c3) => /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { width: 13, height: 13, borderRadius: 7, background: c3 } }, c3)) }),
+                icon ? /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { display: "inline-flex", alignItems: "center", marginLeft: 6 }, children: icon }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 24, color: COLOR.white }, children: title }),
+                chip ? /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
+                  "span",
+                  {
+                    style: {
+                      marginLeft: "auto",
+                      border: `1.5px solid ${chipColor}`,
+                      borderRadius: 999,
+                      padding: "3px 14px",
+                      fontFamily: FONT.zh,
+                      fontWeight: 700,
+                      fontSize: 18,
+                      color: chipColor
+                    },
+                    children: chip.text
+                  }
+                ) : null
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { flex: 1, padding: 18, overflow: "hidden", position: "relative" }, children })
+        ]
+      }
+    );
+  };
+
+  // src/JasonWu/JcNativeRecipes.tsx
+  var import_jsx_runtime111 = __toESM(require_jsx_runtime());
+  var validColors = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
+  var avatarSrc = "data:image/svg+xml,%3Csvg%20xmlns=%27http%3A%2F%2Fwww.w3.org%2F2000%200%20160%20160%27%3E%3Crect%20width%3D%27160%27%20height%3D%27160%27%20fill%3D%27%23131a2a%27%2F%3E%3Ccircle%20cx%3D%2780%27%20cy%3D%2762%27%20r%3D%2732%27%20fill%3D%27%234d9eff%27%2F%3E%3Crect%20x%3D%2734%27%20y%3D%27104%27%20width%3D%2792%27%20height%3D%2736%27%20rx%3D%2718%27%20fill%3D%27%233ddc84%27%2F%3E%3C%2Fsvg%3E";
+  var asText = (value, fallback = "") => typeof value === "string" && value.trim() ? value.trim() : fallback;
+  var asNumber = (value, fallback = 72) => Number.isFinite(Number(value)) ? Number(value) : fallback;
+  var stringList = (value) => Array.isArray(value) ? value.map((item2) => asText(item2)).filter(Boolean) : [];
+  var recipeContent = (source) => {
+    const normalized = normalizeComponentContent(source);
+    const renderer = toRendererContentProps(source);
+    const payload = normalized.contentPayload;
+    const lines = payload.type === "chips" ? payload.items.map((item2) => item2.title).filter(Boolean) : payload.type === "steps" ? payload.steps.map((item2) => item2.text).filter(Boolean) : stringList(renderer.items).length ? stringList(renderer.items) : stringList(renderer.steps).length ? stringList(renderer.steps) : [normalized.headline];
+    const body = payload.type === "narrative" ? payload.bodyText : payload.type === "metrics" ? asText(payload.detailText, asText(renderer.body, normalized.headline)) : asText(renderer.body, normalized.headline);
+    const metric = payload.type === "metrics" ? { label: payload.label, value: asNumber(payload.value), unit: payload.unit ?? "", detail: payload.detailText ?? "" } : { label: asText(renderer.label, normalized.headline), value: asNumber(renderer.value), unit: asText(renderer.unit), detail: body };
+    return { category: normalized.category, headline: normalized.headline, body, lines: lines.length ? lines : [normalized.headline], metric };
+  };
+  var sourceAccent = (source, nativeColor) => {
+    if (source.__jcUseLayerAccent !== true) return nativeColor;
+    const requested = String(source.accent ?? "");
+    return validColors.has(requested) ? requested : nativeColor;
+  };
+  var lineAt = (content2, index) => content2.lines[index] ?? content2.lines[content2.lines.length - 1] ?? content2.headline;
+  var JcNativeStageBackdrop = ({ children, scrim = true }) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(
+    AbsoluteFill,
+    {
+      style: {
+        background: "radial-gradient(100% 90% at 24% 18%, #18243a 0%, #0b0e14 48%, #07090d 100%)",
+        overflow: "hidden"
+      },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(JcFontGate, {}),
+        scrim ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoScrim, { strength: 0.62, side: "left" }) : null,
+        children
+      ]
+    }
+  );
+  var renderJcNativeRecipe = (exportName, source) => {
+    const content2 = recipeContent(source);
+    const headline = content2.headline;
+    const body = content2.body || headline;
+    const lines = content2.lines;
+    const metric = content2.metric;
+    const color = (nativeColor) => sourceAccent(source, nativeColor);
+    switch (exportName) {
+      case "BadgeCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 610, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BadgeCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Crown, { size: 64 }), zhTitle: headline, zhResult: body, enKicker: content2.category, accent: color("yellow"), enterAt: 0 }) });
+      case "BarChart":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 430, top: 285 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BarChart2, { width: 760, accent: color("yellow"), items: lines.slice(0, 4).map((label3, index) => ({ label: label3, value: Math.max(12, metric.value - index * 14), display: String(Math.max(12, metric.value - index * 14)), highlight: index === 0 })) }) });
+      case "BigNumber":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 500, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BigNumber, { value: metric.value, suffix: metric.unit || "%", color: color("green"), enKicker: metric.label || content2.category, zhSub: metric.detail || body, size: "mega", enterAt: 0 }) });
+      case "BilingualSub":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: "CAPTION", segments: [{ t: headline, color: color("blue") }], top: 250, enterAt: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BilingualSub, { zh: body, en: content2.category })
+        ] });
+      case "Breathe":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 690, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Breathe, { amp: 2, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { width: 360, height: 360, borderRadius: 180, border: `6px solid ${COLOR.green}`, color: COLOR.green, boxShadow: `0 0 90px ${COLOR.green}66`, display: "flex", alignItems: "center", justifyContent: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ShieldCheck, { size: 150 }) }) }) });
+      case "BrickWall":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 470, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BrickWall, { label: headline, enLabel: content2.category, rows: 3, width: 880, enterAt: 0 }) });
+      case "CardWall":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 250, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CardWall, { cols: 3, cardWidth: 360, gap: 22, items: lines.slice(0, 6).map((text3, index) => ({ name: String.fromCharCode(65 + index), text: text3 })), enterAt: 0 }) });
+      case "Checklist":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Checklist, { accent: color("green"), top: 250, items: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Eye, { size: 34 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 34 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 34 }), segments: [{ t: text3 }], enterAt: index * 10 })) });
+      case "Chip":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 520, top: 420, display: "flex", gap: 28 }, children: lines.slice(0, 3).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Chip, { icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Sparkles, { size: 32 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 32 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 32 }), accent: color(index === 0 ? "blue" : index === 1 ? "red" : "green"), outlined: index === 1, segments: [{ t: text3 }], enterAt: index * 10 }, `${text3}-${index}`)) });
+      case "CloneCascade":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 260, top: 405 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CloneCascade, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Star, { size: 46 }), label: headline, cloneCount: 4, warnText: body, enterAt: 0 }) });
+      case "CompareCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 390, top: 240 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CompareCard, { width: 900, items: lines.slice(0, 3).map((name, index) => ({ logo: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Bot, { size: 38 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WandSparkles, { size: 38 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CodeXml, { size: 38 }), name, weak: index === 0 ? lineAt(content2, 1) : body, strong: index === 0 ? body : lineAt(content2, index - 1), strongColor: color(index === 0 ? "green" : index === 1 ? "blue" : "yellow") })) }) });
+      case "CurveOverlay":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { position: "absolute", left: 260, top: 250 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CurveOverlay, { width: 1120, height: 520, color: color("yellow"), strokeWidth: 10, enterAt: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { color: COLOR.yellow, fontSize: 44, fontWeight: 900, marginTop: -70 }, children: metric.label || headline })
+        ] });
+      case "DMCardStack":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 420, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(DMCardStack, { cards: lines.slice(0, 3).map((text3, index) => ({ chip: { text: index === 0 ? content2.category : index === 1 ? "SIGNAL" : "RESULT", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") }, text: text3, width: 640 - index * 40 })) }) });
+      case "FlowChain":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 260, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FlowChain, { nodeWidth: 230, nodes: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Bot, { size: 46 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(GitBranch, { size: 46 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Package, { size: 46 }), lines: [text3], accent: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") })) }) });
+      case "Flywheel":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 680, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flywheel, { size: 430, color: color("green"), icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Zap, { size: 88 }) }) });
+      case "HeroText":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: [{ t: content2.category.toLowerCase(), color: color("blue") }, { t: " system" }], segments: [{ t: headline, color: color("yellow") }], zhSub: body, echo: "motion card hero", top: 270, enterAt: 8 });
+      case "InfoCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 520, top: 380 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Lightbulb, { size: 56 }), en: content2.category, zh: body, accent: color("yellow"), enterAt: 0 }) });
+      case "InfoScrim":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoScrim, { strength: 0.9, side: "right" }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: "SCRIM", segments: [{ t: headline, color: color("blue") }], top: 330, enterAt: 0 })
+        ] });
+      case "LoopDiagram":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 620, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(LoopDiagram, { size: 500, color: color("blue"), labels: lines.slice(0, 4) }) });
+      case "MatrixIcon":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 670, top: 260 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(MatrixIcon, { color: color("yellow"), rows: 5, cols: 5, cell: 58, gap: 12, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Scale, { size: 92 }) }) });
+      case "NamePlate":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(NamePlate, { name: headline, slug: content2.category, avatarText: headline.charAt(0) || "J", enterAt: 0 }) });
+      case "PersonBadge":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PersonBadge, { avatarSrc, name: headline, zhSub: body, accent: color("blue"), enterAt: 0 }) });
+      case "PersonCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 360, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PersonCard, { name: headline, zhRole: body, avatarText: headline.charAt(0) || "J", orgChip: { text: content2.category, color: color("green") }, kickerNote: "SANDBOXED", enterAt: 0 }) });
+      case "PhoneMockup":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 720, top: 95 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PhoneMockup, { width: 340, glow: "purple", scrollTo: -170, scrollStart: 20, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { minHeight: 930, padding: "78px 30px 30px", background: "#f3f4f6", color: "#111827", fontSize: 28, lineHeight: 1.55 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("b", { children: headline }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {}),
+          lines.slice(0, 4).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_react129.default.Fragment, { children: [
+            index + 1,
+            ". ",
+            text3,
+            /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {})
+          ] }, `${text3}-${index}`)),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {}),
+          body
+        ] }) }) });
+      case "QuoteDoc":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 360, top: 190 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(QuoteDoc, { width: 960, source: content2.category, title: headline, zhNote: body, zhNoteYPct: 60, blocks: lines.slice(0, 3).map((text3, index) => ({ t: text3, heading: index === 0, hl: index === 2 })), highlightAt: 18, noteAt: 28 }) });
+      case "ScoreBoard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 500, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ScoreBoard, { rows: lines.slice(0, 3).map((text3, index) => ({ enKicker: content2.category, zhLabel: text3, left: Math.max(4, metric.value - index * 8), right: Math.max(1, metric.value - 13 - index * 8), note: index === 0 ? body : void 0 })), enterAt: 0 }) });
+      case "ShotCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 400, top: 230 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ShotCard, { width: 920, radius: 26, glow: "purple", highlight: { xPct: 12, yPct: 33, wPct: 62, hPct: 18 }, zhBar: { text: body }, enterAt: 0, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { background: "#fff", padding: 52, color: "#111827", minHeight: 430, lineHeight: 1.45 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { fontSize: 48, fontWeight: 900 }, children: headline }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { marginTop: 32, fontSize: 30 }, children: body }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { marginTop: 28, fontSize: 30, color: "#475467" }, children: lineAt(content2, 0) })
+        ] }) }) });
+      case "SideLabel":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SideLabel, { color: color("blue"), en: content2.category, zh: headline, sub: body, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Sparkles, { size: 28 }), variant: "title" });
+      case "SolventTank":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 610, top: 160 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SolventTank, { enterAt: 0, pourAt: 12, dissolveAt: 45, resistAt: 75 }) });
+      case "Stamp":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 650, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Stamp, { text: headline, color: color("green"), fontSize: 110, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 92 }), enSub: content2.category, enterAt: 0 }) });
+      case "StepList":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 430, top: 270 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(StepList, { accent: color("blue"), steps: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FileText, { size: 30 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 30 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WandSparkles, { size: 30 }), text: text3 })) }) });
+      case "TimelineCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 630, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TimelineCard, { width: 520, title: content2.category, subtitle: headline, enterAt: 0, nodes: lines.slice(0, 3).map((label3, index) => ({ date: index < 9 ? "0" + String(index + 1) : String(index + 1), label: label3, color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green"), icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FileText, { size: 20 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Play, { size: 20 }) })) }) });
+      case "TimelineEvents":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 300, top: 430 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TimelineEvents, { width: 1080, events: lines.slice(0, 3).map((title, index) => ({ xPct: [5, 47, 86][index] ?? 86, title, sub: index === 0 ? body : "", chip: { text: index === 0 ? "OPEN" : index === 1 ? "PAYOFF" : "DONE", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") } })) }) });
+      case "TweetCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 320, top: 210 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TweetCard, { name: content2.category, zhIdentity: body, avatarText: content2.category.charAt(0) || "J", headlineTop: content2.category, headlineMain: headline, headlineColor: color("red"), zhSub: body, headlineSub: "BY MOTION CARDS", chips: lines.slice(0, 2).map((text3, index) => ({ text: text3, color: color(index === 0 ? "blue" : "yellow") })) }) });
+      case "UnitMatrix":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 390, top: 300 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(UnitMatrix, { groups: 2, rows: 6, cols: 10, color: color("green"), cell: 44, gap: 9, fillRatio: Math.max(0.01, Math.min(1, metric.value / 100)), enterAt: 0 }) });
+      case "VerdictBox":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(VerdictBox, { color: color("red"), side: "left", headerZh: headline, headerEn: "DROP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(X, { size: 28 }), boxEnterAt: 0, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(X, { size: 34 }), label: label3, revealAt: 12 + index * 10 })) }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(VerdictBox, { color: color("green"), side: "right", headerZh: body, headerEn: "KEEP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 28 }), boxEnterAt: 8, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 34 }), label: label3, revealAt: 20 + index * 10 })) })
+        ] });
+      case "ViewsBadge":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 650, top: 420 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ViewsBadge, { from: 0, to: metric.value, unit: metric.unit || "M+", label: metric.label || content2.category, enterAt: 0 }) });
+      case "WindowCard":
+        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 450, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WindowCard, { title: headline, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SquareTerminal, { size: 34 }), width: 820, height: 430, chip: { text: content2.category, color: color("blue") }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { color: "#F8FAFC", fontSize: 30, lineHeight: 1.7, fontFamily: FONT.en }, children: [
+          lines.slice(0, 4).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_react129.default.Fragment, { children: [
+            "entry: ",
+            text3,
+            /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {})
+          ] }, `${text3}-${index}`)),
+          "status: ",
+          body
+        ] }) }) });
+      default:
+        return null;
+    }
+  };
+
+  // src/JasonWu/jcLayoutRegistry.tsx
+  var import_jsx_runtime112 = __toESM(require_jsx_runtime());
+  var semanticAccents = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
+  var accentOf2 = (value) => semanticAccents.has(value) ? value : "blue";
+  var entryById = new Map(components_registry_default.components.filter((entry) => entry.id.startsWith("jc-")).map((entry) => [entry.id, entry]));
+  var JcEffectAdapter = ({ cue, props }) => {
+    const entry = entryById.get(String(props.__jcLayoutId ?? cue.layout));
+    const exportName = entry?.runtime?.exportName;
+    const motion = props.__jcMotion ?? {};
+    if (!exportName) return null;
+    const recipe = renderJcNativeRecipe(exportName, props);
+    if (!recipe) return null;
+    const stage = props.__jcStageBackdropProvided === true ? recipe : /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(JcNativeStageBackdrop, { children: recipe });
+    return /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(
+      MotionWrapper,
+      {
+        commonProps: motion.commonProps,
+        designTokens: motion.designTokens ?? props.designTokens,
+        beatDuration: motion.beatDuration ?? Math.max(1, cue.end - cue.start),
+        entranceDurationSeconds: motion.entranceDurationSeconds ?? 2.2,
+        accent: accentOf2(motion.accent ?? props.accent),
+        preserveNativeMotion: true,
+        children: stage
+      }
+    );
+  };
+  var categoryFor = (intent) => intent === "metrics" ? "data" : intent === "narrative" || intent === "contrast" ? "story" : intent === "process" ? "interactive" : "data";
+  var jcLayoutDefinitions = [...entryById.values()].map((entry) => {
+    const manifest = entry.manifest;
+    if (!manifest || !entry.runtime?.exportName) {
+      throw new Error(`Invalid JC registry entry: ${entry.id}`);
+    }
+    return {
+      key: entry.id,
+      component: JcEffectAdapter,
+      editableFields: [],
+      defaultProps: {
+        __jcLayoutId: entry.id,
+        accent: "blue"
+      },
+      meta: {
+        category: categoryFor(manifest.intent),
+        label: entry.name,
+        description: entry.description
+      },
+      renderLayer: "primary",
+      manifest,
+      usesInternalMotionWrapper: true
+    };
+  });
+
+  // src/JasonWu/layoutRegistry.ts
+  var copy = [{ key: "headline", label: "\u4E3B\u6807\u9898", type: "text" }];
+  var checkboxColorField = { key: "boxColor", label: "\u786E\u8BA4\u6846\u989C\u8272", type: "select", options: [{ label: "\u81EA\u52A8", value: "auto" }, { label: "\u7D2B\u8272", value: "purple" }, { label: "\u84DD\u8272", value: "blue" }, { label: "\u91D1\u8272", value: "gold" }, { label: "\u767D\u8272", value: "white" }, { label: "\u7EFF\u8272", value: "green" }, { label: "\u7EA2\u8272", value: "red" }] };
+  var text2 = (key, label3) => ({ key, label: label3, type: "text" });
+  var prose = (key, label3) => ({ key, label: label3, type: "textarea" });
+  var list2 = (key, label3, description) => ({ key, label: label3, type: "string-list", description });
+  var CONTROLLED_FIELDS = {
+    "person-rank": [text2("leftName", "\u5DE6\u4FA7\u4EBA\u7269"), text2("leftRole", "\u5DE6\u4FA7\u5934\u8854"), text2("rightName", "\u53F3\u4FA7\u4EBA\u7269"), text2("rightRole", "\u53F3\u4FA7\u5934\u8854")],
+    "event-timeline": [list2("years", "\u65F6\u95F4\u8282\u70B9", "\u6A2A\u7EBF\u4F9D\u6B21\u63A8\u8FDB\u81F3\u6BCF\u4E2A\u8282\u70B9")],
+    "pivot-list": [prose("text", "\u6253\u5B57\u673A\u6587\u672C")],
+    "capital-dashboard": [text2("marketLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "marketTo", label: "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("marketSuffix", "\u6570\u5B57\u5355\u4F4D"), text2("engineeringLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "engineeringTo", label: "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("engineeringSuffix", "\u6570\u5B57\u5355\u4F4D")],
+    "cook-machine": [text2("title", "\u9876\u7AEF\u6807\u7B7E"), text2("leftLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), text2("leftValue", "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011"), text2("rightLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), text2("rightValue", "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011"), { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }],
+    "market-battlefield": [text2("headline", "\u5730\u56FE\u6807\u9898"), list2("nodes", "\u8DEF\u7EBF\u8282\u70B9")],
+    "reject-list": [text2("title", "\u6E05\u5355\u6807\u9898"), list2("items", "\u6B63\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u53C9\u53F7\uFF0C\u53EF\u914D\u5408\u526F\u6807\u9898\u663E\u793A"), text2("subLabel", "\u9ED8\u8BA4\u526F\u6807\u9898"), checkboxColorField],
+    "check-progress": [text2("bodyText", "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number" }, list2("items", "\u6B63\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u6253\u52FE\u7684\u7070\u8272\u6587\u5B57\u5217\u8868"), checkboxColorField],
+    "diagonal-chips": [list2("items", "Chip \u6587\u6848", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u659C\u5165\u6807\u7B7E")],
+    "floating-chips": [list2("items", "\u6D6E\u52A8 Chip \u6587\u6848")],
+    "bare-typography": [text2("headline", "\u5927\u6807\u9898"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E"), prose("body", "\u8BF4\u660E\u6587\u6848")],
+    "chapter-card": [text2("chapterLabel", "\u7AE0\u8282\u6807\u7B7E"), text2("headline", "\u7AE0\u8282\u6807\u9898"), prose("body", "\u7AE0\u8282\u8BF4\u660E")],
+    "logo-wordmark": [text2("mark", "\u6807\u5FD7\u5B57\u6BCD"), text2("headline", "\u6807\u5FD7\u6807\u9898"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
+    "ordered-sequence": [text2("categoryTag", "\u9636\u6BB5\u6807\u7B7E"), list2("steps", "\u6B65\u9AA4\u5217\u8868", "\u6B65\u9AA4\u6309\u987A\u5E8F\u9010\u4E00\u5F39\u51FA")],
+    "org-chart": [text2("leader", "\u6838\u5FC3\u8282\u70B9"), text2("leaderRole", "\u6838\u5FC3\u8282\u70B9\u8BF4\u660E"), list2("units", "\u7EC4\u7EC7\u5355\u5143")],
+    "draw-line": [prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9")],
+    "progress-donut": [text2("label", "\u5C0F\u6807\u9898"), { key: "value", label: "\u6570\u503C", type: "number" }, text2("bodyText", "\u6B63\u6587\u5185\u5BB9")],
+    "avatar-handoff": [text2("leftName", "\u4EA4\u51FA\u65B9"), text2("leftRole", "\u4EA4\u51FA\u65B9\u5934\u8854"), text2("rightName", "\u63A5\u4EFB\u65B9"), text2("rightRole", "\u63A5\u4EFB\u65B9\u5934\u8854")],
+    "bull-bear": [text2("bullLabel", "\u591A\u65B9\u89C2\u70B9\u6807\u7B7E"), prose("bullText", "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011"), text2("bearLabel", "\u7A7A\u65B9\u89C2\u70B9\u6807\u7B7E"), prose("bearText", "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011"), prose("highlightQuote", "\u5E95\u90E8\u91D1\u8272\u5F3A\u8C03\u6587\u5B57")],
+    "opinion-hero": [text2("label", "\u89C2\u70B9\u6807\u7B7E"), text2("headline", "\u89C2\u70B9\u5927\u5B57"), prose("body", "\u89C2\u70B9\u8BF4\u660E")],
+    "photo-wall": [text2("photoTitle1", "\u7167\u72471\u6807\u9898"), text2("photoSubtitle1", "\u7167\u72471\u526F\u6807\u9898"), text2("photo1", "\u7167\u72471\u56FE\u7247URL"), text2("photoTitle2", "\u7167\u72472\u6807\u9898"), text2("photoSubtitle2", "\u7167\u72472\u526F\u6807\u9898"), text2("photo2", "\u7167\u72472\u56FE\u7247URL"), text2("photoTitle3", "\u7167\u72473\u6807\u9898"), text2("photoSubtitle3", "\u7167\u72473\u526F\u6807\u9898"), text2("photo3", "\u7167\u72473\u56FE\u7247URL"), text2("photoTitle4", "\u7167\u72474\u6807\u9898"), text2("photoSubtitle4", "\u7167\u72474\u526F\u6807\u9898"), text2("photo4", "\u7167\u72474\u56FE\u7247URL")],
+    "product-explosion": [text2("centerLabel", "\u4E2D\u5FC3\u4EA7\u54C1\u6807\u9898"), text2("centerImage", "\u4E2D\u5FC3\u4EA7\u54C1\u56FE\u7247"), text2("productTitle1", "\u4EA7\u54C11\u540D\u79F0"), text2("productImage1", "\u4EA7\u54C11\u56FE\u7247"), text2("productTitle2", "\u4EA7\u54C12\u540D\u79F0"), text2("productImage2", "\u4EA7\u54C12\u56FE\u7247"), text2("productTitle3", "\u4EA7\u54C13\u540D\u79F0"), text2("productImage3", "\u4EA7\u54C13\u56FE\u7247"), text2("productTitle4", "\u4EA7\u54C14\u540D\u79F0"), text2("productImage4", "\u4EA7\u54C14\u56FE\u7247")],
+    "route-map": [text2("headline", "\u5730\u56FE\u6807\u9898"), list2("nodes", "\u8DEF\u7EBF\u8282\u70B9")],
+    "data-flow": [text2("title", "\u9876\u7AEF\u6807\u7B7E"), text2("leftLabel", "\u5DE6\u4FA7\u6807\u7B7E"), text2("leftValue", "\u5DE6\u4FA7\u6570\u503C"), text2("rightLabel", "\u53F3\u4FA7\u6807\u7B7E"), text2("rightValue", "\u53F3\u4FA7\u6570\u503C"), { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }],
+    "screen-recording": [text2("headline", "\u7A97\u53E3\u6807\u9898"), list2("items", "\u7A97\u53E3\u6570\u636E\u5361")],
+    "zoom-statement": [text2("headline", "\u63A8\u62C9\u5927\u5B57"), text2("eyebrow", "\u8F85\u52A9\u6807\u7B7E")],
+    "desktop-folders": [list2("items", "\u6587\u4EF6\u5939\u540D\u79F0")],
+    "time-rewind": [text2("headline", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u65F6\u95F4\u8282\u70B9"), prose("bodyText", "\u65F6\u95F4\u56DE\u6EAF\u5185\u5BB9\u6B63\u6587")],
+    "clipboard-note": [text2("label", "\u4FBF\u7B7E\u6807\u7B7E"), prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField],
+    "closing-checklist": [text2("title", "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846"), checkboxColorField],
+    "platform-shift-line": [text2("metricLabel", "\u589E\u957F\u6307\u6807\u6807\u7B7E"), { key: "count", label: "\u589E\u957F\u6570\u91CF", type: "number" }, prose("summary", "\u589E\u957F\u8BF4\u660E"), list2("milestones", "\u4EA7\u54C1\u7EBF\u8282\u70B9"), text2("startLabel", "\u8D77\u70B9\u6807\u7B7E"), text2("endLabel", "\u7EC8\u70B9\u6807\u7B7E")],
+    "tradeoff-reject-round": [text2("label", "\u5426\u5B9A\u9879\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u5426\u5B9A\u9879", "\u4E09\u9879\u4F1A\u663E\u793A\u5728\u98CE\u9669\u6392\u9664\u4E0B\u65B9\u7684\u7EA2\u8272\u53C9\u53F7\u5217\u8868\u4E2D")],
+    "recovery-progress-bars": [text2("label", "\u8FDB\u5EA6\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u8FDB\u5EA6\u9879\u76EE"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number", description: "\u6BCF\u6761\u8FDB\u5EA6\u4F1A\u5728\u8BE5\u6570\u5B57\u6B63\u8D1F 15% \u5185\u7A33\u5B9A\u6D6E\u52A8" }],
+    "hud-glow-stack": [text2("subLabel", "\u5361\u7247\u8F85\u52A9\u6807\u7B7E"), list2("items", "HUD \u5361\u7247\u5185\u5BB9")],
+    "briefing-poster": [text2("label", "\u7B80\u62A5\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u526F\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A checkbox \u52FE\u9009\u9879")],
+    "rewind-milestones": [text2("label", "\u56DE\u6EAF\u6807\u7B7E"), text2("title", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u5E74\u4EFD\u8282\u70B9"), text2("milestoneLabel", "\u8282\u70B9\u8BF4\u660E")],
+    "flying-paper-stack": [text2("headline", "\u4E3B\u5361\u6807\u9898"), text2("ghostTitle", "\u80CC\u666F\u5361\u6807\u9898"), prose("body", "\u5361\u7247\u6B63\u6587")],
+    "checklist-editorial": [text2("label", "\u6E05\u5355\u6807\u7B7E"), text2("title", "\u6E05\u5355\u6807\u9898"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u65B9\u5F62\u786E\u8BA4\u6846")],
+    "spotlight-question": [list2("comments", "\u8BC4\u8BBA\u5185\u5BB9")],
+    "copyopen-hero-title": [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9")],
+    "copyopen-progress-bar": [{ key: "progress", label: "\u8FDB\u5EA6\u6570\u503C", type: "number" }, prose("body", "\u8FDB\u5EA6\u8BF4\u660E")],
+    "copyopen-comparison-card": [text2("leftLabel", "\u5DE6\u4FA7\u6807\u7B7E"), text2("leftValue", "\u5DE6\u4FA7\u6570\u503C"), text2("rightLabel", "\u53F3\u4FA7\u6807\u7B7E"), text2("rightValue", "\u53F3\u4FA7\u6570\u503C"), prose("body", "\u4E2D\u95F4\u53D8\u5316\u8BF4\u660E")],
+    "copyopen-terminal-scene": [list2("steps", "\u7EC8\u7AEF\u547D\u4EE4\u4E0E\u8F93\u51FA")],
+    "copyopen-end-tag": [prose("body", "\u7ED3\u5C3E\u6807\u8BED")],
+    "copyopen-bar-chart": [list2("items", "\u67F1\u72B6\u6807\u7B7E"), { key: "values", label: "\u67F1\u72B6\u6570\u503C", type: "string-list" }],
+    "copyopen-line-chart": [list2("items", "\u6298\u7EBF\u6A2A\u8F74"), { key: "values", label: "\u6298\u7EBF\u6570\u503C", type: "string-list" }],
+    "copyopen-pie-chart": [list2("items", "\u5206\u533A\u6807\u7B7E"), { key: "values", label: "\u5206\u533A\u6570\u503C", type: "string-list" }],
+    "copyopen-kpi-grid": [list2("items", "\u6307\u6807\u6807\u7B7E"), { key: "values", label: "\u6307\u6807\u6570\u503C", type: "string-list" }]
+  };
+  var LAYOUT_MANIFEST = {
+    "capital-dashboard": {
+      "id": "capital-dashboard",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u6570\u636E",
+        "\u589E\u957F",
+        "\u5E02\u503C",
+        "\u8425\u6536",
+        "\u767E\u5206\u6BD4",
+        "\u6307\u6807"
+      ],
+      "visualWeight": "medium"
+    },
+    "progress-donut": {
+      "id": "progress-donut",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u8FDB\u5EA6",
+        "\u5B8C\u6210\u5EA6",
+        "\u767E\u5206\u6BD4",
+        "\u8F6C\u5316\u7387",
+        "%"
+      ],
+      "visualWeight": "light"
+    },
+    "recovery-progress-bars": {
+      "id": "recovery-progress-bars",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u8FDB\u5EA6",
+        "\u6062\u590D",
+        "\u5B8C\u6210",
+        "\u63A8\u8FDB",
+        "\u767E\u5206\u6BD4"
+      ],
+      "visualWeight": "medium"
+    },
+    "platform-shift-line": {
+      "id": "platform-shift-line",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u4EA7\u54C1\u7EBF",
+        "\u5E73\u53F0",
+        "\u6F14\u8FDB",
+        "\u6269\u5C55",
+        "\u94FE\u8DEF"
+      ],
+      "visualWeight": "medium"
+    },
+    "hud-glow-stack": {
+      "id": "hud-glow-stack",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7CFB\u7EDF",
+        "\u4FE1\u53F7",
+        "\u94FE\u8DEF",
+        "\u6A21\u5757",
+        "\u95ED\u73AF"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-progress-bar": {
+      "id": "copyopen-progress-bar",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u8FDB\u5EA6",
+        "\u767E\u5206\u6BD4",
+        "\u5B8C\u6210",
+        "%"
+      ],
+      "visualWeight": "light"
+    },
+    "copyopen-comparison-card": {
+      "id": "copyopen-comparison-card",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u5BF9\u6BD4",
+        "\u5DEE\u5F02",
+        "\u6570\u503C",
+        "\u589E\u957F"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-bar-chart": {
+      "id": "copyopen-bar-chart",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u67F1\u72B6",
+        "\u6392\u540D",
+        "\u6570\u636E",
+        "\u5BF9\u6BD4"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-line-chart": {
+      "id": "copyopen-line-chart",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u8D8B\u52BF",
+        "\u589E\u957F",
+        "\u66F2\u7EBF",
+        "\u65F6\u95F4"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-pie-chart": {
+      "id": "copyopen-pie-chart",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u5360\u6BD4",
+        "\u6BD4\u4F8B",
+        "\u5206\u5E03",
+        "\u4EFD\u989D"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-kpi-grid": {
+      "id": "copyopen-kpi-grid",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 6
+      },
+      "keywords": [
+        "KPI",
+        "\u6307\u6807",
+        "\u6570\u636E",
+        "\u589E\u957F"
+      ],
+      "visualWeight": "medium"
+    },
+    "ordered-sequence": {
+      "id": "ordered-sequence",
+      "intent": "process",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u7B2C\u4E00\u6B65",
+        "\u7B2C\u4E8C\u6B65",
+        "\u9636\u6BB5",
+        "\u6B65\u9AA4",
+        "\u6D41\u7A0B"
+      ],
+      "visualWeight": "medium"
+    },
+    "event-timeline": {
+      "id": "event-timeline",
+      "intent": "process",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u65F6\u95F4\u7EBF",
+        "\u9636\u6BB5",
+        "\u6F14\u8FDB",
+        "\u8282\u70B9"
+      ],
+      "visualWeight": "medium"
+    },
+    "rewind-milestones": {
+      "id": "rewind-milestones",
+      "intent": "process",
+      "capacity": {
+        "minItems": 4,
+        "maxItems": 6
+      },
+      "keywords": [
+        "\u56DE\u6EAF",
+        "\u8FC7\u53BB",
+        "\u6F14\u8FDB",
+        "\u8282\u70B9"
+      ],
+      "visualWeight": "medium"
+    },
+    "time-rewind": {
+      "id": "time-rewind",
+      "intent": "process",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u56DE\u6EAF",
+        "\u65F6\u95F4",
+        "\u8FC7\u53BB",
+        "\u5386\u53F2"
+      ],
+      "visualWeight": "light"
+    },
+    "route-map": {
+      "id": "route-map",
+      "intent": "process",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u8DEF\u7EBF",
+        "\u8DEF\u5F84",
+        "\u6D41\u7A0B",
+        "\u5730\u56FE"
+      ],
+      "visualWeight": "heavy"
+    },
+    "check-progress": {
+      "id": "check-progress",
+      "intent": "process",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u786E\u8BA4",
+        "\u68C0\u67E5",
+        "\u5B8C\u6210",
+        "\u6B65\u9AA4"
+      ],
+      "visualWeight": "medium"
+    },
+    "org-chart": {
+      "id": "org-chart",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u7EC4\u7EC7",
+        "\u90E8\u95E8",
+        "\u5206\u5DE5",
+        "\u67B6\u6784"
+      ],
+      "visualWeight": "heavy"
+    },
+    "draw-line": {
+      "id": "draw-line",
+      "intent": "process",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u8DEF\u5F84",
+        "\u63A8\u5BFC",
+        "\u753B\u7EBF",
+        "\u8BBA\u8BC1"
+      ],
+      "visualWeight": "light"
+    },
+    "copyopen-terminal-scene": {
+      "id": "copyopen-terminal-scene",
+      "intent": "process",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 6
+      },
+      "keywords": [
+        "\u547D\u4EE4",
+        "\u6D41\u7A0B",
+        "\u6267\u884C",
+        "\u5DE5\u4F5C\u6D41"
+      ],
+      "visualWeight": "heavy"
+    },
+    "zoom-statement": {
+      "id": "zoom-statement",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u89C2\u70B9",
+        "\u5224\u65AD",
+        "\u7ED3\u8BBA",
+        "\u5173\u952E"
+      ],
+      "visualWeight": "light"
+    },
+    "opinion-hero": {
+      "id": "opinion-hero",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u89C2\u70B9",
+        "\u6838\u5FC3",
+        "\u91D1\u53E5",
+        "\u4E3B\u5F20"
+      ],
+      "visualWeight": "heavy"
+    },
+    "bare-typography": {
+      "id": "bare-typography",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u5927\u5B57",
+        "\u5224\u65AD",
+        "\u7ED3\u8BBA"
+      ],
+      "visualWeight": "light"
+    },
+    "spotlight-question": {
+      "id": "spotlight-question",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u95EE\u9898",
+        "\u8BC4\u8BBA",
+        "\u4E3A\u4EC0\u4E48",
+        "\u4E92\u52A8"
+      ],
+      "visualWeight": "light"
+    },
+    "bull-bear": {
+      "id": "bull-bear",
+      "intent": "contrast",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u770B\u591A",
+        "\u98CE\u9669",
+        "\u5BF9\u6BD4",
+        "\u591A\u7A7A"
+      ],
+      "visualWeight": "heavy"
+    },
+    "market-battlefield": {
+      "id": "market-battlefield",
+      "intent": "contrast",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7ADE\u4E89",
+        "\u5BF9\u624B",
+        "\u5E02\u573A\u5BF9\u5792",
+        "\u6218\u573A"
+      ],
+      "visualWeight": "heavy"
+    },
+    "tradeoff-reject-round": {
+      "id": "tradeoff-reject-round",
+      "intent": "contrast",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u98CE\u9669",
+        "\u5426\u5B9A",
+        "\u6392\u9664",
+        "\u4E0D\u8981"
+      ],
+      "visualWeight": "medium"
+    },
+    "reject-list": {
+      "id": "reject-list",
+      "intent": "contrast",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u9519\u8BEF",
+        "\u95EE\u9898",
+        "\u98CE\u9669",
+        "\u907F\u5751"
+      ],
+      "visualWeight": "medium"
+    },
+    "person-rank": {
+      "id": "person-rank",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u4EBA\u7269",
+        "\u56E2\u961F",
+        "\u4EA4\u63A5",
+        "\u7EC4\u7EC7"
+      ],
+      "visualWeight": "medium"
+    },
+    "value-verdict": {
+      "id": "value-verdict",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 2
+      },
+      "keywords": [
+        "\u4EF7\u503C",
+        "\u7ED3\u8BBA",
+        "\u5224\u65AD",
+        "\u6307\u6807"
+      ],
+      "visualWeight": "medium"
+    },
+    "product-explosion": {
+      "id": "product-explosion",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u4EA7\u54C1",
+        "\u751F\u6001",
+        "\u786C\u4EF6",
+        "\u7CFB\u5217"
+      ],
+      "visualWeight": "heavy"
+    },
+    "cook-machine": {
+      "id": "cook-machine",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7ECF\u8425",
+        "\u673A\u5668",
+        "\u5546\u4E1A",
+        "\u95ED\u73AF"
+      ],
+      "visualWeight": "medium"
+    },
+    "photo-wall": {
+      "id": "photo-wall",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7167\u7247",
+        "\u8BC1\u636E",
+        "\u6848\u4F8B",
+        "\u4EA7\u54C1"
+      ],
+      "visualWeight": "heavy"
+    },
+    "logo-wordmark": {
+      "id": "logo-wordmark",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u54C1\u724C",
+        "\u6807\u5FD7",
+        "\u5173\u952E\u8BCD"
+      ],
+      "visualWeight": "light"
+    },
+    "diagonal-chips": {
+      "id": "diagonal-chips",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u89C4\u683C",
+        "\u8981\u70B9",
+        "\u53C2\u6570",
+        "\u6A21\u5757"
+      ],
+      "visualWeight": "light"
+    },
+    "floating-chips": {
+      "id": "floating-chips",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u6807\u7B7E",
+        "\u8981\u70B9",
+        "\u6A21\u5757",
+        "\u4FE1\u53F7"
+      ],
+      "visualWeight": "light"
+    },
+    "desktop-folders": {
+      "id": "desktop-folders",
+      "intent": "system",
+      "capacity": {
+        "minItems": 3,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u6587\u4EF6",
+        "\u5206\u7C7B",
+        "\u6574\u7406",
+        "\u7CFB\u7EDF"
+      ],
+      "visualWeight": "medium"
+    },
+    "clipboard-note": {
+      "id": "clipboard-note",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u4FBF\u7B7E",
+        "\u6279\u6CE8",
+        "\u7ED3\u8BBA",
+        "\u786E\u8BA4"
+      ],
+      "visualWeight": "medium"
+    },
+    "briefing-poster": {
+      "id": "briefing-poster",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u7B80\u62A5",
+        "\u6458\u8981",
+        "\u89C2\u70B9",
+        "\u6848\u4F8B"
+      ],
+      "visualWeight": "heavy"
+    },
+    "screen-recording": {
+      "id": "screen-recording",
+      "intent": "system",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u754C\u9762",
+        "\u64CD\u4F5C",
+        "\u4EA7\u54C1",
+        "\u7A97\u53E3"
+      ],
+      "visualWeight": "heavy"
+    },
+    "flying-paper-stack": {
+      "id": "flying-paper-stack",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u7EB8\u5361",
+        "\u8D44\u6599",
+        "\u7B80\u62A5",
+        "\u89C2\u70B9"
+      ],
+      "visualWeight": "medium"
+    },
+    "chapter-card": {
+      "id": "chapter-card",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u7AE0\u8282",
+        "\u5F00\u573A",
+        "\u4E3B\u9898"
+      ],
+      "visualWeight": "heavy"
+    },
+    "closing-checklist": {
+      "id": "closing-checklist",
+      "intent": "process",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u6536\u5C3E",
+        "\u6E05\u5355",
+        "\u786E\u8BA4",
+        "\u603B\u7ED3"
+      ],
+      "visualWeight": "medium"
+    },
+    "checklist-editorial": {
+      "id": "checklist-editorial",
+      "intent": "process",
+      "capacity": {
+        "minItems": 2,
+        "maxItems": 5
+      },
+      "keywords": [
+        "\u6E05\u5355",
+        "\u786E\u8BA4",
+        "\u6B65\u9AA4",
+        "\u603B\u7ED3"
+      ],
+      "visualWeight": "medium"
+    },
+    "pivot-list": {
+      "id": "pivot-list",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 4
+      },
+      "keywords": [
+        "\u6253\u5B57\u673A",
+        "\u89C2\u70B9",
+        "\u5217\u8868"
+      ],
+      "visualWeight": "medium"
+    },
+    "copyopen-hero-title": {
+      "id": "copyopen-hero-title",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u5F00\u573A",
+        "\u6807\u9898",
+        "\u4E3B\u89C6\u89C9"
+      ],
+      "visualWeight": "heavy"
+    },
+    "copyopen-end-tag": {
+      "id": "copyopen-end-tag",
+      "intent": "narrative",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 1
+      },
+      "keywords": [
+        "\u7ED3\u5C3E",
+        "\u6807\u8BED",
+        "\u6536\u675F"
+      ],
+      "visualWeight": "light"
+    }
+  };
+  var mergeFields = (key, editableFields) => {
+    const merged = [...CONTROLLED_FIELDS[key] ?? [], ...editableFields];
+    return merged.filter((field, index) => merged.findIndex((candidate) => candidate.key === field.key) === index);
+  };
+  var item = (key, component, label3, description, category, renderLayer = "primary", editableFields = copy, defaultProps = {}) => ({ key, component, editableFields: mergeFields(key, editableFields), defaultProps, meta: { category, label: label3, description }, renderLayer, manifest: LAYOUT_MANIFEST[key] ?? { id: key, intent: "narrative", capacity: { minItems: 1, maxItems: 1 }, keywords: [label3, description, category], visualWeight: "medium" } });
+  var LAYOUT_DEFINITIONS = [
+    item("person-rank", DemoAvatarFlip, "\u4EBA\u7269\u4EA4\u63A5", "\u53CC\u4EBA\u7269\u4EA4\u63A5\u4E0E\u6743\u529B\u8F6C\u6362", "story", "primary", [{ key: "leftName", label: "\u5DE6\u4FA7\u4EBA\u7269", type: "text" }, { key: "rightName", label: "\u53F3\u4FA7\u4EBA\u7269", type: "text" }], { leftName: "\u4EBA\u7269 A", rightName: "\u4EBA\u7269 B" }),
+    item("event-timeline", GrowthTimelineLine, "\u589E\u957F\u65F6\u95F4\u8F74", "\u6A2A\u5411\u8282\u70B9\u7EBF\u4E0E\u5149\u70B9\u63A8\u8FDB", "data", "enhancement", [list2("years", "\u65F6\u95F4\u8282\u70B9")], { years: ["\u8D77\u6B65", "\u8FED\u4EE3", "\u89C4\u6A21\u5316", "\u76EE\u6807"] }),
+    item("value-verdict", ValueVerdict, "\u4EF7\u503C\u7ED3\u8BBA", "\u7ED3\u8BBA\u4E0E\u5173\u952E\u6307\u6807\u5361", "story", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("metricLabel", "\u6307\u6807\u6807\u7B7E"), text2("metricValue", "\u6570\u503C"), text2("metricUnit", "\u5355\u4F4D")], { metricLabel: "KEY SIGNAL" }),
+    item("pivot-list", SpecBadgeAndTypewriter, "\u89C4\u683C\u6253\u5B57\u673A", "\u7EFF\u8272\u7EC8\u7AEF\u9010\u5B57\u51FA\u73B0", "interactive", "enhancement", [{ key: "text", label: "\u6253\u5B57\u673A\u6587\u672C", type: "textarea" }], {}),
+    item("capital-dashboard", CapitalDashboardNumbers, "\u8D44\u672C\u4EEA\u8868\u76D8", "\u53CC\u6570\u5B57\u5361\u6EDA\u52A8\u589E\u957F", "data", "primary", [text2("marketLabel", "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "marketTo", label: "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("marketSuffix", "\u6570\u5B57\u5355\u4F4D"), text2("engineeringLabel", "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011"), { key: "engineeringTo", label: "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011", type: "number" }, text2("engineeringSuffix", "\u6570\u5B57\u5355\u4F4D")], { marketLabel: "\u5E02\u573A\u89C4\u6A21", marketTo: 4600, marketSuffix: "\u4EBF", engineeringLabel: "\u589E\u957F\u7387", engineeringTo: 25, engineeringSuffix: "%" }),
+    item("cook-machine", SplitScreenAccent, "\u7ECF\u8425\u673A\u5668", "\u8FD0\u8425\u6548\u7387\u548C\u5229\u6DA6\u5BF9\u7167", "story", "primary", copy, { leftLabel: "PROFIT", rightLabel: "SHIPMENT", from: 20, to: 85 }),
+    item("market-battlefield", RouteMap, "\u5E02\u573A\u5BF9\u5792", "\u4F9B\u5E94\u94FE\u8DEF\u7EBF\u548C\u533A\u57DF\u8282\u70B9", "data"),
+    item("reject-list", RejectList, "\u9519\u8BEF\u6E05\u5355", "\u53C9\u53F7\u5426\u5B9A\u4E0E\u7EA0\u9519\u5217\u8868", "story", "primary", [checkboxColorField], { boxColor: "auto", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"], itemSubtitles: ["CUT FROM THE PRODUCT PATH", "REMOVE FROM THE FLOW", "BLOCK BEFORE RELEASE"] }),
+    item("check-progress", CheckProgress, "\u8FDB\u5EA6\u786E\u8BA4", "\u8FDB\u5EA6\u6761\u548C\u52FE\u9009\u786E\u8BA4", "interactive", "primary", [checkboxColorField], { boxColor: "auto" }),
+    item("diagonal-chips", DiagonalChips, "\u659C\u5165\u6807\u7B7E", "\u659C\u5411\u98DE\u5165\u7684\u89C4\u683C\u6807\u7B7E", "interactive", "primary", [{ key: "items", label: "Chip \u6587\u6848", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u659C\u5165\u6807\u7B7E" }], {}),
+    item("floating-chips", FloatingChips, "\u53D1\u5149\u6D6E\u52A8\u6807\u7B7E", "\u53D1\u5149\u6F02\u6D6E\u7684 Chip \u6807\u7B7E", "interactive"),
+    item("bare-typography", BareTypography, "\u7EAF\u6587\u5B57\u6392\u7248", "\u65E0\u6846\u5927\u5B57\u4FE1\u606F\u5C42", "typography"),
+    item("chapter-card", ChapterCard, "\u7AE0\u8282\u5361", "\u7AE0\u8282\u6807\u9898\u4E0E\u4FE1\u606F\u6458\u8981", "story"),
+    item("logo-wordmark", LogoWordmark, "\u6807\u5FD7\u6587\u5B57", "\u56FE\u5F62\u6807\u5FD7\u4E0E\u6587\u5B57\u7EC4\u5408", "story"),
+    item("ordered-sequence", OrderedSequence, "\u987A\u5E8F\u6B65\u9AA4", "\u7F16\u53F7\u4FE1\u606F\u9010\u9879\u51FA\u73B0", "story", "primary", [{ key: "categoryTag", label: "\u9636\u6BB5\u6807\u7B7E", type: "text" }, { key: "steps", label: "\u6B65\u9AA4\u5217\u8868", type: "string-list", description: "\u6B65\u9AA4\u6309\u987A\u5E8F\u9010\u4E00\u5F39\u51FA" }], {}),
+    item("org-chart", OrgChart, "\u7EC4\u7EC7\u67B6\u6784", "\u7EC4\u7EC7\u5173\u7CFB\u4E0E\u4E2D\u8F74\u7EBF\u52A8\u753B", "story"),
+    item("draw-line", DrawLine, "\u753B\u7EBF\u5F3A\u8C03", "\u66F2\u7EBF\u7ED8\u5236\u548C\u91CD\u70B9\u6807\u8BB0", "interactive"),
+    item("progress-donut", ProgressDonut, "\u73AF\u5F62\u8FDB\u5EA6", "\u73AF\u5F62\u8FDB\u5EA6\u4E0E\u5B8C\u6210\u5EA6", "data"),
+    item("avatar-handoff", DemoAvatarFlip, "\u5934\u50CF\u4EA4\u63A5", "\u53CC\u5934\u50CF\u5207\u6362\u4E0E\u63A5\u4EFB", "story", "primary", [{ key: "leftName", label: "\u4EA4\u51FA\u65B9", type: "text" }, { key: "rightName", label: "\u63A5\u4EFB\u65B9", type: "text" }], { leftName: "\u4EBA\u7269 A", leftRole: "\u8D77\u59CB\u89D2\u8272", rightName: "\u4EBA\u7269 B", rightRole: "\u76EE\u6807\u89D2\u8272" }),
+    item("bull-bear", BullBear, "\u591A\u7A7A\u5BF9\u6BD4", "\u5DE6\u53F3\u89C2\u70B9\u4E0E\u4E2D\u7EBF\u5BF9\u7167", "data", "primary", [{ key: "bullLabel", label: "\u591A\u65B9\u89C2\u70B9\u6807\u7B7E", type: "text" }, { key: "bullText", label: "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011", type: "textarea" }, { key: "bearLabel", label: "\u7A7A\u65B9\u89C2\u70B9\u6807\u7B7E", type: "text" }, { key: "bearText", label: "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011", type: "textarea" }, { key: "highlightQuote", label: "\u5E95\u90E8\u91D1\u8272\u5F3A\u8C03\u6587\u5B57", type: "textarea" }], { bullLabel: "\u770B\u591A\u89C2\u70B9", bearLabel: "\u98CE\u9669\u63D0\u793A", highlightQuote: "\u5173\u952E\u5206\u6B67\u51B3\u5B9A\u6700\u7EC8\u8D70\u52BF" }),
+    item("opinion-hero", OpinionHero, "\u89C2\u70B9\u4E3B\u89C6\u89C9", "\u91CD\u70B9\u89C2\u70B9\u5927\u5B57\u5F3A\u8C03", "typography"),
+    item("photo-wall", PhotoWall, "\u7167\u7247\u5899", "\u591A\u5C42\u4EA7\u54C1\u56FE\u7247\u5361\u7247\u7EC4\u5408", "story", "primary", [], { photoTitle1: "\u6838\u5FC3\u4FE1\u606F", photoSubtitle1: "PRODUCT HISTORY", photo1: "", photoTitle2: "\u89C6\u89C9\u8282\u594F", photoSubtitle2: "VISUAL RHYTHM", photo2: "", photoTitle3: "\u884C\u52A8\u7ED3\u8BBA", photoSubtitle3: "ACTION SIGNAL", photo3: "", photoTitle4: "\u8865\u5145\u8BC1\u636E", photoSubtitle4: "EXTRA PROOF", photo4: "" }),
+    item("product-explosion", ProductExplosion, "\u4EA7\u54C1\u7206\u70B8\u56FE", "\u4EA7\u54C1\u751F\u6001\u7206\u70B8\u5C55\u793A", "data", "primary", [], { centerLabel: "APPLE", productTitle1: "iPhone", productTitle2: "iPad", productTitle3: "Mac", productTitle4: "AirPods", items: ["iPhone", "iPad", "Mac", "AirPods"] }),
+    item("route-map", RouteMap, "\u4E8C\u7EF4\u5730\u56FE", "\u8DEF\u7EBF\u548C\u533A\u57DF\u8BF4\u660E", "data"),
+    item("data-flow", SplitScreenAccent, "\u6570\u636E\u5206\u5C4F", "\u8F6F\u4EF6\u786C\u4EF6\u5206\u5C4F\u6570\u636E\u5BF9\u7167", "data", "enhancement", [{ key: "leftLabel", label: "\u5DE6\u4FA7\u6807\u7B7E", type: "text" }, { key: "leftValue", label: "\u5DE6\u4FA7\u6570\u503C", type: "text" }, { key: "rightLabel", label: "\u53F3\u4FA7\u6807\u7B7E", type: "text" }, { key: "rightValue", label: "\u53F3\u4FA7\u6570\u503C", type: "text" }, { key: "from", label: "\u8D77\u59CB\u6BD4\u4F8B", type: "number" }, { key: "to", label: "\u7ED3\u675F\u6BD4\u4F8B", type: "number" }], {}),
+    item("screen-recording", ScreenRecording, "\u5C4F\u5E55\u5F55\u5236\u6846", "\u4EA7\u54C1\u754C\u9762\u4E0E\u64CD\u4F5C\u7A97\u53E3", "interactive"),
+    item("zoom-statement", KineticTypographyAccent, "\u955C\u5934\u63A8\u62C9\u5927\u5B57", "\u955C\u5934\u63A8\u62C9\u4E0E\u5927\u5B57\u51B2\u51FB", "typography", "enhancement"),
+    item("desktop-folders", DesktopFolders, "\u684C\u9762\u6587\u4EF6\u5939", "\u684C\u9762\u6587\u4EF6\u4E0E\u5185\u5BB9\u6574\u7406", "interactive"),
+    item("time-rewind", TimeRewind, "\u65F6\u95F4\u56DE\u6EAF", "\u9006\u5411\u65F6\u95F4\u7EBF\u53D9\u4E8B", "story", "primary", [], { bodyText: "\u65F6\u95F4\u56DE\u5F52" }),
+    item("clipboard-note", ClipboardNote, "\u526A\u8D34\u677F\u6279\u6CE8", "\u4FBF\u7B7E\u4E0E\u6279\u6CE8\u4FE1\u606F", "interactive", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField], { boxColor: "auto", body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E" }),
+    item("closing-checklist", ClosingChecklist, "\u7ED3\u5C3E\u6E05\u5355", "\u7ED3\u8BBA\u9879\u76EE\u9010\u9879\u786E\u8BA4", "story", "primary", [{ key: "title", label: "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09", type: "text" }, { key: "items", label: "\u6E05\u5355\u5185\u5BB9", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846" }, checkboxColorField], { title: "\u6838\u5FC3\u7ED3\u8BBA", boxColor: "auto" }),
+    item("platform-shift-line", PlatformShiftLine, "\u4EA7\u54C1\u7EBF\u589E\u957F", "\u84DD\u8272\u589E\u957F\u6570\u5B57\u4E0E\u4EA7\u54C1\u7EBF\u8282\u70B9", "data", "primary", [], { count: 3, metricLabel: "\u4EA7\u54C1\u7EBF", milestones: ["\u57FA\u7840\u80FD\u529B", "\u4EA7\u54C1\u6269\u5C55", "\u89C4\u6A21\u589E\u957F"], startLabel: "\u8D77\u70B9", endLabel: "\u76EE\u6807\u9636\u6BB5" }),
+    item("tradeoff-reject-round", TradeoffRejectRound, "\u5706\u5F62\u7EA2\u8272\u5426\u5B9A\u9879", "\u65E0\u8FB9\u6846\u7EA2\u8272\u5706\u53C9\u7684\u98CE\u9669\u6E05\u5355", "story", "primary", [{ key: "label", label: "\u5426\u5B9A\u9879\u6807\u7B7E", type: "text" }, { key: "bodyText", label: "\u6B63\u6587\u5185\u5BB9", type: "textarea" }, { key: "items", label: "\u5426\u5B9A\u9879", type: "string-list" }], { label: "\u98CE\u9669\u6392\u9664", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"] }),
+    item("recovery-progress-bars", RecoveryProgressBars, "\u8FDB\u5EA6\u786E\u8BA4\u6761", "\u8FDB\u5EA6\u6761\u4E0E\u53F3\u4FA7\u786E\u8BA4\u6807\u8BB0", "data", "primary", [], { label: "\u6267\u884C\u8FDB\u5EA6", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u9700\u6C42\u786E\u8BA4", "\u80FD\u529B\u5EFA\u8BBE", "\u7ED3\u679C\u9A8C\u8BC1"], progress: 76 }),
+    item("hud-glow-stack", HudGlowStack, "HUD \u6D6E\u52A8\u53D1\u5149", "\u53E0\u653E\u7684\u9AD8\u4EAE HUD \u4FE1\u606F\u5361", "interactive", "primary", [], { subLabel: "LIVE SIGNAL", items: ["\u6838\u5FC3\u4FE1\u53F7", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65\u52A8\u4F5C"] }),
+    item("briefing-poster", BriefingPoster, "\u62A5\u7EB8\u7B80\u62A5\u4E8C\u53F7", "\u5939\u677F\u5F0F\u79D1\u6280\u7B80\u62A5\u6D77\u62A5", "story", "primary", [prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u526F\u6587\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A checkbox \u52FE\u9009\u9879")], { label: "\u7B80\u62A5\u6458\u8981", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u5224\u65AD", "\u4EA7\u54C1\u8DEF\u5F84", "\u4E0B\u4E00\u6B65\u884C\u52A8"] }),
+    item("rewind-milestones", RewindMilestones, "\u65F6\u95F4\u56DE\u6EAF\u5BBD\u7248", "\u5BBD\u5E45\u65F6\u95F4\u7EBF\u4E0E\u56DE\u6EAF\u8282\u70B9", "story", "primary", [], { label: "\u65F6\u95F4\u56DE\u6EAF", years: ["\u8D77\u70B9", "\u63A2\u7D22", "\u8FED\u4EE3", "\u73B0\u5728", "\u4E0B\u4E00\u6B65"], milestoneLabel: "\u80FD\u529B\u6F14\u8FDB" }),
+    item("flying-paper-stack", FlyingPaperStack, "\u98DE\u5165\u7EB8\u5361\u4E8C\u53F7", "\u4E09\u5C42\u91CD\u53E0\u98DE\u5165\u7684\u7B80\u62A5\u7EB8\u5361", "story", "primary", [], { ghostTitle: "\u9636\u6BB5\u89C2\u5BDF", body: "\u63D0\u70BC\u5F53\u524D\u62CD\u7684\u6838\u5FC3\u89C2\u70B9\u4E0E\u884C\u52A8\u4FE1\u606F\u3002" }),
+    item("checklist-editorial", ChecklistEditorial, "\u7F16\u8F91\u6E05\u5355\u4E8C\u53F7", "\u7559\u767D\u66F4\u5F3A\u7684\u84DD\u8272\u65B9\u6846\u786E\u8BA4\u6E05\u5355", "story", "primary", [], { label: "\u6700\u7EC8\u786E\u8BA4", items: ["\u6838\u5FC3\u4EF7\u503C", "\u6267\u884C\u8DEF\u5F84", "\u7ED3\u679C\u9A8C\u8BC1"] }),
+    item("spotlight-question", FloatingCommentCards, "\u6D6E\u52A8\u8BC4\u8BBA", "\u4E92\u52A8\u8BC4\u8BBA\u5361", "interactive", "enhancement", [{ key: "comments", label: "\u8BC4\u8BBA\u5185\u5BB9", type: "string-list", description: "\u4E09\u9879\u5206\u522B\u5BF9\u5E94\u4E09\u4E2A\u53D1\u5149\u4E92\u52A8\u6309\u94AE" }], { comments: ["\u6838\u5FC3\u89C2\u70B9", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65"] }),
+    item("copyopen-hero-title", CopyOpenHeroTitle, "CopyOpen HeroTitle", "CopyOpen \u539F\u7248\u9010\u5B57\u5F39\u7C27\u4E3B\u6807\u9898", "typography", "primary", [], { body: "clip factory" }),
+    item("copyopen-progress-bar", CopyOpenProgressBar, "CopyOpen ProgressBar", "CopyOpen \u539F\u7248\u8109\u51B2\u8FDB\u5EA6\u6761", "data", "primary", [], { progress: 76, body: "Highlight extraction" }),
+    item("copyopen-comparison-card", CopyOpenComparisonCard, "CopyOpen ComparisonCard", "CopyOpen \u539F\u7248\u5DE6\u53F3\u6307\u6807\u5BF9\u6BD4\u5361", "data", "primary", [], { leftLabel: "Long video", rightLabel: "Short clips", leftValue: "58 min", rightValue: "8 clips", body: "ready" }),
+    item("copyopen-terminal-scene", CopyOpenTerminalScene, "CopyOpen TerminalScene", "CopyOpen \u539F\u7248\u7EC8\u7AEF\u547D\u4EE4\u56DE\u653E", "interactive", "primary", [], { steps: ["openmontage clip input.mp4", "transcribing audio...", "ranking highlight candidates...", "8 clips ready", "remotion render JcMotionCards", "done -> out/shorts"] }),
+    item("copyopen-end-tag", CopyOpenEndTag, "CopyOpen EndTag", "CopyOpen \u539F\u7248\u7ED3\u5C3E\u95EA\u5149\u6807\u8BED", "typography", "primary", [], { body: "Make the clip worth watching" }),
+    item("copyopen-bar-chart", CopyOpenBarChart, "CopyOpen BarChart", "CopyOpen \u539F\u7248\u52A8\u753B\u67F1\u72B6\u56FE", "data", "primary", [], { items: ["Hook", "Value", "Pace", "Share"], values: [94, 82, 76, 69] }),
+    item("copyopen-line-chart", CopyOpenLineChart, "CopyOpen LineChart", "CopyOpen \u539F\u7248\u6298\u7EBF\u7ED8\u5236\u56FE", "data", "primary", [], { items: ["0", "10", "20", "30"], values: [100, 91, 86, 78] }),
+    item("copyopen-pie-chart", CopyOpenPieChart, "CopyOpen PieChart", "CopyOpen \u539F\u7248\u73AF\u5F62\u5206\u5E03\u56FE", "data", "primary", [], { items: ["Hook", "Proof", "Story", "CTA"], values: [35, 30, 20, 15], value: 8, label: "clips" }),
+    item("copyopen-kpi-grid", CopyOpenKPIGrid, "CopyOpen KPIGrid", "CopyOpen \u539F\u7248 KPI \u4EEA\u8868\u7F51\u683C", "data", "primary", [], { items: ["clips", "avg score", "minutes saved"], values: [8, 86, 74] }),
+    ...jcLayoutDefinitions
+  ];
+  var LAYOUT_BY_KEY = new Map(LAYOUT_DEFINITIONS.map((definition) => [definition.key, definition]));
+  var getLayoutDefinition = (layout) => LAYOUT_BY_KEY.get(layout) ?? LAYOUT_DEFINITIONS[0];
+  var LAYOUT_METADATA = LAYOUT_DEFINITIONS.map(({ key, editableFields, defaultProps, meta, renderLayer, manifest }) => ({ key, editableFields, defaultProps, meta, renderLayer, manifest }));
+
   // src/design/component-preset-resolver.ts
   var { resolveFaceAwareLayer } = require_face_aware_layout();
   var registry = components_registry_default;
   var fallbackTokens = { padding: 48, gap: 16, position: "center", scale: 1, headerScale: 1, contentScale: 1, spring: "spring-up", sfx: "none", accentColor: "#00F2FE", defaultItemCount: 1, staggerFrames: 15, mountMode: "center", mountX: 0, mountY: 0, boundsX: 0, boundsY: 0, boundsWidth: 1920, boundsHeight: 1080 };
   var getComponentPreset = (layout) => registry.components.find((component) => component.id === layout);
-  var getComponentTokens = (layout) => {
-    var _a2, _b;
-    return { ...fallbackTokens, ...(_b = (_a2 = getComponentPreset(layout)) == null ? void 0 : _a2.tokens) != null ? _b : {} };
+  var getComponentTokens = (layout) => ({ ...fallbackTokens, ...getComponentPreset(layout)?.tokens ?? {} });
+  var isTokenObject = (value) => !!value && typeof value === "object" && !Array.isArray(value);
+  var resolveComponentProps = (layout, effectProps) => ({ ...effectProps ?? {}, designTokens: { ...getComponentTokens(layout), ...isTokenObject(effectProps?.designTokens) ? effectProps.designTokens : {} }, designPresetVersion: getComponentPreset(layout)?.version ?? 0 });
+
+  // src/JasonWu/DemoEffectAdditions.tsx
+  var import_jsx_runtime113 = __toESM(require_jsx_runtime());
+  var semanticAccents2 = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
+  var headerAccentOf = (value) => semanticAccents2.has(value) ? value : "blue";
+  var StandardComponentHeader = ({ category, headline, accent = "blue" }) => {
+    const frame = useCurrentFrame();
+    const theme = getAccentTheme(accent);
+    const headerFadeIn = interpolate(frame, [0, 15], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { className: "static-header-anchor", style: { position: "absolute", left: 76, top: 58, zIndex: 50, maxWidth: 860, pointerEvents: "none", opacity: headerFadeIn, borderLeft: "5px solid " + theme.primary, paddingLeft: 18, textShadow: "0 2px 14px rgba(0,0,0,0.55)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { color: theme.primary, fontSize: 22, fontWeight: 800, letterSpacing: "0.28em", textTransform: "uppercase", textShadow: "0 0 20px " + theme.glow }, children: category }),
+      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { marginTop: 8, color: "#FFFFFF", fontSize: 44, lineHeight: 1.1, fontWeight: 900 }, children: headline })
+    ] });
+  };
+  var resolveHeaderContent = (cue, layout) => {
+    const sourceProps = { ...getLayoutDefinition(layout ?? cue.layout).defaultProps, ...resolveComponentProps(layout ?? cue.layout, cue.effectProps) };
+    const content2 = normalizeComponentContent(sourceProps);
+    return { ...content2, category: typeof cue.section?.eyebrow === "string" ? cue.section.eyebrow : content2.category, headline: typeof cue.section?.subtitle === "string" ? cue.section.subtitle : content2.headline };
+  };
+  var LayoutEffectHeader = ({ cue, layout }) => {
+    const content2 = resolveHeaderContent(cue, layout);
+    const accent = headerAccentOf(cue.effectProps?.accent ?? cue.effectProps?.contentPayload?.accent);
+    return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(StandardComponentHeader, { category: content2.category, headline: content2.headline, accent });
   };
 
   // src/JasonWu/StudioLivePreview.tsx
-  var import_jsx_runtime72 = __toESM(require_jsx_runtime());
-  var DirectLayerCanvas = ({ cue, props, ActiveVisualComponent, accentColor }) => /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(AbsoluteFill, { style: { position: "relative", overflow: "hidden", background: "#090d16", ["--primary-accent"]: accentColor }, children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(ActiveVisualComponent, { cue, props }) });
+  var import_jsx_runtime114 = __toESM(require_jsx_runtime());
+  var DirectLayerCanvas = ({ cue, props, ActiveVisualComponent }) => /* @__PURE__ */ (0, import_jsx_runtime114.jsxs)(AbsoluteFill, { style: { position: "relative", overflow: "hidden", background: "#090d16" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(LayoutEffectHeader, { cue }),
+    /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(ActiveVisualComponent, { cue, props })
+  ] });
   var PreviewApp = ({ payload }) => {
-    var _a2, _b;
     const definition = LAYOUT_BY_KEY.get(payload.layout);
-    const ActiveVisualComponent = definition == null ? void 0 : definition.component;
-    const playerRef = (0, import_react123.useRef)(null);
-    const replayTimer = (0, import_react123.useRef)(void 0);
-    const [playing, setPlaying] = (0, import_react123.useState)(false);
-    const clearReplayTimer = (0, import_react123.useCallback)(() => {
+    const ActiveVisualComponent = definition?.component;
+    const playerRef = (0, import_react130.useRef)(null);
+    const replayTimer = (0, import_react130.useRef)(void 0);
+    const [playing, setPlaying] = (0, import_react130.useState)(false);
+    const clearReplayTimer = (0, import_react130.useCallback)(() => {
       if (replayTimer.current !== void 0) {
         window.clearTimeout(replayTimer.current);
         replayTimer.current = void 0;
       }
     }, []);
-    const reset = (0, import_react123.useCallback)(() => {
-      var _a3, _b2;
+    const reset = (0, import_react130.useCallback)(() => {
       clearReplayTimer();
-      (_a3 = playerRef.current) == null ? void 0 : _a3.pause();
-      (_b2 = playerRef.current) == null ? void 0 : _b2.seekTo(0);
+      playerRef.current?.pause();
+      playerRef.current?.seekTo(0);
       setPlaying(false);
     }, [clearReplayTimer]);
-    const replay = (0, import_react123.useCallback)(() => {
-      var _a3, _b2;
+    const replay = (0, import_react130.useCallback)(() => {
       clearReplayTimer();
-      (_a3 = playerRef.current) == null ? void 0 : _a3.seekTo(0);
-      (_b2 = playerRef.current) == null ? void 0 : _b2.play();
+      playerRef.current?.seekTo(0);
+      playerRef.current?.play();
       setPlaying(true);
       replayTimer.current = window.setTimeout(() => setPlaying(false), 4e3);
     }, [clearReplayTimer]);
-    (0, import_react123.useEffect)(() => {
+    (0, import_react130.useEffect)(() => {
       const timer = window.setTimeout(replay, 0);
       return () => {
         window.clearTimeout(timer);
@@ -50644,10 +60560,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [replay, clearReplayTimer]);
     if (!ActiveVisualComponent) return null;
     const preset = getComponentPreset(payload.layout);
-    const mockData = { ...definition.defaultProps, ...(_a2 = preset == null ? void 0 : preset.mockData) != null ? _a2 : {} };
+    const mockData = { ...definition.defaultProps, ...preset?.mockData ?? {} };
     const templateText = (key, fallback) => typeof mockData[key] === "string" ? mockData[key] : fallback;
     const tokens = getComponentTokens(payload.layout);
-    const accentColor = String((_b = tokens.accentColor) != null ? _b : "#00F2FE");
     const cue = {
       id: payload.previewKey,
       start: 0,
@@ -50655,15 +60570,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
       layout: payload.layout,
       section: { eyebrow: templateText("category", templateText("eyebrow", "DESIGN SYSTEM")), subtitle: templateText("headline", templateText("title", "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7")) },
       caption: { zh: templateText("effectText", templateText("body", "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE")), en: "Template preview" },
-      effectProps: { ...mockData, designTokens: tokens }
+      effectProps: { ...mockData, designTokens: tokens, accent: payload.accent ?? "blue", __externalSectionLabel: true, __jcUseLayerAccent: true }
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { title: "\u5F53\u524D Layer \u52A8\u753B\u9884\u89C8", onMouseEnter: replay, onMouseLeave: reset, style: { position: "relative", width: "100%", height: "100%", display: "grid", placeItems: "center", overflow: "hidden", background: "#090d16" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime114.jsxs)("div", { title: "\u5F53\u524D Layer \u52A8\u753B\u9884\u89C8", onMouseEnter: replay, onMouseLeave: reset, style: { position: "relative", width: "100%", height: "100%", display: "grid", placeItems: "center", overflow: "hidden", background: "#090d16" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(
         Player,
         {
           ref: playerRef,
           component: DirectLayerCanvas,
-          inputProps: { cue, props: cue.effectProps, ActiveVisualComponent, accentColor },
+          inputProps: { cue, props: cue.effectProps, ActiveVisualComponent },
           durationInFrames: 120,
           compositionWidth: 1920,
           compositionHeight: 1080,
@@ -50675,9 +60590,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         payload.previewKey
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("button", { type: "button", "aria-label": "\u64AD\u653E\u5F53\u524D\u6548\u679C\u6A21\u677F", onClick: replay, className: playing ? "hover-preview-pill active" : "hover-preview-pill", style: { pointerEvents: "auto", cursor: "pointer" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { className: "hover-preview-icon", children: playing ? "\u21BB" : "\u25B6" }),
-        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { children: playing ? "playing" : "hover to play" })
+      /* @__PURE__ */ (0, import_jsx_runtime114.jsxs)("button", { type: "button", "aria-label": "\u64AD\u653E\u5F53\u524D\u6548\u679C\u6A21\u677F", onClick: replay, className: playing ? "hover-preview-pill active" : "hover-preview-pill", style: { pointerEvents: "auto", cursor: "pointer" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime114.jsx)("span", { className: "hover-preview-icon", children: playing ? "\u21BB" : "\u25B6" }),
+        /* @__PURE__ */ (0, import_jsx_runtime114.jsx)("span", { children: playing ? "playing" : "hover to play" })
       ] })
     ] });
   };
@@ -50689,7 +60604,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         root = (0, import_client.createRoot)(container2);
         roots.set(container2, root);
       }
-      root.render(/* @__PURE__ */ (0, import_jsx_runtime72.jsx)(PreviewApp, { payload }, payload.previewKey));
+      root.render(/* @__PURE__ */ (0, import_jsx_runtime114.jsx)(PreviewApp, { payload }, payload.previewKey));
     },
     unmount(container2) {
       const root = roots.get(container2);
@@ -50756,5 +60671,46 @@ react/cjs/react-jsx-runtime.development.js:
    *
    * This source code is licensed under the MIT license found in the
    * LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs:
+lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs:
+lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs:
+lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs:
+lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs:
+lucide-react/dist/esm/shared/src/build/defaultAttributes.mjs:
+lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs:
+lucide-react/dist/esm/shared/src/build/buildLucideIconForReact.mjs:
+lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs:
+lucide-react/dist/esm/context.mjs:
+lucide-react/dist/esm/Icon.mjs:
+lucide-react/dist/esm/createLucideIcon.mjs:
+lucide-react/dist/esm/icons/arrow-down.mjs:
+lucide-react/dist/esm/icons/badge-check.mjs:
+lucide-react/dist/esm/icons/bot.mjs:
+lucide-react/dist/esm/icons/check.mjs:
+lucide-react/dist/esm/icons/code-xml.mjs:
+lucide-react/dist/esm/icons/crown.mjs:
+lucide-react/dist/esm/icons/eye.mjs:
+lucide-react/dist/esm/icons/file-text.mjs:
+lucide-react/dist/esm/icons/flame.mjs:
+lucide-react/dist/esm/icons/git-branch.mjs:
+lucide-react/dist/esm/icons/lightbulb.mjs:
+lucide-react/dist/esm/icons/package.mjs:
+lucide-react/dist/esm/icons/play.mjs:
+lucide-react/dist/esm/icons/scale.mjs:
+lucide-react/dist/esm/icons/shield-check.mjs:
+lucide-react/dist/esm/icons/sparkles.mjs:
+lucide-react/dist/esm/icons/square-terminal.mjs:
+lucide-react/dist/esm/icons/star.mjs:
+lucide-react/dist/esm/icons/wand-sparkles.mjs:
+lucide-react/dist/esm/icons/x.mjs:
+lucide-react/dist/esm/icons/zap.mjs:
+lucide-react/dist/esm/lucide-react.mjs:
+  (**
+   * @license lucide-react v1.45.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
    *)
 */

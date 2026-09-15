@@ -12,6 +12,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import {
+  CommercialTextRole,
   JasonWuCue,
   JasonWuPerson,
   JasonWuStep,
@@ -34,9 +35,9 @@ import {defaultProject, projectToCues, projectToTranscript} from "./projectLoade
 import type {VideoProject} from "./projectTypes";
 import {DEFAULT_GLOBAL_SETTINGS, mergeGlobalSettings} from "./globalSettings";
 import {MotionWrapper} from "./components/common/MotionWrapper";
-import {getContrastStyle} from "./utils/contrast";
 import {getEntranceDurationSeconds, resolveContentItems, resolveContentText} from "./layoutRuntime";
 import {resolveFaceAwareLayerForRender} from "../design/component-preset-resolver";
+import {getLayoutDefinition} from "./layoutRegistry";
 
 const COLORS = {
   blue: "var(--primary-accent)",
@@ -165,23 +166,21 @@ const keywordColor = (word: string) => {
   return COLORS.blue;
 };
 
-const HighlightedText: React.FC<{text: string; highlightColor?: string}> = ({text, highlightColor = COLORS.gold}) => (
-  <>
-    {text.split(keywordPatterns).map((part, index) => {
-      if (!part) {
-        return null;
-      }
-      if (fullKeywordPattern.test(part)) {
-        return (
-          <span key={`${part}-${index}`} style={{color: keywordColor(part) === COLORS.blue ? COLORS.blue : highlightColor}}>
-            {part}
-          </span>
-        );
-      }
-      return <span key={`${part}-${index}`}>{part}</span>;
-    })}
-  </>
-);
+const HighlightedText: React.FC<{text: string; highlightColor?: string}> = ({text, highlightColor = COLORS.gold}) => {
+  let highlighted = 0;
+  return (
+    <>
+      {text.split(keywordPatterns).map((part, index) => {
+        if (!part) return null;
+        if (fullKeywordPattern.test(part) && highlighted < 2) {
+          highlighted += 1;
+          return <span key={`${part}-${index}`} style={{color: keywordColor(part) === COLORS.blue ? COLORS.blue : highlightColor}}>{part}</span>;
+        }
+        return <span key={`${part}-${index}`}>{part}</span>;
+      })}
+    </>
+  );
+};
 
 const floatingGlow = (frame: number, startFrame: number, color: string) => {
   const active = Math.max(0, frame - startFrame - CHIP_ENTRY_FRAMES);
@@ -204,10 +203,11 @@ const resolveCheckboxColor = (cue: JasonWuCue, fallback: keyof typeof CHECKBOX_C
   return CHECKBOX_COLORS[checkboxColorKeys[hash % checkboxColorKeys.length] ?? fallback];
 };
 
-const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; settings?: VideoProject["globalSettings"]}> = ({
+const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; settings?: VideoProject["globalSettings"]; textRole?: CommercialTextRole}> = ({
   cue,
   transcript,
   settings,
+  textRole,
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -219,13 +219,19 @@ const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; se
 
   return (
     <div
+      data-text-role={textRole}
       style={{
         position: "absolute",
         left: "50%",
         width: "80%",
         bottom: subtitleSettings.subtitles.bottomOffset,
-        padding: "9px 20px 12px",
-        background: "rgba(0, 0, 0, 0.42)",
+        padding: "14px 28px 16px",
+        minHeight: 116,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        background: "rgba(0, 0, 0, 0.88)",
+        backdropFilter: "blur(8px)",
         opacity: interpolate(
           frame,
           [startFrame - 3, startFrame + fadeFrames, endFrame - fadeFrames, endFrame],
@@ -250,8 +256,9 @@ const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; se
           lineHeight: `${Math.round(subtitleSettings.subtitles.fontSizeZh * 1.2)}px`,
           fontWeight: 900,
           textAlign: "center",
-          textShadow: "0 3px 10px rgba(0,0,0,0.92)",
-          ...getContrastStyle(COLORS.white, subtitleSettings.theme.autoContrastStroke),
+          textShadow: "0 2px 6px rgba(0,0,0,0.8)",
+          WebkitTextStroke: subtitleSettings.theme.autoContrastStroke ? "1px rgba(0,0,0,0.85)" : "none",
+          paintOrder: "stroke fill",
           display: "-webkit-box",
           WebkitLineClamp: 2,
           WebkitBoxOrient: "vertical",
@@ -271,8 +278,9 @@ const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; se
           lineHeight: `${Math.round(subtitleSettings.subtitles.fontSizeEn * 1.3)}px`,
           fontWeight: 600,
           textAlign: "center",
-          textShadow: "0 2px 8px rgba(0,0,0,0.92)",
-          ...getContrastStyle("#FFFFFF", subtitleSettings.theme.autoContrastStroke),
+          textShadow: "0 2px 6px rgba(0,0,0,0.8)",
+          WebkitTextStroke: subtitleSettings.theme.autoContrastStroke ? "1px rgba(0,0,0,0.85)" : "none",
+          paintOrder: "stroke fill",
         }}
       >
         {caption.en}
@@ -1275,14 +1283,18 @@ export const CustomEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
 
   if (cue.layout === "draw-line") {
     const draw = interpolate(frame, [startFrame + 10, startFrame + 100], [0, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: easeOut});
+    const props = cue.effectProps ?? {};
+    const textProp = (key: string, fallback: string) => typeof props[key] === "string" ? String(props[key]).trim() : fallback;
+    const bodyText = textProp("bodyText", textProp("body", textProp("effectText", textProp("text", title))));
+    const subText = textProp("highlightQuote", textProp("annotation", textProp("subLabel", cue.caption.zh)));
     return (
       <div style={{position: "absolute", left: 90, top: 250, ...entryStyle(frame, startFrame, -20)}}>
-        <div style={{...titleStyle}}>{title}</div>
-        <svg viewBox="0 0 920 330" style={{width: 920, height: 330, marginTop: 28}}><path d="M40 280 C170 245 260 260 365 190 S560 110 690 145 S800 88 880 52" fill="none" stroke={COLORS.blue} strokeWidth="8" strokeLinecap="round" strokeDasharray="1100" strokeDashoffset={1100 - draw * 1100} /><circle cx={880} cy={52} r="14" fill={COLORS.gold} /><line x1="40" y1="280" x2="880" y2="280" stroke="rgba(255,255,255,0.2)" strokeWidth="2" /></svg>
+        <div style={{...titleStyle}}>{bodyText}</div>
+        <svg viewBox="0 0 920 330" style={{width: 920, height: 330, marginTop: 28}}><path d="M40 280 C170 245 260 260 365 190 S560 110 690 145 S800 88 880 52" fill="none" stroke={COLORS.blue} strokeWidth="8" strokeLinecap="round" strokeDasharray="1100" strokeDashoffset={1100 - draw * 1100} /><circle cx="880" cy="52" r="14" fill={COLORS.gold} /><line x1="40" y1="280" x2="880" y2="280" stroke="rgba(255,255,255,0.2)" strokeWidth="2" /></svg>
+        <div style={{color: COLORS.blue, fontSize: 24, fontWeight: 950, letterSpacing: 3, overflowWrap: "break-word"}}>{subText}</div>
       </div>
     );
   }
-
   if (cue.layout === "progress-donut") {
     const pct = interpolate(frame, [startFrame + 8, startFrame + 60], [0, 76], {extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: easeOut});
     const dash = Math.PI * 2 * 96;
@@ -1391,7 +1403,7 @@ export const V1NewEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
 };
 const SceneModules: React.FC<{cue: JasonWuCue; showStandardHeader?: boolean}> = ({cue, showStandardHeader = true}) => <LayoutEffectRenderer cue={cue} showStandardHeader={showStandardHeader} />;
 
-const EffectLayerStack: React.FC<{cue: JasonWuCue; autoContrastStroke?: boolean}> = ({cue, autoContrastStroke = true}) => {
+const EffectLayerStack: React.FC<{cue: JasonWuCue; beatIndex?: number}> = ({cue, beatIndex = 0}) => {
   const {fps} = useVideoConfig();
   const beatStartFrame = Math.round(cue.start * fps);
   const beatDuration = Math.max(1, Math.round((cue.end - cue.start) * fps));
@@ -1399,12 +1411,13 @@ const EffectLayerStack: React.FC<{cue: JasonWuCue; autoContrastStroke?: boolean}
   return <>
     {normalizeCueLayers(cue).map((layer) => {
       const scopedCue = layerCue(cue, layer);
-      const faceAware = resolveFaceAwareLayerForRender(layer.layout, layer.commonProps, cue.faceZone);
-      const effectiveCue = {...scopedCue, layout: faceAware.layout, effectProps: {...(scopedCue.effectProps ?? {}), designTokens: faceAware.tokens}};
+      const faceAware = resolveFaceAwareLayerForRender(layer.layout, layer.commonProps, cue.faceZone, beatIndex, cue.sceneMode);
+      const definition = getLayoutDefinition(faceAware.layout);
+      const entranceDurationSeconds = getEntranceDurationSeconds(faceAware.layout, resolveContentItems(scopedCue, layer.effectProps, ["items", "steps", "units", "comments", "nodes", "years"]).length, resolveContentText(scopedCue, layer.effectProps, "text").length);
+      const effectiveCue = {...scopedCue, layout: faceAware.layout, effectProps: {...(scopedCue.effectProps ?? {}), designTokens: faceAware.tokens, ...(definition.usesInternalMotionWrapper ? {__jcMotion: {commonProps: faceAware.commonProps, designTokens: faceAware.tokens, beatDuration: cue.end - cue.start, entranceDurationSeconds, textRole: layer.textRole, accent: layer.accent}} : {})}};
+      const scene = <SceneModules cue={effectiveCue} showStandardHeader={false} />;
       return <Sequence key={layer.layerId} from={beatStartFrame} durationInFrames={beatDuration} layout="none">
-        <MotionWrapper commonProps={faceAware.commonProps} designTokens={faceAware.tokens} beatDuration={cue.end - cue.start} entranceDurationSeconds={getEntranceDurationSeconds(faceAware.layout, resolveContentItems(effectiveCue, layer.effectProps, ["items", "steps", "units", "comments", "nodes", "years"]).length, resolveContentText(effectiveCue, layer.effectProps, "text").length)} autoContrastStroke={autoContrastStroke}>
-          <SceneModules cue={effectiveCue} showStandardHeader={false} />
-        </MotionWrapper>
+        {definition.usesInternalMotionWrapper ? scene : <MotionWrapper commonProps={faceAware.commonProps} designTokens={faceAware.tokens} beatDuration={cue.end - cue.start} entranceDurationSeconds={entranceDurationSeconds} textRole={layer.textRole} accent={layer.accent}>{scene}</MotionWrapper>}
       </Sequence>;
     })}
   </>;
@@ -1444,11 +1457,12 @@ export const JasonWuTemplate: React.FC<JasonWuTemplateProps> = ({
     category: sectionEyebrow,
     headline: sectionSubtitle,
   });
-  const activeFaceAware = resolveFaceAwareLayerForRender(activeLayer.layout, activeLayer.commonProps, cue.faceZone);
+  const beatIndex = Math.max(0, cues.indexOf(cue));
+  const activeFaceAware = resolveFaceAwareLayerForRender(activeLayer.layout, activeLayer.commonProps, cue.faceZone, beatIndex, cue.sceneMode);
   const effectiveHeaderCue = {
     ...activeHeaderCue,
     layout: activeFaceAware.layout,
-    effectProps: {...(activeHeaderCue.effectProps ?? {}), designTokens: activeFaceAware.tokens},
+    effectProps: {...(activeHeaderCue.effectProps ?? {}), accent: activeLayer.accent ?? "blue", designTokens: activeFaceAware.tokens},
   };
   const settings = mergeGlobalSettings(globalSettings);
   const transcript = transcriptCues ? activeTranscriptAtFrame(transcriptCues, frame, fps) : undefined;
@@ -1480,8 +1494,8 @@ export const JasonWuTemplate: React.FC<JasonWuTemplateProps> = ({
       <AbsoluteFill style={{backgroundColor: `rgba(0, 0, 0, ${settings.background.dimOpacity})`, backdropFilter: `blur(${settings.background.blurRadius}px)`}} />
       {settings.background.vignette ? <AbsoluteFill style={{background: "radial-gradient(circle, transparent 60%, rgba(0,0,0,0.6) 100%)"}} /> : null}
       <LayoutEffectHeader key={activeLayer.layerId} cue={effectiveHeaderCue} />
-      <EffectLayerStack cue={cue} autoContrastStroke={settings.theme.autoContrastStroke} />
-      <Subtitle cue={cue} transcript={transcript} settings={settings} />
+      <EffectLayerStack cue={cue} beatIndex={beatIndex} />
+      <Subtitle cue={cue} transcript={transcript} settings={settings} textRole={activeLayer.textRole} />
       {audioSrc ? <Audio src={staticFile(audioSrc)} /> : null}
     </AbsoluteFill>
   );
@@ -1570,8 +1584,3 @@ export const ProjectEditorComposition: React.FC<VideoProject> = (project) => (
 );
 
 export const DefaultProjectEditorComposition: React.FC = () => <ProjectEditorComposition {...defaultProject} />;
-
-
-
-
-

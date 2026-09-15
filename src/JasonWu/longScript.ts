@@ -60,7 +60,7 @@ export const jasonWuLongCues: JasonWuCue[] = [
       zh: "产品定义权，重新回到工程师手里",
       en: "Product authority returns to engineering",
     },
-    layout: "engineering-return",
+    layout: "pivot-list",
     steps: [
       {index: "01", title: "M-Series Efficiency +300%", subtitle: "PERFORMANCE PER WATT", active: true, tone: "gold"},
       {index: "02", title: "Battery 22h+", subtitle: "MACBOOK PRO ENDURANCE", active: true, tone: "blue"},
@@ -98,7 +98,7 @@ export const jasonWuLongCues: JasonWuCue[] = [
       zh: "全新苹果，还能再次拿出 One more thing 吗",
       en: "Can the new Apple deliver one more thing?",
     },
-    layout: "finale-kinetic",
+    layout: "zoom-statement",
     metric: {
       label: "NET CASH FLOW",
       value: "$1600",

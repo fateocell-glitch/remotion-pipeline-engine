@@ -16,7 +16,8 @@ test("normalizes a legacy layout into one editable effect layer", () => {
         category: "DESIGN SYSTEM",
         headline: "Start",
         effectText: "",
-        payload: {contentPayload: {type: "narrative", bodyText: ""}},
+        accent: "blue",
+        payload: {accent: "blue", contentPayload: {type: "narrative", bodyText: ""}},
         commonProps: {enterOffset: 0, exitOffset: 0, duration: undefined, position: "center", offsetX: 0, offsetY: 0, scale: 1, enterAnimation: "spring-up", exitAnimation: "none", sfx: "none"},
         enterOffset: 0,
       },
@@ -37,6 +38,21 @@ test("accepts an ordered two-layer effect stack", () => {
   );
 });
 
+test("preserves explicit scene mode and alignment overrides through layer normalization", () => {
+  const [layer] = normalizeBeatLayers({
+    layout: "hud-glow-stack",
+    start: 0,
+    end: 25,
+    layers: [{
+      layerId: "layer-1",
+      layout: "hud-glow-stack",
+      commonProps: {position: "bottom-right", sceneModeOverride: "speaker_mode", alignOverride: "left"},
+    }],
+  });
+  assert.equal(layer.commonProps.sceneModeOverride, "speaker_mode");
+  assert.equal(layer.commonProps.alignOverride, "left");
+  assert.equal(layer.commonProps.position, "bottom-right");
+});
 test("repairs a legacy second Layer that defaults to zero and overlaps the first Layer", () => {
   const layers = normalizeBeatLayers({
     start: 0,

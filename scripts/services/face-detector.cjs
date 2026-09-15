@@ -21,11 +21,14 @@ function faceZoneFromDetections(detections, width, height, context = {}) {
   const padX = Math.max(.045, faceW * .18);
   const padY = Math.max(.045, faceH * .14);
   const centerX = faceX + faceW / 2;
+  const faceAreaRatio = rounded(faceW * faceH);
+  const facePresenceRatio = rounded(Number(context.facePresenceRatio ?? context.presenceRatio ?? 1));
   return {
     faceX: rounded(faceX), faceY: rounded(faceY), faceW: rounded(faceW), faceH: rounded(faceH),
     safeX: rounded(clamp(faceX - padX, 0, 1)), safeY: rounded(clamp(faceY - padY, 0, 1)),
     safeW: rounded(clamp(faceW + padX * 2, 0, 1)), safeH: rounded(clamp(faceH + padY * 2, 0, 1)),
     faceArea: centerX < .34 ? "left" : centerX > .66 ? "right" : "center",
+    faceAreaRatio, facePresenceRatio,
     confidence: rounded(Number(primary.score) || 0), detectorVersion: DETECTOR_VERSION,
     sourceFingerprint: String(context.sourceFingerprint || ""), beatStart: Number(context.beatStart), beatEnd: Number(context.beatEnd), sampledAt: Number(context.sampledAt),
   };

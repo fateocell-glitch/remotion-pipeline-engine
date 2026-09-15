@@ -8,6 +8,8 @@ test("face detector normalizes the largest detected face with a safe margin", ()
   assert.equal(zone.faceArea, "right");
   assert.ok(zone.faceX > .6);
   assert.ok(zone.safeX < zone.faceX);
+  assert.ok(zone.faceAreaRatio > .18);
+  assert.equal(zone.facePresenceRatio, 1);
   assert.equal(zone.sourceFingerprint, "video-a");
 });
 

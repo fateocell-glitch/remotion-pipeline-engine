@@ -13,6 +13,7 @@ import {PlatformShiftLine, TradeoffRejectRound, RecoveryProgressBars, HudGlowSta
 import {CopyOpenHeroTitle, CopyOpenProgressBar, CopyOpenComparisonCard, CopyOpenTerminalScene, CopyOpenEndTag, CopyOpenBarChart, CopyOpenLineChart, CopyOpenPieChart, CopyOpenKPIGrid} from "./CopyOpenComponents";
 import type {JasonWuCue} from "./timeline";
 import {ValueVerdict} from "./ValueVerdict";
+import {jcLayoutDefinitions} from "./jcLayoutRegistry";
 
 export type EditableField = {key: string; label: string; type: "text" | "number" | "select" | "textarea" | "string-list" | "key-value-list"; placeholder?: string; description?: string; options?: {label: string; value: string}[]};
 export interface ComponentManifest {
@@ -30,6 +31,7 @@ export type LayoutDef = {
   meta: {category: "data" | "typography" | "story" | "interactive"; label: string; description: string};
   renderLayer: "primary" | "enhancement";
   manifest: ComponentManifest;
+  usesInternalMotionWrapper?: boolean;
 };
 
 const copy: EditableField[] = [{key: "headline", label: "主标题", type: "text"}];
@@ -43,9 +45,7 @@ const CONTROLLED_FIELDS: Partial<Record<JasonWuCue["layout"], EditableField[]>> 
   "pivot-list": [prose("text", "打字机文本")],
   "capital-dashboard": [text("marketLabel", "小标题1【标题内容】"), {key:"marketTo",label:"数值1【数字内容】",type:"number"}, text("marketSuffix", "数字单位"), text("engineeringLabel", "小标题2【标题内容】"), {key:"engineeringTo",label:"数值2【数字内容】",type:"number"}, text("engineeringSuffix", "数字单位")],
   "cook-machine": [text("title", "顶端标签"), text("leftLabel", "小标题1【标题内容】"), text("leftValue", "数值1【数字内容】"), text("rightLabel", "小标题2【标题内容】"), text("rightValue", "数值2【数字内容】"), {key:"from",label:"起始比例",type:"number"}, {key:"to",label:"结束比例",type:"number"}],
-  "engineering-return": [prose("text", "打字机文本")],
   "market-battlefield": [text("headline", "地图标题"), list("nodes", "路线节点")],
-  "finale-kinetic": [text("headline", "冲击大字"), text("eyebrow", "辅助标签")],
   "reject-list": [text("title", "清单标题"), list("items", "正文内容", "每项对应一个叉号，可配合副标题显示"), text("subLabel", "默认副标题"), checkboxColorField],
   "check-progress": [text("bodyText", "进度条标题【正文内容】"), {key:"progress",label:"完成度",type:"number"}, list("items", "正文内容", "每项对应一个打勾的灰色文字列表"), checkboxColorField],
   "diagonal-chips": [list("items", "Chip 文案", "每项对应一个斜入标签")],
@@ -55,7 +55,7 @@ const CONTROLLED_FIELDS: Partial<Record<JasonWuCue["layout"], EditableField[]>> 
   "logo-wordmark": [text("mark", "标志字母"), text("headline", "标志标题"), text("eyebrow", "辅助标签")],
   "ordered-sequence": [text("categoryTag", "阶段标签"), list("steps", "步骤列表", "步骤按顺序逐一弹出")],
   "org-chart": [text("leader", "核心节点"), text("leaderRole", "核心节点说明"), list("units", "组织单元")],
-  "draw-line": [text("headline", "论点标题"), prose("annotation", "画线注释")],
+  "draw-line": [prose("bodyText", "正文内容"), text("highlightQuote", "副文内容")],
   "progress-donut": [text("label", "小标题"), {key:"value",label:"数值",type:"number"}, text("bodyText", "正文内容")],
   "avatar-handoff": [text("leftName", "交出方"), text("leftRole", "交出方头衔"), text("rightName", "接任方"), text("rightRole", "接任方头衔")],
   "bull-bear": [text("bullLabel", "多方观点标签"), prose("bullText", "多方观点【正文内容】"), text("bearLabel", "空方观点标签"), prose("bearText", "空方观点【正文内容】"), prose("highlightQuote", "底部金色强调文字")],
@@ -90,21 +90,6 @@ const CONTROLLED_FIELDS: Partial<Record<JasonWuCue["layout"], EditableField[]>> 
   "copyopen-kpi-grid": [list("items", "指标标签"), {key:"values",label:"指标数值",type:"string-list"}],
 };
 export const LAYOUT_MANIFEST: Partial<Record<JasonWuCue["layout"], ComponentManifest>> = {
-  "engineering-return": {
-    "id": "engineering-return",
-    "intent": "narrative",
-    "capacity": {
-      "minItems": 1,
-      "maxItems": 1
-    },
-    "keywords": [
-      "工程",
-      "回归",
-      "打字机",
-      "观点"
-    ],
-    "visualWeight": "medium"
-  },
   "capital-dashboard": {
     "id": "capital-dashboard",
     "intent": "metrics",
@@ -769,20 +754,6 @@ export const LAYOUT_MANIFEST: Partial<Record<JasonWuCue["layout"], ComponentMani
     ],
     "visualWeight": "medium"
   },
-  "finale-kinetic": {
-    "id": "finale-kinetic",
-    "intent": "narrative",
-    "capacity": {
-      "minItems": 1,
-      "maxItems": 1
-    },
-    "keywords": [
-      "结尾",
-      "冲击",
-      "总结"
-    ],
-    "visualWeight": "heavy"
-  },
   "pivot-list": {
     "id": "pivot-list",
     "intent": "narrative",
@@ -839,9 +810,7 @@ export const LAYOUT_DEFINITIONS: LayoutDef[] = [
   item("pivot-list", SpecBadgeAndTypewriter, "规格打字机", "绿色终端逐字出现", "interactive", "enhancement", [{key: "text", label: "打字机文本", type: "textarea"}], {}),
   item("capital-dashboard", CapitalDashboardNumbers, "资本仪表盘", "双数字卡滚动增长", "data", "primary", [text("marketLabel", "小标题1【标题内容】"), {key: "marketTo", label: "数值1【数字内容】", type: "number"}, text("marketSuffix", "数字单位"), text("engineeringLabel", "小标题2【标题内容】"), {key: "engineeringTo", label: "数值2【数字内容】", type: "number"}, text("engineeringSuffix", "数字单位")], {marketLabel: "市场规模", marketTo: 4600, marketSuffix: "亿", engineeringLabel: "增长率", engineeringTo: 25, engineeringSuffix: "%"}),
   item("cook-machine", SplitScreenAccent, "经营机器", "运营效率和利润对照", "story", "primary", copy, {leftLabel: "PROFIT", rightLabel: "SHIPMENT", from: 20, to: 85}),
-  item("engineering-return", SpecBadgeAndTypewriter, "工程回归", "工程规格与打字机参数", "story", "primary", copy, {text: "关键路径 / 核心动作 / 下一步"}),
   item("market-battlefield", RouteMap, "市场对垒", "供应链路线和区域节点", "data"),
-  item("finale-kinetic", KineticTypographyAccent, "结尾冲击", "结论型大字节奏", "typography", "primary"),
   item("reject-list", RejectList, "错误清单", "叉号否定与纠错列表", "story", "primary", [checkboxColorField], {boxColor: "auto", items: ["核心信息", "视觉节奏", "行动结论"], itemSubtitles: ["CUT FROM THE PRODUCT PATH", "REMOVE FROM THE FLOW", "BLOCK BEFORE RELEASE"]}),
   item("check-progress", CheckProgress, "进度确认", "进度条和勾选确认", "interactive", "primary", [checkboxColorField], {boxColor: "auto"}),
   item("diagonal-chips", DiagonalChips, "斜入标签", "斜向飞入的规格标签", "interactive", "primary", [{key: "items", label: "Chip 文案", type: "string-list", description: "每项对应一个斜入标签"}], {}),
@@ -884,6 +853,7 @@ export const LAYOUT_DEFINITIONS: LayoutDef[] = [
   item("copyopen-line-chart", CopyOpenLineChart, "CopyOpen LineChart", "CopyOpen 原版折线绘制图", "data", "primary", [], {items: ["0", "10", "20", "30"], values: [100, 91, 86, 78]}),
   item("copyopen-pie-chart", CopyOpenPieChart, "CopyOpen PieChart", "CopyOpen 原版环形分布图", "data", "primary", [], {items: ["Hook", "Proof", "Story", "CTA"], values: [35, 30, 20, 15], value: 8, label: "clips"}),
   item("copyopen-kpi-grid", CopyOpenKPIGrid, "CopyOpen KPIGrid", "CopyOpen 原版 KPI 仪表网格", "data", "primary", [], {items: ["clips", "avg score", "minutes saved"], values: [8, 86, 74]}),
+  ...jcLayoutDefinitions,
 ];
 
 export const LAYOUT_BY_KEY = new Map<JasonWuCue["layout"], LayoutDef>(LAYOUT_DEFINITIONS.map((definition) => [definition.key, definition]));
