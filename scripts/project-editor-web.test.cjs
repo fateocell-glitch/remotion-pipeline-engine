@@ -23,6 +23,7 @@ const adminComponentsPage = readFileSync("scripts/admin-components-page.cjs", "u
 const componentCatalogPage = readFileSync("src/JasonWu/JasonWuComponentCatalog.tsx", "utf8");
 const componentContent = readFileSync("src/design/component-content.ts", "utf8");
 const componentPresetResolver = readFileSync("src/design/component-preset-resolver.ts", "utf8");
+const jcNativeRecipes = readFileSync("src/JasonWu/JcNativeRecipes.tsx", "utf8");
 const componentRegistryStore = readFileSync("scripts/services/component-registry-store.cjs", "utf8");
 const componentRegistry = JSON.parse(readFileSync("src/design/components.registry.json", "utf8"));
 
@@ -388,6 +389,12 @@ test("single beat scheduler reuses an active Beat job instead of racing the same
   assert.ok(host.includes("releaseRenderSlot()"));
 });
 
+test("single beat rendering persists a detached worker lease across Studio server restarts", () => {
+  assert.match(host, /workerPid/);
+  assert.match(host, /detached: true/);
+  assert.match(host, /findPersistedBeatJob/);
+  assert.match(host, /isProcessAlive\(beat\.render\?\.workerPid\)/);
+});
 test("single beat silent watchdog terminates only stalled process trees", () => {
   assert.match(host, /single-beat-watchdog-stalled/);
   assert.match(host, /taskkill/);
@@ -881,12 +888,20 @@ test("Studio keeps copy fields inside the selected layer and removes the beat-le
   assert.match(effectLayerRuntime, /layer\.effectText/);
 });
 
-test("studio layer semantic copy fields use a compact two-column editor", () => {
+test("Studio layer base text fields use the full inspector width", () => {
   assert.match(page, /layer-base-fields\{display:grid;grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\);column-gap:14px;row-gap:0\}/);
   assert.match(page, /layer-base-fields \.field-label\{min-width:0\}/);
   assert.match(page, /layer-base-fields input,\.layer-base-fields textarea\{width:100%;min-width:0\}/);
   assert.match(page, /class=\\"grid layer-base-fields\\"/);
-  assert.match(page, /inputField\("headline","核心大标题 \/ Headline",copy\.headline\)/);
+  assert.match(page, /inputField\("headline","核心大标题 \/ Headline",copy\.headline,true\)/);
+});
+test("Studio component text and subtext fields span the full inspector grid", () => {
+  const schemaMarkup = page.slice(page.indexOf("function schemaFieldMarkup"), page.indexOf("function schemaRows"));
+  const propsMarkup = page.slice(page.indexOf("function propFields"), page.indexOf("function fallbackFields"));
+  assert.match(schemaMarkup, /const wideTextField=/);
+  assert.match(schemaMarkup, /wideTextField\?" span-all":""/);
+  assert.match(propsMarkup, /field\.type==="textarea"\|\|field\.type==="text"/);
+  assert.match(propsMarkup, /field-label"\+\(field\.type==="textarea"\|\|field\.type==="text"\?" span-all":/);
 });
 test("Layer tab selection forces an immediate custom preview refresh", () => {
   const selectLayer = page.slice(page.indexOf("function selectLayer"), page.indexOf("function closeAddEffectGallery"));
@@ -1355,6 +1370,16 @@ test("checklist editorial uses fixed brief content label inside the body slot", 
   assert.doesNotMatch(checklist, /text\(cue,props,\"title\",cue\.section\.subtitle\)/);
 });
 
+test("briefing poster and checklist editorial strengthen a single real list item", () => {
+  const briefing = recoveredEffects.slice(recoveredEffects.indexOf("export const BriefingPoster"), recoveredEffects.indexOf("export const RewindMilestones"));
+  const checklist = recoveredEffects.slice(recoveredEffects.indexOf("export const ChecklistEditorial"));
+  assert.match(briefing, /const isSingleItem=rows\.length===1/);
+  assert.match(briefing, /gap:isSingleItem\?0:25/);
+  assert.match(briefing, /fontSize:isSingleItem\?42:35/);
+  assert.match(checklist, /const isSingleItem=rows\.length===1/);
+  assert.match(checklist, /gap:isSingleItem\?0:24/);
+  assert.match(checklist, /fontSize:isSingleItem\?48:42/);
+});
 test("desktop folders use stable unique Mac Finder color variants instead of flat blocks", () => {
   const desktopFolders = incompleteEffects.slice(incompleteEffects.indexOf("const folderPalettes"), incompleteEffects.indexOf("export const TimeRewind"));
   assert.match(desktopFolders, /const folderPalettes = \[/);
@@ -1568,3 +1593,40 @@ test("Layer history snapshots keep the selected Layer object attached to its Bea
   assert.doesNotMatch(layerSnapshot, /layersOf\(beat\)/);
   assert.match(layerSnapshot, /Array\.isArray\(beat\?\.layers\)&&beat\.layers\.length\?beat\.layers:\[\]/);
 });
+test("platform shift line maps editable metric, summary, and endpoint labels", () => {
+  const platform = componentRegistry.components.find((component) => component.id === "platform-shift-line");
+  assert.ok(platform);
+  const fields = platform.editorSchema?.fields || [];
+  assert.ok(fields.some((field) => field.key === "label" && field.label === "正文内容"));
+  assert.ok(fields.some((field) => field.key === "value" && field.label === "数值内容"));
+  assert.ok(fields.some((field) => field.key === "detailText" && field.label === "副文内容"));
+  assert.ok(fields.some((field) => field.key === "startLabel" && field.label === "起点内容"));
+  assert.ok(fields.some((field) => field.key === "endLabel" && field.label === "终点内容"));
+  assert.match(adminSandboxClient, /isPlatformShiftLine=draft\.id==="platform-shift-line"/);
+  assert.match(adminSandboxClient, /默认内容模板 \/ 沙盒示例 · 指标面板/);
+  assert.match(adminSandboxClient, /<label>数值内容<input type="number"/);
+  assert.match(adminSandboxClient, /<label>副文内容<input value=\{payload\.detailText \?\? ""\}/);
+  assert.match(adminSandboxClient, /<label>起点内容<input value=\{toStringValue\(draft\.mockData\.startLabel\)\}/);
+  assert.match(adminSandboxClient, /<label>终点内容<input value=\{toStringValue\(draft\.mockData\.endLabel\)\}/);
+  const platformRenderer = recoveredEffects.slice(recoveredEffects.indexOf("export const PlatformShiftLine"), recoveredEffects.indexOf("export const TradeoffRejectRound"));
+  assert.match(platformRenderer, /text\(cue,props,"metricLabel"/);
+  assert.match(platformRenderer, /text\(cue,props,"summary"/);
+  assert.match(platformRenderer, /text\(cue,props,"startLabel"/);
+  assert.match(platformRenderer, /text\(cue,props,"endLabel"/);
+  assert.doesNotMatch(platformRenderer, />●<\/div>/);
+  assert.doesNotMatch(platformRenderer, /fontSize:68\}\}>\{value\}<\/span>/);
+  assert.match(platformRenderer, /marginTop:150,color:BLUE,fontSize:35/);
+});
+test("jc metrics curve overlay keeps only body input and follows theme accent", () => {
+  const curve = componentRegistry.components.find((component) => component.id === "jc-metrics-curve-overlay");
+  assert.ok(curve);
+  assert.deepEqual((curve.editorSchema?.fields || []).map((field) => [field.key, field.label]), [["label", "正文内容"]]);
+  const recipe = jcNativeRecipes.slice(jcNativeRecipes.indexOf('case "CurveOverlay"'), jcNativeRecipes.indexOf('case "DMCardStack"'));
+  assert.match(recipe, /const curveColor\s*=\s*color\("blue"\)/);
+  assert.match(recipe, /color=\{curveColor\}/);
+  assert.match(recipe, /COLOR\[curveColor\]/);
+  assert.match(recipe, /marginTop: -98/);
+  assert.doesNotMatch(recipe, /color\("yellow"\)/);
+  assert.doesNotMatch(recipe, /COLOR\.yellow/);
+});
+

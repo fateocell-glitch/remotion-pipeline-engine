@@ -212,6 +212,12 @@ const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; se
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const caption = transcript ?? cue.caption;
+  const primaryCaption = String(caption.zh || caption.en || "").trim();
+  const secondaryCaption = String(caption.en || "").trim();
+  const comparableCaptionText = (value: string) => value.replace(/\s+/g, " ").trim().toLocaleLowerCase();
+  const sameCaptionText = Boolean(primaryCaption && secondaryCaption && comparableCaptionText(primaryCaption) === comparableCaptionText(secondaryCaption));
+  const isSingleLanguageCaption = cue.language === "en" || sameCaptionText;
+  const showSecondarySubtitle = Boolean(secondaryCaption && !isSingleLanguageCaption);
   const subtitleSettings = mergeGlobalSettings(settings);
   const startFrame = Math.round((transcript?.start ?? cue.start) * fps);
   const endFrame = Math.round((transcript?.end ?? cue.end) * fps);
@@ -220,13 +226,14 @@ const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; se
   return (
     <div
       data-text-role={textRole}
+      data-subtitle-lines={showSecondarySubtitle ? "double" : "single"}
       style={{
         position: "absolute",
         left: "50%",
         width: "80%",
         bottom: subtitleSettings.subtitles.bottomOffset,
-        padding: "14px 28px 16px",
-        minHeight: 116,
+        padding: showSecondarySubtitle ? "14px 28px 16px" : "12px 28px",
+        minHeight: showSecondarySubtitle ? 116 : 82,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -265,9 +272,9 @@ const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; se
           overflow: "hidden",
         }}
       >
-        <HighlightedText text={caption.zh} highlightColor={subtitleSettings.subtitles.highlightColor} />
+        <HighlightedText text={primaryCaption} highlightColor={subtitleSettings.subtitles.highlightColor} />
       </div>
-      <div
+      {showSecondarySubtitle ? <div
         style={{
           color: "rgba(255,255,255,0.92)",
           display: "-webkit-box",
@@ -283,13 +290,11 @@ const Subtitle: React.FC<{cue: JasonWuCue; transcript?: JasonWuTranscriptCue; se
           paintOrder: "stroke fill",
         }}
       >
-        {caption.en}
-      </div>
+        {secondaryCaption}
+      </div> : null}
     </div>
   );
-};
-
- const PortraitDisc: React.FC<{person: JasonWuPerson; size: number}> = ({
+}; const PortraitDisc: React.FC<{person: JasonWuPerson; size: number}> = ({
   person,
   size,
 }) => (
@@ -1258,19 +1263,19 @@ export const CustomEffectLayout: React.FC<{cue: JasonWuCue}> = ({cue}) => {
   }
 
   if (cue.layout === "ordered-sequence") {
+    const isEnglish = cue.language === "en";
     return (
-      <div style={{position: "absolute", left: 95, top: 225, width: 790, ...entryStyle(frame, startFrame, -28)}}>
+      <div style={{position: "absolute", left: 95, top: 225, width: isEnglish ? 1030 : 790, ...entryStyle(frame, startFrame, -28)}}>
         <div style={{color: COLORS.gold, fontSize: 18, fontWeight: 950, letterSpacing: 4}}>SEQUENCE</div>
         {cueLines(cue, 4, ["发现问题", "形成判断", "推进执行", "验证结果"]).map((item, index) => (
-          <div key={item} style={{display: "flex", alignItems: "center", gap: 22, marginTop: 20, opacity: interpolate(frame, [startFrame + index * 13, startFrame + 18 + index * 13], [0, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp"})}}>
-            <div style={{width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: index === 2 ? COLORS.gold : COLORS.blue, color: "#071019", fontSize: 20, fontWeight: 950}}>{`0${index + 1}`}</div>
-            <div style={{color: COLORS.white, fontSize: 32, fontWeight: 950}}>{item}</div>
+          <div key={item} style={{display: "flex", alignItems: "flex-start", gap: 22, marginTop: 20, minWidth: 0, opacity: interpolate(frame, [startFrame + index * 13, startFrame + 18 + index * 13], [0, 1], {extrapolateLeft: "clamp", extrapolateRight: "clamp"})}}>
+            <div style={{width: 48, height: 48, flex: "0 0 auto", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: index === 2 ? COLORS.gold : COLORS.blue, color: "#071019", fontSize: 20, fontWeight: 950}}>{`0${index + 1}`}</div>
+            <div style={{minWidth: 0, flex: 1, color: COLORS.white, fontSize: 32, lineHeight: "40px", fontWeight: 950, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "normal", wordBreak: "normal", hyphens: "auto"}}>{item}</div>
           </div>
         ))}
       </div>
     );
   }
-
   if (cue.layout === "org-chart") {
     return (
       <div style={{position: "absolute", left: 130, top: 205, width: 1050, ...entryStyle(frame, startFrame, -20)}}>
@@ -1411,13 +1416,13 @@ const EffectLayerStack: React.FC<{cue: JasonWuCue; beatIndex?: number}> = ({cue,
   return <>
     {normalizeCueLayers(cue).map((layer) => {
       const scopedCue = layerCue(cue, layer);
-      const faceAware = resolveFaceAwareLayerForRender(layer.layout, layer.commonProps, cue.faceZone, beatIndex, cue.sceneMode);
+      const faceAware = resolveFaceAwareLayerForRender(layer.layout, layer.commonProps, layer.layoutProps, cue.faceZone, beatIndex, cue.sceneMode, cue.language);
       const definition = getLayoutDefinition(faceAware.layout);
       const entranceDurationSeconds = getEntranceDurationSeconds(faceAware.layout, resolveContentItems(scopedCue, layer.effectProps, ["items", "steps", "units", "comments", "nodes", "years"]).length, resolveContentText(scopedCue, layer.effectProps, "text").length);
-      const effectiveCue = {...scopedCue, layout: faceAware.layout, effectProps: {...(scopedCue.effectProps ?? {}), designTokens: faceAware.tokens, ...(definition.usesInternalMotionWrapper ? {__jcMotion: {commonProps: faceAware.commonProps, designTokens: faceAware.tokens, beatDuration: cue.end - cue.start, entranceDurationSeconds, textRole: layer.textRole, accent: layer.accent}} : {})}};
+      const effectiveCue = {...scopedCue, layout: faceAware.layout, effectProps: {...(scopedCue.effectProps ?? {}), designTokens: faceAware.tokens, ...(definition.usesInternalMotionWrapper ? {__jcMotion: {commonProps: faceAware.commonProps, designTokens: faceAware.tokens, beatDuration: cue.end - cue.start, entranceDurationSeconds, textRole: layer.textRole, layoutProps: layer.layoutProps, accent: layer.accent, language: cue.language}} : {})}};
       const scene = <SceneModules cue={effectiveCue} showStandardHeader={false} />;
       return <Sequence key={layer.layerId} from={beatStartFrame} durationInFrames={beatDuration} layout="none">
-        {definition.usesInternalMotionWrapper ? scene : <MotionWrapper commonProps={faceAware.commonProps} designTokens={faceAware.tokens} beatDuration={cue.end - cue.start} entranceDurationSeconds={entranceDurationSeconds} textRole={layer.textRole} accent={layer.accent}>{scene}</MotionWrapper>}
+        {definition.usesInternalMotionWrapper ? scene : <MotionWrapper commonProps={faceAware.commonProps} layoutProps={layer.layoutProps} designTokens={faceAware.tokens} beatDuration={cue.end - cue.start} entranceDurationSeconds={entranceDurationSeconds} textRole={layer.textRole} language={cue.language}>{scene}</MotionWrapper>}
       </Sequence>;
     })}
   </>;
@@ -1458,7 +1463,7 @@ export const JasonWuTemplate: React.FC<JasonWuTemplateProps> = ({
     headline: sectionSubtitle,
   });
   const beatIndex = Math.max(0, cues.indexOf(cue));
-  const activeFaceAware = resolveFaceAwareLayerForRender(activeLayer.layout, activeLayer.commonProps, cue.faceZone, beatIndex, cue.sceneMode);
+  const activeFaceAware = resolveFaceAwareLayerForRender(activeLayer.layout, activeLayer.commonProps, activeLayer.layoutProps, cue.faceZone, beatIndex, cue.sceneMode, cue.language);
   const effectiveHeaderCue = {
     ...activeHeaderCue,
     layout: activeFaceAware.layout,

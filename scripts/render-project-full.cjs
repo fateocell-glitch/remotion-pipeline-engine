@@ -41,6 +41,8 @@ const writeAtomic = async (file, project) => {
   await rename(temp, file);
 };
 
+const renderAttemptPath = (relativeOutput) => relativeOutput.replace(/\.mp4$/i, "-" + Date.now() + "-" + process.pid + ".mp4");
+
 const cacheWeightedProgress = (cachedBeats, totalBeats) => totalBeats ? Math.round(5 + cachedBeats / totalBeats * 75) : 5;
 
 const overallForBeat = (cachedBeats, totalBeats, index, currentProgress = 0) => {
@@ -70,7 +72,7 @@ const main = async () => {
   for (let index = 0; index < pending.length; index += 1) {
     const beat = pending[index];
     const revision = Math.max(1, Number(beat.render?.revision || 1));
-    const relativeOutput = currentAssetPath(project.projectId, beat);
+    const relativeOutput = renderAttemptPath(currentAssetPath(project.projectId, beat));
     const target = join(root, relativeOutput);
     const startFrame = Math.floor(beat.start * project.fps);
     const endFrame = Math.ceil(beat.end * project.fps) - 1;

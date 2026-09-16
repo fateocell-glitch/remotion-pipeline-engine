@@ -8,13 +8,18 @@ import { COLOR, FONT, GRID, MOTION, RADIUS, SIZE, type SemanticColor } from './t
 // 仿品卡逐个变淡，级联出「越复制越廉价」的衰减感；icon 由调用方传 lucide ReactNode。
 
 const CARD = GRID * 15; // 120px 图标卡
+const SOURCE_PALETTE = ['#4D9EFF', '#FFC53D', '#3DDC84', '#B26BFF'] as const;
+const STAR_PALETTE = ['#4D9EFF', '#FF4D4D', '#FFC53D', '#B26BFF', '#3DDC84', '#FDE047'] as const;
+const CLONE_LABELS = ['A', 'B', 'C', 'D'] as const;
 
-const SourceCard: React.FC<{ icon: React.ReactNode; label: string; enterAt: number }> = ({
+const SourceCard: React.FC<{ icon: React.ReactNode; label: string; enterAt: number; palette: readonly string[] }> = ({
   icon,
   label,
   enterAt,
+  palette,
 }) => {
   const enter = useEnter(enterAt, 'left');
+  const [blue, gold, green, purple] = palette;
   return (
     <div
       style={{
@@ -31,16 +36,24 @@ const SourceCard: React.FC<{ icon: React.ReactNode; label: string; enterAt: numb
           width: CARD,
           height: CARD,
           borderRadius: RADIUS.card,
-          background: 'linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92))',
-          border: '2.5px solid rgba(255,255,255,0.92)',
+          background: `linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92)) padding-box, linear-gradient(135deg, ${blue}, ${gold}, ${green}, ${purple}) border-box`,
+          border: '2.5px solid transparent',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: COLOR.white,
-          boxShadow: '0 14px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.18)',
+          color: blue,
+          boxShadow: `0 14px 40px rgba(0,0,0,0.55), 0 0 26px ${blue}55, 0 0 34px ${gold}33, 0 0 38px ${green}22, inset 0 1px 0 rgba(255,255,255,0.18)`,
         }}
       >
-        {icon}
+        <span
+          style={{
+            display: 'inline-flex',
+            color: blue,
+            filter: `drop-shadow(0 0 10px ${blue}AA) drop-shadow(0 0 18px ${gold}66) drop-shadow(0 0 24px ${purple}44)`, 
+          }}
+        >
+          {icon}
+        </span>
       </div>
       <span
         style={{
@@ -57,11 +70,12 @@ const SourceCard: React.FC<{ icon: React.ReactNode; label: string; enterAt: numb
   );
 };
 
-const CloneCard: React.FC<{ icon: React.ReactNode; index: number; fade: number; enterAt: number }> = ({
+const CloneCard: React.FC<{ icon: React.ReactNode; index: number; fade: number; enterAt: number; starColor: string }> = ({
   icon,
   index,
   fade,
   enterAt,
+  starColor,
 }) => {
   const enter = useEnter(enterAt, 'left');
   return (
@@ -85,11 +99,19 @@ const CloneCard: React.FC<{ icon: React.ReactNode; index: number; fade: number; 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: COLOR.grey,
-          boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+          color: starColor,
+          boxShadow: `0 8px 24px rgba(0,0,0,0.4), 0 0 18px ${starColor}55`,
         }}
       >
-        {icon}
+        <span
+          style={{
+            display: 'inline-flex',
+            color: starColor,
+            filter: `drop-shadow(0 0 8px ${starColor}AA) drop-shadow(0 0 16px ${starColor}66)`, 
+          }}
+        >
+          {icon}
+        </span>
       </div>
       <span
         style={{
@@ -100,7 +122,7 @@ const CloneCard: React.FC<{ icon: React.ReactNode; index: number; fade: number; 
           whiteSpace: 'nowrap',
         }}
       >
-        {`仿品 ${index + 1}`}
+        {CLONE_LABELS[index] ?? String.fromCharCode(65 + index)}
       </span>
     </div>
   );
@@ -120,7 +142,7 @@ export const CloneCascade: React.FC<{
   const arrowEnter = useEnter(enterAt + MOTION.stagger, 'left');
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: GRID * 2 }}>
-      <SourceCard icon={icon} label={label} enterAt={enterAt} />
+      <SourceCard icon={icon} label={label} enterAt={enterAt} palette={SOURCE_PALETTE} />
       <span
         style={{
           fontFamily: FONT.en,
@@ -140,6 +162,7 @@ export const CloneCascade: React.FC<{
           index={i}
           fade={Math.max(0.4, 0.85 - i * 0.15)}
           enterAt={enterAt + MOTION.stagger * (i + 1)}
+          starColor={STAR_PALETTE[(i + 1) % STAR_PALETTE.length]}
         />
       ))}
       <div

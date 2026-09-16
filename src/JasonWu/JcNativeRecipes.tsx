@@ -60,10 +60,11 @@ const recipeContent = (source: RecordValue): RecipeContent => {
     : payload.type === "metrics"
       ? asText(payload.detailText, asText(renderer.body, normalized.headline))
       : asText(renderer.body, normalized.headline);
+  const subtext = payload.type === "narrative" ? asText(payload.highlightQuote, asText(renderer.highlightQuote)) : asText(renderer.highlightQuote);
   const metric = payload.type === "metrics"
     ? {label: payload.label, value: asNumber(payload.value), unit: payload.unit ?? "", detail: payload.detailText ?? ""}
     : {label: asText(renderer.label, normalized.headline), value: asNumber(renderer.value), unit: asText(renderer.unit), detail: body};
-  return {category: normalized.category, headline: normalized.headline, body, lines: lines.length ? lines : [normalized.headline], metric};
+  return {category: normalized.category, headline: normalized.headline, body, subtext, lines: lines.length ? lines : [normalized.headline], metric};
 };
 
 const sourceAccent = (source: RecordValue, nativeColor: SemanticColor): SemanticColor => {
@@ -115,11 +116,13 @@ export const renderJcNativeRecipe = (exportName: string, source: RecordValue): R
     case "Chip":
       return <div style={{position: "absolute", left: 520, top: 420, display: "flex", gap: 28}}>{lines.slice(0, 3).map((text, index) => <jc.Chip key={`${text}-${index}`} icon={index === 0 ? <Sparkles size={32} /> : index === 1 ? <Flame size={32} /> : <Check size={32} />} accent={color(index === 0 ? "blue" : index === 1 ? "red" : "green")} outlined={index === 1} segments={[{t: text}]} enterAt={index * 10} />)}</div>;
     case "CloneCascade":
-      return <div style={{position: "absolute", left: 260, top: 405}}><jc.CloneCascade icon={<Star size={46} />} label={headline} cloneCount={4} warnText={body} enterAt={0} /></div>;
+      return <div style={{position: "absolute", left: 260, top: 405}}><jc.CloneCascade icon={<Star size={46} />} label={content.subtext || headline} cloneCount={4} warnText={body} accent={color("red")} enterAt={0} /></div>;
     case "CompareCard":
       return <div style={{position: "absolute", left: 390, top: 240}}><jc.CompareCard width={900} items={lines.slice(0, 3).map((name, index) => ({logo: index === 0 ? <Bot size={38} /> : index === 1 ? <Wand2 size={38} /> : <Code2 size={38} />, name, weak: index === 0 ? lineAt(content, 1) : body, strong: index === 0 ? body : lineAt(content, index - 1), strongColor: color(index === 0 ? "green" : index === 1 ? "blue" : "yellow")}))} /></div>;
-    case "CurveOverlay":
-      return <div style={{position: "absolute", left: 260, top: 250}}><jc.CurveOverlay width={1120} height={520} color={color("yellow")} strokeWidth={10} enterAt={0} /><div style={{color: COLOR.yellow, fontSize: 44, fontWeight: 900, marginTop: -70}}>{metric.label || headline}</div></div>;
+    case "CurveOverlay": {
+      const curveColor = color("blue");
+      return <div style={{position: "absolute", left: 260, top: 250}}><jc.CurveOverlay width={1120} height={520} color={curveColor} strokeWidth={10} enterAt={0} /><div style={{color: COLOR[curveColor], fontSize: 44, fontWeight: 900, marginTop: -98}}>{metric.label || headline}</div></div>;
+    }
     case "DMCardStack":
       return <div style={{position: "absolute", left: 420, top: 235}}><jc.DMCardStack cards={lines.slice(0, 3).map((text, index) => ({chip: {text: index === 0 ? content.category : index === 1 ? "SIGNAL" : "RESULT", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green")}, text, width: 640 - index * 40}))} /></div>;
     case "FlowChain":

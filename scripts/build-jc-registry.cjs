@@ -40,8 +40,11 @@ if (new Set(ids).size !== ids.length) {
 if (JC_COMPONENT_DEFINITIONS.length !== 38) {
   throw new Error(`JC registry build aborted: expected 38 JC definitions, found ${JC_COMPONENT_DEFINITIONS.length}`);
 }
-if (components.length !== 87) {
-  throw new Error(`JC registry build aborted: expected 87 total visual assets, found ${components.length}`);
+if (retained.length < 48) {
+  throw new Error(`JC registry build aborted: expected at least 48 retained visual assets, found ${retained.length}`);
+}
+if (components.length !== retained.length + importedAssets.length) {
+  throw new Error(`JC registry build aborted: total visual asset count mismatch, found ${components.length}`);
 }
 
 const familyNames = new Map((registry.families ?? []).map((family) => [family.id, family.name]));

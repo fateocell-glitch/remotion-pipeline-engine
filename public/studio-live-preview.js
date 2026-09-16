@@ -1,11 +1,12 @@
 "use strict";
-var StudioLivePreview = (() => {
+(() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
   var __commonJS = (cb, mod) => function __require() {
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
@@ -25,6 +26,7 @@ var StudioLivePreview = (() => {
     isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
     mod
   ));
+  var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
   // node_modules/.pnpm/react@19.2.3/node_modules/react/cjs/react.development.js
   var require_react_development = __commonJS({
@@ -21723,10 +21725,14 @@ var StudioLivePreview = (() => {
   var require_face_aware_layout = __commonJS({
     "scripts/services/face-aware-layout.cjs"(exports, module) {
       "use strict";
-      var SAFE_ISLAND_WIDTH = Math.round(1920 * 0.48);
-      var SAFE_ISLAND_SCALE = 0.78;
-      var CINEMATIC_WIDE_WIDTH = Math.round(1920 * 0.6);
-      var CINEMATIC_WIDE_SCALE = 0.92;
+      var SIDE_OVERLAY_WIDTH = Math.round(1920 / 3);
+      var MIN_OVERLAY_SCALE = 0.35;
+      var SAFE_ISLAND_WIDTH = SIDE_OVERLAY_WIDTH;
+      var SAFE_ISLAND_SCALE = 1;
+      var ENGLISH_SAFE_WIDTH = SIDE_OVERLAY_WIDTH;
+      var ENGLISH_SAFE_SCALE = 1;
+      var CINEMATIC_WIDE_WIDTH = SIDE_OVERLAY_WIDTH;
+      var CINEMATIC_WIDE_SCALE = 1;
       var CINEMATIC_CENTER_CORRIDOR_PCT = 35;
       var BOTTOM_SUBTITLE_SAFE_PCT2 = 22;
       var clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -21734,13 +21740,15 @@ var StudioLivePreview = (() => {
       var area = (rect) => Math.max(0, rect.w) * Math.max(0, rect.h);
       var overlapArea = (left, right) => Math.max(0, Math.min(left.x + left.w, right.x + right.w) - Math.max(left.x, right.x)) * Math.max(0, Math.min(left.y + left.h, right.y + right.h) - Math.max(left.y, right.y));
       function safeRect(faceZone) {
+        var _a2, _b, _c, _d;
         if (!faceZone || !Number.isFinite(Number(faceZone.faceX)) || !Number.isFinite(Number(faceZone.faceY))) return null;
-        return { x: clamp(Number(faceZone.safeX ?? faceZone.faceX), 0, 1), y: clamp(Number(faceZone.safeY ?? faceZone.faceY), 0, 1), w: clamp(Number(faceZone.safeW ?? faceZone.faceW), 0.01, 1), h: clamp(Number(faceZone.safeH ?? faceZone.faceH), 0.01, 1) };
+        return { x: clamp(Number((_a2 = faceZone.safeX) != null ? _a2 : faceZone.faceX), 0, 1), y: clamp(Number((_b = faceZone.safeY) != null ? _b : faceZone.faceY), 0, 1), w: clamp(Number((_c = faceZone.safeW) != null ? _c : faceZone.faceW), 0.01, 1), h: clamp(Number((_d = faceZone.safeH) != null ? _d : faceZone.faceH), 0.01, 1) };
       }
       function componentRect(tokens, commonProps) {
+        var _a2, _b;
         const width = clamp(Number(tokens.boundsWidth || 1180) / 1920, 0.18, 1);
         const height = clamp(Number(tokens.boundsHeight || 520) / 1080, 0.12, 1);
-        const scale = clamp(Number(commonProps.scale ?? tokens.scale ?? 1), 0.72, 1.2);
+        const scale = clamp(Number((_b = (_a2 = commonProps.scale) != null ? _a2 : tokens.scale) != null ? _b : 1), MIN_OVERLAY_SCALE, 1.2);
         const w = width * scale, h = height * scale;
         const mode = tokens.mountMode || "center";
         let x = 0.5 - w / 2, y = 0.5 - h / 2;
@@ -21757,93 +21765,108 @@ var StudioLivePreview = (() => {
         return { x: clamp(x, -1, 1), y: clamp(y, -1, 1), w, h };
       }
       function normalizedFaceCenterX(faceZone) {
-        const x = Number(faceZone?.faceX);
-        const w = Number(faceZone?.faceW);
+        const x = Number(faceZone == null ? void 0 : faceZone.faceX);
+        const w = Number(faceZone == null ? void 0 : faceZone.faceW);
         if (Number.isFinite(x) && Number.isFinite(w)) return clamp(x + w / 2, 0, 1);
         return 0.5;
       }
       function detectSceneMode({ faceZone, sceneMode, beatIndex = 0, align } = {}) {
+        var _a2, _b, _c, _d, _e;
         const explicitMode = sceneMode === "speaker_mode" || sceneMode === "cinematic_mode" ? sceneMode : null;
         const face = safeRect(faceZone);
-        const faceAreaRatio = Number(faceZone?.faceAreaRatio ?? faceZone?.areaRatio ?? (face ? Number(faceZone?.faceW || face.w) * Number(faceZone?.faceH || face.h) : 0));
-        const facePresenceRatio = Number(faceZone?.facePresenceRatio ?? faceZone?.presenceRatio ?? faceZone?.durationRatio ?? (face ? 1 : 0));
+        const faceAreaRatio = Number((_b = (_a2 = faceZone == null ? void 0 : faceZone.faceAreaRatio) != null ? _a2 : faceZone == null ? void 0 : faceZone.areaRatio) != null ? _b : face ? Number((faceZone == null ? void 0 : faceZone.faceW) || face.w) * Number((faceZone == null ? void 0 : faceZone.faceH) || face.h) : 0);
+        const facePresenceRatio = Number((_e = (_d = (_c = faceZone == null ? void 0 : faceZone.facePresenceRatio) != null ? _c : faceZone == null ? void 0 : faceZone.presenceRatio) != null ? _d : faceZone == null ? void 0 : faceZone.durationRatio) != null ? _e : face ? 1 : 0);
         const isSpeaker = explicitMode ? explicitMode === "speaker_mode" : Boolean(face && faceAreaRatio > 0.1 && facePresenceRatio > 0.5);
         const scene = isSpeaker ? "speaker_mode" : "cinematic_mode";
         let nextAlign = align === "left" || align === "right" ? align : null;
         if (!nextAlign && scene === "speaker_mode") {
-          const faceArea = faceZone?.faceArea || (normalizedFaceCenterX(faceZone) > 0.5 ? "right" : "left");
+          const faceArea = (faceZone == null ? void 0 : faceZone.faceArea) || (normalizedFaceCenterX(faceZone) > 0.5 ? "right" : "left");
           nextAlign = faceArea === "right" ? "left" : faceArea === "left" ? "right" : "left";
         }
         if (!nextAlign) nextAlign = Number(beatIndex || 0) % 2 === 0 ? "left" : "right";
         return { sceneMode: scene, align: nextAlign, faceZone: face ? { ...faceZone, faceAreaRatio, facePresenceRatio } : null, faceAreaRatio, facePresenceRatio };
       }
+      function fitSideOverlay(tokens, commonProps) {
+        var _a2;
+        const rawBoundsWidth = Number(tokens.boundsWidth);
+        const authoredWidth = Number.isFinite(rawBoundsWidth) && rawBoundsWidth > 0 ? rawBoundsWidth : 1180;
+        const fitScale = SIDE_OVERLAY_WIDTH / authoredWidth;
+        tokens.presenterSafeMaxWidth = SIDE_OVERLAY_WIDTH;
+        tokens.presenterSafeLogicalWidth = authoredWidth;
+        commonProps.scale = Math.min(Number((_a2 = commonProps.scale) != null ? _a2 : 1), fitScale);
+      }
       function applyPresenterSafeIsland(tokens, commonProps, faceZone, align) {
-        const face = safeRect(faceZone);
-        const inset = 96, gap = 32;
-        const leftWidth = Math.max(0, Math.round((face?.x ?? 0.5) * 1920 - inset - gap));
-        const rightWidth = Math.max(0, Math.round((1 - ((face?.x ?? 0.5) + (face?.w ?? 0))) * 1920 - inset - gap));
-        const faceArea = faceZone?.faceArea || "center";
-        const side = align === "left" || align === "right" ? align : faceArea === "right" ? "left" : faceArea === "left" ? "right" : leftWidth >= rightWidth ? "left" : "right";
-        const available = side === "left" ? leftWidth : rightWidth;
-        const maxWidth = Math.max(280, Math.min(SAFE_ISLAND_WIDTH, available || SAFE_ISLAND_WIDTH));
-        tokens.presenterSafeMaxWidth = maxWidth;
-        tokens.presenterSafeLogicalWidth = Math.round(maxWidth / SAFE_ISLAND_SCALE);
+        const faceArea = (faceZone == null ? void 0 : faceZone.faceArea) || "center";
+        const side = align === "left" || align === "right" ? align : faceArea === "right" ? "left" : faceArea === "left" ? "right" : "left";
+        fitSideOverlay(tokens, commonProps);
         tokens.mountMode = side;
         tokens.presenterSafeInset = side;
         tokens.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
-        commonProps.scale = Math.min(Number(commonProps.scale ?? 1), SAFE_ISLAND_SCALE);
         if (side === "left") commonProps.offsetX = Math.min(Number(commonProps.offsetX || 0), 0);
         else commonProps.offsetX = Math.max(Number(commonProps.offsetX || 0), 0);
         return faceArea === "center" ? "presenter-safe-center-" + side : "presenter-safe-" + faceArea;
       }
       function applyCinematicWing(tokens, commonProps, align) {
         const side = align === "right" ? "right" : "left";
+        fitSideOverlay(tokens, commonProps);
         tokens.mountMode = side;
         tokens.presenterSafeInset = side;
-        tokens.presenterSafeMaxWidth = CINEMATIC_WIDE_WIDTH;
-        tokens.presenterSafeLogicalWidth = Math.round(CINEMATIC_WIDE_WIDTH / CINEMATIC_WIDE_SCALE);
         tokens.cinematicCenterCorridorPct = CINEMATIC_CENTER_CORRIDOR_PCT;
         tokens.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
-        commonProps.scale = Math.min(Number(commonProps.scale ?? 1), CINEMATIC_WIDE_SCALE);
         commonProps.offsetX = side === "left" ? Math.min(Number(commonProps.offsetX || 0), 0) : Math.max(Number(commonProps.offsetX || 0), 0);
         return "cinematic-wide-" + side;
       }
-      function resolveFaceAwareLayer2({ layout, commonProps, tokens, faceZone, family, candidates, displayIntent = "side-overlay", sceneMode, beatIndex = 0 }) {
+      function resolveFaceAwareLayer2({ layout, commonProps, layoutProps, tokens, faceZone, family, candidates, displayIntent = "side-overlay", sceneMode, beatIndex = 0, language }) {
+        var _a2, _b, _c;
         const sourceCommon = copy2(commonProps);
         const sourceTokens = copy2(tokens);
-        const explicitSceneMode = sourceCommon.sceneModeOverride === "speaker_mode" || sourceCommon.sceneModeOverride === "cinematic_mode" ? sourceCommon.sceneModeOverride : sceneMode;
-        const explicitAlign = sourceCommon.alignOverride === "left" || sourceCommon.alignOverride === "right" ? sourceCommon.alignOverride : void 0;
-        const hasSceneLayoutOverride = Boolean(explicitSceneMode || explicitAlign);
-        if (hasSceneLayoutOverride) sourceCommon.position = "center";
+        const sourceLayout = copy2(layoutProps);
+        const explicitSceneMode = sourceLayout.sceneMode === "speaker" ? "speaker_mode" : sourceLayout.sceneMode === "cinematic" ? "cinematic_mode" : sceneMode;
+        const explicitAlign = sourceLayout.align === "left" || sourceLayout.align === "right" ? sourceLayout.align : void 0;
         const scene = detectSceneMode({ faceZone, sceneMode: explicitSceneMode, beatIndex, align: explicitAlign });
         const face = safeRect(scene.faceZone);
-        const base = { layout, commonProps: sourceCommon, tokens: sourceTokens, avoidance: { applied: false, reason: scene.sceneMode === "cinematic_mode" ? "cinematic" : "no-face", collision: 0, faceArea: scene.faceZone?.faceArea || null, displayIntent, sceneMode: scene.sceneMode, align: scene.align } };
+        const base = { layout, commonProps: sourceCommon, tokens: sourceTokens, avoidance: { applied: false, reason: scene.sceneMode === "cinematic_mode" ? "cinematic" : "no-face", collision: 0, faceArea: ((_a2 = scene.faceZone) == null ? void 0 : _a2.faceArea) || null, displayIntent, sceneMode: scene.sceneMode, align: scene.align } };
         if (displayIntent === "fullscreen-modal") return { ...base, avoidance: { ...base.avoidance, reason: "fullscreen-modal" } };
-        if (sourceCommon.faceAvoidanceMode === "manual" && !explicitAlign && !explicitSceneMode) return { ...base, avoidance: { ...base.avoidance, reason: "manual" } };
+        if (sourceCommon.faceAvoidanceMode === "manual" && !explicitAlign && !sourceLayout.sceneMode) return { ...base, avoidance: { ...base.avoidance, reason: "manual" } };
         if (scene.sceneMode === "cinematic_mode") {
           const nextCommon2 = copy2(sourceCommon);
           const nextTokens2 = copy2(sourceTokens);
-          const reason2 = applyCinematicWing(nextTokens2, nextCommon2, scene.align);
+          const reason2 = applyCinematicWing(nextTokens2, nextCommon2, scene.align, language);
           return { layout, commonProps: nextCommon2, tokens: nextTokens2, avoidance: { ...base.avoidance, applied: true, reason: reason2, maxWidth: nextTokens2.presenterSafeMaxWidth } };
         }
-        if (!face) return base;
+        if (!face) {
+          const nextCommon2 = copy2(sourceCommon);
+          const nextTokens2 = copy2(sourceTokens);
+          fitSideOverlay(nextTokens2, nextCommon2);
+          nextTokens2.mountMode = scene.align;
+          nextTokens2.presenterSafeInset = scene.align;
+          nextTokens2.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
+          nextCommon2.offsetX = scene.align === "left" ? Math.min(Number(nextCommon2.offsetX || 0), 0) : Math.max(Number(nextCommon2.offsetX || 0), 0);
+          return { layout, commonProps: nextCommon2, tokens: nextTokens2, avoidance: { ...base.avoidance, applied: true, reason: "side-lane-" + scene.align, maxWidth: nextTokens2.presenterSafeMaxWidth } };
+        }
         const before = componentRect(sourceTokens, sourceCommon);
         const collision = area(face) ? overlapArea(before, face) / area(face) : 0;
         const nextCommon = copy2(sourceCommon);
         const nextTokens = copy2(sourceTokens);
         const faceArea = scene.faceZone.faceArea || "center";
-        const reason = applyPresenterSafeIsland(nextTokens, nextCommon, scene.faceZone, scene.align);
+        const reason = applyPresenterSafeIsland(nextTokens, nextCommon, scene.faceZone, scene.align, language);
         const after = componentRect(nextTokens, nextCommon);
         const remaining = area(face) ? overlapArea(after, face) / area(face) : 0;
         let nextLayout = layout;
         if (remaining > 0.28 && Array.isArray(candidates)) {
-          const currentScore = Number(candidates.find((item2) => item2.id === layout)?.occupancyScore ?? 1);
-          const compact = candidates.filter((item2) => item2.family === family && item2.id !== layout && item2.faceAvoidanceEligible !== false && Number(item2.occupancyScore ?? 1) < currentScore).sort((left, right) => Number(left.occupancyScore ?? 1) - Number(right.occupancyScore ?? 1))[0];
+          const currentScore = Number((_c = (_b = candidates.find((item2) => item2.id === layout)) == null ? void 0 : _b.occupancyScore) != null ? _c : 1);
+          const compact = candidates.filter((item2) => {
+            var _a3;
+            return item2.family === family && item2.id !== layout && item2.faceAvoidanceEligible !== false && Number((_a3 = item2.occupancyScore) != null ? _a3 : 1) < currentScore;
+          }).sort((left, right) => {
+            var _a3, _b2;
+            return Number((_a3 = left.occupancyScore) != null ? _a3 : 1) - Number((_b2 = right.occupancyScore) != null ? _b2 : 1);
+          })[0];
           if (compact) nextLayout = compact.id;
         }
         return { layout: nextLayout, commonProps: nextCommon, tokens: nextTokens, avoidance: { applied: true, reason, collision, remainingCollision: remaining, faceArea, displayIntent, maxWidth: nextTokens.presenterSafeMaxWidth, sceneMode: scene.sceneMode, align: scene.align } };
       }
-      module.exports = { BOTTOM_SUBTITLE_SAFE_PCT: BOTTOM_SUBTITLE_SAFE_PCT2, CINEMATIC_CENTER_CORRIDOR_PCT, CINEMATIC_WIDE_SCALE, CINEMATIC_WIDE_WIDTH, SAFE_ISLAND_SCALE, SAFE_ISLAND_WIDTH, componentRect, detectSceneMode, resolveFaceAwareLayer: resolveFaceAwareLayer2 };
+      module.exports = { BOTTOM_SUBTITLE_SAFE_PCT: BOTTOM_SUBTITLE_SAFE_PCT2, CINEMATIC_CENTER_CORRIDOR_PCT, CINEMATIC_WIDE_SCALE, CINEMATIC_WIDE_WIDTH, ENGLISH_SAFE_SCALE, ENGLISH_SAFE_WIDTH, MIN_OVERLAY_SCALE, SAFE_ISLAND_SCALE, SAFE_ISLAND_WIDTH, SIDE_OVERLAY_WIDTH, componentRect, detectSceneMode, resolveFaceAwareLayer: resolveFaceAwareLayer2 };
     }
   });
 
@@ -22031,18 +22054,22 @@ var StudioLivePreview = (() => {
     }
   });
   var getHot = () => {
+    var _a2;
     try {
       if (typeof __webpack_module__ === "undefined") {
         return null;
       }
-      return __webpack_module__.hot ?? null;
-    } catch {
+      return (_a2 = __webpack_module__.hot) != null ? _a2 : null;
+    } catch (e) {
       return null;
     }
   };
   var CompositionErrorBoundary = class extends import_react5.default.Component {
-    state = { hasError: false };
-    hmrStatusHandler = null;
+    constructor() {
+      super(...arguments);
+      __publicField(this, "state", { hasError: false });
+      __publicField(this, "hmrStatusHandler", null);
+    }
     static getDerivedStateFromError() {
       return { hasError: true };
     }
@@ -22146,7 +22173,8 @@ var StudioLivePreview = (() => {
     componentIdentityResolver = resolver;
   };
   var resolveComponentIdentity = (component) => {
-    return componentIdentityResolver?.(component) ?? component;
+    var _a2;
+    return (_a2 = componentIdentityResolver == null ? void 0 : componentIdentityResolver(component)) != null ? _a2 : component;
   };
   var setStackForControls = (controls, stack) => {
     if (stack === void 0) {
@@ -22156,7 +22184,8 @@ var StudioLivePreview = (() => {
     stacksByControls.set(controls, stack);
   };
   var getStackForControls = (controls) => {
-    return stacksByControls.get(controls) ?? null;
+    var _a2;
+    return (_a2 = stacksByControls.get(controls)) != null ? _a2 : null;
   };
   var getSingleChildComponent = (children) => {
     const mountedChildren = import_react7.default.Children.toArray(children);
@@ -22235,7 +22264,7 @@ var StudioLivePreview = (() => {
   var useRemotionEnvironment = () => {
     const context = (0, import_react9.useContext)(RemotionEnvironmentContext);
     const [env] = (0, import_react9.useState)(() => getRemotionEnvironment());
-    return context ?? env;
+    return context != null ? context : env;
   };
   var getRegex = () => /^([a-zA-Z0-9-\u4E00-\u9FFF])+$/g;
   var isFolderNameValid = (name) => name.match(getRegex());
@@ -22256,11 +22285,12 @@ var StudioLivePreview = (() => {
     parentName: null
   });
   var Folder = (props) => {
+    var _a2;
     const { name, children } = props;
     const parent = (0, import_react8.useContext)(FolderContext);
     const { registerFolder, unregisterFolder } = (0, import_react8.useContext)(CompositionSetters);
     const environment = useRemotionEnvironment();
-    const stack = props._remotionInternalStack ?? null;
+    const stack = (_a2 = props._remotionInternalStack) != null ? _a2 : null;
     validateFolderName(name);
     const parentNameArr = [parent.parentName, parent.folderName].filter(truthy);
     const parentName = parentNameArr.length === 0 ? null : parentNameArr.join("/");
@@ -22330,13 +22360,14 @@ var StudioLivePreview = (() => {
     }
   };
   var resolveFileTokenToUrl = (value) => {
+    var _a2;
     const encodedName = value.replace(FILE_TOKEN, "");
     let name = encodedName;
     try {
       name = encodedName.split("/").map(decodeURIComponent).join("/");
-    } catch {
+    } catch (e) {
     }
-    const matchingStaticFile = window.remotion_staticFiles?.find((file) => file.name === name);
+    const matchingStaticFile = (_a2 = window.remotion_staticFiles) == null ? void 0 : _a2.find((file) => file.name === name);
     if (matchingStaticFile) {
       return matchingStaticFile.src;
     }
@@ -22580,9 +22611,10 @@ var StudioLivePreview = (() => {
       newProps
     }) => {
       setProps((prev) => {
+        var _a2;
         return {
           ...prev,
-          [id]: typeof newProps === "function" ? newProps(prev[id] ?? defaultProps) : newProps
+          [id]: typeof newProps === "function" ? newProps((_a2 = prev[id]) != null ? _a2 : defaultProps) : newProps
         };
       });
     }, []);
@@ -22660,15 +22692,17 @@ var StudioLivePreview = (() => {
       currentCompositionMetadata,
       currentAssetMetadata
     } = (0, import_react17.useContext)(CompositionManager);
-    const currentComposition = canvasContent?.type === "composition" ? canvasContent.compositionId : null;
-    const compositionId = preferredCompositionId ?? currentComposition;
+    const currentComposition = (canvasContent == null ? void 0 : canvasContent.type) === "composition" ? canvasContent.compositionId : null;
+    const compositionId = preferredCompositionId != null ? preferredCompositionId : currentComposition;
     const composition = compositions.find((c3) => c3.id === compositionId);
     const selectedEditorProps = (0, import_react17.useMemo)(() => {
-      return composition ? allEditorProps[composition.id] ?? {} : {};
+      var _a2;
+      return composition ? (_a2 = allEditorProps[composition.id]) != null ? _a2 : {} : {};
     }, [allEditorProps, composition]);
     const env = useRemotionEnvironment();
     return (0, import_react17.useMemo)(() => {
-      if (preferredCompositionId === null && canvasContent?.type === "asset" && currentAssetMetadata?.asset === canvasContent.asset) {
+      var _a2, _b, _c, _d;
+      if (preferredCompositionId === null && (canvasContent == null ? void 0 : canvasContent.type) === "asset" && (currentAssetMetadata == null ? void 0 : currentAssetMetadata.asset) === canvasContent.asset) {
         return {
           type: "success",
           metadataSource: null,
@@ -22689,7 +22723,7 @@ var StudioLivePreview = (() => {
           result: {
             ...currentCompositionMetadata,
             id: composition.id,
-            defaultProps: composition.defaultProps ?? {}
+            defaultProps: (_a2 = composition.defaultProps) != null ? _a2 : {}
           }
         };
       }
@@ -22710,11 +22744,11 @@ var StudioLivePreview = (() => {
             fps: composition.fps,
             id: composition.id,
             durationInFrames: composition.durationInFrames,
-            defaultProps: composition.defaultProps ?? {},
+            defaultProps: (_b = composition.defaultProps) != null ? _b : {},
             props: {
-              ...composition.defaultProps ?? {},
-              ...selectedEditorProps ?? {},
-              ...typeof window === "undefined" || env.isPlayer || !window.remotion_inputProps ? {} : getInputProps() ?? {}
+              ...(_c = composition.defaultProps) != null ? _c : {},
+              ...selectedEditorProps != null ? selectedEditorProps : {},
+              ...typeof window === "undefined" || env.isPlayer || !window.remotion_inputProps ? {} : (_d = getInputProps()) != null ? _d : {}
             },
             defaultCodec: null,
             defaultOutName: null,
@@ -22745,6 +22779,7 @@ var StudioLivePreview = (() => {
   };
   var AssetPreviewComposition = () => null;
   var useVideo = () => {
+    var _a2;
     const {
       canvasContent,
       compositions,
@@ -22752,11 +22787,12 @@ var StudioLivePreview = (() => {
       currentAssetMetadata
     } = (0, import_react16.useContext)(CompositionManager);
     const selected = compositions.find((c3) => {
-      return canvasContent?.type === "composition" && c3.id === canvasContent.compositionId;
+      return (canvasContent == null ? void 0 : canvasContent.type) === "composition" && c3.id === canvasContent.compositionId;
     });
-    const resolved = useResolvedVideoConfig(selected?.id ?? null);
+    const resolved = useResolvedVideoConfig((_a2 = selected == null ? void 0 : selected.id) != null ? _a2 : null);
     return (0, import_react16.useMemo)(() => {
-      if (canvasContent?.type === "asset" && currentAssetMetadata?.asset === canvasContent.asset) {
+      var _a3;
+      if ((canvasContent == null ? void 0 : canvasContent.type) === "asset" && (currentAssetMetadata == null ? void 0 : currentAssetMetadata.asset) === canvasContent.asset) {
         return {
           ...currentAssetMetadata,
           id: getAssetPreviewCompositionId(canvasContent.asset),
@@ -22778,9 +22814,9 @@ var StudioLivePreview = (() => {
       }
       return {
         ...resolved.result,
-        defaultProps: selected.defaultProps ?? {},
+        defaultProps: (_a3 = selected.defaultProps) != null ? _a3 : {},
         id: selected.id,
-        ...currentCompositionMetadata ?? {},
+        ...currentCompositionMetadata != null ? currentCompositionMetadata : {},
         component: selected.component
       };
     }, [
@@ -22792,10 +22828,11 @@ var StudioLivePreview = (() => {
     ]);
   };
   var useUnsafeVideoConfig = () => {
+    var _a2, _b, _c;
     const context = (0, import_react14.useContext)(SequenceContext);
-    const ctxWidth = context?.width ?? null;
-    const ctxHeight = context?.height ?? null;
-    const ctxDuration = context?.durationInFrames ?? null;
+    const ctxWidth = (_a2 = context == null ? void 0 : context.width) != null ? _a2 : null;
+    const ctxHeight = (_b = context == null ? void 0 : context.height) != null ? _b : null;
+    const ctxDuration = (_c = context == null ? void 0 : context.durationInFrames) != null ? _c : null;
     const video = useVideo();
     return (0, import_react14.useMemo)(() => {
       if (!video) {
@@ -22818,10 +22855,10 @@ var StudioLivePreview = (() => {
       } = video;
       return {
         id,
-        width: ctxWidth ?? width,
-        height: ctxHeight ?? height,
+        width: ctxWidth != null ? ctxWidth : width,
+        height: ctxHeight != null ? ctxHeight : height,
         fps,
-        durationInFrames: ctxDuration ?? durationInFrames,
+        durationInFrames: ctxDuration != null ? ctxDuration : durationInFrames,
         defaultProps,
         props,
         defaultCodec,
@@ -22869,7 +22906,7 @@ var StudioLivePreview = (() => {
       return subscribeToPortalNodeCurrentScale(update);
     }, []);
     if (hasContext === null || config === null || zoomContext === null) {
-      if (options?.dontThrowIfOutsideOfRemotion) {
+      if (options == null ? void 0 : options.dontThrowIfOutsideOfRemotion) {
         return 1;
       }
       if (env.isRendering) {
@@ -22959,7 +22996,8 @@ var StudioLivePreview = (() => {
     });
   };
   var getErrorStackWithMessage = (error2) => {
-    const stack = error2.stack ?? "";
+    var _a2;
+    const stack = (_a2 = error2.stack) != null ? _a2 : "";
     return stack.startsWith("Error:") ? stack : `${error2.message}
 ${stack}`;
   };
@@ -23076,17 +23114,18 @@ ${stack}`;
     label: label22,
     options
   }) => {
+    var _a2, _b, _c, _d, _e;
     if (typeof label22 !== "string" && label22 !== null) {
       throw new Error("The label parameter of delayRender() must be a string or undefined, got: " + JSON.stringify(label22));
     }
     const handle = Math.random();
     scope.remotion_delayRenderHandles.push(handle);
-    const called = Error().stack?.replace(/^Error/g, "") ?? "";
+    const called = (_b = (_a2 = Error().stack) == null ? void 0 : _a2.replace(/^Error/g, "")) != null ? _b : "";
     if (environment.isRendering) {
-      const timeoutToUse = (options?.timeoutInMilliseconds ?? scope.remotion_puppeteerTimeout ?? defaultTimeout) - 2e3;
-      const retriesLeft = (options?.retries ?? 0) - (scope.remotion_attempt - 1);
+      const timeoutToUse = ((_d = (_c = options == null ? void 0 : options.timeoutInMilliseconds) != null ? _c : scope.remotion_puppeteerTimeout) != null ? _d : defaultTimeout) - 2e3;
+      const retriesLeft = ((_e = options == null ? void 0 : options.retries) != null ? _e : 0) - (scope.remotion_attempt - 1);
       scope.remotion_delayRenderTimeouts[handle] = {
-        label: label22 ?? null,
+        label: label22 != null ? label22 : null,
         startTime: Date.now(),
         timeout: setTimeout(() => {
           const message = [
@@ -23116,8 +23155,8 @@ ${stack}`;
     return delayRenderInternal({
       scope: window,
       environment: getRemotionEnvironment(),
-      label: label22 ?? null,
-      options: options ?? {}
+      label: label22 != null ? label22 : null,
+      options: options != null ? options : {}
     });
   };
   var continueRenderInternal = ({
@@ -23151,6 +23190,7 @@ ${stack}`;
     }
   };
   var continueRender = (handle) => {
+    var _a2;
     if (typeof window === "undefined") {
       return;
     }
@@ -23158,7 +23198,7 @@ ${stack}`;
       scope: window,
       handle,
       environment: getRemotionEnvironment(),
-      logLevel: window.remotion_logLevel ?? "info"
+      logLevel: (_a2 = window.remotion_logLevel) != null ? _a2 : "info"
     });
   };
   var LogLevelContext = (0, import_react20.createContext)({
@@ -23181,8 +23221,9 @@ ${stack}`;
   };
   var DelayRenderContextType = (0, import_react19.createContext)(null);
   var useDelayRender = () => {
+    var _a2;
     const environment = useRemotionEnvironment();
-    const scope = (0, import_react19.useContext)(DelayRenderContextType) ?? (typeof window !== "undefined" ? window : void 0);
+    const scope = (_a2 = (0, import_react19.useContext)(DelayRenderContextType)) != null ? _a2 : typeof window !== "undefined" ? window : void 0;
     const logLevel = useLogLevel();
     const delayRender2 = (0, import_react19.useCallback)((label22, options) => {
       if (!scope) {
@@ -23191,8 +23232,8 @@ ${stack}`;
       return delayRenderInternal({
         scope,
         environment,
-        label: label22 ?? null,
-        options: options ?? {}
+        label: label22 != null ? label22 : null,
+        options: options != null ? options : {}
       });
     }, [environment, scope]);
     const continueRender2 = (0, import_react19.useCallback)((handle) => {
@@ -23207,7 +23248,7 @@ ${stack}`;
       });
     }, [environment, logLevel, scope]);
     const cancelRender2 = (0, import_react19.useCallback)((err) => {
-      return cancelRenderInternal(scope ?? (typeof window !== "undefined" ? window : void 0), err);
+      return cancelRenderInternal(scope != null ? scope : typeof window !== "undefined" ? window : void 0, err);
     }, [scope]);
     return { delayRender: delayRender2, continueRender: continueRender2, cancelRender: cancelRender2 };
   };
@@ -23281,6 +23322,7 @@ ${stack}`;
     schema,
     ...compProps
   }) => {
+    var _a2, _b, _c, _d;
     const compManager = (0, import_react2.useContext)(CompositionSetters);
     const { registerComposition, unregisterComposition } = compManager;
     const video = useVideo();
@@ -23293,7 +23335,7 @@ ${stack}`;
     const environment = useRemotionEnvironment();
     const canUseComposition = (0, import_react2.useContext)(CanUseRemotionHooks);
     if (typeof window !== "undefined") {
-      window.remotion_seenCompositionIds = Array.from(/* @__PURE__ */ new Set([...window.remotion_seenCompositionIds ?? [], id]));
+      window.remotion_seenCompositionIds = Array.from(/* @__PURE__ */ new Set([...(_a2 = window.remotion_seenCompositionIds) != null ? _a2 : [], id]));
     }
     if (canUseComposition) {
       if (isPlayer) {
@@ -23302,28 +23344,29 @@ ${stack}`;
       throw new Error("<Composition> mounted inside another composition. See https://remotion.dev/docs/wrong-composition-mount for help.");
     }
     const { folderName, parentName } = (0, import_react2.useContext)(FolderContext);
-    const stack = compProps._remotionInternalStack ?? null;
+    const stack = (_b = compProps._remotionInternalStack) != null ? _b : null;
     const componentFromProps = "component" in compProps ? resolveComponentIdentity(compProps.component) : null;
     (0, import_react2.useEffect)(() => {
+      var _a3;
       if (!id) {
         throw new Error("No id for composition passed.");
       }
       validateCompositionId(id);
       validateDefaultAndInputProps(defaultProps, "defaultProps", id);
       registerComposition({
-        durationInFrames: durationInFrames ?? void 0,
-        fps: fps ?? void 0,
-        height: height ?? void 0,
-        width: width ?? void 0,
+        durationInFrames: durationInFrames != null ? durationInFrames : void 0,
+        fps: fps != null ? fps : void 0,
+        height: height != null ? height : void 0,
+        width: width != null ? width : void 0,
         id,
         folderName,
         component: lazy,
-        defaultProps: serializeThenDeserializeInStudio(defaultProps ?? {}),
+        defaultProps: serializeThenDeserializeInStudio(defaultProps != null ? defaultProps : {}),
         order: null,
         parentFolderName: parentName,
         componentFromProps,
-        schema: schema ?? null,
-        calculateMetadata: compProps.calculateMetadata ?? null,
+        schema: schema != null ? schema : null,
+        calculateMetadata: (_a3 = compProps.calculateMetadata) != null ? _a3 : null,
         stack
       });
       return () => {
@@ -23366,7 +23409,7 @@ ${stack}`;
           children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react2.Suspense, {
             fallback: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Loading, {}),
             children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Comp, {
-              ...resolved.result.props ?? {}
+              ...(_c = resolved.result.props) != null ? _c : {}
             })
           })
         })
@@ -23381,7 +23424,7 @@ ${stack}`;
         children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react2.Suspense, {
           fallback: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Fallback, {}),
           children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Comp, {
-            ...resolved.result.props ?? {}
+            ...(_d = resolved.result.props) != null ? _d : {}
           })
         })
       }), portalNode());
@@ -23496,7 +23539,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [playbackRate, setPlaybackRate] = (0, import_react25.useState)(1);
     const audioAndVideoTags = (0, import_react25.useRef)([]);
     const [_frame, setFrame] = (0, import_react25.useState)(() => getInitialFrameState());
-    const frame = frameState ?? _frame;
+    const frame = frameState != null ? frameState : _frame;
     const frameRef = (0, import_react25.useRef)(frame);
     frameRef.current = frame;
     const readIsPlaying = (0, import_react25.useCallback)(() => playingStore.store.getSnapshot().playing, [playingStore]);
@@ -23509,7 +23552,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           const id = delayRender2(`Setting the current frame to ${f}`);
           let asyncUpdate = true;
           setFrame((s) => {
-            const currentFrame = s[composition] ?? window.remotion_initialFrame;
+            var _a2;
+            const currentFrame = (_a2 = s[composition]) != null ? _a2 : window.remotion_initialFrame;
             if (currentFrame === f) {
               asyncUpdate = false;
               return s;
@@ -23582,7 +23626,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var checkIfSnapshotChanged = (instance) => {
     try {
       return !objectIs(instance.value, instance.getSnapshot());
-    } catch {
+    } catch (e) {
       return true;
     }
   };
@@ -23615,7 +23659,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var useSyncExternalStoreShimServer = (_subscribe, getSnapshot) => getSnapshot();
   var shim = typeof window === "undefined" || typeof window.document === "undefined" || typeof window.document.createElement === "undefined" ? useSyncExternalStoreShimServer : useSyncExternalStoreShimClient;
-  var useSyncExternalStore2 = React12.useSyncExternalStore ?? shim;
+  var _a;
+  var useSyncExternalStore2 = (_a = React12.useSyncExternalStore) != null ? _a : shim;
   var usePlaying = () => {
     const { isPlaying } = useTimelineContext();
     const { subscribePlaying } = (0, import_react26.useContext)(SetTimelineContext);
@@ -23632,12 +23677,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     localStorage.setItem(makeKey(), JSON.stringify(time));
   };
   var getInitialFrameState = () => {
-    const item2 = localStorage.getItem(makeKey()) ?? "{}";
+    var _a2;
+    const item2 = (_a2 = localStorage.getItem(makeKey())) != null ? _a2 : "{}";
     const obj = JSON.parse(item2);
     return obj;
   };
   var getFrameForComposition = (composition) => {
-    const item2 = localStorage.getItem(makeKey()) ?? "{}";
+    var _a2, _b;
+    const item2 = (_a2 = localStorage.getItem(makeKey())) != null ? _a2 : "{}";
     const obj = JSON.parse(item2);
     if (obj[composition] !== void 0) {
       return Number(obj[composition]);
@@ -23645,18 +23692,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (typeof window === "undefined") {
       return 0;
     }
-    return window.remotion_initialFrame ?? 0;
+    return (_b = window.remotion_initialFrame) != null ? _b : 0;
   };
   var clampFrameToCompositionRange = (frame, durationInFrames) => {
     return Math.max(0, Math.min(Math.max(0, durationInFrames - 1), frame));
   };
   var useTimelinePositionFromContext = (state) => {
+    var _a2, _b;
     const videoConfig = useVideo();
     const env = useRemotionEnvironment();
     if (!videoConfig) {
-      return typeof window === "undefined" ? 0 : window.remotion_initialFrame ?? 0;
+      return typeof window === "undefined" ? 0 : (_a2 = window.remotion_initialFrame) != null ? _a2 : 0;
     }
-    const unclamped = state.frame[videoConfig.id] ?? (env.isPlayer ? 0 : getFrameForComposition(videoConfig.id));
+    const unclamped = (_b = state.frame[videoConfig.id]) != null ? _b : env.isPlayer ? 0 : getFrameForComposition(videoConfig.id);
     return clampFrameToCompositionRange(unclamped, videoConfig.durationInFrames);
   };
   var useTimelineContext = () => {
@@ -23726,6 +23774,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     children,
     active = true
   }) => {
+    var _a2;
     const frame = useCurrentFrame();
     const videoConfig = useVideoConfig();
     if (typeof frameToFreeze === "undefined") {
@@ -23750,7 +23799,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [active, frame]);
     const timelineContext = useTimelineContext();
     const sequenceContext = (0, import_react23.useContext)(SequenceContext);
-    const relativeFrom = sequenceContext?.relativeFrom ?? 0;
+    const relativeFrom = (_a2 = sequenceContext == null ? void 0 : sequenceContext.relativeFrom) != null ? _a2 : 0;
     const timelineValue = (0, import_react23.useMemo)(() => {
       if (!isActive) {
         return timelineContext;
@@ -24172,7 +24221,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
   };
   var clampCrop = (value) => {
-    return Math.min(1, Math.max(0, value ?? 0));
+    return Math.min(1, Math.max(0, value != null ? value : 0));
   };
   var resolveAxis = (start2, end) => {
     const resolvedStart = clampCrop(start2);
@@ -24203,14 +24252,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return null;
     }
     const serializeRadius = (radius) => typeof radius === "number" ? `${radius}px` : radius;
-    const shorthand = serializeRadius(style2?.borderRadius);
+    const shorthand = serializeRadius(style2 == null ? void 0 : style2.borderRadius);
     const longhands = [
-      style2?.borderTopLeftRadius,
-      style2?.borderTopRightRadius,
-      style2?.borderBottomRightRadius,
-      style2?.borderBottomLeftRadius
+      style2 == null ? void 0 : style2.borderTopLeftRadius,
+      style2 == null ? void 0 : style2.borderTopRightRadius,
+      style2 == null ? void 0 : style2.borderBottomRightRadius,
+      style2 == null ? void 0 : style2.borderBottomLeftRadius
     ];
-    const serializedBorderRadius = shorthand || (longhands.some((radius) => radius !== void 0) ? longhands.map((radius) => serializeRadius(radius) ?? "0px").join(" ") : void 0);
+    const serializedBorderRadius = shorthand || (longhands.some((radius) => radius !== void 0) ? longhands.map((radius) => {
+      var _a2;
+      return (_a2 = serializeRadius(radius)) != null ? _a2 : "0px";
+    }).join(" ") : void 0);
     const rounded = serializedBorderRadius ? ` round ${serializedBorderRadius}` : "";
     return `inset(${top * 100}% ${right * 100}% ${bottom * 100}% ${left * 100}%${rounded})`;
   };
@@ -24391,7 +24443,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           setSequences((currentSequences) => {
             let changed = false;
             const nextSequences = currentSequences.map((sequence) => {
-              const timelineOrder = order.get(sequence.id) ?? null;
+              var _a2;
+              const timelineOrder = (_a2 = order.get(sequence.id)) != null ? _a2 : null;
               if (sequence.timelineOrder === timelineOrder) {
                 return sequence;
               }
@@ -24410,17 +24463,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [isStudio, sequenceManagerId]);
     const registerSequence = (0, import_react30.useCallback)((seq) => {
       setSequences((seqs) => {
+        var _a2, _b;
         return [
           ...seqs,
           {
             ...seq,
-            timelineOrder: committedOrderRef.current?.get(seq.id) ?? null
+            timelineOrder: (_b = (_a2 = committedOrderRef.current) == null ? void 0 : _a2.get(seq.id)) != null ? _b : null
           }
         ];
       });
     }, []);
     const updateSequence = (0, import_react30.useCallback)((seq) => {
       setSequences((seqs) => {
+        var _a2, _b;
         const index = seqs.findIndex((item2) => item2.id === seq.id);
         if (index === -1) {
           return seqs;
@@ -24428,7 +24483,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         const next = [...seqs];
         next[index] = {
           ...seq,
-          timelineOrder: committedOrderRef.current?.get(seq.id) ?? null
+          timelineOrder: (_b = (_a2 = committedOrderRef.current) == null ? void 0 : _a2.get(seq.id)) != null ? _b : null
         };
         return next;
       });
@@ -24445,10 +24500,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
       };
     }, [registerSequence, sequences, unregisterSequence, updateSequence]);
     const getDragOverrides = (0, import_react30.useCallback)((nodePath) => {
-      return dragOverrides[makeSequencePropsSubscriptionKey(nodePath)] ?? {};
+      var _a2;
+      return (_a2 = dragOverrides[makeSequencePropsSubscriptionKey(nodePath)]) != null ? _a2 : {};
     }, [dragOverrides]);
     const getEffectDragOverrides = (0, import_react30.useCallback)((nodePath, effectIndex) => {
-      return effectDragOverridesState[effectDragOverridesKey(nodePath, effectIndex)] ?? {};
+      var _a2;
+      return (_a2 = effectDragOverridesState[effectDragOverridesKey(nodePath, effectIndex)]) != null ? _a2 : {};
     }, [effectDragOverridesState]);
     const propStatusesContext = (0, import_react30.useMemo)(() => {
       return {
@@ -24526,7 +24583,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   });
   var ENABLE_V5_BREAKING_CHANGES = false;
   var resolveV5Default = (value) => {
-    return value ?? ENABLE_V5_BREAKING_CHANGES;
+    return value != null ? value : ENABLE_V5_BREAKING_CHANGES;
   };
   var usePremounting = ({
     from,
@@ -24542,8 +24599,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame() - parentPremountContext.premountFramesRemaining;
     const environment = useRemotionEnvironment();
     const { fps } = useVideoConfig();
-    const effectivePremountFor = ENABLE_V5_BREAKING_CHANGES ? premountFor ?? fps : premountFor ?? 0;
-    const effectivePostmountFor = postmountFor ?? 0;
+    const effectivePremountFor = ENABLE_V5_BREAKING_CHANGES ? premountFor != null ? premountFor : fps : premountFor != null ? premountFor : 0;
+    const effectivePostmountFor = postmountFor != null ? postmountFor : 0;
     const endThreshold = Math.ceil(from + durationInFrames - 1);
     const premountingActive = !environment.isRendering && frame < from && frame >= from - effectivePremountFor;
     const postmountingActive = !environment.isRendering && frame > endThreshold && frame <= endThreshold + effectivePostmountFor;
@@ -24821,11 +24878,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var UnsupportedStringInterpolationValueError = class extends TypeError {
   };
   var parseStringInterpolationComponent = (component, value) => {
+    var _a2;
     const match = cssNumberRegex.exec(component);
     if (match === null) {
       throw new UnsupportedStringInterpolationValueError(`Cannot interpolate "${value}" because "${component}" is not a supported scale, translate, or rotate value`);
     }
-    const unit = match[2] ?? null;
+    const unit = (_a2 = match[2]) != null ? _a2 : null;
     const numberValue = Number(match[1]);
     if (!Number.isFinite(numberValue)) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not finite`);
@@ -24846,11 +24904,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     value,
     allowPercentage
   }) => {
+    var _a2;
     const match = cssNumberRegex.exec(component);
     if (match === null) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not a supported transform-origin ${allowPercentage ? "length-percentage" : "z length"}`);
     }
-    const unit = match[2] ?? null;
+    const unit = (_a2 = match[2]) != null ? _a2 : null;
     const numberValue = Number(match[1]);
     if (!Number.isFinite(numberValue)) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not finite`);
@@ -24982,6 +25041,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     };
   };
   var parseStringInterpolationValue = (output) => {
+    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
     if (typeof output === "number") {
       if (!Number.isFinite(output)) {
         throw new Error(`outputRange must contain only finite numbers, but got [${output}]`);
@@ -25014,8 +25074,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     if (kind === "scale") {
       const x = parsed[0].value;
-      const y = parsed[1]?.value ?? x;
-      const z = parsed[2]?.value ?? 1;
+      const y = (_b = (_a2 = parsed[1]) == null ? void 0 : _a2.value) != null ? _b : x;
+      const z = (_d = (_c = parsed[2]) == null ? void 0 : _c.value) != null ? _d : 1;
       return {
         kind,
         values: [x, y, z, 0],
@@ -25026,11 +25086,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     return {
       kind,
-      values: [parsed[0].value, parsed[1]?.value ?? 0, parsed[2]?.value ?? 0, 0],
+      values: [parsed[0].value, (_f = (_e = parsed[1]) == null ? void 0 : _e.value) != null ? _f : 0, (_h = (_g = parsed[2]) == null ? void 0 : _g.value) != null ? _h : 0, 0],
       units: [
         parsed[0].unit,
-        parsed[1]?.unit ?? null,
-        parsed[2]?.unit ?? null,
+        (_j = (_i = parsed[1]) == null ? void 0 : _i.unit) != null ? _j : null,
+        (_l = (_k = parsed[2]) == null ? void 0 : _k.unit) != null ? _l : null,
         null
       ],
       dimensions: parsed.length,
@@ -25118,7 +25178,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
   var defaultEasing = (num2) => num2;
   var resolveOutputOption = (output) => {
-    return output ?? "linear";
+    return output != null ? output : "linear";
   };
   var shouldExtendRightForEasing = (easing) => {
     return easing.remotionShouldExtendRight === true;
@@ -25157,20 +25217,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
     outputRange,
     options
   }) => {
-    const output = resolveOutputOption(options?.output);
+    const output = resolveOutputOption(options == null ? void 0 : options.output);
     if (inputRange.length === 1) {
       return outputRange[0];
     }
-    const easingOption = options?.easing;
+    const easingOption = options == null ? void 0 : options.easing;
     let extrapolateLeft = "extend";
-    if (options?.extrapolateLeft !== void 0) {
+    if ((options == null ? void 0 : options.extrapolateLeft) !== void 0) {
       extrapolateLeft = options.extrapolateLeft;
     }
     let extrapolateRight = "extend";
-    if (options?.extrapolateRight !== void 0) {
+    if ((options == null ? void 0 : options.extrapolateRight) !== void 0) {
       extrapolateRight = options.extrapolateRight;
     }
-    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const range = findRange(posterizedInput, inputRange);
     const easing = resolveEasingForSegment({
       easing: easingOption,
@@ -25216,9 +25276,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     outputRange,
     options
   }) => {
+    var _a2;
     const initiallyParsedOutputRange = outputRange.map(parseStringInterpolationValue);
     const hasAxisRotation = initiallyParsedOutputRange.some((parsed) => parsed.axisRotation);
-    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const segmentIndex = inputRange.length === 1 ? 0 : findRange(posterizedInput, inputRange);
     const parsedOutputRange = hasAxisRotation ? initiallyParsedOutputRange.map((parsed, index) => {
       if (parsed.kind !== "rotate") {
@@ -25231,7 +25292,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         throw new TypeError("Cannot interpolate a multi-angle rotate value with an axis rotation");
       }
       const adjacentAxisRotation = parsed.values[0] === 0 ? index === 0 ? initiallyParsedOutputRange.find((candidate) => candidate.axisRotation) : index === initiallyParsedOutputRange.length - 1 ? [...initiallyParsedOutputRange].reverse().find((candidate) => candidate.axisRotation) : index === segmentIndex ? initiallyParsedOutputRange[index + 1] : index === segmentIndex + 1 ? initiallyParsedOutputRange[index - 1] : void 0 : void 0;
-      const axis = adjacentAxisRotation?.axisRotation ? adjacentAxisRotation.values : [0, 0, 1];
+      const axis = (adjacentAxisRotation == null ? void 0 : adjacentAxisRotation.axisRotation) ? adjacentAxisRotation.values : [0, 0, 1];
       return {
         kind: "rotate",
         values: [axis[0], axis[1], axis[2], parsed.values[0]],
@@ -25240,7 +25301,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         axisRotation: true
       };
     }) : initiallyParsedOutputRange;
-    const kind = parsedOutputRange[0]?.kind;
+    const kind = (_a2 = parsedOutputRange[0]) == null ? void 0 : _a2.kind;
     if (kind === void 0) {
       throw new Error("outputRange must have at least 1 element");
     }
@@ -25307,21 +25368,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     for (let segmentIndex = 0; segmentIndex < inputRange.length - 1; segmentIndex++) {
       if (resolveEasingForSegment({
-        easing: options?.easing,
+        easing: options == null ? void 0 : options.easing,
         segmentIndex
       }) !== Easing.step1) {
         throw new TypeError("Non-numeric strings can only be interpolated using Easing.step1");
       }
     }
-    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const inputMin = inputRange[0];
     const inputMax = inputRange[inputRange.length - 1];
     let resolvedInput = posterizedInput;
     if (resolvedInput < inputMin) {
-      if (options?.extrapolateLeft === "identity") {
+      if ((options == null ? void 0 : options.extrapolateLeft) === "identity") {
         throw new TypeError('extrapolateLeft: "identity" is not supported for non-numeric strings');
       }
-      if (options?.extrapolateLeft === "wrap") {
+      if ((options == null ? void 0 : options.extrapolateLeft) === "wrap") {
         const wrapRange = inputMax - inputMin;
         resolvedInput = ((resolvedInput - inputMin) % wrapRange + wrapRange) % wrapRange + inputMin;
       } else {
@@ -25329,10 +25390,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }
     if (resolvedInput > inputMax) {
-      if (options?.extrapolateRight === "identity") {
+      if ((options == null ? void 0 : options.extrapolateRight) === "identity") {
         throw new TypeError('extrapolateRight: "identity" is not supported for non-numeric strings');
       }
-      if (options?.extrapolateRight === "wrap") {
+      if ((options == null ? void 0 : options.extrapolateRight) === "wrap") {
         const wrapRange = inputMax - inputMin;
         resolvedInput = ((resolvedInput - inputMin) % wrapRange + wrapRange) % wrapRange + inputMin;
       } else {
@@ -25343,7 +25404,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return resolvedInput >= inputRange[range + 1] ? outputRange[range + 1] : outputRange[range];
   };
   var validateTupleOutputRange = (outputRange) => {
-    const dimensions = outputRange[0]?.length;
+    var _a2;
+    const dimensions = (_a2 = outputRange[0]) == null ? void 0 : _a2.length;
     if (dimensions === void 0) {
       throw new Error("outputRange must have at least 1 element");
     }
@@ -25442,9 +25504,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     checkInfiniteRange("inputRange", inputRange);
     checkValidInputRange(inputRange);
-    assertValidInterpolateEasingOption(options?.easing, inputRange.length);
-    assertValidInterpolatePosterizeOption(options?.posterize);
-    assertValidInterpolateOutputOption(options?.output);
+    assertValidInterpolateEasingOption(options == null ? void 0 : options.easing, inputRange.length);
+    assertValidInterpolatePosterizeOption(options == null ? void 0 : options.posterize);
+    assertValidInterpolateOutputOption(options == null ? void 0 : options.output);
     if (typeof input !== "number") {
       throw new TypeError("Cannot interpolate an input which is not a number");
     }
@@ -25740,7 +25802,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         throw new Error("did not calculate natural duration, this is an error with Remotion. Please report");
       }
     };
-    const reverseProcessed = reverse ? (passedDurationInFrames ?? naturalDurationGetter.get()) - passedFrame : passedFrame;
+    const reverseProcessed = reverse ? (passedDurationInFrames != null ? passedDurationInFrames : naturalDurationGetter.get()) - passedFrame : passedFrame;
     const delayProcessed = reverseProcessed + (reverse ? delay2 : -delay2);
     const durationProcessed = passedDurationInFrames === void 0 ? delayProcessed : delayProcessed / (passedDurationInFrames / naturalDurationGetter.get());
     if (passedDurationInFrames && delayProcessed > passedDurationInFrames) {
@@ -26332,10 +26394,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var interpolateColorsRGB = (value, inputRange, colors, options) => {
     const [r, g, b22, a22] = [red, green, blue, opacity].map((f) => {
       const unrounded = interpolate(value, inputRange, colors.map((c22) => f(c22)), {
-        easing: options?.easing,
+        easing: options == null ? void 0 : options.easing,
         extrapolateLeft: "clamp",
         extrapolateRight: "clamp",
-        posterize: options?.posterize
+        posterize: options == null ? void 0 : options.posterize
       });
       if (f === opacity) {
         return Number(unrounded.toFixed(3));
@@ -26364,6 +26426,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     easing,
     forceSpringAllowTail
   }) => {
+    var _a2, _b;
     switch (easing.type) {
       case "linear":
         return Easing.linear;
@@ -26371,9 +26434,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return Easing.step1;
       case "spring":
         return Easing.spring({
-          allowTail: forceSpringAllowTail ?? easing.allowTail ?? void 0,
+          allowTail: (_a2 = forceSpringAllowTail != null ? forceSpringAllowTail : easing.allowTail) != null ? _a2 : void 0,
           damping: easing.damping,
-          durationRestThreshold: easing.durationRestThreshold ?? void 0,
+          durationRestThreshold: (_b = easing.durationRestThreshold) != null ? _b : void 0,
           mass: easing.mass,
           overshootClamping: easing.overshootClamping,
           stiffness: easing.stiffness
@@ -26408,7 +26471,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           easing: easing.map((e) => easingToFn({ easing: e, forceSpringAllowTail })),
           posterize: status.posterize
         });
-      } catch {
+      } catch (e) {
         return null;
       }
     }
@@ -26423,14 +26486,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
         output: status.output,
         posterize: status.posterize
       });
-    } catch {
+    } catch (e) {
       return null;
     }
   };
   var getFrameInKeyframedStatusClock = ({
     frame,
     status
-  }) => frame - (status.keyframeDisplayOffsetAdjustment ?? 0);
+  }) => {
+    var _a2;
+    return frame - ((_a2 = status.keyframeDisplayOffsetAdjustment) != null ? _a2 : 0);
+  };
   var resolveDragOverrideValue = ({
     dragOverrideValue,
     frame
@@ -26564,7 +26630,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const stableDefinitions = isSame ? previous.definitions : definitions;
     (0, import_react36.useLayoutEffect)(() => {
       stableDefinitions.forEach((_definition, index) => {
-        const snapshot = effects[index]?.params;
+        var _a2;
+        const snapshot = (_a2 = effects[index]) == null ? void 0 : _a2.params;
         controllers[index].setSnapshot(snapshot);
       });
     }, [controllers, effects, stableDefinitions]);
@@ -26608,13 +26675,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     effects,
     overrideId
   }) => {
+    var _a2;
     const previousRef = (0, import_react36.useRef)(null);
     const { propStatuses } = (0, import_react36.useContext)(VisualModePropStatusesContext);
     const { getEffectDragOverrides } = (0, import_react36.useContext)(VisualModeDragOverridesContext);
     const frame = useCurrentFrame();
     const { overrideIdToNodePathMappings } = (0, import_react36.useContext)(OverrideIdsToNodePathsGettersContext);
     const previous = previousRef.current;
-    const nodePath = overrideId ? overrideIdToNodePathMappings[overrideId] ?? null : null;
+    const nodePath = overrideId ? (_a2 = overrideIdToNodePathMappings[overrideId]) != null ? _a2 : null : null;
     const resolved = effects.map((descriptor, index) => {
       if (nodePath === null) {
         return {
@@ -26653,6 +26721,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return next;
   };
   var flattenActiveSchema = (schema, resolve) => {
+    var _a2;
     const out = {};
     for (const key of Object.keys(schema)) {
       const field = schema[key];
@@ -26660,7 +26729,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         continue;
       } else if (field.type === "enum") {
         out[key] = field;
-        const current = resolve(key) ?? field.default;
+        const current = (_a2 = resolve(key)) != null ? _a2 : field.default;
         const variant = field.variants[current];
         if (variant) {
           Object.assign(out, flattenActiveSchema(variant, resolve));
@@ -26775,7 +26844,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     };
   };
   var getStaticDragOverrideValue = (dragOverrideValue) => {
-    if (dragOverrideValue?.type !== "static") {
+    if ((dragOverrideValue == null ? void 0 : dragOverrideValue.type) !== "static") {
       return;
     }
     return dragOverrideValue.value;
@@ -26807,19 +26876,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
     propStatus,
     frame
   }) => {
+    var _a2, _b;
     const merged = {};
     const propsToDelete = /* @__PURE__ */ new Set();
     for (const key of Object.keys(currentValue)) {
-      const status = propStatus?.[key] ?? null;
+      const status = (_a2 = propStatus == null ? void 0 : propStatus[key]) != null ? _a2 : null;
       const field = findFieldInSchema(schema, key);
-      if (field?.type === "hidden") {
+      if ((field == null ? void 0 : field.type) === "hidden") {
         continue;
       }
       let value;
       if (status === null) {
         value = currentValue[key];
       } else if (isKeyframedStatus(status)) {
-        if (field?.type === "array" || field?.keyframable === false) {
+        if ((field == null ? void 0 : field.type) === "array" || (field == null ? void 0 : field.keyframable) === false) {
           value = currentValue[key];
         } else {
           const dragOverride = resolveDragOverrideValue({
@@ -26834,7 +26904,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               frame: getFrameInKeyframedStatusClock({ frame, status }),
               status
             });
-            value = interpolated ?? currentValue[key];
+            value = interpolated != null ? interpolated : currentValue[key];
           } else {
             value = currentValue[key];
           }
@@ -26845,12 +26915,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
         value = getEffectiveVisualModeValue({
           propStatus: status,
           dragOverrideValue: overrideValues[key],
-          defaultValue: field?.default,
+          defaultValue: field == null ? void 0 : field.default,
           frame,
           shouldResortToDefaultValueIfUndefined: false
         });
       }
-      if (field?.type === "asset" && typeof value === "string" && value.startsWith(FILE_TOKEN)) {
+      if ((field == null ? void 0 : field.type) === "asset" && typeof value === "string" && value.startsWith(FILE_TOKEN)) {
         value = resolveFileTokenToUrl(value);
       }
       if (value === void 0) {
@@ -26859,7 +26929,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       merged[key] = value;
     }
     for (const key of Object.keys(overrideValues)) {
-      if (schema[key]?.type === "enum") {
+      if (((_b = schema[key]) == null ? void 0 : _b.type) === "enum") {
         const propsToDeleteForKey = findPropsToDelete({
           schema,
           key,
@@ -26887,8 +26957,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     key,
     props
   }) => {
+    var _a2;
     const value = getNestedValue(props, key);
-    if (flatSchema[key]?.type === "text-content" && typeof value !== "string") {
+    if (((_a2 = flatSchema[key]) == null ? void 0 : _a2.type) === "text-content" && typeof value !== "string") {
       return;
     }
     return value;
@@ -26910,10 +26981,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     schemaKeys,
     propsToDelete
   }) => {
+    var _a2;
     const merged = { ...props };
     for (const key of schemaKeys) {
       const value = valuesDotNotation[key];
-      if (flatSchema[key]?.type === "text-content" && value === void 0) {
+      if (((_a2 = flatSchema[key]) == null ? void 0 : _a2.type) === "text-content" && value === void 0) {
         continue;
       }
       const parts = key.split(".");
@@ -26933,7 +27005,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
       current[parts[parts.length - 1]] = value;
     }
-    const propsToDeleteWithoutTextContent = new Set([...propsToDelete].filter((key) => !(flatSchema[key]?.type === "text-content" && valuesDotNotation[key] === void 0)));
+    const propsToDeleteWithoutTextContent = new Set([...propsToDelete].filter((key) => {
+      var _a3;
+      return !(((_a3 = flatSchema[key]) == null ? void 0 : _a3.type) === "text-content" && valuesDotNotation[key] === void 0);
+    }));
     deleteNestedKey(merged, propsToDeleteWithoutTextContent);
     return merged;
   };
@@ -26953,6 +27028,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const flatSchema = getFlatSchemaWithAllKeys(schemaWithSequenceName);
     const flatKeys = Object.keys(flatSchema);
     const Wrapped = (0, import_react35.forwardRef)((props, ref) => {
+      var _a2;
       const {
         _remotionInternalStack: internalStack,
         ...propsWithoutInternalStack
@@ -26973,10 +27049,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const nodePathMapping = (0, import_react35.useContext)(OverrideIdsToNodePathsGettersContext);
       const frame = useCurrentFrame();
       const videoConfig = useUnsafeVideoConfig();
-      const durationInFrames = videoConfig?.durationInFrames;
-      const fps = videoConfig?.fps;
-      const height = videoConfig?.height;
-      const width = videoConfig?.width;
+      const durationInFrames = videoConfig == null ? void 0 : videoConfig.durationInFrames;
+      const fps = videoConfig == null ? void 0 : videoConfig.fps;
+      const height = videoConfig == null ? void 0 : videoConfig.height;
+      const width = videoConfig == null ? void 0 : videoConfig.width;
       const videoConfigValues = (0, import_react35.useMemo)(() => durationInFrames === void 0 || fps === void 0 || height === void 0 || width === void 0 ? null : {
         durationInFrames,
         fps,
@@ -27005,7 +27081,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         stackToOverrideMap[internalStack] = newOverrideId;
         return newOverrideId;
       });
-      const nodePath = env.isReadOnlyStudio ? null : nodePathMapping.overrideIdToNodePathMappings[overrideId] ?? null;
+      const nodePath = env.isReadOnlyStudio ? null : (_a2 = nodePathMapping.overrideIdToNodePathMappings[overrideId]) != null ? _a2 : null;
       const runtimeValues = flatKeys.map((key) => getRuntimeValueForSchemaKey({
         flatSchema,
         key,
@@ -27094,6 +27170,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     cropBottom,
     ...other
   }, ref) => {
+    var _a2, _b, _c, _d;
     const { layout = "absolute-fill" } = other;
     const [id] = (0, import_react22.useState)(() => String(Math.random()));
     const parentSequence = (0, import_react22.useContext)(SequenceContext);
@@ -27154,38 +27231,39 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const absoluteFrame = useTimelinePosition();
     const videoConfig = useVideoConfig();
     const effectiveRelativeFrom = from - trimBefore;
-    const absoluteFrom = (parentSequence?.absoluteFrom ?? 0) + effectiveRelativeFrom;
+    const absoluteFrom = ((_a2 = parentSequence == null ? void 0 : parentSequence.absoluteFrom) != null ? _a2 : 0) + effectiveRelativeFrom;
     const parentSequenceDuration = parentSequence ? Math.min(parentSequence.durationInFrames - effectiveRelativeFrom, durationInFrames) : durationInFrames;
     const actualDurationInFrames = Math.max(0, Math.min(videoConfig.durationInFrames - from, parentSequenceDuration));
     const sequenceRegistrationEnabled = (0, import_react22.useContext)(SequenceRegistrationContext);
     const wrapperRefForOutline = (0, import_react22.useRef)(null);
-    const refForOutline = other.layout === "none" ? passedRefForOutline ?? null : passedRefForOutline ?? wrapperRefForOutline;
+    const refForOutline = other.layout === "none" ? passedRefForOutline != null ? passedRefForOutline : null : passedRefForOutline != null ? passedRefForOutline : wrapperRefForOutline;
     const premounting = (0, import_react22.useMemo)(() => {
-      return parentSequence?.premounting || Boolean(other._remotionInternalIsPremounting);
-    }, [other._remotionInternalIsPremounting, parentSequence?.premounting]);
+      return (parentSequence == null ? void 0 : parentSequence.premounting) || Boolean(other._remotionInternalIsPremounting);
+    }, [other._remotionInternalIsPremounting, parentSequence == null ? void 0 : parentSequence.premounting]);
     const postmounting = (0, import_react22.useMemo)(() => {
-      return parentSequence?.postmounting || Boolean(other._remotionInternalIsPostmounting);
-    }, [other._remotionInternalIsPostmounting, parentSequence?.postmounting]);
+      return (parentSequence == null ? void 0 : parentSequence.postmounting) || Boolean(other._remotionInternalIsPostmounting);
+    }, [other._remotionInternalIsPostmounting, parentSequence == null ? void 0 : parentSequence.postmounting]);
     const currentSequenceStart = cumulatedFrom + effectiveRelativeFrom;
     const parentSequenceStart = parentSequence ? parentSequence.cumulatedFrom + parentSequence.relativeFrom : 0;
     const parentFirstFrame = parentSequence ? parentSequenceStart - parentSequence.cumulatedNegativeFrom : 0;
     const firstFrame = Math.max(0, parentFirstFrame, currentSequenceStart);
     const cumulatedNegativeFrom = currentSequenceStart - firstFrame;
     const contextValue = (0, import_react22.useMemo)(() => {
+      var _a3, _b2, _c2;
       return {
         absoluteFrom,
         cumulatedFrom,
         relativeFrom: effectiveRelativeFrom,
         cumulatedNegativeFrom,
         durationInFrames: actualDurationInFrames,
-        parentFrom: parentSequence?.relativeFrom ?? 0,
+        parentFrom: (_a3 = parentSequence == null ? void 0 : parentSequence.relativeFrom) != null ? _a3 : 0,
         id,
-        height: height ?? parentSequence?.height ?? null,
-        width: width ?? parentSequence?.width ?? null,
+        height: (_b2 = height != null ? height : parentSequence == null ? void 0 : parentSequence.height) != null ? _b2 : null,
+        width: (_c2 = width != null ? width : parentSequence == null ? void 0 : parentSequence.width) != null ? _c2 : null,
         premounting,
         postmounting,
-        premountDisplay: premountDisplay ?? null,
-        postmountDisplay: postmountDisplay ?? null
+        premountDisplay: premountDisplay != null ? premountDisplay : null,
+        postmountDisplay: postmountDisplay != null ? postmountDisplay : null
       };
     }, [
       cumulatedFrom,
@@ -27203,27 +27281,30 @@ Check that all your Remotion packages are on the same version. If your dependenc
       cumulatedNegativeFrom
     ]);
     const timelineClipName = (0, import_react22.useMemo)(() => {
-      return name ?? "";
+      return name != null ? name : "";
     }, [name]);
-    const resolvedDocumentationLink = documentationLink ?? "https://www.remotion.dev/docs/sequence";
+    const resolvedDocumentationLink = documentationLink != null ? documentationLink : "https://www.remotion.dev/docs/sequence";
     const env = useRemotionEnvironment();
     const isInsideSeries = (0, import_react22.useContext)(IsInsideSeriesContext);
     const stackRef = (0, import_react22.useRef)(null);
-    stackRef.current = controls ? getStackForControls(controls) ?? stack ?? null : stack ?? null;
+    stackRef.current = controls ? (_c = (_b = getStackForControls(controls)) != null ? _b : stack) != null ? _c : null : stack != null ? stack : null;
     const registeredFrozenFrame = typeof freeze === "number" ? freeze : null;
     const registeredTrimBefore = trimBefore === 0 ? null : trimBefore;
-    const parentCumulatedNegativeFrom = parentSequence?.cumulatedNegativeFrom ?? 0;
+    const parentCumulatedNegativeFrom = (_d = parentSequence == null ? void 0 : parentSequence.cumulatedNegativeFrom) != null ? _d : 0;
     const startMediaFrom = isMedia && isMedia.type !== "image" ? isMedia.data.startMediaFrom + parentCumulatedNegativeFrom - cumulatedNegativeFrom : null;
     const mediaFrameAtSequenceZero = isMedia && isMedia.type !== "image" ? isMedia.data.startMediaFrom + parentCumulatedNegativeFrom : null;
     const frozenMediaFrame = isMedia && isMedia.type !== "image" && mediaFrameAtSequenceZero !== null ? registeredFrozenFrame === null ? null : mediaFrameAtSequenceZero + (loopDisplay ? registeredFrozenFrame % loopDisplay.durationInFrames : registeredFrozenFrame) * isMedia.data.playbackRate : null;
-    const controlsSchema = controls?.schema;
-    const controlsRuntimeValues = controls?.runtimeValues;
-    const controlsOverrideId = controls?.overrideId;
-    const controlsSupportsEffects = controls?.supportsEffects;
-    const controlsComponentIdentity = controls?.componentIdentity;
-    const controlsComponentName = controls?.componentName;
-    const controlsVideoConfigValues = controls?.videoConfigValues;
-    const effectRuntimeValues = (0, import_react22.useMemo)(() => _remotionInternalEffects?.runtimeValues ?? null, [_remotionInternalEffects]);
+    const controlsSchema = controls == null ? void 0 : controls.schema;
+    const controlsRuntimeValues = controls == null ? void 0 : controls.runtimeValues;
+    const controlsOverrideId = controls == null ? void 0 : controls.overrideId;
+    const controlsSupportsEffects = controls == null ? void 0 : controls.supportsEffects;
+    const controlsComponentIdentity = controls == null ? void 0 : controls.componentIdentity;
+    const controlsComponentName = controls == null ? void 0 : controls.componentName;
+    const controlsVideoConfigValues = controls == null ? void 0 : controls.videoConfigValues;
+    const effectRuntimeValues = (0, import_react22.useMemo)(() => {
+      var _a3;
+      return (_a3 = _remotionInternalEffects == null ? void 0 : _remotionInternalEffects.runtimeValues) != null ? _a3 : null;
+    }, [_remotionInternalEffects]);
     const registrationControls = (0, import_react22.useMemo)(() => {
       if (controlsSchema === void 0 || controlsRuntimeValues === void 0 || controlsOverrideId === void 0 || controlsSupportsEffects === void 0 || controlsComponentIdentity === void 0 || controlsComponentName === void 0 || controlsVideoConfigValues === void 0) {
         return null;
@@ -27247,12 +27328,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       controlsSupportsEffects
     ]);
     const getSequenceForRegistration = (0, import_react22.useCallback)(() => {
+      var _a3, _b2, _c2;
       if (isMedia) {
         if (isMedia.type === "image") {
           return {
             type: "image",
             controls: registrationControls,
-            effects: _remotionInternalEffects ?? EMPTY_EFFECTS,
+            effects: _remotionInternalEffects != null ? _remotionInternalEffects : EMPTY_EFFECTS,
             effectRuntimeValues,
             displayName: timelineClipName,
             documentationLink: resolvedDocumentationLink,
@@ -27261,23 +27343,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
             trimBefore: registeredTrimBefore,
             id,
             loopDisplay,
-            parent: parentSequence?.id ?? null,
-            postmountDisplay: postmountDisplay ?? null,
-            premountDisplay: premountDisplay ?? null,
+            parent: (_a3 = parentSequence == null ? void 0 : parentSequence.id) != null ? _a3 : null,
+            postmountDisplay: postmountDisplay != null ? postmountDisplay : null,
+            premountDisplay: premountDisplay != null ? premountDisplay : null,
             showInTimeline,
             timelineOrder: null,
             src: isMedia.src,
             getStack: () => stackRef.current,
-            refForOutline: refForOutline ?? null,
+            refForOutline: refForOutline != null ? refForOutline : null,
             isInsideSeries,
             frozenFrame: registeredFrozenFrame,
-            singleChildComponent: singleChildComponent ?? null
+            singleChildComponent: singleChildComponent != null ? singleChildComponent : null
           };
         }
         return {
           type: isMedia.type,
           controls: registrationControls,
-          effects: _remotionInternalEffects ?? EMPTY_EFFECTS,
+          effects: _remotionInternalEffects != null ? _remotionInternalEffects : EMPTY_EFFECTS,
           effectRuntimeValues,
           displayName: timelineClipName,
           documentationLink: resolvedDocumentationLink,
@@ -27287,23 +27369,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
           trimBefore: registeredTrimBefore,
           id,
           loopDisplay,
-          parent: parentSequence?.id ?? null,
+          parent: (_b2 = parentSequence == null ? void 0 : parentSequence.id) != null ? _b2 : null,
           playbackRate: isMedia.data.playbackRate,
-          postmountDisplay: postmountDisplay ?? null,
-          premountDisplay: premountDisplay ?? null,
+          postmountDisplay: postmountDisplay != null ? postmountDisplay : null,
+          premountDisplay: premountDisplay != null ? premountDisplay : null,
           showInTimeline,
           timelineOrder: null,
           src: isMedia.data.src,
           getStack: () => stackRef.current,
-          startMediaFrom: startMediaFrom ?? isMedia.data.startMediaFrom,
+          startMediaFrom: startMediaFrom != null ? startMediaFrom : isMedia.data.startMediaFrom,
           mediaFrameAtSequenceZero,
           volume: isMedia.data.volumes,
           muted: isMedia.data.muted,
-          refForOutline: refForOutline ?? null,
+          refForOutline: refForOutline != null ? refForOutline : null,
           isInsideSeries,
           frozenFrame: registeredFrozenFrame,
           frozenMediaFrame,
-          singleChildComponent: singleChildComponent ?? null
+          singleChildComponent: singleChildComponent != null ? singleChildComponent : null
         };
       }
       return {
@@ -27313,26 +27395,26 @@ Check that all your Remotion packages are on the same version. If your dependenc
         id,
         displayName: timelineClipName,
         documentationLink: resolvedDocumentationLink,
-        parent: parentSequence?.id ?? null,
+        parent: (_c2 = parentSequence == null ? void 0 : parentSequence.id) != null ? _c2 : null,
         type: "sequence",
         showInTimeline,
         timelineOrder: null,
         loopDisplay,
         getStack: () => stackRef.current,
-        premountDisplay: premountDisplay ?? null,
-        postmountDisplay: postmountDisplay ?? null,
+        premountDisplay: premountDisplay != null ? premountDisplay : null,
+        postmountDisplay: postmountDisplay != null ? postmountDisplay : null,
         controls: registrationControls,
-        effects: _remotionInternalEffects ?? EMPTY_EFFECTS,
+        effects: _remotionInternalEffects != null ? _remotionInternalEffects : EMPTY_EFFECTS,
         effectRuntimeValues,
-        refForOutline: refForOutline ?? null,
+        refForOutline: refForOutline != null ? refForOutline : null,
         isInsideSeries,
         frozenFrame: registeredFrozenFrame,
-        singleChildComponent: singleChildComponent ?? null
+        singleChildComponent: singleChildComponent != null ? singleChildComponent : null
       };
     }, [
       id,
       timelineClipName,
-      parentSequence?.id,
+      parentSequence == null ? void 0 : parentSequence.id,
       actualDurationInFrames,
       from,
       registeredTrimBefore,
@@ -27384,7 +27466,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         flexDirection: void 0,
         ...width ? { width } : {},
         ...height ? { height } : {},
-        ...styleIfThere ?? {},
+        ...styleIfThere != null ? styleIfThere : {},
         ...cropClipPath ? {
           clipPath: cropClipPath
         } : {}
@@ -27439,9 +27521,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       durationInFrames,
       premountFor,
       postmountFor,
-      style: passedStyle ?? null,
-      styleWhilePremounted: styleWhilePremounted ?? null,
-      styleWhilePostmounted: styleWhilePostmounted ?? null,
+      style: passedStyle != null ? passedStyle : null,
+      styleWhilePremounted: styleWhilePremounted != null ? styleWhilePremounted : null,
+      styleWhilePostmounted: styleWhilePostmounted != null ? styleWhilePostmounted : null,
       hideWhilePremounted: "opacity"
     });
     return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Freeze, {
@@ -27451,7 +27533,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         ref,
         from,
         durationInFrames,
-        style: premountingStyle ?? void 0,
+        style: premountingStyle != null ? premountingStyle : void 0,
         _remotionInternalPremountDisplay: premountFor,
         _remotionInternalPostmountDisplay: postmountFor,
         _remotionInternalIsPremounting: premountingActive,
@@ -27462,10 +27544,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var PremountedPostmountedSequence = (0, import_react22.forwardRef)(PremountedPostmountedSequenceRefForwardingFunction);
   var SequenceRefForwardingFunction = (props, ref) => {
+    var _a2;
     const env = useRemotionEnvironment();
     const { fps } = useVideoConfig();
     if (props.layout !== "none" && !env.isRendering) {
-      const effectivePremountFor = ENABLE_V5_BREAKING_CHANGES ? props.premountFor ?? fps : props.premountFor;
+      const effectivePremountFor = ENABLE_V5_BREAKING_CHANGES ? (_a2 = props.premountFor) != null ? _a2 : fps : props.premountFor;
       if (effectivePremountFor || props.postmountFor) {
         return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(PremountedPostmountedSequence, {
           ref,
@@ -27540,13 +27623,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Sequence, {
       layout: "none",
-      from: from ?? 0,
+      from: from != null ? from : 0,
       trimBefore,
       freeze,
-      durationInFrames: durationInFrames ?? Infinity,
+      durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
       hidden,
-      name: name ?? "<AbsoluteFill>",
-      showInTimeline: showInTimeline ?? true,
+      name: name != null ? name : "<AbsoluteFill>",
+      showInTimeline: showInTimeline != null ? showInTimeline : true,
       controls,
       _remotionInternalStack: stack,
       _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/absolute-fill",
@@ -27639,11 +27722,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var createWebGLContextError = (effectName) => new Error(webGlContextErrorMessage("WebGL", effectName));
   var createWebGL2ContextError = (effectName) => new Error(webGlContextErrorMessage("WebGL2", effectName));
   var CanvasPool = class {
-    width;
-    height;
-    pairs = /* @__PURE__ */ new Map();
-    lostContexts = /* @__PURE__ */ new Set();
     constructor(width, height) {
+      __publicField(this, "width");
+      __publicField(this, "height");
+      __publicField(this, "pairs", /* @__PURE__ */ new Map());
+      __publicField(this, "lostContexts", /* @__PURE__ */ new Set());
       this.width = width;
       this.height = height;
     }
@@ -27837,7 +27920,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         currentImage = dst;
         dst = dst === a22 ? b22 : a22;
       }
-      lastTarget = currentImage ?? lastTarget;
+      lastTarget = currentImage != null ? currentImage : lastTarget;
       const nextRun = runs[runIndex + 1];
       if (nextRun && nextRun.backend !== run.backend && lastTarget) {
         if (run.backend === "2d" && nextRun.backend === "webgl2") {
@@ -27901,8 +27984,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, []);
     const draw = (0, import_react41.useCallback)((imageData) => {
       const canvas = canvasRef.current;
-      const canvasWidth = width ?? imageData.displayWidth;
-      const canvasHeight = height ?? imageData.displayHeight;
+      const canvasWidth = width != null ? width : imageData.displayWidth;
+      const canvasHeight = height != null ? height : imageData.displayHeight;
       if (!canvas) {
         throw new Error("Canvas ref is not set");
       }
@@ -27943,7 +28026,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           return canvasRef.current;
         },
         clear: () => {
-          const ctx = canvasRef.current?.getContext("2d");
+          var _a2;
+          const ctx = (_a2 = canvasRef.current) == null ? void 0 : _a2.getContext("2d");
           if (!ctx) {
             throw new Error("Could not get 2d context");
           }
@@ -27965,6 +28049,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     requestInit,
     contentType
   }) => {
+    var _a2;
     if (typeof ImageDecoder === "undefined") {
       throw new Error("Your browser does not support the WebCodecs ImageDecoder API.");
     }
@@ -27975,7 +28060,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     const decoder = new ImageDecoder({
       data: body,
-      type: contentType ?? response.headers.get("Content-Type") ?? "image/gif"
+      type: (_a2 = contentType != null ? contentType : response.headers.get("Content-Type")) != null ? _a2 : "image/gif"
     });
     await Promise.all([decoder.completed, decoder.tracks.ready]);
     const { selectedTrack } = decoder.tracks;
@@ -28112,8 +28197,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     };
     return {
       close: () => {
+        var _a2;
         for (const item2 of cache22) {
-          item2.frame?.close();
+          (_a2 = item2.frame) == null ? void 0 : _a2.close();
           item2.frame = null;
         }
         decoder.close();
@@ -28196,6 +28282,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     controls,
     ...props
   }, canvasRef) => {
+    var _a2;
     const resolvedSrc = resolveAnimatedImageSource(src);
     const [imageDecoder, setImageDecoder] = (0, import_react39.useState)(null);
     const { delayRender: delayRender2, continueRender: continueRender2 } = useDelayRender();
@@ -28211,10 +28298,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const ref = (0, import_react39.useRef)(null);
     const memoizedEffects = useMemoizedEffects({
       effects,
-      overrideId: controls?.overrideId ?? null
+      overrideId: (_a2 = controls == null ? void 0 : controls.overrideId) != null ? _a2 : null
     });
     (0, import_react39.useImperativeHandle)(canvasRef, () => {
-      const c22 = ref.current?.getCanvas();
+      var _a3;
+      const c22 = (_a3 = ref.current) == null ? void 0 : _a3.getCanvas();
       if (!c22) {
         throw new Error("Canvas ref is not set");
       }
@@ -28254,7 +28342,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           return;
         }
         if (onError) {
-          onError?.(err);
+          onError == null ? void 0 : onError(err);
           continueRenderOnce();
         } else {
           cancelRender(err);
@@ -28275,7 +28363,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]);
     (0, import_react39.useEffect)(() => {
       return () => {
-        imageDecoder?.close();
+        imageDecoder == null ? void 0 : imageDecoder.close();
       };
     }, [imageDecoder]);
     (0, import_react39.useLayoutEffect)(() => {
@@ -28285,15 +28373,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const delay2 = delayRender2(`Rendering frame at ${currentTime} of <AnimatedImage src="${src}"/>`);
       let cancelled = false;
       imageDecoder.getFrame(currentTime, loopBehavior).then(async (videoFrame) => {
+        var _a3, _b;
         if (cancelled) {
           return;
         }
         if (videoFrame === null) {
-          ref.current?.clear();
+          (_a3 = ref.current) == null ? void 0 : _a3.clear();
           continueRender2(delay2);
           return;
         }
-        const completed = await ref.current?.draw(videoFrame.frame);
+        const completed = await ((_b = ref.current) == null ? void 0 : _b.draw(videoFrame.frame));
         if (completed && !cancelled) {
           continueRender2(delay2);
         }
@@ -28376,13 +28465,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       premountingActive,
       premountingStyle
     } = usePremounting({
-      from: from ?? 0,
-      durationInFrames: durationInFrames ?? Infinity,
-      premountFor: premountFor ?? null,
-      postmountFor: postmountFor ?? null,
-      style: style2 ?? null,
-      styleWhilePremounted: styleWhilePremounted ?? null,
-      styleWhilePostmounted: styleWhilePostmounted ?? null,
+      from: from != null ? from : 0,
+      durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
+      premountFor: premountFor != null ? premountFor : null,
+      postmountFor: postmountFor != null ? postmountFor : null,
+      style: style2 != null ? style2 : null,
+      styleWhilePremounted: styleWhilePremounted != null ? styleWhilePremounted : null,
+      styleWhilePostmounted: styleWhilePostmounted != null ? styleWhilePostmounted : null,
       hideWhilePremounted: "display-none"
     });
     const croppedStyle = useCropStyle({
@@ -28404,7 +28493,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       loopBehavior,
       id,
       className: className2,
-      style: croppedStyle ?? void 0,
+      style: croppedStyle != null ? croppedStyle : void 0,
       requestInit,
       ...canvasProps
     };
@@ -28413,8 +28502,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       active: isPremountingOrPostmounting,
       children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Sequence, {
         layout: "none",
-        from: from ?? 0,
-        durationInFrames: durationInFrames ?? Infinity,
+        from: from != null ? from : 0,
+        durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
         name: "<AnimatedImage>",
         _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/animatedimage",
         controls,
@@ -28449,12 +28538,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     description: "Disabled"
   };
   var createEffect = (definition) => {
+    var _a2;
     const { calculateKey: userCalculateKey, validateParams } = definition;
     const widened = {
       ...definition,
-      documentationLink: definition.documentationLink ?? null,
+      documentationLink: (_a2 = definition.documentationLink) != null ? _a2 : null,
       calculateKey: (params) => {
-        const disabled = params.disabled ?? false;
+        var _a3;
+        const disabled = (_a3 = params.disabled) != null ? _a3 : false;
         return `${userCalculateKey(params)}-disabled-${disabled}`;
       },
       schema: {
@@ -28577,7 +28668,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           filename,
           frame,
           contentType: "binary",
-          downloadBehavior: downloadBehavior ?? null
+          downloadBehavior: downloadBehavior != null ? downloadBehavior : null
         });
       } else if (content2 === ArtifactThumbnail) {
         registerRenderAsset({
@@ -28586,7 +28677,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           filename,
           frame,
           contentType: "thumbnail",
-          downloadBehavior: downloadBehavior ?? null
+          downloadBehavior: downloadBehavior != null ? downloadBehavior : null
         });
       } else {
         registerRenderAsset({
@@ -28596,7 +28687,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           filename,
           frame,
           contentType: "text",
-          downloadBehavior: downloadBehavior ?? null
+          downloadBehavior: downloadBehavior != null ? downloadBehavior : null
         });
       }
       return () => {
@@ -28692,7 +28783,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Sequence, {
         durationInFrames,
         from,
-        name: name ?? "<Loop>",
+        name: name != null ? name : "<Loop>",
         _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/loop",
         _remotionInternalLoopDisplay: loopDisplay,
         layout: props.layout,
@@ -28854,8 +28945,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     trimBefore,
     trimAfter
   }) => {
-    const trimBeforeValue = trimBefore ?? startFrom ?? void 0;
-    const trimAfterValue = trimAfter ?? endAt ?? void 0;
+    var _a2, _b;
+    const trimBeforeValue = (_a2 = trimBefore != null ? trimBefore : startFrom) != null ? _a2 : void 0;
+    const trimAfterValue = (_b = trimAfter != null ? trimAfter : endAt) != null ? _b : void 0;
     return { trimBeforeValue, trimAfterValue };
   };
   var durationReducer = (state, action) => {
@@ -29150,12 +29242,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return startPerformanceTime !== void 0 && outputTimestamp.performanceTime !== void 0 && outputTimestamp.performanceTime > startPerformanceTime && outputTimestamp.contextTime !== void 0 && outputTimestamp.contextTime > startCurrentTime;
       };
       const check = () => {
+        var _a2, _b, _c;
         animationFrame = null;
         const { currentTime } = audioContext;
         const outputTimestamp = audioContext.getOutputTimestamp();
         const elapsedWallClock = performance.now() - startWallClock;
         if (hasAudiblyStarted(startOutputPerformanceTime)) {
-          Log.verbose({ logLevel, tag: "audio" }, `waitUntilActuallyResumed: getOutputTimestamp.performanceTime advanced from ${startOutputPerformanceTime.toFixed(6)} to ${outputTimestamp.performanceTime?.toFixed(6)} after ${elapsedWallClock.toFixed(1)}ms. currentTime=${currentTime.toFixed(6)} (advanced by ${(currentTime - startCurrentTime).toFixed(6)}), getOutputTimestamp.performanceTime=${outputTimestamp.performanceTime?.toFixed(1) ?? "undefined"}`);
+          Log.verbose({ logLevel, tag: "audio" }, `waitUntilActuallyResumed: getOutputTimestamp.performanceTime advanced from ${startOutputPerformanceTime.toFixed(6)} to ${(_a2 = outputTimestamp.performanceTime) == null ? void 0 : _a2.toFixed(6)} after ${elapsedWallClock.toFixed(1)}ms. currentTime=${currentTime.toFixed(6)} (advanced by ${(currentTime - startCurrentTime).toFixed(6)}), getOutputTimestamp.performanceTime=${(_c = (_b = outputTimestamp.performanceTime) == null ? void 0 : _b.toFixed(1)) != null ? _c : "undefined"}`);
           finish("resumed");
           return;
         }
@@ -29224,7 +29317,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     _experimentalKeepAudioContextAlive
   }) => {
     const logLevel = useLogLevel();
-    const sampleRate = previewSampleRate ?? 48e3;
+    const sampleRate = previewSampleRate != null ? previewSampleRate : 48e3;
     (0, import_react53.useEffect)(() => {
       if (typeof window === "undefined") {
         return;
@@ -29350,7 +29443,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           resolve("failed");
         });
       }).finally(() => {
-        if (isResuming.current?.id === resumeAttemptId) {
+        var _a2;
+        if (((_a2 = isResuming.current) == null ? void 0 : _a2.id) === resumeAttemptId) {
           isResuming.current = null;
         }
       });
@@ -29367,10 +29461,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return resume();
     }, [resume]);
     const getIsResumingAudioContext = (0, import_react53.useCallback)(() => {
-      return isResuming.current?.promise ?? null;
+      var _a2, _b;
+      return (_b = (_a2 = isResuming.current) == null ? void 0 : _a2.promise) != null ? _b : null;
     }, []);
     const suspend = (0, import_react53.useCallback)(() => {
-      isResuming.current?.abortController.abort();
+      var _a2;
+      (_a2 = isResuming.current) == null ? void 0 : _a2.abortController.abort();
       if (!ctxAndGain) {
         return Promise.resolve();
       }
@@ -29416,10 +29512,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
       };
     }, [ctxAndGain, _experimentalKeepAudioContextAlive]);
     const audioContextValue = (0, import_react53.useMemo)(() => {
+      var _a2, _b;
       return {
-        audioContext: ctxAndGain?.audioContext ?? null,
-        getAudioContextState: () => ctxAndGain?.getState() ?? null,
-        gainNode: ctxAndGain?.gainNode ?? null,
+        audioContext: (_a2 = ctxAndGain == null ? void 0 : ctxAndGain.audioContext) != null ? _a2 : null,
+        getAudioContextState: () => {
+          var _a3;
+          return (_a3 = ctxAndGain == null ? void 0 : ctxAndGain.getState()) != null ? _a3 : null;
+        },
+        gainNode: (_b = ctxAndGain == null ? void 0 : ctxAndGain.gainNode) != null ? _b : null,
         audioSyncAnchor,
         audioSyncAnchorEmitter,
         scheduleAudioNode,
@@ -29448,6 +29548,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
   };
   var SharedAudioTagsContextProvider = ({ children, numberOfAudioTags }) => {
+    var _a2, _b;
     const audios = (0, import_react53.useRef)([]);
     const [initialNumberOfAudioTags] = (0, import_react53.useState)(numberOfAudioTags);
     if (numberOfAudioTags !== initialNumberOfAudioTags) {
@@ -29457,8 +29558,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const mountTime = useMountTime();
     const env = useRemotionEnvironment();
     const audioCtx = (0, import_react53.useContext)(SharedAudioContext);
-    const audioContext = audioCtx?.audioContext ?? null;
-    const resume = audioCtx?.resume;
+    const audioContext = (_a2 = audioCtx == null ? void 0 : audioCtx.audioContext) != null ? _a2 : null;
+    const resume = audioCtx == null ? void 0 : audioCtx.resume;
     const [refs] = (0, import_react53.useState)(() => {
       return new Array(numberOfAudioTags).fill(true).map(() => {
         const ref = (0, import_react53.createRef)();
@@ -29473,14 +29574,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
       });
     });
     for (const { mediaElementSourceNode } of refs) {
-      mediaElementSourceNode?.setAudioContext(audioContext);
+      mediaElementSourceNode == null ? void 0 : mediaElementSourceNode.setAudioContext(audioContext);
     }
-    const effectToUse = import_react53.default.useInsertionEffect ?? import_react53.default.useLayoutEffect;
+    const effectToUse = (_b = import_react53.default.useInsertionEffect) != null ? _b : import_react53.default.useLayoutEffect;
     effectToUse(() => {
       return () => {
         requestAnimationFrame(() => {
           refs.forEach(({ mediaElementSourceNode }) => {
-            mediaElementSourceNode?.cleanup();
+            mediaElementSourceNode == null ? void 0 : mediaElementSourceNode.cleanup();
           });
         });
       };
@@ -29488,7 +29589,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const takenAudios = (0, import_react53.useRef)(new Array(numberOfAudioTags).fill(false));
     const rerenderAudios = (0, import_react53.useCallback)(() => {
       refs.forEach(({ ref, id }) => {
-        const data = audios.current?.find((a22) => a22.id === id);
+        var _a3;
+        const data = (_a3 = audios.current) == null ? void 0 : _a3.find((a22) => a22.id === id);
         const { current } = ref;
         if (!current) {
           return;
@@ -29510,8 +29612,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       });
     }, [refs]);
     const registerAudio = (0, import_react53.useCallback)((options) => {
+      var _a3, _b2;
       const { aud, audioId, premounting, postmounting } = options;
-      const found = audios.current?.find((a22) => a22.audioId === audioId);
+      const found = (_a3 = audios.current) == null ? void 0 : _a3.find((a22) => a22.audioId === audioId);
       if (found) {
         return found;
       }
@@ -29535,11 +29638,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
         cleanupOnMediaTagUnmount: () => {
         }
       };
-      audios.current?.push(newElem);
+      (_b2 = audios.current) == null ? void 0 : _b2.push(newElem);
       rerenderAudios();
       return newElem;
     }, [numberOfAudioTags, refs, rerenderAudios]);
     const unregisterAudio = (0, import_react53.useCallback)((id) => {
+      var _a3;
       const cloned = [...takenAudios.current];
       const index = refs.findIndex((r) => r.id === id);
       if (index === -1) {
@@ -29547,7 +29651,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
       cloned[index] = false;
       takenAudios.current = cloned;
-      audios.current = audios.current?.filter((a22) => a22.id !== id);
+      audios.current = (_a3 = audios.current) == null ? void 0 : _a3.filter((a22) => a22.id !== id);
       rerenderAudios();
     }, [refs, rerenderAudios]);
     const updateAudio = (0, import_react53.useCallback)(({
@@ -29557,8 +29661,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       premounting,
       postmounting
     }) => {
+      var _a3;
       let changed = false;
-      audios.current = audios.current?.map((prevA) => {
+      audios.current = (_a3 = audios.current) == null ? void 0 : _a3.map((prevA) => {
         const audioMounted = Boolean(prevA.el.current);
         if (prevA.audioMounted !== audioMounted) {
           changed = true;
@@ -29587,7 +29692,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const playAllAudios = (0, import_react53.useCallback)(() => {
       refs.forEach((ref) => {
         const audio = audios.current.find((a22) => a22.el === ref.ref);
-        if (audio?.premounting) {
+        if (audio == null ? void 0 : audio.premounting) {
           return;
         }
         playAndHandleNotAllowedError({
@@ -29600,7 +29705,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           isPlayer: env.isPlayer
         });
       });
-      resume?.();
+      resume == null ? void 0 : resume();
     }, [logLevel, mountTime, refs, env.isPlayer, resume]);
     const audioTagsValue = (0, import_react53.useMemo)(() => {
       return {
@@ -29640,15 +29745,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
     premounting,
     postmounting
   }) => {
+    var _a2, _b, _c;
     const audioCtx = (0, import_react53.useContext)(SharedAudioContext);
     const tagsCtx = (0, import_react53.useContext)(SharedAudioTagsContext);
     const [elem] = (0, import_react53.useState)(() => {
+      var _a3;
       if (tagsCtx && tagsCtx.numberOfAudioTags > 0) {
         return tagsCtx.registerAudio({ aud, audioId, premounting, postmounting });
       }
       const el = import_react53.default.createRef();
       const mediaElementSourceNode = makeSharedElementSourceNode({
-        audioContext: audioCtx?.audioContext ?? null,
+        audioContext: (_a3 = audioCtx == null ? void 0 : audioCtx.audioContext) != null ? _a3 : null,
         ref: el
       });
       return {
@@ -29661,12 +29768,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
         audioMounted: Boolean(el.current),
         postmounting,
         cleanupOnMediaTagUnmount: () => {
-          mediaElementSourceNode?.cleanup();
+          mediaElementSourceNode == null ? void 0 : mediaElementSourceNode.cleanup();
         }
       };
     });
-    elem.mediaElementSourceNode?.setAudioContext(audioCtx?.audioContext ?? null);
-    const effectToUse = import_react53.default.useInsertionEffect ?? import_react53.default.useLayoutEffect;
+    (_b = elem.mediaElementSourceNode) == null ? void 0 : _b.setAudioContext((_a2 = audioCtx == null ? void 0 : audioCtx.audioContext) != null ? _a2 : null);
+    const effectToUse = (_c = import_react53.default.useInsertionEffect) != null ? _c : import_react53.default.useLayoutEffect;
     if (typeof document !== "undefined") {
       effectToUse(() => {
         if (tagsCtx && tagsCtx.numberOfAudioTags > 0) {
@@ -29735,13 +29842,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     duration,
     fps
   }) => {
+    var _a2;
     if (isIOSSafariAndBlob(actualSrc)) {
       return actualSrc;
     }
     if (actualSrc.startsWith("data:")) {
       return actualSrc;
     }
-    const existingHash = Boolean(new URL(actualSrc, (typeof window === "undefined" ? null : window.location.href) ?? "http://localhost:3000").hash);
+    const existingHash = Boolean(new URL(actualSrc, (_a2 = typeof window === "undefined" ? null : window.location.href) != null ? _a2 : "http://localhost:3000").hash);
     if (existingHash) {
       return actualSrc;
     }
@@ -29818,6 +29926,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     source,
     shouldUseWebAudioApi
   }) => {
+    var _a2, _b, _c;
     const audioStuffRef = (0, import_react52.useRef)(null);
     const currentVolumeRef = (0, import_react52.useRef)(volume);
     currentVolumeRef.current = volume;
@@ -29828,6 +29937,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { audioContext, gainNode: masterGainNode } = sharedAudioContext;
     if (typeof window !== "undefined") {
       (0, import_react52.useLayoutEffect)(() => {
+        var _a3, _b2;
         if (!audioContext) {
           return;
         }
@@ -29856,7 +29966,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         audioStuffRef.current = {
           gainNode
         };
-        Log.trace({ logLevel, tag: null }, `Starting to amplify ${mediaRef.current?.src}. Gain = ${currentVolumeRef.current}, playbackRate = ${mediaRef.current?.playbackRate}`);
+        Log.trace({ logLevel, tag: null }, `Starting to amplify ${(_a3 = mediaRef.current) == null ? void 0 : _a3.src}. Gain = ${currentVolumeRef.current}, playbackRate = ${(_b2 = mediaRef.current) == null ? void 0 : _b2.playbackRate}`);
         return () => {
           audioStuffRef.current = null;
           gainNode.disconnect();
@@ -29875,19 +29985,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const valueToSet = volume;
       if (!isApproximatelyTheSame(audioStuffRef.current.gainNode.gain.value, valueToSet)) {
         audioStuffRef.current.gainNode.gain.value = valueToSet;
-        Log.trace({ logLevel, tag: null }, `Setting gain to ${valueToSet} for ${mediaRef.current?.src}`);
+        Log.trace({ logLevel, tag: null }, `Setting gain to ${valueToSet} for ${(_a2 = mediaRef.current) == null ? void 0 : _a2.src}`);
       }
     }
-    const safariCase = isSafari() && mediaRef.current && mediaRef.current?.playbackRate !== 1;
+    const safariCase = isSafari() && mediaRef.current && ((_b = mediaRef.current) == null ? void 0 : _b.playbackRate) !== 1;
     const shouldUseTraditionalVolume = safariCase || !shouldUseWebAudioApi;
-    if (shouldUseTraditionalVolume && mediaRef.current && !isApproximatelyTheSame(volume, mediaRef.current?.volume)) {
+    if (shouldUseTraditionalVolume && mediaRef.current && !isApproximatelyTheSame(volume, (_c = mediaRef.current) == null ? void 0 : _c.volume)) {
       mediaRef.current.volume = Math.min(volume, 1);
     }
     return audioStuffRef;
   };
   var useMediaStartsAt = () => {
+    var _a2;
     const parentSequence = (0, import_react57.useContext)(SequenceContext);
-    return parentSequence?.cumulatedNegativeFrom ?? 0;
+    return (_a2 = parentSequence == null ? void 0 : parentSequence.cumulatedNegativeFrom) != null ? _a2 : 0;
   };
   var useFrameForVolumeProp = (behavior) => {
     const loop = Loop.useLoop();
@@ -29899,11 +30010,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return frame + startsAt + loop.durationInFrames * loop.iteration;
   };
   var getAssetDisplayName = (filename) => {
+    var _a2;
     if (filename.startsWith("data:")) {
       return "Data URL";
     }
     if (filename.startsWith("blob:")) {
-      const staticFile = typeof window === "undefined" ? void 0 : window.remotion_staticFiles?.find((file) => file.src === filename);
+      const staticFile = typeof window === "undefined" ? void 0 : (_a2 = window.remotion_staticFiles) == null ? void 0 : _a2.find((file) => file.src === filename);
       return staticFile ? getAssetDisplayName(staticFile.name) : "Blob URL";
     }
     const splitted = filename.split("/").map((s) => s.split("\\")).flat(1);
@@ -29921,7 +30033,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return compositionDurationInFrames;
     }
     const mediaDuration = calculateMediaDuration({
-      mediaDurationInFrames: compositionDurationInFrames * playbackRate + (trimBefore ?? 0),
+      mediaDurationInFrames: compositionDurationInFrames * playbackRate + (trimBefore != null ? trimBefore : 0),
       playbackRate,
       trimBefore,
       trimAfter
@@ -29977,6 +30089,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     loop,
     muted
   }) => {
+    var _a2;
     if (!src) {
       throw new Error("No src passed");
     }
@@ -29987,7 +30100,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       playbackRate,
       trimBefore,
       trimAfter,
-      parentSequenceDurationInFrames: parentSequence?.durationInFrames ?? null,
+      parentSequenceDurationInFrames: (_a2 = parentSequence == null ? void 0 : parentSequence.durationInFrames) != null ? _a2 : null,
       loop
     });
     const volumes = (0, import_react56.useMemo)(() => {
@@ -30015,13 +30128,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, [initialVolume, mediaType, src, volume]);
     const doesVolumeChange = typeof volume === "function";
-    const startMediaFrom = 0 - mediaStartsAt + (trimBefore ?? 0);
+    const startMediaFrom = 0 - mediaStartsAt + (trimBefore != null ? trimBefore : 0);
     const memoizedResult = (0, import_react56.useMemo)(() => {
       return {
         volumes,
         duration,
         doesVolumeChange,
-        finalDisplayName: displayName ?? getAssetDisplayName(src),
+        finalDisplayName: displayName != null ? displayName : getAssetDisplayName(src),
         startMediaFrom,
         src,
         playbackRate,
@@ -30056,6 +30169,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     refForOutline,
     muted
   }) => {
+    var _a2, _b;
     const parentSequence = (0, import_react56.useContext)(SequenceContext);
     const startsAt = useMediaStartsAt();
     const sequenceRegistrationEnabled = (0, import_react56.useContext)(SequenceRegistrationContext);
@@ -30077,6 +30191,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const { isStudio } = useRemotionEnvironment();
     const getSequenceForRegistration = (0, import_react56.useCallback)(() => {
+      var _a3;
       if (!src) {
         throw new Error("No src passed");
       }
@@ -30088,7 +30203,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         duration,
         from: 0,
         trimBefore: null,
-        parent: parentSequence?.id ?? null,
+        parent: (_a3 = parentSequence == null ? void 0 : parentSequence.id) != null ? _a3 : null,
         displayName: finalDisplayName,
         documentationLink,
         volume: volumes,
@@ -30129,7 +30244,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       refForOutline,
       muted
     ]);
-    const registrationEnabled = isStudio || sequenceRegistrationEnabled || typeof window !== "undefined" && window.process?.env?.NODE_ENV === "test";
+    const registrationEnabled = isStudio || sequenceRegistrationEnabled || typeof window !== "undefined" && ((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test";
     useSequenceRegistration({
       getSequence: registrationEnabled && showInTimeline ? getSequenceForRegistration : null,
       id
@@ -30195,7 +30310,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var BufferingProvider = ({ children }) => {
     const { logLevel, mountTime } = (0, import_react61.useContext)(LogLevelContext);
     const { isBuffering, setBuffering } = (0, import_react61.useContext)(SetTimelineContext);
-    const bufferManager = useBufferManager(logLevel ?? "info", mountTime, setBuffering, isBuffering);
+    const bufferManager = useBufferManager(logLevel != null ? logLevel : "info", mountTime, setBuffering, isBuffering);
     return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(BufferingContextReact.Provider, {
       value: bufferManager,
       children
@@ -30241,6 +30356,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const bufferingRef = (0, import_react59.useRef)(false);
     const { delayPlayback } = useBufferState();
     const bufferUntilFirstFrame = (0, import_react59.useCallback)((requestedTime) => {
+      var _a2;
       if (mediaType !== "video") {
         return;
       }
@@ -30272,7 +30388,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       bufferingRef.current = true;
       playbackLogging({
         logLevel,
-        message: `Buffering ${mediaRef.current?.src} until the first frame is received`,
+        message: `Buffering ${(_a2 = mediaRef.current) == null ? void 0 : _a2.src} until the first frame is received`,
         mountTime,
         tag: "buffer"
       });
@@ -30385,11 +30501,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return { type: "none" };
   };
   var useCurrentTimeOfMediaTagWithUpdateTimeStamp = (mediaRef) => {
+    var _a2, _b, _c, _d;
     const lastUpdate = import_react62.default.useRef({
-      time: mediaRef.current?.currentTime ?? 0,
+      time: (_b = (_a2 = mediaRef.current) == null ? void 0 : _a2.currentTime) != null ? _b : 0,
       lastUpdate: performance.now()
     });
-    const nowCurrentTime = mediaRef.current?.currentTime ?? null;
+    const nowCurrentTime = (_d = (_c = mediaRef.current) == null ? void 0 : _c.currentTime) != null ? _d : null;
     if (nowCurrentTime !== null) {
       if (lastUpdate.current.time !== nowCurrentTime) {
         lastUpdate.current.time = nowCurrentTime;
@@ -30740,7 +30857,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       isPostmounting,
       logLevel,
       mountTime,
-      src: src ?? null
+      src: src != null ? src : null
     });
     const { bufferUntilFirstFrame, isBuffering } = useBufferUntilFirstFrame({
       mediaRef,
@@ -30752,10 +30869,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const playbackRate = localPlaybackRate * globalPlaybackRate;
     const acceptableTimeShiftButLessThanDuration = (() => {
-      if (mediaRef.current?.duration) {
-        return Math.min(mediaRef.current.duration, acceptableTimeshift ?? DEFAULT_ACCEPTABLE_TIMESHIFT_WITH_AMPLIFICATION);
+      var _a2;
+      if ((_a2 = mediaRef.current) == null ? void 0 : _a2.duration) {
+        return Math.min(mediaRef.current.duration, acceptableTimeshift != null ? acceptableTimeshift : DEFAULT_ACCEPTABLE_TIMESHIFT_WITH_AMPLIFICATION);
       }
-      return acceptableTimeshift ?? DEFAULT_ACCEPTABLE_TIMESHIFT_WITH_AMPLIFICATION;
+      return acceptableTimeshift != null ? acceptableTimeshift : DEFAULT_ACCEPTABLE_TIMESHIFT_WITH_AMPLIFICATION;
     })();
     const env = useRemotionEnvironment();
     (0, import_react58.useLayoutEffect)(() => {
@@ -30771,6 +30889,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, [mediaRef, playbackRate, preservePitch]);
     (0, import_react58.useEffect)(() => {
+      var _a2, _b, _c, _d;
       const tagName = mediaType === "audio" ? "<Html5Audio>" : "<Html5Video>";
       if (!mediaRef.current) {
         throw new Error(`No ${mediaType} ref found`);
@@ -30807,8 +30926,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         desiredUnclampedTime,
         mediaTagTime: mediaTagCurrentTime.current.time,
         mediaTagLastUpdate: mediaTagCurrentTime.current.lastUpdate,
-        rvcTime: rvcCurrentTime.current?.time ?? null,
-        rvcLastUpdate: rvcCurrentTime.current?.lastUpdate ?? null,
+        rvcTime: (_b = (_a2 = rvcCurrentTime.current) == null ? void 0 : _a2.time) != null ? _b : null,
+        rvcLastUpdate: (_d = (_c = rvcCurrentTime.current) == null ? void 0 : _c.lastUpdate) != null ? _d : null,
         isVariableFpsVideo: Boolean(isVariableFpsVideoMap.current[src]),
         acceptableTimeShift: acceptableTimeShiftButLessThanDuration,
         lastSeekDueToShift: lastSeekDueToShift.current,
@@ -31014,6 +31133,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
   };
   var AudioForDevelopmentForwardRefFunction = (props, ref) => {
+    var _a2, _b, _c;
     const [initialShouldPreMountAudioElements] = (0, import_react51.useState)(props.shouldPreMountAudioTags);
     if (props.shouldPreMountAudioTags !== initialShouldPreMountAudioElements) {
       throw new Error("Cannot change the behavior for pre-mounting audio tags dynamically.");
@@ -31052,7 +31172,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     const [mediaVolume] = useMediaVolumeState();
     const [playerMuted] = usePlayerMutedState();
-    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior ?? "repeat");
+    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat");
     if (!src) {
       throw new TypeError("No 'src' was passed to <Html5Audio>.");
     }
@@ -31088,11 +31208,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
       userPreferredVolume,
       crossOriginValue
     ]);
-    const id = (0, import_react51.useMemo)(() => `audio-${random(src ?? "")}-${sequenceContext?.relativeFrom}-${sequenceContext?.cumulatedFrom}-${sequenceContext?.durationInFrames}-muted:${props.muted}-loop:${props.loop}`, [
+    const id = (0, import_react51.useMemo)(() => `audio-${random(src != null ? src : "")}-${sequenceContext == null ? void 0 : sequenceContext.relativeFrom}-${sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom}-${sequenceContext == null ? void 0 : sequenceContext.durationInFrames}-muted:${props.muted}-loop:${props.loop}`, [
       src,
-      sequenceContext?.relativeFrom,
-      sequenceContext?.cumulatedFrom,
-      sequenceContext?.durationInFrames,
+      sequenceContext == null ? void 0 : sequenceContext.relativeFrom,
+      sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom,
+      sequenceContext == null ? void 0 : sequenceContext.durationInFrames,
       props.muted,
       props.loop
     ]);
@@ -31103,46 +31223,46 @@ Check that all your Remotion packages are on the same version. If your dependenc
     } = useSharedAudio({
       aud: propsToPass,
       audioId: id,
-      premounting: Boolean(sequenceContext?.premounting),
-      postmounting: Boolean(sequenceContext?.postmounting)
+      premounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting),
+      postmounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting)
     });
     const getStack = (0, import_react50.useCallback)(() => {
-      return _remotionInternalStack ?? null;
+      return _remotionInternalStack != null ? _remotionInternalStack : null;
     }, [_remotionInternalStack]);
     useMediaInTimeline({
       volume,
       mediaVolume,
       src,
       mediaType: "audio",
-      playbackRate: playbackRate ?? 1,
-      displayName: name ?? null,
+      playbackRate: playbackRate != null ? playbackRate : 1,
+      displayName: name != null ? name : null,
       id: timelineId,
       getStack,
       showInTimeline,
-      premountDisplay: sequenceContext?.premountDisplay ?? null,
-      postmountDisplay: sequenceContext?.postmountDisplay ?? null,
+      premountDisplay: (_a2 = sequenceContext == null ? void 0 : sequenceContext.premountDisplay) != null ? _a2 : null,
+      postmountDisplay: (_b = sequenceContext == null ? void 0 : sequenceContext.postmountDisplay) != null ? _b : null,
       loopDisplay: void 0,
       documentationLink: "https://www.remotion.dev/docs/html5-audio",
       refForOutline: null,
-      muted: muted ?? false
+      muted: muted != null ? muted : false
     });
     useMediaPlayback({
       mediaRef: audioRef,
       src,
       mediaType: "audio",
-      playbackRate: playbackRate ?? 1,
+      playbackRate: playbackRate != null ? playbackRate : 1,
       preservePitch,
       onlyWarnForMediaSeekingError: false,
-      acceptableTimeshift: acceptableTimeShiftInSeconds ?? null,
-      isPremounting: Boolean(sequenceContext?.premounting),
-      isPostmounting: Boolean(sequenceContext?.postmounting),
+      acceptableTimeshift: acceptableTimeShiftInSeconds != null ? acceptableTimeShiftInSeconds : null,
+      isPremounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting),
+      isPostmounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting),
       pauseWhenBuffering,
       onAutoPlayError: null
     });
     useMediaTag({
       id: timelineId,
-      isPostmounting: Boolean(sequenceContext?.postmounting),
-      isPremounting: Boolean(sequenceContext?.premounting),
+      isPostmounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting),
+      isPremounting: Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting),
       mediaRef: audioRef,
       mediaType: "audio",
       onAutoPlayError: null
@@ -31152,9 +31272,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       mediaRef: audioRef,
       source: mediaElementSourceNode,
       volume: userPreferredVolume,
-      shouldUseWebAudioApi: useWebAudioApi ?? false
+      shouldUseWebAudioApi: useWebAudioApi != null ? useWebAudioApi : false
     });
-    const effectToUse = import_react51.default.useInsertionEffect ?? import_react51.default.useLayoutEffect;
+    const effectToUse = (_c = import_react51.default.useInsertionEffect) != null ? _c : import_react51.default.useLayoutEffect;
     effectToUse(() => {
       return () => {
         requestAnimationFrame(() => {
@@ -31168,16 +31288,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const currentOnDurationCallback = (0, import_react51.useRef)(onDuration);
     currentOnDurationCallback.current = onDuration;
     (0, import_react51.useEffect)(() => {
+      var _a3;
       const { current } = audioRef;
       if (!current) {
         return;
       }
       if (current.duration) {
-        currentOnDurationCallback.current?.(current.src, current.duration);
+        (_a3 = currentOnDurationCallback.current) == null ? void 0 : _a3.call(currentOnDurationCallback, current.src, current.duration);
         return;
       }
       const onLoadedMetadata = () => {
-        currentOnDurationCallback.current?.(current.src, current.duration);
+        var _a4;
+        (_a4 = currentOnDurationCallback.current) == null ? void 0 : _a4.call(currentOnDurationCallback, current.src, current.duration);
       };
       current.addEventListener("loadedmetadata", onLoadedMetadata);
       return () => {
@@ -31224,16 +31346,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
       ...nativeProps
     } = props;
     const absoluteFrame = useTimelinePosition();
-    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior ?? "repeat");
+    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat");
     const frame = useCurrentFrame();
     const sequenceContext = (0, import_react67.useContext)(SequenceContext);
     const { registerRenderAsset, unregisterRenderAsset } = (0, import_react67.useContext)(RenderAssetManager);
     const { delayRender: delayRender2, continueRender: continueRender2 } = useDelayRender();
-    const id = (0, import_react67.useMemo)(() => `audio-${random(props.src ?? "")}-${sequenceContext?.relativeFrom}-${sequenceContext?.cumulatedFrom}-${sequenceContext?.durationInFrames}`, [
+    const id = (0, import_react67.useMemo)(() => {
+      var _a2;
+      return `audio-${random((_a2 = props.src) != null ? _a2 : "")}-${sequenceContext == null ? void 0 : sequenceContext.relativeFrom}-${sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom}-${sequenceContext == null ? void 0 : sequenceContext.durationInFrames}`;
+    }, [
       props.src,
-      sequenceContext?.relativeFrom,
-      sequenceContext?.cumulatedFrom,
-      sequenceContext?.durationInFrames
+      sequenceContext == null ? void 0 : sequenceContext.relativeFrom,
+      sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom,
+      sequenceContext == null ? void 0 : sequenceContext.durationInFrames
     ]);
     const volume = evaluateVolume({
       volume: volumeProp,
@@ -31245,6 +31370,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return audioRef.current;
     }, []);
     (0, import_react67.useEffect)(() => {
+      var _a2, _b;
       if (!props.src) {
         throw new Error("No src passed");
       }
@@ -31264,10 +31390,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
         frame: absoluteFrame,
         volume,
         mediaFrame: frame,
-        playbackRate: props.playbackRate ?? 1,
-        toneFrequency: toneFrequency ?? 1,
-        audioStartFrame: Math.max(0, -(sequenceContext?.cumulatedNegativeFrom ?? 0)),
-        audioStreamIndex: audioStreamIndex ?? 0
+        playbackRate: (_a2 = props.playbackRate) != null ? _a2 : 1,
+        toneFrequency: toneFrequency != null ? toneFrequency : 1,
+        audioStartFrame: Math.max(0, -((_b = sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom) != null ? _b : 0)),
+        audioStreamIndex: audioStreamIndex != null ? audioStreamIndex : 0
       });
       return () => unregisterRenderAsset(id);
     }, [
@@ -31283,37 +31409,38 @@ Check that all your Remotion packages are on the same version. If your dependenc
       playbackRate,
       props.playbackRate,
       toneFrequency,
-      sequenceContext?.cumulatedNegativeFrom,
+      sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom,
       audioStreamIndex
     ]);
     const { src } = props;
     const needsToRenderAudioTag = ref || _remotionInternalNeedsDurationCalculation;
     (0, import_react67.useLayoutEffect)(() => {
-      if (window.process?.env?.NODE_ENV === "test") {
+      var _a2, _b;
+      if (((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test") {
         return;
       }
       if (!needsToRenderAudioTag) {
         return;
       }
       const newHandle = delayRender2("Loading <Html5Audio> duration with src=" + src, {
-        retries: delayRenderRetries ?? void 0,
-        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
+        retries: delayRenderRetries != null ? delayRenderRetries : void 0,
+        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
       });
       const { current } = audioRef;
       const didLoad = () => {
-        if (current?.duration) {
+        if (current == null ? void 0 : current.duration) {
           onDuration(current.src, current.duration);
         }
         continueRender2(newHandle);
       };
-      if (current?.duration) {
+      if (current == null ? void 0 : current.duration) {
         onDuration(current.src, current.duration);
         continueRender2(newHandle);
       } else {
-        current?.addEventListener("loadedmetadata", didLoad, { once: true });
+        current == null ? void 0 : current.addEventListener("loadedmetadata", didLoad, { once: true });
       }
       return () => {
-        current?.removeEventListener("loadedmetadata", didLoad);
+        current == null ? void 0 : current.removeEventListener("loadedmetadata", didLoad);
         continueRender2(newHandle);
       };
     }, [
@@ -31336,6 +31463,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var AudioForRendering = (0, import_react67.forwardRef)(AudioForRenderingRefForwardingFunction);
   var AudioRefForwardingFunction = (props, ref) => {
+    var _a2, _b, _c;
     const audioTagsContext = (0, import_react45.useContext)(SharedAudioTagsContext);
     const propsWithFreeze = props;
     const {
@@ -31376,14 +31504,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
         cancelRender(new Error(errMessage));
       } else {
-        onRemotionError?.(new Error(errMessage));
+        onRemotionError == null ? void 0 : onRemotionError(new Error(errMessage));
         console.warn(errMessage);
       }
     }, [loop, onRemotionError, preloadedSrc]);
     const onDuration = (0, import_react45.useCallback)((src, durationInSeconds) => {
       setDurations({ type: "got-duration", durationInSeconds, src });
     }, [setDurations]);
-    const durationFetched = durations[getAbsoluteSrc(preloadedSrc)] ?? durations[getAbsoluteSrc(props.src)];
+    const durationFetched = (_a2 = durations[getAbsoluteSrc(preloadedSrc)]) != null ? _a2 : durations[getAbsoluteSrc(props.src)];
     validateMediaTrimProps({ startFrom, endAt, trimBefore, trimAfter });
     const { trimBeforeValue, trimAfterValue } = resolveTrimProps({
       startFrom,
@@ -31405,7 +31533,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         durationInFrames: calculateMediaDuration({
           trimAfter: trimAfterValue,
           mediaDurationInFrames: duration,
-          playbackRate: props.playbackRate ?? 1,
+          playbackRate: (_b = props.playbackRate) != null ? _b : 1,
           trimBefore: trimBeforeValue
         }),
         children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Html5Audio, {
@@ -31418,7 +31546,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (typeof trimBeforeValue !== "undefined" || typeof trimAfterValue !== "undefined") {
       return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Sequence, {
         layout: "none",
-        from: 0 - (trimBeforeValue ?? 0),
+        from: 0 - (trimBeforeValue != null ? trimBeforeValue : 0),
         showInTimeline: false,
         durationInFrames: trimAfterValue,
         name,
@@ -31445,8 +31573,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       });
     }
     return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(AudioForPreview, {
-      _remotionInternalNativeLoopPassed: props._remotionInternalNativeLoopPassed ?? false,
-      _remotionInternalStack: _remotionInternalStack ?? null,
+      _remotionInternalNativeLoopPassed: (_c = props._remotionInternalNativeLoopPassed) != null ? _c : false,
+      _remotionInternalStack: _remotionInternalStack != null ? _remotionInternalStack : null,
       shouldPreMountAudioTags: audioTagsContext !== null && audioTagsContext.numberOfAudioTags > 0,
       ...props,
       ref,
@@ -31454,7 +31582,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       onDuration,
       pauseWhenBuffering: shouldPauseWhenBuffering,
       _remotionInternalNeedsDurationCalculation: Boolean(loop),
-      showInTimeline: showInTimeline ?? true
+      showInTimeline: showInTimeline != null ? showInTimeline : true
     });
   };
   var Html5Audio = (0, import_react45.forwardRef)(AudioRefForwardingFunction);
@@ -31524,7 +31652,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [outputCanvas, setOutputCanvas] = (0, import_react68.useState)(null);
     const memoizedEffects = useMemoizedEffects({
       effects,
-      overrideId: overrideId ?? null
+      overrideId: overrideId != null ? overrideId : null
     });
     const sourceCanvas = (0, import_react68.useMemo)(() => {
       if (typeof document === "undefined") {
@@ -31598,7 +31726,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return {
         width,
         height,
-        ...style2 ?? {}
+        ...style2 != null ? style2 : {}
       };
     }, [height, style2, width]);
     return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("canvas", {
@@ -31631,6 +31759,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     cropBottom,
     ...props2
   }, ref) => {
+    var _a2;
     const memoizedEffectDefinitions = useMemoizedEffectDefinitions(effects);
     const actualRef = (0, import_react68.useRef)(null);
     (0, import_react68.useImperativeHandle)(ref, () => {
@@ -31641,7 +31770,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       cropRight,
       cropTop,
       cropBottom,
-      style: style2 ?? null,
+      style: style2 != null ? style2 : null,
       componentName: "<Solid />"
     });
     return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Sequence, {
@@ -31654,18 +31783,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
       controls,
       _remotionInternalEffects: memoizedEffectDefinitions,
       durationInFrames,
-      name: name ?? "<Solid>",
+      name: name != null ? name : "<Solid>",
       outlineRef: actualRef,
       _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/solid",
       ...props2,
       children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(SolidInner, {
         reference: actualRef,
-        overrideId: controls?.overrideId ?? null,
+        overrideId: (_a2 = controls == null ? void 0 : controls.overrideId) != null ? _a2 : null,
         color,
         height,
         width,
         className: className2,
-        style: croppedStyle ?? void 0,
+        style: croppedStyle != null ? croppedStyle : void 0,
         effects,
         pixelDensity
       })
@@ -31700,7 +31829,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-    cachedSupport = typeof ctx?.drawElementImage === "function" && typeof canvas.requestPaint === "function" && typeof canvas.captureElementImage === "function" && "transferControlToOffscreen" in HTMLCanvasElement.prototype;
+    cachedSupport = typeof (ctx == null ? void 0 : ctx.drawElementImage) === "function" && typeof canvas.requestPaint === "function" && typeof canvas.captureElementImage === "function" && "transferControlToOffscreen" in HTMLCanvasElement.prototype;
     return cachedSupport;
   };
   var HTML_IN_CANVAS_UNSUPPORTED_MESSAGE = "HTML in Canvas is not supported. Two common causes: Chrome is older than version 148 (update Chrome), or the HTML-in-Canvas flag is disabled at chrome://flags/#canvas-draw-element (enable it and restart Chrome).";
@@ -31765,6 +31894,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     controls,
     style: style2
   }, ref) => {
+    var _a2;
     const isInsideAncestorHtmlInCanvas = (0, import_react69.useContext)(HtmlInCanvasAncestorContext);
     assertHtmlInCanvasDimensions(width, height);
     if (isInsideAncestorHtmlInCanvas) {
@@ -31795,7 +31925,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const chainState = useEffectChainState();
     const memoizedEffects = useMemoizedEffects({
       effects,
-      overrideId: controls?.overrideId ?? null
+      overrideId: (_a2 = controls == null ? void 0 : controls.overrideId) != null ? _a2 : null
     });
     const effectsRef = (0, import_react69.useRef)(memoizedEffects);
     effectsRef.current = memoizedEffects;
@@ -31946,11 +32076,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
       unmountedRef.current = false;
       placeholder.addEventListener("paint", onPaintCb);
       return () => {
+        var _a3;
         placeholder.removeEventListener("paint", onPaintCb);
         paintTargetRef.current = null;
         initializedRef.current = false;
         unmountedRef.current = true;
-        onInitCleanupRef.current?.();
+        (_a3 = onInitCleanupRef.current) == null ? void 0 : _a3.call(onInitCleanupRef);
         onInitCleanupRef.current = null;
       };
     }, [
@@ -31962,6 +32093,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]);
     const onPaintChangedRef = (0, import_react69.useRef)(false);
     (0, import_react69.useLayoutEffect)(() => {
+      var _a3;
       if (!onPaintChangedRef.current) {
         onPaintChangedRef.current = true;
         return;
@@ -31970,7 +32102,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       if (!canvas) {
         return;
       }
-      canvas.requestPaint?.();
+      (_a3 = canvas.requestPaint) == null ? void 0 : _a3.call(canvas);
     }, [onPaint, memoizedEffects]);
     (0, import_react69.useLayoutEffect)(() => {
       const canvas = canvas2dRef.current;
@@ -31995,7 +32127,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return {
         width,
         height,
-        ...style2 ?? {}
+        ...style2 != null ? style2 : {}
       };
     }, [height, style2, width]);
     return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(HtmlInCanvasAncestorContext.Provider, {
@@ -32047,12 +32179,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
       cropRight,
       cropTop,
       cropBottom,
-      style: style2 ?? null,
+      style: style2 != null ? style2 : null,
       componentName: "<HtmlInCanvas />"
     });
     return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Sequence, {
       durationInFrames,
-      name: name ?? "<HtmlInCanvas>",
+      name: name != null ? name : "<HtmlInCanvas>",
       _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/remotion/html-in-canvas",
       controls,
       _remotionInternalEffects: memoizedEffectDefinitions,
@@ -32068,7 +32200,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         onInit,
         pixelDensity,
         controls,
-        style: croppedStyle ?? void 0,
+        style: croppedStyle != null ? croppedStyle : void 0,
         children
       })
     });
@@ -32169,7 +32301,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         settle(() => reject(makeAbortError()));
       }
       image.onload = () => {
-        Promise.resolve(image.decode?.()).catch(() => {
+        var _a2;
+        Promise.resolve((_a2 = image.decode) == null ? void 0 : _a2.call(image)).catch(() => {
           return;
         }).then(() => {
           const imageWidth = image.naturalWidth || image.width;
@@ -32226,6 +32359,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     refForOutline,
     ...canvasProps
   }, ref) => {
+    var _a2;
     const { delayRender: delayRender2, continueRender: continueRender2, cancelRender: cancelRender2 } = useDelayRender();
     const { delayPlayback } = useBufferState();
     const [outputCanvas, setOutputCanvas] = (0, import_react70.useState)(null);
@@ -32234,13 +32368,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const chainState = useEffectChainState();
     const memoizedEffects = useMemoizedEffects({
       effects,
-      overrideId: controls?.overrideId ?? null
+      overrideId: (_a2 = controls == null ? void 0 : controls.overrideId) != null ? _a2 : null
     });
     const sequenceContext = (0, import_react70.useContext)(SequenceContext);
     const pendingLoadDelayRef = (0, import_react70.useRef)(null);
     const [isLoadPending, setIsLoadPending] = (0, import_react70.useState)(false);
-    const isPremounting = Boolean(sequenceContext?.premounting);
-    const isPostmounting = Boolean(sequenceContext?.postmounting);
+    const isPremounting = Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting);
+    const isPostmounting = Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting);
     const continuePendingLoadDelay = (0, import_react70.useCallback)(({ markAsReady }) => {
       const pending = pendingLoadDelayRef.current;
       if (!pending || pending.continued) {
@@ -32284,8 +32418,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]);
     (0, import_react70.useLayoutEffect)(() => {
       const handle = delayRender2(`Rendering <CanvasImage> with src="${truncateSrcForLabel(actualSrc)}"`, {
-        retries: delayRenderRetries ?? void 0,
-        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
+        retries: delayRenderRetries != null ? delayRenderRetries : void 0,
+        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
       });
       const controller = new AbortController();
       let cancelled = false;
@@ -32361,8 +32495,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         continued = true;
         continueRender2(handle);
       };
-      const canvasWidth = width ?? loadedImage.width;
-      const canvasHeight = height ?? loadedImage.height;
+      const canvasWidth = width != null ? width : loadedImage.width;
+      const canvasHeight = height != null ? height : loadedImage.height;
       const sourceContext = sourceCanvas.getContext("2d", {
         colorSpace: "srgb"
       });
@@ -32494,13 +32628,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       premountingActive,
       premountingStyle
     } = usePremounting({
-      from: from ?? 0,
-      durationInFrames: durationInFrames ?? Infinity,
-      premountFor: premountFor ?? null,
-      postmountFor: postmountFor ?? null,
-      style: style2 ?? null,
-      styleWhilePremounted: styleWhilePremounted ?? null,
-      styleWhilePostmounted: styleWhilePostmounted ?? null,
+      from: from != null ? from : 0,
+      durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
+      premountFor: premountFor != null ? premountFor : null,
+      postmountFor: postmountFor != null ? postmountFor : null,
+      style: style2 != null ? style2 : null,
+      styleWhilePremounted: styleWhilePremounted != null ? styleWhilePremounted : null,
+      styleWhilePostmounted: styleWhilePostmounted != null ? styleWhilePostmounted : null,
       hideWhilePremounted: "display-none"
     });
     const croppedStyle = useCropStyle({
@@ -32509,21 +32643,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
       cropTop,
       cropBottom,
       style: premountingStyle,
-      componentName: _remotionInternalCropComponentName ?? "<CanvasImage />"
+      componentName: _remotionInternalCropComponentName != null ? _remotionInternalCropComponentName : "<CanvasImage />"
     });
     return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(Freeze, {
       frame: freezeFrame,
       active: isPremountingOrPostmounting,
       children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(Sequence, {
         layout: "none",
-        from: from ?? 0,
+        from: from != null ? from : 0,
         trimBefore,
-        durationInFrames: durationInFrames ?? Infinity,
+        durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
         freeze,
         hidden,
-        showInTimeline: showInTimeline ?? true,
-        name: name ?? "<CanvasImage>",
-        _remotionInternalDocumentationLink: _remotionInternalDocumentationLink ?? "https://www.remotion.dev/docs/canvasimage",
+        showInTimeline: showInTimeline != null ? showInTimeline : true,
+        name: name != null ? name : "<CanvasImage>",
+        _remotionInternalDocumentationLink: _remotionInternalDocumentationLink != null ? _remotionInternalDocumentationLink : "https://www.remotion.dev/docs/canvasimage",
         controls,
         _remotionInternalEffects: memoizedEffectDefinitions,
         _remotionInternalIsMedia: { type: "image", src },
@@ -32531,7 +32665,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         _remotionInternalPostmountDisplay: effectivePostmountFor || null,
         _remotionInternalIsPremounting: premountingActive,
         _remotionInternalIsPostmounting: postmountingActive,
-        outlineRef: outlineRef ?? actualRef,
+        outlineRef: outlineRef != null ? outlineRef : actualRef,
         children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(CanvasImageContent, {
           ref: actualRef,
           src,
@@ -32541,14 +32675,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
           effects,
           controls,
           className: className2,
-          style: croppedStyle ?? void 0,
+          style: croppedStyle != null ? croppedStyle : void 0,
           id,
           onError,
           pauseWhenLoading,
           maxRetries,
           delayRenderRetries,
           delayRenderTimeoutInMilliseconds,
-          refForOutline: outlineRef ?? null,
+          refForOutline: outlineRef != null ? outlineRef : null,
           ...canvasProps
         })
       })
@@ -32572,12 +32706,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }, ref) => {
     const { delayRender: delayRender2, continueRender: continueRender2 } = useDelayRender();
     const [handle] = (0, import_react71.useState)(() => delayRender2(`Loading <IFrame> with source ${props2.src}`, {
-      retries: delayRenderRetries ?? void 0,
-      timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
+      retries: delayRenderRetries != null ? delayRenderRetries : void 0,
+      timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
     }));
     const didLoad = (0, import_react71.useCallback)((e) => {
       continueRender2(handle);
-      onLoad?.(e);
+      onLoad == null ? void 0 : onLoad(e);
     }, [handle, onLoad, continueRender2]);
     const didGetError = (0, import_react71.useCallback)((e) => {
       continueRender2(handle);
@@ -32638,10 +32772,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
       const currentSrc = imageRef.current.src;
       setTimeout(() => {
+        var _a2;
         if (!imageRef.current) {
           return;
         }
-        const newSrc = imageRef.current?.src;
+        const newSrc = (_a2 = imageRef.current) == null ? void 0 : _a2.src;
         if (newSrc !== currentSrc) {
           return;
         }
@@ -32650,26 +32785,27 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }, timeout);
     }, []);
     const { delayRender: delayRender2, continueRender: continueRender2, cancelRender: cancelRender2 } = useDelayRender();
-    const isPremounting = Boolean(sequenceContext?.premounting);
-    const isPostmounting = Boolean(sequenceContext?.postmounting);
+    const isPremounting = Boolean(sequenceContext == null ? void 0 : sequenceContext.premounting);
+    const isPostmounting = Boolean(sequenceContext == null ? void 0 : sequenceContext.postmounting);
     const didGetError = (0, import_react72.useCallback)((e) => {
+      var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
       if (!errors.current) {
         return;
       }
-      errors.current[imageRef.current?.src] = (errors.current[imageRef.current?.src] ?? 0) + 1;
-      if (onError && (errors.current[imageRef.current?.src] ?? 0) > maxRetries) {
+      errors.current[(_a2 = imageRef.current) == null ? void 0 : _a2.src] = ((_c = errors.current[(_b = imageRef.current) == null ? void 0 : _b.src]) != null ? _c : 0) + 1;
+      if (onError && ((_e = errors.current[(_d = imageRef.current) == null ? void 0 : _d.src]) != null ? _e : 0) > maxRetries) {
         onError(e);
         return;
       }
-      if ((errors.current[imageRef.current?.src] ?? 0) <= maxRetries) {
-        const backoff = exponentialBackoff2(errors.current[imageRef.current?.src] ?? 0);
-        console.warn(`Could not load image with source ${truncateSrcForLabel(imageRef.current?.src)}, retrying again in ${backoff}ms`);
+      if (((_g = errors.current[(_f = imageRef.current) == null ? void 0 : _f.src]) != null ? _g : 0) <= maxRetries) {
+        const backoff = exponentialBackoff2((_i = errors.current[(_h = imageRef.current) == null ? void 0 : _h.src]) != null ? _i : 0);
+        console.warn(`Could not load image with source ${truncateSrcForLabel((_j = imageRef.current) == null ? void 0 : _j.src)}, retrying again in ${backoff}ms`);
         retryIn(backoff);
         return;
       }
       try {
-        cancelRender2("Error loading image with src: " + truncateSrcForLabel(imageRef.current?.src));
-      } catch {
+        cancelRender2("Error loading image with src: " + truncateSrcForLabel((_k = imageRef.current) == null ? void 0 : _k.src));
+      } catch (e2) {
       }
     }, [cancelRender2, maxRetries, onError, retryIn]);
     if (typeof window !== "undefined") {
@@ -32686,7 +32822,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         pauseWhenLoading
       ]);
       (0, import_react72.useLayoutEffect)(() => {
-        if (window.process?.env?.NODE_ENV === "test") {
+        var _a2, _b;
+        if (((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test") {
           if (imageRef.current) {
             imageRef.current.src = actualSrc;
           }
@@ -32698,21 +32835,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
         setIsLoading(true);
         const newHandle = delayRender2("Loading <Img> with src=" + truncateSrcForLabel(actualSrc), {
-          retries: delayRenderRetries ?? void 0,
-          timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
+          retries: delayRenderRetries != null ? delayRenderRetries : void 0,
+          timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
         });
         let unmounted = false;
         const onComplete = () => {
+          var _a3, _b2, _c, _d;
           if (unmounted) {
             continueRender2(newHandle);
             return;
           }
-          if ((errors.current[imageRef.current?.src] ?? 0) > 0) {
-            delete errors.current[imageRef.current?.src];
-            console.info(`Retry successful - ${truncateSrcForLabel(imageRef.current?.src)} is now loaded`);
+          if (((_b2 = errors.current[(_a3 = imageRef.current) == null ? void 0 : _a3.src]) != null ? _b2 : 0) > 0) {
+            delete errors.current[(_c = imageRef.current) == null ? void 0 : _c.src];
+            console.info(`Retry successful - ${truncateSrcForLabel((_d = imageRef.current) == null ? void 0 : _d.src)} is now loaded`);
           }
           if (current) {
-            onImageFrame?.(current);
+            onImageFrame == null ? void 0 : onImageFrame(current);
           }
           setIsLoading(false);
           continueRender2(newHandle);
@@ -32792,13 +32930,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       premountingActive,
       premountingStyle
     } = usePremounting({
-      from: from ?? 0,
-      durationInFrames: durationInFrames ?? Infinity,
-      premountFor: premountFor ?? null,
-      postmountFor: postmountFor ?? null,
-      style: style2 ?? null,
-      styleWhilePremounted: styleWhilePremounted ?? null,
-      styleWhilePostmounted: styleWhilePostmounted ?? null,
+      from: from != null ? from : 0,
+      durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
+      premountFor: premountFor != null ? premountFor : null,
+      postmountFor: postmountFor != null ? postmountFor : null,
+      style: style2 != null ? style2 : null,
+      styleWhilePremounted: styleWhilePremounted != null ? styleWhilePremounted : null,
+      styleWhilePostmounted: styleWhilePostmounted != null ? styleWhilePostmounted : null,
       hideWhilePremounted: "display-none"
     });
     const croppedStyle = useCropStyle({
@@ -32814,9 +32952,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       active: isPremountingOrPostmounting,
       children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Sequence, {
         layout: "none",
-        from: from ?? 0,
+        from: from != null ? from : 0,
         trimBefore,
-        durationInFrames: durationInFrames ?? Infinity,
+        durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
         freeze,
         _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/img",
         _remotionInternalIsMedia: { type: "image", src },
@@ -32824,15 +32962,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
         _remotionInternalPostmountDisplay: effectivePostmountFor || null,
         _remotionInternalIsPremounting: premountingActive,
         _remotionInternalIsPostmounting: postmountingActive,
-        name: name ?? "<Img>",
+        name: name != null ? name : "<Img>",
         controls,
-        showInTimeline: showInTimeline ?? true,
+        showInTimeline: showInTimeline != null ? showInTimeline : true,
         hidden,
         outlineRef: refForOutline,
         children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ImgContent, {
           src,
           refForOutline,
-          style: croppedStyle ?? void 0,
+          style: croppedStyle != null ? croppedStyle : void 0,
           ...props2
         })
       })
@@ -32891,7 +33029,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     throw new Error(`The ${formatPropList(conflictingProps)} prop${conflictingProps.length === 1 ? "" : "s"} cannot be used on <Img> when effects are passed, because <Img> renders a <canvas> instead of a native <img>. Remove ${conflictingProps.length === 1 ? "this prop" : "these props"}.`);
   };
   var getFitFromObjectFit = (style2) => {
-    const objectFit = style2?.objectFit;
+    const objectFit = style2 == null ? void 0 : style2.objectFit;
     if (objectFit === "fill" || objectFit === "contain" || objectFit === "cover") {
       return objectFit;
     }
@@ -32928,6 +33066,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     delayRenderTimeoutInMilliseconds,
     ...props2
   }) => {
+    var _a2;
     const refForOutline = (0, import_react72.useRef)(null);
     const shouldPauseWhenLoading = resolveV5Default(pauseWhenLoading);
     if (effects.length === 0) {
@@ -32975,7 +33114,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const canvasWidth = typeof width === "number" ? width : void 0;
     const canvasHeight = typeof height === "number" ? height : void 0;
     const canvasProps = props2;
-    const canvasFit = getFitFromObjectFit(style2) ?? "fill";
+    const canvasFit = (_a2 = getFitFromObjectFit(style2)) != null ? _a2 : "fill";
     return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CanvasImageWithPrivateProps, {
       src,
       width: canvasWidth,
@@ -33002,7 +33141,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       styleWhilePremounted,
       styleWhilePostmounted,
       hidden,
-      name: name ?? "<Img>",
+      name: name != null ? name : "<Img>",
       showInTimeline,
       _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/img",
       _remotionInternalCropComponentName: "<Img />",
@@ -33107,7 +33246,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         cropRight,
         cropTop,
         cropBottom,
-        style: style2 ?? null,
+        style: style2 != null ? style2 : null,
         componentName: displayName
       });
       const refForOutline = (0, import_react73.useRef)(null);
@@ -33117,19 +33256,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }, [ref]);
       return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Sequence, {
         layout: "none",
-        from: from ?? 0,
+        from: from != null ? from : 0,
         trimBefore,
-        durationInFrames: durationInFrames ?? Infinity,
+        durationInFrames: durationInFrames != null ? durationInFrames : Infinity,
         freeze,
         hidden,
-        name: name ?? displayName,
-        showInTimeline: showInTimeline ?? true,
+        name: name != null ? name : displayName,
+        showInTimeline: showInTimeline != null ? showInTimeline : true,
         controls,
         _remotionInternalDocumentationLink: "https://www.remotion.dev/docs/interactive",
         outlineRef: refForOutline,
         children: import_react73.default.createElement(tag, {
           ...props2,
-          style: croppedStyle ?? void 0,
+          style: croppedStyle != null ? croppedStyle : void 0,
           ref: callbackRef
         })
       });
@@ -33278,6 +33417,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const internalOrder = nextInternalOrderRef.current++;
       internalOrderRef.current.set(orderKey, internalOrder);
       updateCompositions((comps) => {
+        var _a2, _b;
         if (comps.find((c22) => c22.id === comp.id)) {
           throw new Error(`Multiple composition with id ${comp.id} are registered.`);
         }
@@ -33285,7 +33425,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           ...comps,
           {
             ...comp,
-            order: committedOrderRef.current?.get(orderKey) ?? internalOrder
+            order: (_b = (_a2 = committedOrderRef.current) == null ? void 0 : _a2.get(orderKey)) != null ? _b : internalOrder
           }
         ];
       });
@@ -33304,12 +33444,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const internalOrder = nextInternalOrderRef.current++;
       internalOrderRef.current.set(orderKey, internalOrder);
       setFolders((prevFolders) => {
+        var _a2, _b;
         return [
           ...prevFolders,
           {
             name,
             parent,
-            order: committedOrderRef.current?.get(orderKey) ?? internalOrder,
+            order: (_b = (_a2 = committedOrderRef.current) == null ? void 0 : _a2.get(orderKey)) != null ? _b : internalOrder,
             stack
           }
         ];
@@ -33350,13 +33491,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
           updateCompositions((currentCompositions) => {
             let changed = false;
             const nextCompositions = currentCompositions.map((composition) => {
-              const nextOrder = order.get(getCompositionAndFolderOrderKey({
+              var _a2, _b;
+              const nextOrder = (_b = (_a2 = order.get(getCompositionAndFolderOrderKey({
                 type: "composition",
                 id: composition.id
-              })) ?? internalOrderRef.current.get(getCompositionAndFolderOrderKey({
+              }))) != null ? _a2 : internalOrderRef.current.get(getCompositionAndFolderOrderKey({
                 type: "composition",
                 id: composition.id
-              })) ?? composition.order;
+              }))) != null ? _b : composition.order;
               if (nextOrder === composition.order) {
                 return composition;
               }
@@ -33368,13 +33510,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
           setFolders((currentFolders) => {
             let changed = false;
             const nextFolders = currentFolders.map((folder) => {
-              const nextOrder = order.get(getCompositionAndFolderOrderKey({
+              var _a2, _b;
+              const nextOrder = (_b = (_a2 = order.get(getCompositionAndFolderOrderKey({
                 type: "folder",
                 id: getFolderOrderId(folder)
-              })) ?? internalOrderRef.current.get(getCompositionAndFolderOrderKey({
+              }))) != null ? _a2 : internalOrderRef.current.get(getCompositionAndFolderOrderKey({
                 type: "folder",
                 id: getFolderOrderId(folder)
-              })) ?? folder.order;
+              }))) != null ? _b : folder.order;
               if (nextOrder === folder.order) {
                 return folder;
               }
@@ -33595,7 +33738,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           try {
             disposeResource(entry);
           } catch (error2) {
-            firstError ??= error2;
+            firstError != null ? firstError : firstError = error2;
           }
         }
         if (firstError !== null) {
@@ -33743,7 +33886,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           try {
             resource.dispose();
           } catch (error2) {
-            firstError ??= error2;
+            firstError != null ? firstError : firstError = error2;
           }
         }
         if (firstError !== null) {
@@ -33786,26 +33929,27 @@ Check that all your Remotion packages are on the same version. If your dependenc
     compositionWidth,
     compositionDurationInFrames
   }) => {
+    var _a2, _b, _c, _d, _e, _f, _g, _h;
     const calculateMetadataErrorLocation = `calculated by calculateMetadata() for the composition "${compositionId}"`;
     const defaultErrorLocation = `of the "<Composition />" component with the id "${compositionId}"`;
-    const width = calculated?.width ?? compositionWidth ?? void 0;
-    validateDimension(width, "width", calculated?.width ? calculateMetadataErrorLocation : defaultErrorLocation);
-    const height = calculated?.height ?? compositionHeight ?? void 0;
-    validateDimension(height, "height", calculated?.height ? calculateMetadataErrorLocation : defaultErrorLocation);
-    const fps = calculated?.fps ?? compositionFps ?? null;
-    validateFps(fps, calculated?.fps ? calculateMetadataErrorLocation : defaultErrorLocation, false);
-    const durationInFrames = calculated?.durationInFrames ?? compositionDurationInFrames ?? null;
+    const width = (_b = (_a2 = calculated == null ? void 0 : calculated.width) != null ? _a2 : compositionWidth) != null ? _b : void 0;
+    validateDimension(width, "width", (calculated == null ? void 0 : calculated.width) ? calculateMetadataErrorLocation : defaultErrorLocation);
+    const height = (_d = (_c = calculated == null ? void 0 : calculated.height) != null ? _c : compositionHeight) != null ? _d : void 0;
+    validateDimension(height, "height", (calculated == null ? void 0 : calculated.height) ? calculateMetadataErrorLocation : defaultErrorLocation);
+    const fps = (_f = (_e = calculated == null ? void 0 : calculated.fps) != null ? _e : compositionFps) != null ? _f : null;
+    validateFps(fps, (calculated == null ? void 0 : calculated.fps) ? calculateMetadataErrorLocation : defaultErrorLocation, false);
+    const durationInFrames = (_h = (_g = calculated == null ? void 0 : calculated.durationInFrames) != null ? _g : compositionDurationInFrames) != null ? _h : null;
     validateDurationInFrames(durationInFrames, {
       allowFloats: false,
       component: `of the "<Composition />" component with the id "${compositionId}"`
     });
-    const defaultCodec = calculated?.defaultCodec;
+    const defaultCodec = calculated == null ? void 0 : calculated.defaultCodec;
     validateCodec(defaultCodec, calculateMetadataErrorLocation, "defaultCodec");
-    const defaultOutName = calculated?.defaultOutName;
-    const defaultVideoImageFormat = calculated?.defaultVideoImageFormat;
-    const defaultPixelFormat = calculated?.defaultPixelFormat;
-    const defaultProResProfile = calculated?.defaultProResProfile;
-    const defaultSampleRate = calculated?.defaultSampleRate;
+    const defaultOutName = calculated == null ? void 0 : calculated.defaultOutName;
+    const defaultVideoImageFormat = calculated == null ? void 0 : calculated.defaultVideoImageFormat;
+    const defaultPixelFormat = calculated == null ? void 0 : calculated.defaultPixelFormat;
+    const defaultProResProfile = calculated == null ? void 0 : calculated.defaultProResProfile;
+    const defaultSampleRate = calculated == null ? void 0 : calculated.defaultSampleRate;
     return {
       width,
       height,
@@ -33829,6 +33973,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     defaultProps,
     originalProps
   }) => {
+    var _a2, _b, _c, _d, _e, _f, _g;
     const data = validateCalculated({
       calculated,
       compositionDurationInFrames,
@@ -33839,22 +33984,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     return {
       metadataSource: {
-        durationInFrames: calculated?.durationInFrames === void 0 ? "composition" : "calculate-metadata",
-        fps: calculated?.fps === void 0 ? "composition" : "calculate-metadata",
-        height: calculated?.height === void 0 ? "composition" : "calculate-metadata",
-        width: calculated?.width === void 0 ? "composition" : "calculate-metadata"
+        durationInFrames: (calculated == null ? void 0 : calculated.durationInFrames) === void 0 ? "composition" : "calculate-metadata",
+        fps: (calculated == null ? void 0 : calculated.fps) === void 0 ? "composition" : "calculate-metadata",
+        height: (calculated == null ? void 0 : calculated.height) === void 0 ? "composition" : "calculate-metadata",
+        width: (calculated == null ? void 0 : calculated.width) === void 0 ? "composition" : "calculate-metadata"
       },
       videoConfig: {
         ...data,
         id: compositionId,
-        defaultProps: serializeThenDeserializeInStudio(defaultProps ?? {}),
-        props: serializeThenDeserializeInStudio(calculated?.props ?? originalProps),
-        defaultCodec: data.defaultCodec ?? null,
-        defaultOutName: data.defaultOutName ?? null,
-        defaultVideoImageFormat: data.defaultVideoImageFormat ?? null,
-        defaultPixelFormat: data.defaultPixelFormat ?? null,
-        defaultProResProfile: data.defaultProResProfile ?? null,
-        defaultSampleRate: data.defaultSampleRate ?? null
+        defaultProps: serializeThenDeserializeInStudio(defaultProps != null ? defaultProps : {}),
+        props: serializeThenDeserializeInStudio((_a2 = calculated == null ? void 0 : calculated.props) != null ? _a2 : originalProps),
+        defaultCodec: (_b = data.defaultCodec) != null ? _b : null,
+        defaultOutName: (_c = data.defaultOutName) != null ? _c : null,
+        defaultVideoImageFormat: (_d = data.defaultVideoImageFormat) != null ? _d : null,
+        defaultPixelFormat: (_e = data.defaultPixelFormat) != null ? _e : null,
+        defaultProResProfile: (_f = data.defaultProResProfile) != null ? _f : null,
+        defaultSampleRate: (_g = data.defaultSampleRate) != null ? _g : null
       }
     };
   };
@@ -34002,11 +34147,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (!src) {
       throw new TypeError("No `src` was passed to <OffthreadVideo>.");
     }
-    const id = (0, import_react84.useMemo)(() => `offthreadvideo-${random(src)}-${sequenceContext?.cumulatedFrom}-${sequenceContext?.relativeFrom}-${sequenceContext?.durationInFrames}`, [
+    const id = (0, import_react84.useMemo)(() => `offthreadvideo-${random(src)}-${sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom}-${sequenceContext == null ? void 0 : sequenceContext.relativeFrom}-${sequenceContext == null ? void 0 : sequenceContext.durationInFrames}`, [
       src,
-      sequenceContext?.cumulatedFrom,
-      sequenceContext?.relativeFrom,
-      sequenceContext?.durationInFrames
+      sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom,
+      sequenceContext == null ? void 0 : sequenceContext.relativeFrom,
+      sequenceContext == null ? void 0 : sequenceContext.durationInFrames
     ]);
     if (!videoConfig) {
       throw new Error("No video config found");
@@ -34018,6 +34163,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     warnAboutTooHighVolume(volume);
     (0, import_react84.useEffect)(() => {
+      var _a2;
       if (!src) {
         throw new Error("No src passed");
       }
@@ -34039,7 +34185,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mediaFrame: frame,
         playbackRate,
         toneFrequency,
-        audioStartFrame: Math.max(0, -(sequenceContext?.cumulatedNegativeFrom ?? 0)),
+        audioStartFrame: Math.max(0, -((_a2 = sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom) != null ? _a2 : 0)),
         audioStreamIndex
       });
       return () => unregisterRenderAsset(id);
@@ -34054,7 +34200,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       absoluteFrame,
       playbackRate,
       toneFrequency,
-      sequenceContext?.cumulatedNegativeFrom,
+      sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom,
       audioStreamIndex
     ]);
     const currentTime = (0, import_react84.useMemo)(() => {
@@ -34082,8 +34228,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       setImageSrc(null);
       const controller = new AbortController();
       const newHandle = delayRender2(`Fetching ${actualSrc} from server`, {
-        retries: delayRenderRetries ?? void 0,
-        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
+        retries: delayRenderRetries != null ? delayRenderRetries : void 0,
+        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
       });
       const execute = async () => {
         try {
@@ -34147,7 +34293,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ]);
     const onErr = (0, import_react84.useCallback)(() => {
       if (onError) {
-        onError?.(new Error("Failed to load image with src " + imageSrc));
+        onError == null ? void 0 : onError(new Error("Failed to load image with src " + imageSrc));
       } else {
         cancelRender("Failed to load image with src " + imageSrc);
       }
@@ -34207,14 +34353,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [onVideoFrame, ref]);
   };
   var MediaPlaybackError = class extends Error {
-    src;
     constructor({ message, src }) {
       super(message);
+      __publicField(this, "src");
       this.name = "MediaPlaybackError";
       this.src = src;
     }
   };
   var VideoForDevelopmentRefForwardingFunction = (props2, ref) => {
+    var _a2, _b, _c, _d, _e;
     const context = (0, import_react85.useContext)(SharedAudioContext);
     if (!context) {
       throw new Error("SharedAudioContext not found");
@@ -34229,11 +34376,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
         ref: videoRef
       });
     }, [context.audioContext]);
-    const effectToUse = import_react85.default.useInsertionEffect ?? import_react85.default.useLayoutEffect;
+    const effectToUse = (_a2 = import_react85.default.useInsertionEffect) != null ? _a2 : import_react85.default.useLayoutEffect;
     effectToUse(() => {
       return () => {
         requestAnimationFrame(() => {
-          sharedSource?.cleanup();
+          sharedSource == null ? void 0 : sharedSource.cleanup();
         });
       };
     }, [sharedSource]);
@@ -34270,7 +34417,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (!_propsValid) {
       throw new Error("typecheck error");
     }
-    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior ?? "repeat");
+    const volumePropFrame = useFrameForVolumeProp(loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat");
     const { fps, durationInFrames } = useVideoConfig();
     const parentSequence = (0, import_react85.useContext)(SequenceContext);
     const { isStudio } = useRemotionEnvironment();
@@ -34289,52 +34436,52 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     warnAboutTooHighVolume(userPreferredVolume);
     const getStack = (0, import_react85.useCallback)(() => {
-      return _remotionInternalStack ?? null;
+      return _remotionInternalStack != null ? _remotionInternalStack : null;
     }, [_remotionInternalStack]);
     useMediaInTimeline({
       volume,
       mediaVolume,
       mediaType: "video",
       src,
-      playbackRate: props2.playbackRate ?? 1,
-      displayName: name ?? null,
+      playbackRate: (_b = props2.playbackRate) != null ? _b : 1,
+      displayName: name != null ? name : null,
       id: timelineId,
       getStack,
       showInTimeline,
-      premountDisplay: parentSequence?.premountDisplay ?? null,
-      postmountDisplay: parentSequence?.postmountDisplay ?? null,
+      premountDisplay: (_c = parentSequence == null ? void 0 : parentSequence.premountDisplay) != null ? _c : null,
+      postmountDisplay: (_d = parentSequence == null ? void 0 : parentSequence.postmountDisplay) != null ? _d : null,
       loopDisplay: void 0,
       documentationLink: onlyWarnForMediaSeekingError ? "https://www.remotion.dev/docs/offthreadvideo" : "https://www.remotion.dev/docs/html5-video",
       refForOutline: videoRef,
-      muted: muted ?? false
+      muted: muted != null ? muted : false
     });
     useMediaPlayback({
       mediaRef: videoRef,
       src,
       mediaType: "video",
-      playbackRate: props2.playbackRate ?? 1,
+      playbackRate: (_e = props2.playbackRate) != null ? _e : 1,
       preservePitch,
       onlyWarnForMediaSeekingError,
-      acceptableTimeshift: acceptableTimeShiftInSeconds ?? null,
-      isPremounting: Boolean(parentSequence?.premounting),
-      isPostmounting: Boolean(parentSequence?.postmounting),
+      acceptableTimeshift: acceptableTimeShiftInSeconds != null ? acceptableTimeShiftInSeconds : null,
+      isPremounting: Boolean(parentSequence == null ? void 0 : parentSequence.premounting),
+      isPostmounting: Boolean(parentSequence == null ? void 0 : parentSequence.postmounting),
       pauseWhenBuffering,
-      onAutoPlayError: onAutoPlayError ?? null
+      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : null
     });
     useMediaTag({
       id: timelineId,
-      isPostmounting: Boolean(parentSequence?.postmounting),
-      isPremounting: Boolean(parentSequence?.premounting),
+      isPostmounting: Boolean(parentSequence == null ? void 0 : parentSequence.postmounting),
+      isPremounting: Boolean(parentSequence == null ? void 0 : parentSequence.premounting),
       mediaRef: videoRef,
       mediaType: "video",
-      onAutoPlayError: onAutoPlayError ?? null
+      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : null
     });
     useVolume({
       logLevel,
       mediaRef: videoRef,
       volume: userPreferredVolume,
       source: sharedSource,
-      shouldUseWebAudioApi: useWebAudioApi ?? false
+      shouldUseWebAudioApi: useWebAudioApi != null ? useWebAudioApi : false
     });
     const actualFrom = parentSequence ? parentSequence.relativeFrom : 0;
     const duration = parentSequence ? Math.min(parentSequence.durationInFrames, durationInFrames) : durationInFrames;
@@ -34360,8 +34507,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return;
       }
       const errorHandler = () => {
+        var _a3;
         if (current.error) {
-          console.error("Error occurred in video", current?.error);
+          console.error("Error occurred in video", current == null ? void 0 : current.error);
           if (onError) {
             const err = new MediaPlaybackError({
               message: `Code ${current.error.code}: ${current.error.message}`,
@@ -34371,7 +34519,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             return;
           }
           throw new MediaPlaybackError({
-            message: `The browser threw an error while playing the video ${src}: Code ${current.error.code} - ${current?.error?.message}. See https://remotion.dev/docs/media-playback-error for help. Pass an onError() prop to handle the error.`,
+            message: `The browser threw an error while playing the video ${src}: Code ${current.error.code} - ${(_a3 = current == null ? void 0 : current.error) == null ? void 0 : _a3.message}. See https://remotion.dev/docs/media-playback-error for help. Pass an onError() prop to handle the error.`,
             src
           });
         } else {
@@ -34398,16 +34546,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
     currentOnDurationCallback.current = onDuration;
     useEmitVideoFrame({ ref: videoRef, onVideoFrame });
     (0, import_react85.useEffect)(() => {
+      var _a3;
       const { current } = videoRef;
       if (!current) {
         return;
       }
       if (current.duration) {
-        currentOnDurationCallback.current?.(src, current.duration);
+        (_a3 = currentOnDurationCallback.current) == null ? void 0 : _a3.call(currentOnDurationCallback, src, current.duration);
         return;
       }
       const onLoadedMetadata = () => {
-        currentOnDurationCallback.current?.(src, current.duration);
+        var _a4;
+        (_a4 = currentOnDurationCallback.current) == null ? void 0 : _a4.call(currentOnDurationCallback, src, current.duration);
       };
       current.addEventListener("loadedmetadata", onLoadedMetadata);
       return () => {
@@ -34486,7 +34636,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (typeof trimBeforeValue !== "undefined" || typeof trimAfterValue !== "undefined") {
       return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(Sequence, {
         layout: "none",
-        from: 0 - (trimBeforeValue ?? 0),
+        from: 0 - (trimBeforeValue != null ? trimBeforeValue : 0),
         showInTimeline: false,
         durationInFrames: trimAfterValue,
         name,
@@ -34528,13 +34678,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       ...propsForPreview
     } = otherProps;
     return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(VideoForPreview, {
-      _remotionInternalStack: _remotionInternalStack ?? null,
+      _remotionInternalStack: _remotionInternalStack != null ? _remotionInternalStack : null,
       onDuration,
       onlyWarnForMediaSeekingError: true,
       pauseWhenBuffering: shouldPauseWhenBuffering,
-      showInTimeline: showInTimeline ?? true,
-      onAutoPlayError: onAutoPlayError ?? void 0,
-      onVideoFrame: onVideoFrame ?? null,
+      showInTimeline: showInTimeline != null ? showInTimeline : true,
+      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : void 0,
+      onVideoFrame: onVideoFrame != null ? onVideoFrame : null,
       crossOrigin,
       ...propsForPreview,
       _remotionInternalNativeLoopPassed: false
@@ -34578,33 +34728,33 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(InnerOffthreadVideo, {
       acceptableTimeShiftInSeconds,
-      allowAmplificationDuringRender: allowAmplificationDuringRender ?? true,
-      audioStreamIndex: audioStreamIndex ?? 0,
+      allowAmplificationDuringRender: allowAmplificationDuringRender != null ? allowAmplificationDuringRender : true,
+      audioStreamIndex: audioStreamIndex != null ? audioStreamIndex : 0,
       crossOrigin,
       delayRenderRetries,
       delayRenderTimeoutInMilliseconds,
-      loopVolumeCurveBehavior: loopVolumeCurveBehavior ?? "repeat",
-      muted: muted ?? false,
+      loopVolumeCurveBehavior: loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat",
+      muted: muted != null ? muted : false,
       name,
-      onAutoPlayError: onAutoPlayError ?? null,
+      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : null,
       onError,
       onVideoFrame,
       pauseWhenBuffering: resolveV5Default(pauseWhenBuffering),
-      playbackRate: playbackRate ?? 1,
+      playbackRate: playbackRate != null ? playbackRate : 1,
       preservePitch,
-      toneFrequency: toneFrequency ?? 1,
-      showInTimeline: showInTimeline ?? true,
+      toneFrequency: toneFrequency != null ? toneFrequency : 1,
+      showInTimeline: showInTimeline != null ? showInTimeline : true,
       src,
       _remotionInternalStack,
       startFrom,
-      _remotionInternalNativeLoopPassed: _remotionInternalNativeLoopPassed ?? false,
+      _remotionInternalNativeLoopPassed: _remotionInternalNativeLoopPassed != null ? _remotionInternalNativeLoopPassed : false,
       endAt,
       style: style2,
-      toneMapped: toneMapped ?? true,
-      transparent: transparent ?? false,
+      toneMapped: toneMapped != null ? toneMapped : true,
+      transparent: transparent != null ? transparent : false,
       trimAfter,
       trimBefore,
-      useWebAudioApi: useWebAudioApi ?? false,
+      useWebAudioApi: useWebAudioApi != null ? useWebAudioApi : false,
       volume,
       ...props2
     });
@@ -34923,7 +35073,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         allowFloats: true
       });
     }
-    const offset = offsetProp ?? 0;
+    const offset = offsetProp != null ? offsetProp : 0;
     if (Number.isNaN(offset)) {
       throw new TypeError(`The "offset" property of a <Series.Sequence /> must not be NaN, but got NaN (${debugInfo}).`);
     }
@@ -34986,7 +35136,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   ref,
                   name: name || "<Series.Sequence>",
                   _remotionInternalDocumentationLink: name ? void 0 : "https://www.remotion.dev/docs/series",
-                  controls: controls ?? void 0,
+                  controls: controls != null ? controls : void 0,
                   from: currentStartFrame,
                   durationInFrames: durationInFramesProp,
                   ...passedProps,
@@ -35083,7 +35233,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return {
       wait: Promise.all([prom, waitForSeekedEvent]).then(([time]) => time),
       cancel: () => {
-        cancelSeeked?.();
+        cancelSeeked == null ? void 0 : cancelSeeked();
         element.cancelVideoFrameCallback(cancel);
       }
     };
@@ -35175,7 +35325,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }, ref) => {
     const absoluteFrame = useTimelinePosition();
     const frame = useCurrentFrame();
-    const volumePropsFrame = useFrameForVolumeProp(loopVolumeCurveBehavior ?? "repeat");
+    const volumePropsFrame = useFrameForVolumeProp(loopVolumeCurveBehavior != null ? loopVolumeCurveBehavior : "repeat");
     const videoConfig = useUnsafeVideoConfig();
     const videoRef = (0, import_react92.useRef)(null);
     const sequenceContext = (0, import_react92.useContext)(SequenceContext);
@@ -35185,11 +35335,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const mountTime = useMountTime();
     const { delayRender: delayRender2, continueRender: continueRender2 } = useDelayRender();
     const { registerRenderAsset, unregisterRenderAsset } = (0, import_react92.useContext)(RenderAssetManager);
-    const id = (0, import_react92.useMemo)(() => `video-${random(props2.src ?? "")}-${sequenceContext?.cumulatedFrom}-${sequenceContext?.relativeFrom}-${sequenceContext?.durationInFrames}`, [
+    const id = (0, import_react92.useMemo)(() => {
+      var _a2;
+      return `video-${random((_a2 = props2.src) != null ? _a2 : "")}-${sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom}-${sequenceContext == null ? void 0 : sequenceContext.relativeFrom}-${sequenceContext == null ? void 0 : sequenceContext.durationInFrames}`;
+    }, [
       props2.src,
-      sequenceContext?.cumulatedFrom,
-      sequenceContext?.relativeFrom,
-      sequenceContext?.durationInFrames
+      sequenceContext == null ? void 0 : sequenceContext.cumulatedFrom,
+      sequenceContext == null ? void 0 : sequenceContext.relativeFrom,
+      sequenceContext == null ? void 0 : sequenceContext.durationInFrames
     ]);
     if (!videoConfig) {
       throw new Error("No video config found");
@@ -35201,6 +35354,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     warnAboutTooHighVolume(volume);
     (0, import_react92.useEffect)(() => {
+      var _a2;
       if (!props2.src) {
         throw new Error("No src passed");
       }
@@ -35220,10 +35374,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
         frame: absoluteFrame,
         volume,
         mediaFrame: frame,
-        playbackRate: playbackRate ?? 1,
-        toneFrequency: toneFrequency ?? 1,
-        audioStartFrame: Math.max(0, -(sequenceContext?.cumulatedNegativeFrom ?? 0)),
-        audioStreamIndex: audioStreamIndex ?? 0
+        playbackRate: playbackRate != null ? playbackRate : 1,
+        toneFrequency: toneFrequency != null ? toneFrequency : 1,
+        audioStartFrame: Math.max(0, -((_a2 = sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom) != null ? _a2 : 0)),
+        audioStreamIndex: audioStreamIndex != null ? audioStreamIndex : 0
       });
       return () => unregisterRenderAsset(id);
     }, [
@@ -35237,7 +35391,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       absoluteFrame,
       playbackRate,
       toneFrequency,
-      sequenceContext?.cumulatedNegativeFrom,
+      sequenceContext == null ? void 0 : sequenceContext.cumulatedNegativeFrom,
       audioStreamIndex
     ]);
     (0, import_react92.useImperativeHandle)(ref, () => {
@@ -35245,6 +35399,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, []);
     useEmitVideoFrame({ ref: videoRef, onVideoFrame });
     (0, import_react92.useEffect)(() => {
+      var _a2, _b;
       if (!window.remotion_videoEnabled) {
         return;
       }
@@ -35259,10 +35414,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
         fps: videoConfig.fps
       });
       const handle = delayRender2(`Rendering <Html5Video /> with src="${props2.src}" at time ${currentTime}`, {
-        retries: delayRenderRetries ?? void 0,
-        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
+        retries: delayRenderRetries != null ? delayRenderRetries : void 0,
+        timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
       });
-      if (window.process?.env?.NODE_ENV === "test") {
+      if (((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test") {
         continueRender2(handle);
         return;
       }
@@ -35294,13 +35449,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
       });
       current.addEventListener("ended", endedHandler, { once: true });
       const errorHandler = () => {
-        if (current?.error) {
-          console.error("Error occurred in video", current?.error);
+        var _a3;
+        if (current == null ? void 0 : current.error) {
+          console.error("Error occurred in video", current == null ? void 0 : current.error);
           if (onError) {
             return;
           }
           throw new MediaPlaybackError({
-            message: `The browser threw an error while playing the video ${props2.src}: Code ${current.error.code} - ${current?.error?.message}. See https://remotion.dev/docs/media-playback-error for help. Pass an onError() prop to handle the error.`,
+            message: `The browser threw an error while playing the video ${props2.src}: Code ${current.error.code} - ${(_a3 = current == null ? void 0 : current.error) == null ? void 0 : _a3.message}. See https://remotion.dev/docs/media-playback-error for help. Pass an onError() prop to handle the error.`,
             src: props2.src
           });
         } else {
@@ -35335,28 +35491,29 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { src } = props2;
     if (environment.isRendering) {
       (0, import_react92.useLayoutEffect)(() => {
-        if (window.process?.env?.NODE_ENV === "test") {
+        var _a2, _b;
+        if (((_b = (_a2 = window.process) == null ? void 0 : _a2.env) == null ? void 0 : _b.NODE_ENV) === "test") {
           return;
         }
         const newHandle = delayRender2("Loading <Html5Video> duration with src=" + src, {
-          retries: delayRenderRetries ?? void 0,
-          timeoutInMilliseconds: delayRenderTimeoutInMilliseconds ?? void 0
+          retries: delayRenderRetries != null ? delayRenderRetries : void 0,
+          timeoutInMilliseconds: delayRenderTimeoutInMilliseconds != null ? delayRenderTimeoutInMilliseconds : void 0
         });
         const { current } = videoRef;
         const didLoad = () => {
-          if (current?.duration) {
+          if (current == null ? void 0 : current.duration) {
             onDuration(src, current.duration);
           }
           continueRender2(newHandle);
         };
-        if (current?.duration) {
+        if (current == null ? void 0 : current.duration) {
           onDuration(src, current.duration);
           continueRender2(newHandle);
         } else {
-          current?.addEventListener("loadedmetadata", didLoad, { once: true });
+          current == null ? void 0 : current.addEventListener("loadedmetadata", didLoad, { once: true });
         }
         return () => {
-          current?.removeEventListener("loadedmetadata", didLoad);
+          current == null ? void 0 : current.removeEventListener("loadedmetadata", didLoad);
           continueRender2(newHandle);
         };
       }, [
@@ -35376,6 +35533,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var VideoForRendering = (0, import_react92.forwardRef)(VideoForRenderingForwardFunction);
   var VideoForwardingFunction = (props2, ref) => {
+    var _a2, _b, _c;
     const {
       startFrom,
       endAt,
@@ -35408,7 +35566,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const onDuration = (0, import_react91.useCallback)((src, durationInSeconds) => {
       setDurations({ type: "got-duration", durationInSeconds, src });
     }, [setDurations]);
-    const durationFetched = durations[getAbsoluteSrc(preloadedSrc)] ?? durations[getAbsoluteSrc(props2.src)];
+    const durationFetched = (_a2 = durations[getAbsoluteSrc(preloadedSrc)]) != null ? _a2 : durations[getAbsoluteSrc(props2.src)];
     validateMediaTrimProps({ startFrom, endAt, trimBefore, trimAfter });
     const { trimBeforeValue, trimAfterValue } = resolveTrimProps({
       startFrom,
@@ -35430,7 +35588,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         durationInFrames: calculateMediaDuration({
           trimAfter: trimAfterValue,
           mediaDurationInFrames: mediaDuration,
-          playbackRate: props2.playbackRate ?? 1,
+          playbackRate: (_b = props2.playbackRate) != null ? _b : 1,
           trimBefore: trimBeforeValue
         }),
         layout: "none",
@@ -35447,9 +35605,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (typeof trimBeforeValue !== "undefined" || typeof trimAfterValue !== "undefined") {
       return /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Sequence, {
         layout: "none",
-        from: 0 - (trimBeforeValue ?? 0),
+        from: 0 - (trimBeforeValue != null ? trimBeforeValue : 0),
         showInTimeline: false,
-        durationInFrames: trimAfterValue === void 0 ? void 0 : trimAfterValue / (props2.playbackRate ?? 1),
+        durationInFrames: trimAfterValue === void 0 ? void 0 : trimAfterValue / ((_c = props2.playbackRate) != null ? _c : 1),
         name,
         children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Html5Video, {
           pauseWhenBuffering: shouldPauseWhenBuffering,
@@ -35468,7 +35626,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (environment.isRendering) {
       return /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(VideoForRendering, {
         onDuration,
-        onVideoFrame: onVideoFrame ?? null,
+        onVideoFrame: onVideoFrame != null ? onVideoFrame : null,
         ...otherProps,
         ref
       });
@@ -35477,13 +35635,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
       onlyWarnForMediaSeekingError: false,
       ...otherProps,
       ref,
-      onVideoFrame: onVideoFrame ?? null,
+      onVideoFrame: onVideoFrame != null ? onVideoFrame : null,
       pauseWhenBuffering: shouldPauseWhenBuffering,
       onDuration,
-      _remotionInternalStack: _remotionInternalStack ?? null,
-      _remotionInternalNativeLoopPassed: _remotionInternalNativeLoopPassed ?? false,
-      showInTimeline: showInTimeline ?? true,
-      onAutoPlayError: onAutoPlayError ?? void 0
+      _remotionInternalStack: _remotionInternalStack != null ? _remotionInternalStack : null,
+      _remotionInternalNativeLoopPassed: _remotionInternalNativeLoopPassed != null ? _remotionInternalNativeLoopPassed : false,
+      showInTimeline: showInTimeline != null ? showInTimeline : true,
+      onAutoPlayError: onAutoPlayError != null ? onAutoPlayError : void 0
     });
   };
   var Html5Video = (0, import_react91.forwardRef)(VideoForwardingFunction);
@@ -35929,7 +36087,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         throw new Error("did not calculate natural duration, this is an error with Remotion. Please report");
       }
     };
-    const reverseProcessed = reverse ? (passedDurationInFrames ?? naturalDurationGetter.get()) - passedFrame : passedFrame;
+    const reverseProcessed = reverse ? (passedDurationInFrames != null ? passedDurationInFrames : naturalDurationGetter.get()) - passedFrame : passedFrame;
     const delayProcessed = reverseProcessed + (reverse ? delay2 : -delay2);
     const durationProcessed = passedDurationInFrames === void 0 ? delayProcessed : delayProcessed / (passedDurationInFrames / naturalDurationGetter.get());
     if (passedDurationInFrames && delayProcessed > passedDurationInFrames) {
@@ -36127,11 +36285,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var UnsupportedStringInterpolationValueError2 = class extends TypeError {
   };
   var parseStringInterpolationComponent2 = (component, value) => {
+    var _a2;
     const match = cssNumberRegex2.exec(component);
     if (match === null) {
       throw new UnsupportedStringInterpolationValueError2(`Cannot interpolate "${value}" because "${component}" is not a supported scale, translate, or rotate value`);
     }
-    const unit = match[2] ?? null;
+    const unit = (_a2 = match[2]) != null ? _a2 : null;
     const numberValue = Number(match[1]);
     if (!Number.isFinite(numberValue)) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not finite`);
@@ -36152,11 +36311,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     value,
     allowPercentage
   }) => {
+    var _a2;
     const match = cssNumberRegex2.exec(component);
     if (match === null) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not a supported transform-origin ${allowPercentage ? "length-percentage" : "z length"}`);
     }
-    const unit = match[2] ?? null;
+    const unit = (_a2 = match[2]) != null ? _a2 : null;
     const numberValue = Number(match[1]);
     if (!Number.isFinite(numberValue)) {
       throw new TypeError(`Cannot interpolate "${value}" because "${component}" is not finite`);
@@ -36288,6 +36448,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     };
   };
   var parseStringInterpolationValue2 = (output) => {
+    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
     if (typeof output === "number") {
       if (!Number.isFinite(output)) {
         throw new Error(`outputRange must contain only finite numbers, but got [${output}]`);
@@ -36320,8 +36481,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     if (kind === "scale") {
       const x = parsed[0].value;
-      const y = parsed[1]?.value ?? x;
-      const z = parsed[2]?.value ?? 1;
+      const y = (_b = (_a2 = parsed[1]) == null ? void 0 : _a2.value) != null ? _b : x;
+      const z = (_d = (_c = parsed[2]) == null ? void 0 : _c.value) != null ? _d : 1;
       return {
         kind,
         values: [x, y, z, 0],
@@ -36332,11 +36493,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     return {
       kind,
-      values: [parsed[0].value, parsed[1]?.value ?? 0, parsed[2]?.value ?? 0, 0],
+      values: [parsed[0].value, (_f = (_e = parsed[1]) == null ? void 0 : _e.value) != null ? _f : 0, (_h = (_g = parsed[2]) == null ? void 0 : _g.value) != null ? _h : 0, 0],
       units: [
         parsed[0].unit,
-        parsed[1]?.unit ?? null,
-        parsed[2]?.unit ?? null,
+        (_j = (_i = parsed[1]) == null ? void 0 : _i.unit) != null ? _j : null,
+        (_l = (_k = parsed[2]) == null ? void 0 : _k.unit) != null ? _l : null,
         null
       ],
       dimensions: parsed.length,
@@ -36424,7 +36585,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
   var defaultEasing2 = (num2) => num2;
   var resolveOutputOption2 = (output) => {
-    return output ?? "linear";
+    return output != null ? output : "linear";
   };
   var shouldExtendRightForEasing2 = (easing) => {
     return easing.remotionShouldExtendRight === true;
@@ -36463,20 +36624,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
     outputRange,
     options
   }) => {
-    const output = resolveOutputOption2(options?.output);
+    const output = resolveOutputOption2(options == null ? void 0 : options.output);
     if (inputRange.length === 1) {
       return outputRange[0];
     }
-    const easingOption = options?.easing;
+    const easingOption = options == null ? void 0 : options.easing;
     let extrapolateLeft = "extend";
-    if (options?.extrapolateLeft !== void 0) {
+    if ((options == null ? void 0 : options.extrapolateLeft) !== void 0) {
       extrapolateLeft = options.extrapolateLeft;
     }
     let extrapolateRight = "extend";
-    if (options?.extrapolateRight !== void 0) {
+    if ((options == null ? void 0 : options.extrapolateRight) !== void 0) {
       extrapolateRight = options.extrapolateRight;
     }
-    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const range = findRange2(posterizedInput, inputRange);
     const easing = resolveEasingForSegment2({
       easing: easingOption,
@@ -36522,9 +36683,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     outputRange,
     options
   }) => {
+    var _a2;
     const initiallyParsedOutputRange = outputRange.map(parseStringInterpolationValue2);
     const hasAxisRotation = initiallyParsedOutputRange.some((parsed) => parsed.axisRotation);
-    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const segmentIndex = inputRange.length === 1 ? 0 : findRange2(posterizedInput, inputRange);
     const parsedOutputRange = hasAxisRotation ? initiallyParsedOutputRange.map((parsed, index) => {
       if (parsed.kind !== "rotate") {
@@ -36537,7 +36699,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         throw new TypeError("Cannot interpolate a multi-angle rotate value with an axis rotation");
       }
       const adjacentAxisRotation = parsed.values[0] === 0 ? index === 0 ? initiallyParsedOutputRange.find((candidate) => candidate.axisRotation) : index === initiallyParsedOutputRange.length - 1 ? [...initiallyParsedOutputRange].reverse().find((candidate) => candidate.axisRotation) : index === segmentIndex ? initiallyParsedOutputRange[index + 1] : index === segmentIndex + 1 ? initiallyParsedOutputRange[index - 1] : void 0 : void 0;
-      const axis = adjacentAxisRotation?.axisRotation ? adjacentAxisRotation.values : [0, 0, 1];
+      const axis = (adjacentAxisRotation == null ? void 0 : adjacentAxisRotation.axisRotation) ? adjacentAxisRotation.values : [0, 0, 1];
       return {
         kind: "rotate",
         values: [axis[0], axis[1], axis[2], parsed.values[0]],
@@ -36546,7 +36708,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         axisRotation: true
       };
     }) : initiallyParsedOutputRange;
-    const kind = parsedOutputRange[0]?.kind;
+    const kind = (_a2 = parsedOutputRange[0]) == null ? void 0 : _a2.kind;
     if (kind === void 0) {
       throw new Error("outputRange must have at least 1 element");
     }
@@ -36613,21 +36775,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     for (let segmentIndex = 0; segmentIndex < inputRange.length - 1; segmentIndex++) {
       if (resolveEasingForSegment2({
-        easing: options?.easing,
+        easing: options == null ? void 0 : options.easing,
         segmentIndex
       }) !== Easing2.step1) {
         throw new TypeError("Non-numeric strings can only be interpolated using Easing.step1");
       }
     }
-    const posterizedInput = options?.posterize === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
+    const posterizedInput = (options == null ? void 0 : options.posterize) === void 0 ? input : Math.floor(input / options.posterize) * options.posterize;
     const inputMin = inputRange[0];
     const inputMax = inputRange[inputRange.length - 1];
     let resolvedInput = posterizedInput;
     if (resolvedInput < inputMin) {
-      if (options?.extrapolateLeft === "identity") {
+      if ((options == null ? void 0 : options.extrapolateLeft) === "identity") {
         throw new TypeError('extrapolateLeft: "identity" is not supported for non-numeric strings');
       }
-      if (options?.extrapolateLeft === "wrap") {
+      if ((options == null ? void 0 : options.extrapolateLeft) === "wrap") {
         const wrapRange = inputMax - inputMin;
         resolvedInput = ((resolvedInput - inputMin) % wrapRange + wrapRange) % wrapRange + inputMin;
       } else {
@@ -36635,10 +36797,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }
     if (resolvedInput > inputMax) {
-      if (options?.extrapolateRight === "identity") {
+      if ((options == null ? void 0 : options.extrapolateRight) === "identity") {
         throw new TypeError('extrapolateRight: "identity" is not supported for non-numeric strings');
       }
-      if (options?.extrapolateRight === "wrap") {
+      if ((options == null ? void 0 : options.extrapolateRight) === "wrap") {
         const wrapRange = inputMax - inputMin;
         resolvedInput = ((resolvedInput - inputMin) % wrapRange + wrapRange) % wrapRange + inputMin;
       } else {
@@ -36649,7 +36811,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return resolvedInput >= inputRange[range + 1] ? outputRange[range + 1] : outputRange[range];
   };
   var validateTupleOutputRange2 = (outputRange) => {
-    const dimensions = outputRange[0]?.length;
+    var _a2;
+    const dimensions = (_a2 = outputRange[0]) == null ? void 0 : _a2.length;
     if (dimensions === void 0) {
       throw new Error("outputRange must have at least 1 element");
     }
@@ -36748,9 +36911,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
     checkInfiniteRange2("inputRange", inputRange);
     checkValidInputRange2(inputRange);
-    assertValidInterpolateEasingOption2(options?.easing, inputRange.length);
-    assertValidInterpolatePosterizeOption2(options?.posterize);
-    assertValidInterpolateOutputOption2(options?.output);
+    assertValidInterpolateEasingOption2(options == null ? void 0 : options.easing, inputRange.length);
+    assertValidInterpolatePosterizeOption2(options == null ? void 0 : options.posterize);
+    assertValidInterpolateOutputOption2(options == null ? void 0 : options.output);
     if (typeof input !== "number") {
       throw new TypeError("Cannot interpolate an input which is not a number");
     }
@@ -36868,13 +37031,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
   };
   var resolveFileTokenToUrl2 = (value) => {
+    var _a2;
     const encodedName = value.replace(FILE_TOKEN2, "");
     let name = encodedName;
     try {
       name = encodedName.split("/").map(decodeURIComponent).join("/");
-    } catch {
+    } catch (e) {
     }
-    const matchingStaticFile = window.remotion_staticFiles?.find((file) => file.name === name);
+    const matchingStaticFile = (_a2 = window.remotion_staticFiles) == null ? void 0 : _a2.find((file) => file.name === name);
     if (matchingStaticFile) {
       return matchingStaticFile.src;
     }
@@ -37650,6 +37814,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   ];
   var defaultScaleValue = [1, 1, 1];
   var parseScaleString = (value) => {
+    var _a2, _b;
     const parts = value.trim().split(/\s+/);
     if (parts.length < 1 || parts.length > 3 || parts[0] === "") {
       return null;
@@ -37659,8 +37824,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return null;
     }
     const x = parsed[0];
-    const y = parsed[1] ?? x;
-    const z = parsed[2] ?? 1;
+    const y = (_a2 = parsed[1]) != null ? _a2 : x;
+    const z = (_b = parsed[2]) != null ? _b : 1;
     return [x, y, z];
   };
   var parseValidScaleValue = (value) => {
@@ -37673,7 +37838,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return null;
   };
   var parseScaleValue = (value) => {
-    return parseValidScaleValue(value) ?? defaultScaleValue;
+    var _a2;
+    return (_a2 = parseValidScaleValue(value)) != null ? _a2 : defaultScaleValue;
   };
   var serializeScaleValue = ([x, y, z]) => {
     const normalizedX = normalizeNumber2(x);
@@ -38090,8 +38256,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         compositionHeight: config.height,
         compositionWidth: config.width,
         currentSize: canvasSize,
-        height: style2?.height,
-        width: style2?.width
+        height: style2 == null ? void 0 : style2.height,
+        width: style2 == null ? void 0 : style2.width
       }),
       opacity: layout ? 1 : 0,
       ...style2
@@ -38161,22 +38327,76 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var PlayerEventEmitterContext = import_react94.default.createContext(void 0);
   var ThumbnailEmitterContext = import_react94.default.createContext(void 0);
   var PlayerEmitter = class {
-    listeners = {
-      ended: [],
-      error: [],
-      pause: [],
-      play: [],
-      ratechange: [],
-      scalechange: [],
-      seeked: [],
-      timeupdate: [],
-      frameupdate: [],
-      fullscreenchange: [],
-      volumechange: [],
-      mutechange: [],
-      waiting: [],
-      resume: []
-    };
+    constructor() {
+      __publicField(this, "listeners", {
+        ended: [],
+        error: [],
+        pause: [],
+        play: [],
+        ratechange: [],
+        scalechange: [],
+        seeked: [],
+        timeupdate: [],
+        frameupdate: [],
+        fullscreenchange: [],
+        volumechange: [],
+        mutechange: [],
+        waiting: [],
+        resume: []
+      });
+      __publicField(this, "dispatchSeek", (frame) => {
+        this.dispatchEvent("seeked", {
+          frame
+        });
+      });
+      __publicField(this, "dispatchVolumeChange", (volume) => {
+        this.dispatchEvent("volumechange", {
+          volume
+        });
+      });
+      __publicField(this, "dispatchPause", () => {
+        this.dispatchEvent("pause", void 0);
+      });
+      __publicField(this, "dispatchPlay", () => {
+        this.dispatchEvent("play", void 0);
+      });
+      __publicField(this, "dispatchEnded", () => {
+        this.dispatchEvent("ended", void 0);
+      });
+      __publicField(this, "dispatchRateChange", (playbackRate) => {
+        this.dispatchEvent("ratechange", {
+          playbackRate
+        });
+      });
+      __publicField(this, "dispatchScaleChange", (scale) => {
+        this.dispatchEvent("scalechange", {
+          scale
+        });
+      });
+      __publicField(this, "dispatchError", (error2) => {
+        this.dispatchEvent("error", {
+          error: error2
+        });
+      });
+      __publicField(this, "dispatchTimeUpdate", (event) => {
+        this.dispatchEvent("timeupdate", event);
+      });
+      __publicField(this, "dispatchFrameUpdate", (event) => {
+        this.dispatchEvent("frameupdate", event);
+      });
+      __publicField(this, "dispatchFullscreenChange", (event) => {
+        this.dispatchEvent("fullscreenchange", event);
+      });
+      __publicField(this, "dispatchMuteChange", (event) => {
+        this.dispatchEvent("mutechange", event);
+      });
+      __publicField(this, "dispatchWaiting", (event) => {
+        this.dispatchEvent("waiting", event);
+      });
+      __publicField(this, "dispatchResume", (event) => {
+        this.dispatchEvent("resume", event);
+      });
+    }
     addEventListener(name, callback) {
       this.listeners[name].push(callback);
     }
@@ -38188,65 +38408,26 @@ Check that all your Remotion packages are on the same version. If your dependenc
         callback({ detail: context });
       });
     }
-    dispatchSeek = (frame) => {
-      this.dispatchEvent("seeked", {
-        frame
-      });
-    };
-    dispatchVolumeChange = (volume) => {
-      this.dispatchEvent("volumechange", {
-        volume
-      });
-    };
-    dispatchPause = () => {
-      this.dispatchEvent("pause", void 0);
-    };
-    dispatchPlay = () => {
-      this.dispatchEvent("play", void 0);
-    };
-    dispatchEnded = () => {
-      this.dispatchEvent("ended", void 0);
-    };
-    dispatchRateChange = (playbackRate) => {
-      this.dispatchEvent("ratechange", {
-        playbackRate
-      });
-    };
-    dispatchScaleChange = (scale) => {
-      this.dispatchEvent("scalechange", {
-        scale
-      });
-    };
-    dispatchError = (error2) => {
-      this.dispatchEvent("error", {
-        error: error2
-      });
-    };
-    dispatchTimeUpdate = (event) => {
-      this.dispatchEvent("timeupdate", event);
-    };
-    dispatchFrameUpdate = (event) => {
-      this.dispatchEvent("frameupdate", event);
-    };
-    dispatchFullscreenChange = (event) => {
-      this.dispatchEvent("fullscreenchange", event);
-    };
-    dispatchMuteChange = (event) => {
-      this.dispatchEvent("mutechange", event);
-    };
-    dispatchWaiting = (event) => {
-      this.dispatchEvent("waiting", event);
-    };
-    dispatchResume = (event) => {
-      this.dispatchEvent("resume", event);
-    };
   };
   var ThumbnailEmitter = class {
-    listeners = {
-      error: [],
-      waiting: [],
-      resume: []
-    };
+    constructor() {
+      __publicField(this, "listeners", {
+        error: [],
+        waiting: [],
+        resume: []
+      });
+      __publicField(this, "dispatchError", (error2) => {
+        this.dispatchEvent("error", {
+          error: error2
+        });
+      });
+      __publicField(this, "dispatchWaiting", (event) => {
+        this.dispatchEvent("waiting", event);
+      });
+      __publicField(this, "dispatchResume", (event) => {
+        this.dispatchEvent("resume", event);
+      });
+    }
     addEventListener(name, callback) {
       this.listeners[name].push(callback);
     }
@@ -38258,17 +38439,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
         callback({ detail: context });
       });
     }
-    dispatchError = (error2) => {
-      this.dispatchEvent("error", {
-        error: error2
-      });
-    };
-    dispatchWaiting = (event) => {
-      this.dispatchEvent("waiting", event);
-    };
-    dispatchResume = (event) => {
-      this.dispatchEvent("resume", event);
-    };
   };
   var useBufferStateEmitter = (emitter) => {
     const { subscribeBuffering } = (0, import_react96.useContext)(Internals.SetTimelineContext);
@@ -38337,6 +38507,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return hovered;
   };
   var usePlayerMethods = () => {
+    var _a2;
     const setFrame = Internals.Timeline.useTimelineSetFrame();
     const setTimelinePosition = Internals.Timeline.useTimelineSetFrame();
     const {
@@ -38359,16 +38530,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
       throw new TypeError("Expected Player event emitter context");
     }
     const getCurrentFrame = (0, import_react102.useCallback)(() => {
+      var _a3, _b, _c;
       if (!video) {
-        return fallbackFrame.current ?? (typeof window === "undefined" ? 0 : window.remotion_initialFrame ?? 0);
+        return (_b = fallbackFrame.current) != null ? _b : typeof window === "undefined" ? 0 : (_a3 = window.remotion_initialFrame) != null ? _a3 : 0;
       }
-      const unclamped = frameRef.current[video.id] ?? (environment.isPlayer ? 0 : Internals.Timeline.getFrameForComposition(video.id));
+      const unclamped = (_c = frameRef.current[video.id]) != null ? _c : environment.isPlayer ? 0 : Internals.Timeline.getFrameForComposition(video.id);
       return Internals.Timeline.clampFrameToCompositionRange(unclamped, video.durationInFrames);
     }, [environment.isPlayer, frameRef, video]);
     const seek2 = (0, import_react102.useCallback)((newFrame) => {
       const frameToSeekTo = config ? Internals.TimelinePosition.clampFrameToCompositionRange(newFrame, config.durationInFrames) : Math.max(0, newFrame);
       fallbackFrame.current = frameToSeekTo;
-      if (video?.id) {
+      if (video == null ? void 0 : video.id) {
         if (frameRef.current[video.id] !== frameToSeekTo) {
           frameRef.current = {
             ...frameRef.current,
@@ -38378,21 +38550,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
         setTimelinePosition((currentFrames) => currentFrames[video.id] === frameToSeekTo ? currentFrames : { ...currentFrames, [video.id]: frameToSeekTo });
       }
       emitter.dispatchSeek(frameToSeekTo);
-    }, [config, emitter, frameRef, setTimelinePosition, video?.id]);
+    }, [config, emitter, frameRef, setTimelinePosition, video == null ? void 0 : video.id]);
     const play = (0, import_react102.useCallback)((e) => {
+      var _a3;
       const isAutoPlayAttempt = nextPlayIsAutoPlayAttempt.current;
       nextPlayIsAutoPlayAttempt.current = false;
       if (readIsPlaying()) {
         return;
       }
-      const lastFrameForPlayback = (config?.durationInFrames ?? 1) - 1;
+      const lastFrameForPlayback = ((_a3 = config == null ? void 0 : config.durationInFrames) != null ? _a3 : 1) - 1;
       if (getCurrentFrame() === lastFrameForPlayback) {
         seek2(0);
       }
       if (isAutoPlayAttempt) {
-        audioContext?.resumeAsAutoPlay();
+        audioContext == null ? void 0 : audioContext.resumeAsAutoPlay();
       } else {
-        audioContext?.resume();
+        audioContext == null ? void 0 : audioContext.resume();
       }
       if (audioTagsContext && audioTagsContext.numberOfAudioTags > 0 && e) {
         audioTagsContext.playAllAudios();
@@ -38405,7 +38578,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       audioAndVideoTags,
       audioContext,
       audioTagsContext,
-      config?.durationInFrames,
+      config == null ? void 0 : config.durationInFrames,
       emitter,
       getCurrentFrame,
       readIsPlaying,
@@ -38420,7 +38593,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       if (readIsPlaying()) {
         setPlaying(false);
         emitter.dispatchPause();
-        audioContext?.suspend();
+        audioContext == null ? void 0 : audioContext.suspend();
       }
     }, [audioContext, emitter, readIsPlaying, setPlaying]);
     const pauseAndReturnToPlayStart = (0, import_react102.useCallback)(() => {
@@ -38447,16 +38620,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
       setPlaying,
       setTimelinePosition
     ]);
-    const videoId = video?.id;
-    const lastFrame = (config?.durationInFrames ?? 1) - 1;
+    const videoId = video == null ? void 0 : video.id;
+    const lastFrame = ((_a2 = config == null ? void 0 : config.durationInFrames) != null ? _a2 : 1) - 1;
     const frameBack = (0, import_react102.useCallback)((frames) => {
+      var _a3, _b;
       if (!videoId) {
         return null;
       }
       if (readIsPlaying()) {
         return;
       }
-      const previousFrame = frameRef.current[videoId] ?? window.remotion_initialFrame ?? 0;
+      const previousFrame = (_b = (_a3 = frameRef.current[videoId]) != null ? _a3 : window.remotion_initialFrame) != null ? _b : 0;
       const newFrame = Math.max(0, previousFrame - frames);
       if (previousFrame === newFrame) {
         return;
@@ -38468,13 +38642,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
       setFrame((currentFrames) => currentFrames[videoId] === newFrame ? currentFrames : { ...currentFrames, [videoId]: newFrame });
     }, [frameRef, readIsPlaying, setFrame, videoId]);
     const frameForward = (0, import_react102.useCallback)((frames) => {
+      var _a3, _b;
       if (!videoId) {
         return null;
       }
       if (readIsPlaying()) {
         return;
       }
-      const previousFrame = frameRef.current[videoId] ?? window.remotion_initialFrame ?? 0;
+      const previousFrame = (_b = (_a3 = frameRef.current[videoId]) != null ? _a3 : window.remotion_initialFrame) != null ? _b : 0;
       const newFrame = Math.min(lastFrame, previousFrame + frames);
       if (previousFrame === newFrame) {
         return;
@@ -38766,7 +38941,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, [config, frame, logLevel, playbackRate, sharedAudioContext, muted]);
     (0, import_react99.useLayoutEffect)(() => {
-      const audioContext = sharedAudioContext?.audioContext;
+      const audioContext = sharedAudioContext == null ? void 0 : sharedAudioContext.audioContext;
       if (!audioContext) {
         return;
       }
@@ -38777,7 +38952,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return;
       }
       const callback = () => {
-        const newState = sharedAudioContext?.getAudioContextState();
+        const newState = sharedAudioContext == null ? void 0 : sharedAudioContext.getAudioContextState();
         if (newState && shouldForceAnchorChange(newState)) {
           setGlobalTimeAnchor({
             audioContext,
@@ -38789,9 +38964,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           });
         }
       };
-      audioContext?.addEventListener("statechange", callback);
+      audioContext == null ? void 0 : audioContext.addEventListener("statechange", callback);
       return () => {
-        audioContext?.removeEventListener("statechange", callback);
+        audioContext == null ? void 0 : audioContext.removeEventListener("statechange", callback);
       };
     }, [
       config,
@@ -38802,14 +38977,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
       sharedAudioContext
     ]);
     (0, import_react100.useEffect)(() => {
+      var _a2;
       if (!config) {
         return;
       }
       if (!playing) {
-        sharedAudioContext?.suspend?.();
+        (_a2 = sharedAudioContext == null ? void 0 : sharedAudioContext.suspend) == null ? void 0 : _a2.call(sharedAudioContext);
         return;
       }
-      if (sharedAudioContext?._experimentalKeepAudioContextAlive && sharedAudioContext.audioContext && !muted) {
+      if ((sharedAudioContext == null ? void 0 : sharedAudioContext._experimentalKeepAudioContextAlive) && sharedAudioContext.audioContext && !muted) {
         const changed = setGlobalTimeAnchor({
           audioContext: sharedAudioContext.audioContext,
           audioSyncAnchor: sharedAudioContext.audioSyncAnchor,
@@ -38841,19 +39017,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
         cancelQueuedFrame();
       };
       const callback = () => {
+        var _a3, _b;
         if (hasBeenStopped) {
           return;
         }
         if (!isPlaying()) {
-          sharedAudioContext?.suspend?.();
+          (_a3 = sharedAudioContext == null ? void 0 : sharedAudioContext.suspend) == null ? void 0 : _a3.call(sharedAudioContext);
           return;
         }
         if (!muted && !audioContextFailed && !isBuffering()) {
-          sharedAudioContext?.resume?.();
+          (_b = sharedAudioContext == null ? void 0 : sharedAudioContext.resume) == null ? void 0 : _b.call(sharedAudioContext);
         }
         const time = performance.now() - startedTime;
-        const actualLastFrame = outFrame ?? config.durationInFrames - 1;
-        const actualFirstFrame = inFrame ?? 0;
+        const actualLastFrame = outFrame != null ? outFrame : config.durationInFrames - 1;
+        const actualFirstFrame = inFrame != null ? inFrame : 0;
         const currentFrame = getCurrentFrame();
         const { nextFrame, framesToAdvance, hasEnded } = calculateNextFrame({
           time,
@@ -38878,10 +39055,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
         queueNextFrame();
       };
       const queueNextFrame = () => {
+        var _a3, _b, _c;
         if (hasBeenStopped) {
           return;
         }
-        const getIsResumingAudioContext = audioContextFailed ? null : sharedAudioContext?.getIsResumingAudioContext?.() ?? null;
+        const getIsResumingAudioContext = audioContextFailed ? null : (_b = (_a3 = sharedAudioContext == null ? void 0 : sharedAudioContext.getIsResumingAudioContext) == null ? void 0 : _a3.call(sharedAudioContext)) != null ? _b : null;
         if (getIsResumingAudioContext !== null && !muted) {
           getIsResumingAudioContext.then((result) => {
             if (hasBeenStopped) {
@@ -38889,7 +39067,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             }
             if (result === "failed") {
               audioContextFailed = true;
-              sharedAudioContext?.suspend();
+              sharedAudioContext == null ? void 0 : sharedAudioContext.suspend();
               setPlayerMuted(true);
             }
             startedTime = performance.now();
@@ -38900,14 +39078,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
         if (isBuffering()) {
           if (!muted && !audioContextFailed) {
-            sharedAudioContext?.suspend?.();
+            (_c = sharedAudioContext == null ? void 0 : sharedAudioContext.suspend) == null ? void 0 : _c.call(sharedAudioContext);
           }
           const unsubscribe = subscribeBuffering((state) => {
             if (state.buffering) {
               return;
             }
             unsubscribe();
-            if (!muted && !audioContextFailed && sharedAudioContext?._experimentalKeepAudioContextAlive) {
+            if (!muted && !audioContextFailed && (sharedAudioContext == null ? void 0 : sharedAudioContext._experimentalKeepAudioContextAlive)) {
               sharedAudioContext.resume();
             }
             startedTime = performance.now();
@@ -39015,7 +39193,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return new ResizeObserver((entries) => {
         const { contentRect, target } = entries[0];
         const newSize = target.getClientRects();
-        if (!newSize?.[0]) {
+        if (!(newSize == null ? void 0 : newSize[0])) {
           setSize(null);
           return;
         }
@@ -39108,7 +39286,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [size, updateSize]);
   };
   var playerCssClassname = (override) => {
-    return override ?? "__remotion-player";
+    return override != null ? override : "__remotion-player";
   };
   var errorStyle = {
     display: "flex",
@@ -39119,7 +39297,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     width: "100%"
   };
   var ErrorBoundary = class extends import_react107.default.Component {
-    state = { hasError: null };
+    constructor() {
+      super(...arguments);
+      __publicField(this, "state", { hasError: null });
+    }
     static getDerivedStateFromError(error2) {
       return { hasError: error2 };
     }
@@ -39151,7 +39332,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     try {
       const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(window.location.hostname));
       return Array.from(new Uint8Array(hashBuffer)).map((b3) => b3.toString(16).padStart(2, "0")).join("");
-    } catch {
+    } catch (e) {
       return null;
     }
   };
@@ -39402,7 +39583,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return renderMuteButton ? renderMuteButton({ muted: playerMuted, volume: mediaVolume }) : renderDefaultMuteButton({ muted: playerMuted, volume: mediaVolume });
     }, [playerMuted, mediaVolume, renderDefaultMuteButton, renderMuteButton]);
     const volumeSlider = (0, import_react110.useMemo)(() => {
-      return (focused || hover) && !playerMuted && !Internals.isIosSafari() ? (renderVolumeSlider ?? renderDefaultVolumeSlider)({
+      return (focused || hover) && !playerMuted && !Internals.isIosSafari() ? (renderVolumeSlider != null ? renderVolumeSlider : renderDefaultVolumeSlider)({
         isVertical: displayVerticalVolumeSlider,
         volume: mediaVolume,
         onBlur: () => setFocused(false),
@@ -39679,6 +39860,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return current;
   };
   var PlayerSeekBar = ({ durationInFrames, onSeekEnd, onSeekStart, inFrame, outFrame }) => {
+    var _a2;
     const containerRef = (0, import_react114.useRef)(null);
     const barHovered = useHoverState(containerRef, false);
     const size = useElementSize(containerRef, {
@@ -39690,12 +39872,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [dragging, setDragging] = (0, import_react114.useState)({
       dragging: false
     });
-    const width = size?.width ?? 0;
+    const width = (_a2 = size == null ? void 0 : size.width) != null ? _a2 : 0;
     const onPointerDown = (0, import_react114.useCallback)((e) => {
+      var _a3;
       if (e.button !== 0) {
         return;
       }
-      const posLeft = containerRef.current?.getBoundingClientRect().left;
+      const posLeft = (_a3 = containerRef.current) == null ? void 0 : _a3.getBoundingClientRect().left;
       const _frame = getFrameFromX(e.clientX - posLeft, durationInFrames, width);
       const wasPlaying = isPlaying();
       pause();
@@ -39707,13 +39890,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
       onSeekStart();
     }, [durationInFrames, width, isPlaying, pause, seek2, onSeekStart]);
     const onPointerMove = (0, import_react114.useCallback)((e) => {
+      var _a3;
       if (!size) {
         throw new Error("Player has no size");
       }
       if (!dragging.dragging) {
         return;
       }
-      const posLeft = containerRef.current?.getBoundingClientRect().left;
+      const posLeft = (_a3 = containerRef.current) == null ? void 0 : _a3.getBoundingClientRect().left;
       const _frame = getFrameFromX(e.clientX - posLeft, durationInFrames, size.width);
       seek2(_frame);
     }, [dragging.dragging, durationInFrames, seek2, size]);
@@ -39760,8 +39944,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return {
         height: BAR_HEIGHT2,
         backgroundColor: "rgba(255, 255, 255, 1)",
-        width: (frame - (inFrame ?? 0)) / (durationInFrames - 1) * width,
-        marginLeft: (inFrame ?? 0) / (durationInFrames - 1) * width,
+        width: (frame - (inFrame != null ? inFrame : 0)) / (durationInFrames - 1) * width,
+        marginLeft: (inFrame != null ? inFrame : 0) / (durationInFrames - 1) * width,
         borderRadius: BAR_HEIGHT2 / 2
       };
     }, [durationInFrames, frame, inFrame, width]);
@@ -39769,8 +39953,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return {
         height: BAR_HEIGHT2,
         backgroundColor: "rgba(255, 255, 255, 0.25)",
-        width: ((outFrame ?? durationInFrames - 1) - (inFrame ?? 0)) / (durationInFrames - 1) * 100 + "%",
-        marginLeft: (inFrame ?? 0) / (durationInFrames - 1) * 100 + "%",
+        width: ((outFrame != null ? outFrame : durationInFrames - 1) - (inFrame != null ? inFrame : 0)) / (durationInFrames - 1) * 100 + "%",
+        marginLeft: (inFrame != null ? inFrame : 0) / (durationInFrames - 1) * 100 + "%",
         borderRadius: BAR_HEIGHT2 / 2,
         position: "absolute"
       };
@@ -39957,12 +40141,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     toggle,
     renderCustomControls
   }) => {
+    var _a2, _b;
     const playButtonRef = (0, import_react109.useRef)(null);
     const [supportsFullscreen, setSupportsFullscreen] = (0, import_react109.useState)(false);
     const hovered = useHoverState(containerRef, hideControlsWhenPointerDoesntMove);
     const { maxTimeLabelWidth, displayVerticalVolumeSlider } = useVideoControlsResize({
       allowFullscreen,
-      playerWidth: canvasSize?.width ?? 0
+      playerWidth: (_a2 = canvasSize == null ? void 0 : canvasSize.width) != null ? _a2 : 0
     });
     const [shouldShowInitially, setInitiallyShowControls] = (0, import_react109.useState)(() => {
       if (typeof initiallyShowControls === "boolean") {
@@ -40000,7 +40185,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, [playing, spaceKeyToPlayOrPause]);
     (0, import_react109.useEffect)(() => {
-      setSupportsFullscreen((typeof document !== "undefined" && (document.fullscreenEnabled || document.webkitFullscreenEnabled)) ?? false);
+      var _a3;
+      setSupportsFullscreen((_a3 = typeof document !== "undefined" && (document.fullscreenEnabled || document.webkitFullscreenEnabled)) != null ? _a3 : false);
     }, []);
     (0, import_react109.useEffect)(() => {
       if (shouldShowInitially === false) {
@@ -40036,12 +40222,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const flexRef = (0, import_react109.useRef)(null);
     const onPointerDownIfContainer = (0, import_react109.useCallback)((e) => {
       if (e.target === ref.current || e.target === flexRef.current) {
-        onPointerDown?.(e);
+        onPointerDown == null ? void 0 : onPointerDown(e);
       }
     }, [onPointerDown]);
     const onDoubleClickIfContainer = (0, import_react109.useCallback)((e) => {
       if (e.target === ref.current || e.target === flexRef.current) {
-        onDoubleClick?.(e);
+        onDoubleClick == null ? void 0 : onDoubleClick(e);
       }
     }, [onDoubleClick]);
     return /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", {
@@ -40067,10 +40253,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: renderPlayPauseButton === null ? /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(DefaultPlayPauseButton, {
                     buffering,
                     playing
-                  }) : renderPlayPauseButton({
+                  }) : (_b = renderPlayPauseButton({
                     playing,
                     isBuffering: buffering
-                  }) ?? /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(DefaultPlayPauseButton, {
+                  })) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(DefaultPlayPauseButton, {
                     buffering,
                     playing
                   })
@@ -40268,6 +40454,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     overrideInternalClassName,
     noSuspense
   }, ref) => {
+    var _a2, _b, _c;
     const config = Internals.useUnsafeVideoConfig();
     const video = Internals.useVideo();
     const container2 = (0, import_react106.useRef)(null);
@@ -40374,7 +40561,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         return;
       }
       const fullscreenChange = () => {
-        const element = document.webkitFullscreenElement ?? document.fullscreenElement;
+        var _a3;
+        const element = (_a3 = document.webkitFullscreenElement) != null ? _a3 : document.fullscreenElement;
         if (element && element === container2.current) {
           player.emitter.dispatchFullscreenChange({
             isFullscreen: true
@@ -40392,7 +40580,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         current.removeEventListener("fullscreenchange", fullscreenChange);
       };
     }, [player.emitter]);
-    const durationInFrames = config?.durationInFrames ?? 1;
+    const durationInFrames = (_a2 = config == null ? void 0 : config.durationInFrames) != null ? _a2 : 1;
     const layout = (0, import_react106.useMemo)(() => {
       if (!config || !canvasSize) {
         return null;
@@ -40404,7 +40592,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         previewSize: "auto"
       });
     }, [canvasSize, config]);
-    const scale = layout?.scale ?? 1;
+    const scale = (_b = layout == null ? void 0 : layout.scale) != null ? _b : 1;
     const initialScaleIgnored = (0, import_react106.useRef)(false);
     (0, import_react106.useEffect)(() => {
       if (!initialScaleIgnored.current) {
@@ -40644,8 +40832,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Internals.CurrentScaleContext.Provider, {
                     value: currentScale,
                     children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(VideoComponent, {
-                      ...video?.props ?? {},
-                      ...inputProps ?? {}
+                      ...(_c = video == null ? void 0 : video.props) != null ? _c : {},
+                      ...inputProps != null ? inputProps : {}
                     })
                   })
                 }) : null,
@@ -40727,7 +40915,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return;
     }
     try {
-      window.localStorage.setItem(volumePersistenceKey ?? DEFAULT_VOLUME_PERSISTENCE_KEY, String(volume));
+      window.localStorage.setItem(volumePersistenceKey != null ? volumePersistenceKey : DEFAULT_VOLUME_PERSISTENCE_KEY, String(volume));
     } catch (e) {
       Internals.Log.error({ logLevel, tag: null }, "Could not persist volume", e);
     }
@@ -40737,9 +40925,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return 1;
     }
     try {
-      const val = window.localStorage.getItem(volumePersistenceKey ?? DEFAULT_VOLUME_PERSISTENCE_KEY);
+      const val = window.localStorage.getItem(volumePersistenceKey != null ? volumePersistenceKey : DEFAULT_VOLUME_PERSISTENCE_KEY);
       return val ? Number(val) : 1;
-    } catch {
+    } catch (e) {
       return 1;
     }
   };
@@ -40810,7 +40998,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       inputProps
     ]);
     const [playerMuted, setPlayerMuted] = (0, import_react119.useState)(() => initiallyMuted);
-    const [mediaVolume, setMediaVolume] = (0, import_react119.useState)(() => persistVolumeToStorage ? getPreferredVolume(volumePersistenceKey ?? null) : initialVolume);
+    const [mediaVolume, setMediaVolume] = (0, import_react119.useState)(() => persistVolumeToStorage ? getPreferredVolume(volumePersistenceKey != null ? volumePersistenceKey : null) : initialVolume);
     const mediaVolumeContextValue = (0, import_react119.useMemo)(() => {
       return {
         playerMuted,
@@ -40823,7 +41011,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const setMediaVolumeAndPersist = (0, import_react119.useCallback)((vol) => {
       setMediaVolume(vol);
       if (persistVolumeToStorage) {
-        persistVolume(vol, logLevel, volumePersistenceKey ?? null);
+        persistVolume(vol, logLevel, volumePersistenceKey != null ? volumePersistenceKey : null);
       }
     }, [persistVolumeToStorage, logLevel, volumePersistenceKey]);
     const setMediaVolumeContextValue = (0, import_react119.useMemo)(() => {
@@ -40903,7 +41091,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var validateSingleFrame = (frame, variableName) => {
     if (typeof frame === "undefined" || frame === null) {
-      return frame ?? null;
+      return frame != null ? frame : null;
     }
     if (typeof frame !== "number") {
       throw new TypeError(`"${variableName}" must be a number, but is ${JSON.stringify(frame)}`);
@@ -41065,7 +41253,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       throw new Error("The <Player /> component does not accept `defaultProps`, but some were passed. Use `inputProps` instead.");
     }
     const componentForValidation = componentOrNullIfLazy(componentProps);
-    if (componentForValidation?.type === Composition) {
+    if ((componentForValidation == null ? void 0 : componentForValidation.type) === Composition) {
       throw new TypeError(`'component' should not be an instance of <Composition/>. Pass the React component directly, and set the duration, fps and dimensions as separate props. See https://www.remotion.dev/docs/player/examples for an example.`);
     }
     if (componentForValidation === Composition) {
@@ -41079,7 +41267,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     validateInitialFrame({ initialFrame, durationInFrames });
     const [frame, setFrame] = (0, import_react105.useState)(() => ({
-      [PLAYER_COMP_ID]: initialFrame ?? 0
+      [PLAYER_COMP_ID]: initialFrame != null ? initialFrame : 0
     }));
     const frameRef = (0, import_react105.useRef)(frame);
     frameRef.current = frame;
@@ -41206,9 +41394,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
         Internals.CSSUtils.injectCSS(Internals.CSSUtils.makeDefaultPreviewCSS(`.${playerCssClassname(overrideInternalClassName)}`, "#fff"));
       }, [overrideInternalClassName]);
     }
-    const actualInputProps = (0, import_react105.useMemo)(() => inputProps ?? {}, [inputProps]);
+    const actualInputProps = (0, import_react105.useMemo)(() => inputProps != null ? inputProps : {}, [inputProps]);
     const browserMediaControlsBehavior = (0, import_react105.useMemo)(() => {
-      return passedBrowserMediaControlsBehavior ?? {
+      return passedBrowserMediaControlsBehavior != null ? passedBrowserMediaControlsBehavior : {
         mode: "prevent-media-session"
       };
     }, [passedBrowserMediaControlsBehavior]);
@@ -41252,28 +41440,28 @@ Check that all your Remotion packages are on the same version. If your dependenc
               doubleClickToFullscreen: Boolean(doubleClickToFullscreen),
               spaceKeyToPlayOrPause: Boolean(spaceKeyToPlayOrPause),
               playbackRate: currentPlaybackRate,
-              className: className2 ?? void 0,
+              className: className2 != null ? className2 : void 0,
               showPosterWhenUnplayed: Boolean(showPosterWhenUnplayed),
               showPosterWhenEnded: Boolean(showPosterWhenEnded),
               showPosterWhenPaused: Boolean(showPosterWhenPaused),
               showPosterWhenBuffering: Boolean(showPosterWhenBuffering),
               showPosterWhenBufferingAndPaused: Boolean(showPosterWhenBufferingAndPaused),
               renderPoster,
-              inFrame: inFrame ?? null,
-              outFrame: outFrame ?? null,
-              initiallyShowControls: initiallyShowControls ?? true,
-              renderFullscreen: renderFullscreenButton ?? null,
-              renderPlayPauseButton: renderPlayPauseButton ?? null,
-              renderMuteButton: renderMuteButton ?? null,
-              renderVolumeSlider: renderVolumeSlider ?? null,
-              renderCustomControls: renderCustomControls ?? null,
+              inFrame: inFrame != null ? inFrame : null,
+              outFrame: outFrame != null ? outFrame : null,
+              initiallyShowControls: initiallyShowControls != null ? initiallyShowControls : true,
+              renderFullscreen: renderFullscreenButton != null ? renderFullscreenButton : null,
+              renderPlayPauseButton: renderPlayPauseButton != null ? renderPlayPauseButton : null,
+              renderMuteButton: renderMuteButton != null ? renderMuteButton : null,
+              renderVolumeSlider: renderVolumeSlider != null ? renderVolumeSlider : null,
+              renderCustomControls: renderCustomControls != null ? renderCustomControls : null,
               alwaysShowControls,
               showPlaybackRateControl,
-              bufferStateDelayInMilliseconds: bufferStateDelayInMilliseconds ?? 300,
+              bufferStateDelayInMilliseconds: bufferStateDelayInMilliseconds != null ? bufferStateDelayInMilliseconds : 300,
               hideControlsWhenPointerDoesntMove,
               overflowVisible,
               browserMediaControlsBehavior,
-              overrideInternalClassName: overrideInternalClassName ?? void 0,
+              overrideInternalClassName: overrideInternalClassName != null ? overrideInternalClassName : void 0,
               noSuspense: Boolean(noSuspense)
             })
           })
@@ -41324,6 +41512,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     noSuspense,
     overrideInternalClassName
   }, ref) => {
+    var _a2, _b;
     const config = Internals.useUnsafeVideoConfig();
     const video = Internals.useVideo();
     const container2 = (0, import_react121.useRef)(null);
@@ -41342,7 +41531,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         previewSize: "auto"
       });
     }, [canvasSize, config]);
-    const scale = layout?.scale ?? 1;
+    const scale = (_a2 = layout == null ? void 0 : layout.scale) != null ? _a2 : 1;
     const thumbnail = useThumbnail();
     useBufferStateEmitter(thumbnail.emitter);
     (0, import_react121.useImperativeHandle)(ref, () => {
@@ -41403,8 +41592,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(Internals.CurrentScaleContext.Provider, {
             value: currentScaleContext,
             children: /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(VideoComponent, {
-              ...video?.props ?? {},
-              ...inputProps ?? {}
+              ...(_b = video == null ? void 0 : video.props) != null ? _b : {},
+              ...inputProps != null ? inputProps : {}
             })
           })
         }) : null
@@ -41505,7 +41694,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const [emitter] = (0, import_react120.useState)(() => new ThumbnailEmitter());
     const passedInputProps = (0, import_react120.useMemo)(() => {
-      return inputProps ?? {};
+      return inputProps != null ? inputProps : {};
     }, [inputProps]);
     return /* @__PURE__ */ (0, import_jsx_runtime57.jsx)(Internals.IsPlayerContextProvider, {
       children: /* @__PURE__ */ (0, import_jsx_runtime57.jsx)(Internals.SetTimelineContext.Provider, {
@@ -41581,24 +41770,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var textSegments = (value) => clean(value).split(/[。！？；;，,\n]+/).map((item2) => item2.trim()).filter(Boolean);
   var strings = (value) => Array.isArray(value) ? value.map(clean).filter(Boolean) : [];
   var resolveContentText = (cue, props, key) => {
-    const explicit = key ? cleanMissing(props?.[key]) : void 0;
+    const explicit = key ? cleanMissing(props == null ? void 0 : props[key]) : void 0;
     if (explicit !== void 0) return explicit;
-    const effect = cleanMissing(props?.effectZh);
+    const effect = cleanMissing(props == null ? void 0 : props.effectZh);
     if (effect !== void 0) return effect;
     return clean(cue.caption.zh) || clean(cue.section.subtitle) || clean(cue.section.eyebrow);
   };
   var resolveContentItems = (cue, props, keys = ["items"]) => {
     for (const key of keys) {
-      const items2 = strings(props?.[key]);
+      const items2 = strings(props == null ? void 0 : props[key]);
       if (items2.length) return items2;
     }
-    const spoken = textSegments(props?.effectZh || cue.caption.zh);
+    const spoken = textSegments((props == null ? void 0 : props.effectZh) || cue.caption.zh);
     if (spoken.length) return spoken;
     const headline = resolveContentText(cue, props, "headline");
     return headline ? [headline] : [];
   };
   var resolveContentNumber = (props, key, fallback = 0) => {
-    const value = props?.[key];
+    const value = props == null ? void 0 : props[key];
     return typeof value === "number" && Number.isFinite(value) ? value : fallback;
   };
   var isArrayLayout = (layout) => ARRAY_LAYOUTS.has(layout);
@@ -41623,29 +41812,30 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var easeOut = Easing.bezier(0.16, 1, 0.3, 1);
   var BODY_TOP = 300;
-  var stringProp = (props, key, fallback) => typeof props?.[key] === "string" ? String(props[key]) : fallback;
-  var numberProp = (props, key, fallback) => typeof props?.[key] === "number" && Number.isFinite(props[key]) ? props[key] : fallback;
+  var stringProp = (props, key, fallback) => typeof (props == null ? void 0 : props[key]) === "string" ? String(props[key]) : fallback;
+  var numberProp = (props, key, fallback) => typeof (props == null ? void 0 : props[key]) === "number" && Number.isFinite(props[key]) ? props[key] : fallback;
   var demoEnter = (frame, start2, x = -28) => ({
     opacity: interpolate(frame, [start2, start2 + 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: easeOut }),
     translate: `${interpolate(frame, [start2, start2 + 24], [x, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: easeOut })}px 0`
   });
-  var imageProp = (props, key) => typeof props?.[key] === "string" && String(props[key]).trim() ? String(props[key]) : "";
-  var optionalStringProp = (props, key) => typeof props?.[key] === "string" ? String(props[key]).trim() : "";
+  var imageProp = (props, key) => typeof (props == null ? void 0 : props[key]) === "string" && String(props[key]).trim() ? String(props[key]) : "";
+  var optionalStringProp = (props, key) => typeof (props == null ? void 0 : props[key]) === "string" ? String(props[key]).trim() : "";
   var PersonDisc = ({ name, size, active, imageSrc }) => /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)("div", { style: { width: size, height: size, borderRadius: "50%", background: imageSrc ? "#101827" : active ? "#94a3b8" : "rgba(255,255,255,0.16)", backgroundImage: imageSrc ? `url(${imageSrc})` : void 0, backgroundSize: "cover", backgroundPosition: "center", border: `3px solid ${active ? COLORS.blue : "rgba(255,255,255,0.18)"}`, boxShadow: active ? "0 0 42px rgba(10,132,255,0.55)" : "none", position: "relative", overflow: "hidden" }, children: [
     !imageSrc && /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { style: { position: "absolute", left: "50%", top: "27%", width: size * 0.22, height: size * 0.22, borderRadius: "50%", background: "#202936", translate: "-50% 0" } }),
     !imageSrc && /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { style: { position: "absolute", left: "20%", right: "20%", bottom: "-3%", height: "34%", borderRadius: "50% 50% 0 0", background: "#202936" } }),
     /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { style: { position: "absolute", left: 0, right: 0, bottom: 14, padding: "0 8px", color: COLORS.white, textAlign: "center", fontSize: 18, lineHeight: "20px", fontWeight: 950, textShadow: imageSrc ? "0 2px 8px rgba(0,0,0,.9)" : void 0 }, children: name })
   ] });
   var DemoAvatarFlip = ({ cue, props }) => {
+    var _a2, _b, _c, _d, _e;
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const start2 = Math.round(cue.start * fps);
-    const outgoing = cue.people?.[0];
-    const incoming = cue.people?.[1];
-    const thirdPerson = cue.people?.[2];
-    const leftName = stringProp(props, "leftName", outgoing?.name ?? (cue.section.subtitle.slice(0, 6) || "\u4EBA\u7269 A"));
-    const rightName = stringProp(props, "rightName", incoming?.name ?? (cue.caption.zh.slice(0, 6) || "\u4EBA\u7269 B"));
-    const thirdName = optionalStringProp(props, "thirdName") || thirdPerson?.name || "";
+    const outgoing = (_a2 = cue.people) == null ? void 0 : _a2[0];
+    const incoming = (_b = cue.people) == null ? void 0 : _b[1];
+    const thirdPerson = (_c = cue.people) == null ? void 0 : _c[2];
+    const leftName = stringProp(props, "leftName", (_d = outgoing == null ? void 0 : outgoing.name) != null ? _d : cue.section.subtitle.slice(0, 6) || "\u4EBA\u7269 A");
+    const rightName = stringProp(props, "rightName", (_e = incoming == null ? void 0 : incoming.name) != null ? _e : cue.caption.zh.slice(0, 6) || "\u4EBA\u7269 B");
+    const thirdName = optionalStringProp(props, "thirdName") || (thirdPerson == null ? void 0 : thirdPerson.name) || "";
     const leftAvatar = imageProp(props, "leftAvatar");
     const rightAvatar = imageProp(props, "rightAvatar");
     const thirdAvatar = imageProp(props, "thirdAvatar");
@@ -41669,7 +41859,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var parseAnimatedValue = (value) => {
-    const text3 = String(value ?? "").trim();
+    const text3 = String(value != null ? value : "").trim();
     const match = text3.match(/^([^\d+\-.]*)([+-]?\d+(?:,\d{3})*(?:\.\d+)?|[+-]?\d+(?:\.\d+)?)(.*)$/);
     if (!match) return null;
     const numeric = Number(match[2].replace(/,/g, ""));
@@ -41710,9 +41900,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var CapitalDashboardNumbers = ({ cue, props }) => {
+    var _a2, _b;
     const { fps } = useVideoConfig();
     const start2 = Math.round(cue.start * fps) + 8;
-    const marketLabel = stringProp(props, "marketLabel", cue.metric?.label ?? resolveContentText(cue, props));
+    const marketLabel = stringProp(props, "marketLabel", (_b = (_a2 = cue.metric) == null ? void 0 : _a2.label) != null ? _b : resolveContentText(cue, props));
     const marketTo = resolveContentNumber(props, "marketTo", 0);
     const engineeringTo = resolveContentNumber(props, "engineeringTo", 0);
     return /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)("div", { style: { position: "absolute", right: 100, top: BODY_TOP, display: "flex", gap: 18 }, children: [
@@ -41770,7 +41961,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const start2 = Math.round(cue.start * fps) + 8;
-    const designTokens = props?.designTokens && typeof props.designTokens === "object" ? props.designTokens : {};
+    const designTokens = (props == null ? void 0 : props.designTokens) && typeof props.designTokens === "object" ? props.designTokens : {};
     const comments = resolveContentItems(cue, props, ["comments", "items", "steps"]).slice(0, Math.max(1, Math.min(3, Math.round(Number(designTokens.defaultItemCount) || 3))));
     const gap = Math.max(0, Math.min(80, Number(designTokens.gap) || 16)) * 3;
     const rawLeft = Number.isFinite(Number(designTokens.boundsX)) ? Number(designTokens.boundsX) : 1250;
@@ -41785,10 +41976,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const maxButtonWidth = Math.max(240, Math.floor((width - Math.max(0, comments.length - 1) * gap) / Math.max(1, comments.length)));
     const actionSymbols = ["\u2661", "\u2726", "\u2606"];
     return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { style: { position: "absolute", left, top, width, minHeight: height, display: "flex", alignItems: "center", justifyContent: "center", gap, overflow: "visible" }, children: comments.map((comment, index) => {
+      var _a2;
       const color = index === 1 ? COLORS.gold : COLORS.blue;
       const softGlow = index === 1 ? "rgba(255,209,102,.34)" : "rgba(10,132,255,.32)";
       return /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)("div", { style: { flex: "0 0 auto", width: "max-content", maxWidth: maxButtonWidth, minWidth: 240, minHeight: 66, padding: "11px 24px", borderRadius: 999, background: `linear-gradient(135deg, rgba(7,15,28,.94), rgba(2,8,23,.82)), radial-gradient(circle at 18% 20%, ${softGlow}, transparent 42%)`, border: `1px solid ${color}`, outline: `1px solid ${softGlow}`, outlineOffset: 3, color: COLORS.white, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, boxShadow: `0 0 18px ${color}77, inset 0 0 22px ${color}22, 0 10px 32px rgba(0,0,0,.38)`, overflow: "visible", ...demoEnter(frame, start2 + 54 + index * 10, 0) }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("span", { style: { flex: "0 0 auto", width: 24, height: 24, borderRadius: "50%", color, fontSize: 20, lineHeight: "24px", textAlign: "center", fontWeight: 950, textShadow: `0 0 12px ${color}` }, children: actionSymbols[index] ?? "\u2022" }),
+        /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("span", { style: { flex: "0 0 auto", width: 24, height: 24, borderRadius: "50%", color, fontSize: 20, lineHeight: "24px", textAlign: "center", fontWeight: 950, textShadow: `0 0 12px ${color}` }, children: (_a2 = actionSymbols[index]) != null ? _a2 : "\u2022" }),
         /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("span", { style: { color: COLORS.white, fontSize: 19, lineHeight: "24px", fontWeight: 950, whiteSpace: "normal", overflowWrap: "anywhere", textShadow: `0 0 10px ${color}55` }, children: comment })
       ] }, `${comment}-${index}`);
     }) });
@@ -41803,24 +41995,32 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var enter = (frame, start2, x = -28) => ({ opacity: interpolate(frame, [start2, start2 + 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease }), transform: `translateX(${interpolate(frame, [start2, start2 + 24], [x, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease })}px)` });
   var Panel = ({ children, color = C.blue, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { background: C.panel, border: `1px solid ${color}`, borderRadius: 10, boxShadow: `0 0 28px color-mix(in srgb, ${color} 25%, transparent)`, ...style2 }, children });
   var Mark = ({ value, color }) => /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { width: 46, height: 46, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color, fontSize: 33, fontWeight: 950, border: `2px solid ${color}`, boxShadow: `0 0 18px color-mix(in srgb, ${color} 70%, transparent)` }, children: value });
-  var textProp = (props, key, fallback) => typeof props?.[key] === "string" ? String(props[key]) : fallback;
-  var itemLimit = (props, fallback = 4) => Math.max(1, Math.min(8, Math.round(Number(props?.designTokens?.defaultItemCount) || fallback)));
+  var textProp = (props, key, fallback) => typeof (props == null ? void 0 : props[key]) === "string" ? String(props[key]) : fallback;
+  var itemLimit = (props, fallback = 4) => {
+    var _a2;
+    return Math.max(1, Math.min(8, Math.round(Number((_a2 = props == null ? void 0 : props.designTokens) == null ? void 0 : _a2.defaultItemCount) || fallback)));
+  };
   var listProp = (cue, props, key) => resolveContentItems(cue, props, [key, "items", "steps", "units", "comments", "nodes", "years"]);
   var optionalStrings = (value) => Array.isArray(value) ? value.map((item2) => typeof item2 === "string" ? item2.trim() : "").filter(Boolean) : [];
   var rows = (cue, props) => resolveContentItems(cue, props, ["items", "steps", "units", "comments"]);
   var boxColors = { purple: "#8B5CF6", blue: "#0A84FF", gold: "#FFD166", white: "#F8FAFC", green: "#36D399", red: "#FF6B6B" };
-  var boxColorProp = (props, fallback = C.blue) => boxColors[textProp(props, "boxColor", "auto")] ?? fallback;
+  var boxColorProp = (props, fallback = C.blue) => {
+    var _a2;
+    return (_a2 = boxColors[textProp(props, "boxColor", "auto")]) != null ? _a2 : fallback;
+  };
   var RejectList = ({ cue, props }) => {
+    var _a2;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const items2 = rows(cue, props).slice(0, itemLimit(props, 4));
-    const subtitles = optionalStrings(props?.itemSubtitles ?? props?.subLabels);
+    const subtitles = optionalStrings((_a2 = props == null ? void 0 : props.itemSubtitles) != null ? _a2 : props == null ? void 0 : props.subLabels);
     const fallbackSubtitle = textProp(props, "subLabel", "");
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 98, top: BODY_TOP2, width: 740, ...enter(f, s) }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.red, fontSize: 22, fontWeight: 950, letterSpacing: 3 }, children: textProp(props, "title", "REJECTED PATHS") }),
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { marginTop: 22, display: "flex", flexDirection: "column", gap: 14 }, children: items2.map((row, i) => {
-        const subtitle = subtitles[i] ?? fallbackSubtitle;
+        var _a3;
+        const subtitle = (_a3 = subtitles[i]) != null ? _a3 : fallbackSubtitle;
         return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)(Panel, { color: C.red, style: { padding: "18px 22px", display: "flex", alignItems: "center", gap: 18, ...enter(f, s + 16 + i * 18) }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Mark, { value: "\xD7", color: C.red }),
           /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { minWidth: 0 }, children: [
@@ -41832,11 +42032,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var CheckProgress = ({ cue, props }) => {
+    var _a2, _b;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const title = textProp(props, "bodyText", textProp(props, "body", textProp(props, "title", "PRODUCT RECOVERY")));
-    const target = Number(props?.progress ?? props?.value ?? 82);
+    const target = Number((_b = (_a2 = props == null ? void 0 : props.progress) != null ? _a2 : props == null ? void 0 : props.value) != null ? _b : 82);
     const safeTarget = Number.isFinite(target) ? Math.max(0, Math.min(100, target)) : 82;
     const p = interpolate(f, [s + 20, s + 132], [0, safeTarget], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
     const sourceRows = rows(cue, props);
@@ -41857,7 +42058,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
-    const designTokens = props?.designTokens && typeof props.designTokens === "object" ? props.designTokens : {};
+    const designTokens = (props == null ? void 0 : props.designTokens) && typeof props.designTokens === "object" ? props.designTokens : {};
     const gap = Math.max(0, Math.min(80, Number(designTokens.gap) || 8));
     const defaultItemCount = Math.max(1, Math.min(8, Math.round(Number(designTokens.defaultItemCount) || 4)));
     const staggerFrames = Math.max(0, Math.min(45, Math.round(Number(designTokens.staggerFrames) || Math.round(fps * 0.5))));
@@ -41884,8 +42085,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const chips = listProp(cue, props, "items").slice(0, 4);
     const pos = [[145, 250], [530, 190], [275, 525], [750, 485]];
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { position: "absolute", inset: 0 }, children: chips.map((chip, i) => {
+      var _a2, _b, _c, _d;
       const color = [C.blue, C.gold, C.green, C.blue][i];
-      return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Panel, { color, style: { position: "absolute", left: pos[i]?.[0] ?? 145, top: (pos[i]?.[1] ?? 250) + Math.sin((f - s) / 17 + i) * 12, padding: "18px 22px", ...enter(f, s + getStaggerStartFrame(fps, i), i % 2 ? 34 : -34) }, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 29, fontWeight: 950 }, children: chip }) }, chip);
+      return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Panel, { color, style: { position: "absolute", left: (_b = (_a2 = pos[i]) == null ? void 0 : _a2[0]) != null ? _b : 145, top: ((_d = (_c = pos[i]) == null ? void 0 : _c[1]) != null ? _d : 250) + Math.sin((f - s) / 17 + i) * 12, padding: "18px 22px", ...enter(f, s + getStaggerStartFrame(fps, i), i % 2 ? 34 : -34) }, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 29, fontWeight: 950 }, children: chip }) }, chip);
     }) });
   };
   var BareTypography = ({ cue }) => {
@@ -41922,11 +42124,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const body = textProp(props, "body", textProp(props, "bodyText", textProp(props, "effectText", cue.caption.zh || cue.section.subtitle)));
     const quote = textProp(props, "highlightQuote", cue.section.eyebrow);
     const mark = textProp(props, "mark", "A").slice(0, 2);
-    return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 125, top: BODY_TOP2, display: "flex", alignItems: "center", gap: 32, ...enter(f, s), transform: `scale(${interpolate(p, [0, 1], [0.72, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })})` }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { width: 140, height: 140, borderRadius: 26, background: C.blue, boxShadow: "0 0 40px rgba(10,132,255,.75)", display: "flex", alignItems: "center", justifyContent: "center", color: C.white, fontSize: 74, fontWeight: 950 }, children: mark }),
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { maxWidth: 820 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 76, lineHeight: "88px", fontWeight: 950, overflowWrap: "break-word" }, children: body }),
-        quote ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { marginTop: 8, color: C.gold, fontSize: 22, lineHeight: "30px", fontWeight: 950, letterSpacing: 6, overflowWrap: "break-word" }, children: quote }) : null
+    const bodyLength = Array.from(body).length;
+    const logoBodyFontSize = bodyLength > 76 ? 38 : bodyLength > 56 ? 46 : bodyLength > 40 ? 54 : bodyLength > 28 ? 64 : 76;
+    const logoBodyLineHeight = Math.round(logoBodyFontSize * 1.16);
+    return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 125, top: BODY_TOP2, width: 1050, display: "flex", alignItems: "center", gap: 32, ...enter(f, s), transform: `scale(${interpolate(p, [0, 1], [0.72, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })})` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { width: 140, height: 140, flex: "0 0 140px", borderRadius: 26, background: C.blue, boxShadow: "0 0 40px rgba(10,132,255,.75)", display: "flex", alignItems: "center", justifyContent: "center", color: C.white, fontSize: 74, fontWeight: 950 }, children: mark }),
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { minWidth: 0, flex: 1 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: logoBodyFontSize, lineHeight: logoBodyLineHeight + "px", fontWeight: 950, overflowWrap: "break-word", wordBreak: "keep-all" }, children: body }),
+        quote ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { marginTop: 10, color: C.gold, fontSize: bodyLength > 56 ? 18 : 22, lineHeight: "30px", fontWeight: 950, letterSpacing: 4, overflowWrap: "break-word", wordBreak: "keep-all" }, children: quote }) : null
       ] })
     ] });
   };
@@ -41976,10 +42181,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var ProgressDonut = ({ cue, props }) => {
+    var _a2, _b;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
-    const target = Math.max(0, Math.min(100, Number(props?.value ?? props?.progress ?? 74) || 74));
+    const target = Math.max(0, Math.min(100, Number((_b = (_a2 = props == null ? void 0 : props.value) != null ? _a2 : props == null ? void 0 : props.progress) != null ? _b : 74) || 74));
     const val = interpolate(f, [s + 20, s + 100], [0, target], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
     const dash = 2 * Math.PI * 132;
     const subtitle = textProp(props, "metric", textProp(props, "label", cue.section.eyebrow));
@@ -42032,7 +42238,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const p = spring({ frame: f - s - 18, fps, config: { damping: 11, stiffness: 170 } });
     const body = textProp(props, "body", textProp(props, "effectText", cue.caption.zh));
     const quote = textProp(props, "highlightQuote", cue.section.subtitle);
-    const designTokens = props?.designTokens && typeof props.designTokens === "object" ? props.designTokens : {};
+    const designTokens = (props == null ? void 0 : props.designTokens) && typeof props.designTokens === "object" ? props.designTokens : {};
     const contentScale = Number(designTokens.contentScale) || 1;
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 120, right: 120, top: BODY_TOP2, textAlign: "center", transform: `scale(${contentScale * interpolate(p, [0, 1], [0.64, 1.04], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })})` }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.gold, fontSize: 22, fontWeight: 950, letterSpacing: 5 }, children: "THE VIEW" }),
@@ -42045,12 +42251,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const fallback = listProp(cue, props, "items");
-    const exact = (key, fallbackValue) => typeof props?.[key] === "string" ? String(props?.[key]) : fallbackValue;
+    const exact = (key, fallbackValue) => typeof (props == null ? void 0 : props[key]) === "string" ? String(props == null ? void 0 : props[key]) : fallbackValue;
     const cards = [0, 1, 2, 3].map((_, i) => {
+      var _a2;
       const n = i + 1;
-      const title = exact(`photoTitle${n}`, fallback[i] ?? ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA", "\u8865\u5145\u8BC1\u636E"][i]);
+      const title = exact(`photoTitle${n}`, (_a2 = fallback[i]) != null ? _a2 : ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA", "\u8865\u5145\u8BC1\u636E"][i]);
       const subtitle = exact(`photoSubtitle${n}`, ["PRODUCT HISTORY", "VISUAL RHYTHM", "ACTION SIGNAL", "EXTRA PROOF"][i]);
-      const photo = typeof props?.[`photo${n}`] === "string" ? String(props?.[`photo${n}`]) : "";
+      const photo = typeof (props == null ? void 0 : props[`photo${n}`]) === "string" ? String(props == null ? void 0 : props[`photo${n}`]) : "";
       return { title, subtitle, photo };
     }).filter((card) => card.title.trim() || card.photo).slice(0, 4);
     const xs = [0, 300, 600, 900];
@@ -42067,7 +42274,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = startFrame(cue, fps);
     const fallbackLabels = listProp(cue, props, "items").slice(0, 4);
-    const labels = [1, 2, 3, 4].map((n, i) => textProp(props, "productTitle" + String(n), fallbackLabels[i] ?? "")).filter(Boolean).slice(0, 4);
+    const labels = [1, 2, 3, 4].map((n, i) => {
+      var _a2;
+      return textProp(props, "productTitle" + String(n), (_a2 = fallbackLabels[i]) != null ? _a2 : "");
+    }).filter(Boolean).slice(0, 4);
     const centerImage = textProp(props, "centerImage", textProp(props, "productImage", ""));
     const centerLabel = textProp(props, "centerLabel", "APPLE ECOSYSTEM");
     const slots = labels.map((label3, i) => ({ label: label3, image: textProp(props, "productImage" + String(i + 1), "") }));
@@ -42075,10 +42285,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 185, top: BODY_TOP2, width: 1180, height: 620 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { position: "absolute", left: 420, top: 162, width: 340, height: 230, borderRadius: 34, background: "linear-gradient(145deg, rgba(255,255,255,.96), rgba(207,218,232,.78))", border: "1px solid rgba(255,255,255,.84)", boxShadow: "0 24px 60px rgba(0,0,0,.36), 0 0 42px rgba(10,132,255,.22)", display: "grid", placeItems: "center", overflow: "hidden", ...enter(f, s, 0) }, children: centerImage ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("img", { src: centerImage, style: { width: "100%", height: "100%", objectFit: "contain", padding: 34, boxSizing: "border-box" } }) : /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: "#111827", fontSize: 38, fontWeight: 950, letterSpacing: 2, textAlign: "center" }, children: centerLabel }) }),
       slots.map((slot, i) => {
-        const [x, y] = positions[i] ?? [0, 0];
+        var _a2, _b;
+        const [x, y] = (_a2 = positions[i]) != null ? _a2 : [0, 0];
         const p = spring({ frame: f - s - 16 - i * 10, fps, config: { damping: 14, stiffness: 130 } });
         const scale = interpolate(p, [0, 1], [0.62, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-        const accent = [C.blue, C.gold, C.green, C.red][i] ?? C.blue;
+        const accent = (_b = [C.blue, C.gold, C.green, C.red][i]) != null ? _b : C.blue;
         return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 590 + x, top: 277 + y, width: 172, height: 172, marginLeft: -86, marginTop: -86, borderRadius: "50%", background: "rgba(7,14,26,.88)", border: "2px solid " + accent, boxShadow: "0 0 30px " + accent + "66, inset 0 0 28px rgba(255,255,255,.08)", display: "grid", placeItems: "center", opacity: Math.min(1, p), transform: "scale(" + scale + ")", overflow: "hidden" }, children: [
           slot.image ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("img", { src: slot.image, style: { width: "100%", height: "100%", objectFit: "cover" } }) : /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { padding: 18, color: C.white, fontSize: 24, lineHeight: "30px", fontWeight: 950, textAlign: "center", overflowWrap: "break-word" }, children: slot.label }),
           /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { position: "absolute", left: 12, right: 12, bottom: 12, padding: "6px 8px", borderRadius: 999, background: "rgba(2,6,12,.72)", color: C.white, fontSize: 16, lineHeight: "20px", fontWeight: 900, textAlign: "center", backdropFilter: "blur(8px)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: slot.label })
@@ -42210,8 +42421,57 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
 
-  // src/JasonWu/RecoveredEffectComponents.tsx
+  // src/JasonWu/components/common/IcoFontPathIcon.tsx
   var import_jsx_runtime60 = __toESM(require_jsx_runtime());
+  var ICOFONT_GLYPHS = [
+    { name: "chat", path: "M937 633c0 11 0 23-3 34-14 62-64 101-129 101-204 0-408 0-612 0-75 0-130-56-130-131-1-133-1-265 0-398 0-11 1-22 3-32 14-59 63-99 124-100 25 0 50 0 78 0-4-19-7-36-12-52-10-35-23-68-46-97-10-13-5-24 11-25 11-1 24-1 34 3 40 18 79 37 117 58 45 25 74 67 108 104 6 6 11 9 20 9 103 0 206-1 308 0 75 1 129 57 130 131 0 132 0 263-1 395z" },
+    { name: "comment", path: "M935 736c-4 25-16 37-41 39-11 0-22 1-33 1-242 0-484 0-726 0-13 0-26-1-39-4-18-3-27-16-31-33-1-10-3-19-3-29v-491c0-8 1-16 2-23 5-29 16-40 45-40 55-1 110-1 166-2h18v-203c0-9-1-20 10-25 11-5 18 2 26 9 77 71 154 141 232 212 5 4 13 7 20 7 96 1 191 0 287 1 13 0 26 1 39 3 16 3 25 14 28 30 1 10 2 20 2 30v493c1 8 0 17-2 25z m-734-237h298v-68h-298v68z m483-206h-483v68h483v-68z m115 277h-598v67h598v-67z" },
+    { name: "reply", path: "M399 541v159c0 10-6 13-13 5l-318-318c-7-7-7-19 0-26l318-318c7-7 13-5 13 5v164c0 11 9 19 19 19 229-4 392-78 511-236 7-8 10-6 8 4-52 235-196 466-519 520-10 2-19 11-19 22z" },
+    { name: "send-mail", path: "M915 547h-489c-16 0-31-13-34-28l-70-338c-3-16 7-28 23-28h489c15 0 30 12 33 28l70 338c3 15-7 28-22 28z m-59-113l-217-105c-9-4-20-4-27 0l-174 105c-13 7-15 25-4 39 7 10 18 16 29 16 5 0 9-2 13-4l162-97 201 97c5 2 10 4 15 4 11 0 19-6 22-16 5-14-4-32-20-39z m-717 39h211c11 0 20 9 20 20s-9 20-20 20h-211c-11 0-20-9-20-20 0-11 9-20 20-20z m154-143h-210c-11 0-20-9-20-20s9-21 20-21h210c12 0 21 9 21 21s-9 20-21 20z m49 73c0 11-9 20-20 20h-126c-11 0-20-9-20-20 0-11 9-21 20-21h126c11 0 20 9 20 21z" },
+    { name: "signal", path: "M747 727v-754c0-33 27-61 60-61h25c34 0 61 27 61 61v754c0 33-27 61-61 61h-25c-33 0-60-27-60-61z m-152-814h25c33 0 60 27 60 60v607c0 33-27 60-60 60h-25c-34 0-61-27-61-60v-607c0-33 27-60 61-60z m-214-1h26c33 0 61 27 61 61v459c0 33-27 60-61 60h-26c-33 0-61-27-61-60v-459c0-34 28-61 61-61z m-212 1h24c33 0 61 27 61 60v312c0 33-27 60-61 60h-24c-34 0-61-27-61-60v-312c0-33 27-60 61-60z" },
+    { name: "share", path: "M752 251c-58 0-110-29-140-74l-214 119c12 23 19 50 19 78 0 28-7 54-19 77l163 71c31-44 82-73 139-73 94 0 170 76 170 169s-76 170-170 170-169-76-169-170c0-19 3-37 9-55l-169-73c-31 33-75 54-123 54-94 0-170-76-170-170 0-93 76-169 170-169 48 0 91 20 122 53l221-123c-5-16-8-34-8-53 0-94 76-169 169-169s169 76 169 169-75 169-169 169z" },
+    { name: "paper-plane", path: "M923 627c-281-59-559-117-839-176-14-3-23-7-21-8 1-2 2-3 4-4 62-48 124-96 187-145 5-4 7-8 7-15 0-66 0-132 0-197v-7c0-4 9-1 20 7 41 26 110 72 150 98 46-32 91-65 137-98 11-8 26-5 34 7 110 174 221 347 332 522 8 12 3 19-11 16z m-97-75c-7-4-13-8-20-13-140-89-280-178-419-268-7-4-12-9-16-16-23-38-45-76-67-114-1-2-2-3-3-4-2-3-3 6-3 20v76c0 20 0 40 0 60 0 7 2 10 8 13 77 37 153 74 230 112 100 48 200 97 300 145 1 1 3 1 5 2 2 0-4-6-15-13z" },
+    { name: "plus-circle", path: "M500 788c-242 0-437-196-437-438 0-242 195-438 437-438 242 0 438 196 438 438 0 242-196 438-438 438z m302-467c-1-9-2-19-5-30h-238v-238c-11-3-21-4-31-5-10-1-20-1-30-1-9 0-18 0-27 1-9 1-19 2-30 5v238h-238c-2 11-4 21-5 31-1 10-1 20-1 30 0 9 0 18 1 27 1 9 3 19 5 30h238v238c11 2 21 4 31 5 10 1 20 1 30 1 9 0 18 0 27-1 9-1 19-3 30-5v-238h238c3-11 4-21 5-31 1-10 1-20 1-30 0-9 0-18-1-27z" }
+  ];
+  var stableIconIndex = (seed, length = ICOFONT_GLYPHS.length) => {
+    const safeLength = Math.max(1, length);
+    let hash = 0;
+    for (let index = 0; index < seed.length; index++) hash = hash * 31 + seed.charCodeAt(index) | 0;
+    return Math.abs(hash) % safeLength;
+  };
+  var pickIcoFontGlyph = ({ seed, usedNames, fallbackIndex = 0 }) => {
+    const start2 = seed ? stableIconIndex(seed, ICOFONT_GLYPHS.length) : Math.abs(fallbackIndex) % ICOFONT_GLYPHS.length;
+    for (let offset = 0; offset < ICOFONT_GLYPHS.length; offset++) {
+      const glyph2 = ICOFONT_GLYPHS[(start2 + offset) % ICOFONT_GLYPHS.length];
+      if (!(usedNames == null ? void 0 : usedNames.has(glyph2.name))) {
+        usedNames == null ? void 0 : usedNames.add(glyph2.name);
+        return glyph2;
+      }
+    }
+    const glyph = ICOFONT_GLYPHS[start2];
+    usedNames == null ? void 0 : usedNames.add(glyph.name);
+    return glyph;
+  };
+  var IcoFontPathIcon = ({ seed = "", color, size = 29, usedNames, fallbackIndex = 0 }) => {
+    const icon = pickIcoFontGlyph({ seed, usedNames, fallbackIndex });
+    return /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("svg", { width: size, height: size, viewBox: "0 0 1000 1000", "aria-hidden": "true", style: { filter: `drop-shadow(0 0 8px ${color})` }, "data-icofont-name": icon.name, children: /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("g", { transform: "translate(0 850) scale(1 -1)", children: /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("path", { d: icon.path, fill: color }) }) });
+  };
+
+  // src/JasonWu/components/common/EditableTextSlots.ts
+  var presentText = (value) => {
+    if (value !== void 0 && value !== null) return typeof value === "string" ? value : String(value);
+    return void 0;
+  };
+  var readTextSlot = (props, key, defaultPayload, fallback = "") => {
+    const value = presentText(props == null ? void 0 : props[key]);
+    if (value !== void 0) return value;
+    const defaultValue = presentText(defaultPayload == null ? void 0 : defaultPayload[key]);
+    if (defaultValue !== void 0) return defaultValue;
+    return fallback;
+  };
+
+  // src/JasonWu/RecoveredEffectComponents.tsx
+  var import_jsx_runtime61 = __toESM(require_jsx_runtime());
   var BLUE = "#0A84FF";
   var GOLD = "#FFD166";
   var GREEN = "#38D7A6";
@@ -42223,54 +42483,54 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var clean2 = (value) => typeof value === "string" ? value.trim() : "";
   var strings2 = (value) => Array.isArray(value) ? value.map(clean2).filter(Boolean) : [];
   var optionalStrings2 = (value) => Array.isArray(value) ? value.map((item2) => typeof item2 === "string" ? item2.trim() : "") : [];
-  var text = (cue, props, key, fallback) => typeof props?.[key] === "string" ? clean2(props[key]) : fallback ?? resolveContentText(cue, props, "headline");
-  var itemLimit2 = (props, fallback = 4) => Math.max(1, Math.min(8, Math.round(Number(props?.designTokens?.defaultItemCount) || fallback)));
+  var text = (cue, props, key, fallback) => typeof (props == null ? void 0 : props[key]) === "string" ? clean2(props[key]) : fallback != null ? fallback : resolveContentText(cue, props, "headline");
+  var itemLimit2 = (props, fallback = 4) => {
+    var _a2;
+    return Math.max(1, Math.min(8, Math.round(Number((_a2 = props == null ? void 0 : props.designTokens) == null ? void 0 : _a2.defaultItemCount) || fallback)));
+  };
   var items = (cue, props, keys = ["items"], maxItems = 4) => {
     const rows3 = resolveContentItems(cue, props, keys);
     return rows3.slice(0, Math.min(8, Math.max(itemLimit2(props, maxItems), rows3.length)));
   };
   var start = (cue, fps) => Math.round(cue.start * fps);
   var tokenNumber = (props, key, fallback) => {
-    const value = props?.designTokens?.[key] ?? props?.[key];
+    var _a2, _b;
+    const value = (_b = (_a2 = props == null ? void 0 : props.designTokens) == null ? void 0 : _a2[key]) != null ? _b : props == null ? void 0 : props[key];
     const next = Number(value);
     return Number.isFinite(next) ? Math.max(0.6, Math.min(1.2, next)) : fallback;
   };
   var enter2 = (frame, at, x = -44, y = 20, frames = 24) => ({ opacity: interpolate(frame, [at, at + frames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }), transform: "translate(" + interpolate(frame, [at, at + frames], [x, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }) + "px," + interpolate(frame, [at, at + frames], [y, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }) + "px)" });
   var header = (cue, props) => {
     const headerScale = tokenNumber(props, "headerScale", 1);
-    return props?.__externalSectionLabel ? null : /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 76, top: 58, zIndex: 3, transform: "scale(" + headerScale + ")", transformOrigin: "top left" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: BLUE, fontSize: 30, fontWeight: 950, letterSpacing: 8, textShadow: "0 0 20px rgba(0,132,255,.55)" }, children: text(cue, props, "eyebrow", cue.section.eyebrow).toUpperCase() }),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 8, color: WHITE, fontSize: 25, fontWeight: 950 }, children: text(cue, props, "headline", cue.section.subtitle) })
+    return (props == null ? void 0 : props.__externalSectionLabel) ? null : /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 76, top: 58, zIndex: 3, transform: "scale(" + headerScale + ")", transformOrigin: "top left" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: BLUE, fontSize: 30, fontWeight: 950, letterSpacing: 8, textShadow: "0 0 20px rgba(0,132,255,.55)" }, children: text(cue, props, "eyebrow", cue.section.eyebrow).toUpperCase() }),
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 8, color: WHITE, fontSize: 25, fontWeight: 950 }, children: text(cue, props, "headline", cue.section.subtitle) })
     ] });
   };
-  var CircleMark = ({ color, value }) => /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { width: 52, height: 52, borderRadius: "50%", border: "3px solid " + color, color, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 34, fontWeight: 950, boxShadow: "0 0 18px " + color + "66" }, children: value });
+  var CircleMark = ({ color, value }) => /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { width: 52, height: 52, flex: "0 0 auto", borderRadius: "50%", border: "3px solid " + color, color, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 34, fontWeight: 950, boxShadow: "0 0 18px " + color + "66" }, children: value });
   var PlatformShiftLine = ({ cue, props }) => {
+    var _a2, _b;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
-    const count = Number(props?.count ?? props?.metricValue ?? 3) || 0;
+    const count = Number((_b = (_a2 = props == null ? void 0 : props.count) != null ? _a2 : props == null ? void 0 : props.metricValue) != null ? _b : 3) || 0;
     const value = Math.round(interpolate(f, [s + 20, s + 88], [0, count], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }));
     const dots = items(cue, props, ["milestones", "items"]);
     const line = interpolate(f, [s + 34, s + 110], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 74, top: BODY_TOP3, ...enter2(f, s) }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 24 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 136, color: WHITE, fontWeight: 950, lineHeight: 1 }, children: "\u25CF" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 136, color: WHITE, fontWeight: 950, lineHeight: 1 }, children: value }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: BLUE, fontSize: 38, fontWeight: 950, letterSpacing: 5 }, children: text(cue, props, "metricLabel", "\u4EA7\u54C1\u7EBF") })
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 74, top: BODY_TOP3, ...enter2(f, s) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 24 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { fontSize: 136, color: WHITE, fontWeight: 950, lineHeight: 1 }, children: value }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: BLUE, fontSize: 38, fontWeight: 950, letterSpacing: 5 }, children: text(cue, props, "metricLabel", "\u4EA7\u54C1\u7EBF") })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { marginTop: 150, color: DIM, fontSize: 30, fontWeight: 900 }, children: [
-          text(cue, props, "summary", cue.caption.zh),
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { color: BLUE, fontSize: 68 }, children: value })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "relative", marginTop: 58, width: 1e3, height: 92 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", top: 25, left: 0, width: 1e3, height: 5, background: "rgba(255,255,255,.5)" } }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", top: 25, left: 0, width: 1e3 * line, height: 5, background: BLUE, boxShadow: "0 0 18px rgba(0,132,255,.8)" } }),
-          Array.from({ length: Math.max(4, dots.length + 2) }).map((_, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("i", { style: { position: "absolute", top: i === Math.max(4, dots.length + 2) - 1 ? 7 : 16, left: i / Math.max(3, dots.length + 1) * 960, width: i === Math.max(4, dots.length + 2) - 1 ? 40 : 19, height: i === Math.max(4, dots.length + 2) - 1 ? 40 : 19, borderRadius: "50%", background: i === Math.max(4, dots.length + 2) - 1 ? BLUE : WHITE, boxShadow: i === Math.max(4, dots.length + 2) - 1 ? "0 0 24px " + BLUE : "none" } }, i)),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { position: "absolute", left: 0, top: 73, color: GOLD, fontSize: 25, letterSpacing: 3 }, children: text(cue, props, "startLabel", "\u8D77\u70B9") }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { position: "absolute", right: 0, top: 73, color: BLUE, fontSize: 25, letterSpacing: 3 }, children: text(cue, props, "endLabel", "\u76EE\u6807\u9636\u6BB5") })
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 150, color: BLUE, fontSize: 35, fontWeight: 900 }, children: text(cue, props, "summary", cue.caption.zh) }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "relative", marginTop: 58, width: 1e3, height: 92 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", top: 25, left: 0, width: 1e3, height: 5, background: "rgba(255,255,255,.5)" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", top: 25, left: 0, width: 1e3 * line, height: 5, background: BLUE, boxShadow: "0 0 18px rgba(0,132,255,.8)" } }),
+          Array.from({ length: Math.max(4, dots.length + 2) }).map((_, i) => /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("i", { style: { position: "absolute", top: i === Math.max(4, dots.length + 2) - 1 ? 7 : 16, left: i / Math.max(3, dots.length + 1) * 960, width: i === Math.max(4, dots.length + 2) - 1 ? 40 : 19, height: i === Math.max(4, dots.length + 2) - 1 ? 40 : 19, borderRadius: "50%", background: i === Math.max(4, dots.length + 2) - 1 ? BLUE : WHITE, boxShadow: i === Math.max(4, dots.length + 2) - 1 ? "0 0 24px " + BLUE : "none" } }, i)),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { position: "absolute", left: 0, top: 73, color: GOLD, fontSize: 25, letterSpacing: 3 }, children: text(cue, props, "startLabel", "\u8D77\u70B9") }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { position: "absolute", right: 0, top: 73, color: BLUE, fontSize: 25, letterSpacing: 3 }, children: text(cue, props, "endLabel", "\u76EE\u6807\u9636\u6BB5") })
         ] })
       ] })
     ] });
@@ -42281,50 +42541,51 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const s = start(cue, fps) + 12;
     const rows3 = items(cue, props, ["items", "steps"], 3);
     const body = text(cue, props, "bodyText", text(cue, props, "body", text(cue, props, "effectText", cue.section.subtitle)));
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 96, top: BODY_TOP3, ...enter2(f, s) }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: RED, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", "\u98CE\u9669\u6392\u9664") }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 58, lineHeight: "68px", fontWeight: 950, maxWidth: 960, overflowWrap: "break-word" }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 30, marginTop: 42 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 22, ...enter2(f, s + 15 + i * 16, -30, 0) }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: RED, value: "\xD7" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { color: WHITE, fontSize: 40, fontWeight: 950 }, children: row })
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 96, top: BODY_TOP3, ...enter2(f, s) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: RED, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", "\u98CE\u9669\u6392\u9664") }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 58, lineHeight: "68px", fontWeight: 950, maxWidth: 960, overflowWrap: "break-word" }, children: body }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { display: "grid", gap: 30, marginTop: 42 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 22, ...enter2(f, s + 15 + i * 16, -30, 0) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(CircleMark, { color: RED, value: "\xD7" }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { color: WHITE, fontSize: 40, fontWeight: 950 }, children: row })
         ] }, row + i)) })
       ] })
     ] });
   };
   var progressOffsets = [-12, 8, -4, 14, -9, 5, 0, 11];
   var RecoveryProgressBars = ({ cue, props }) => {
+    var _a2, _b;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const rows3 = items(cue, props);
-    const subtitles = strings2(props?.itemSubtitles ?? props?.subLabels);
-    const globalProgress = Number(props?.progress ?? props?.value);
+    const subtitles = strings2((_a2 = props == null ? void 0 : props.itemSubtitles) != null ? _a2 : props == null ? void 0 : props.subLabels);
+    const globalProgress = Number((_b = props == null ? void 0 : props.progress) != null ? _b : props == null ? void 0 : props.value);
     const baseProgress = Number.isFinite(globalProgress) ? globalProgress : 68;
     const body = text(cue, props, "bodyText", text(cue, props, "body", text(cue, props, "effectText", cue.section.subtitle)));
     const contentScale = tokenNumber(props, "contentScale", 0.66);
     const entrance = enter2(f, s);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 100, top: BODY_TOP3, width: 1130, opacity: entrance.opacity, transform: entrance.transform + " scale(" + contentScale + ")", transformOrigin: "top left" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: GREEN, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", text(cue, props, "category", "RECOVERY TRACK")) }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 24, color: WHITE, fontSize: 58, fontWeight: 950 }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 31, marginTop: 42 }, children: rows3.map((row, i) => {
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 100, top: BODY_TOP3, width: 1130, opacity: entrance.opacity, transform: entrance.transform + " scale(" + contentScale + ")", transformOrigin: "top left" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: GREEN, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", text(cue, props, "category", "RECOVERY TRACK")) }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 24, color: WHITE, fontSize: 58, fontWeight: 950 }, children: body }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { display: "grid", gap: 31, marginTop: 42 }, children: rows3.map((row, i) => {
           const target = Math.max(0, Math.min(100, baseProgress + progressOffsets[i % progressOffsets.length]));
           const progress = interpolate(f, [s + 30 + i * 16, s + 96 + i * 16], [0, target], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
-          return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { ...enter2(f, s + 14 + i * 16, 0, 14) }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 18 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { fontSize: 34, fontWeight: 950, color: WHITE }, children: row }),
-                subtitles[i] ? /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { display: "block", marginTop: 4, fontSize: 16, color: DIM, fontWeight: 850, letterSpacing: 2 }, children: subtitles[i] }) : null
+          return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { ...enter2(f, s + 14 + i * 16, 0, 14) }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 18 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { fontSize: 34, fontWeight: 950, color: WHITE }, children: row }),
+                subtitles[i] ? /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { display: "block", marginTop: 4, fontSize: 16, color: DIM, fontWeight: 850, letterSpacing: 2 }, children: subtitles[i] }) : null
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("span", { style: { fontSize: 34, color: GREEN, fontWeight: 950 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("span", { style: { fontSize: 34, color: GREEN, fontWeight: 950 }, children: [
                 Math.round(target),
                 "%"
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { height: 18, marginTop: 13, borderRadius: 20, background: "rgba(255,255,255,.2)", overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { height: "100%", width: progress + "%", background: i === 1 ? GOLD : GREEN, boxShadow: "0 0 18px " + (i === 1 ? GOLD : GREEN) } }) })
+            /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { height: 18, marginTop: 13, borderRadius: 20, background: "rgba(255,255,255,.2)", overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { height: "100%", width: progress + "%", background: i === 1 ? GOLD : GREEN, boxShadow: "0 0 18px " + (i === 1 ? GOLD : GREEN) } }) })
           ] }, row + i);
         }) })
       ] })
@@ -42335,27 +42596,33 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const rows3 = items(cue, props, ["items", "steps"]);
-    const subtitleSource = Array.isArray(props?.itemSubtitles) ? props?.itemSubtitles : Array.isArray(props?.subLabels) ? props?.subLabels : void 0;
+    const subtitleSource = Array.isArray(props == null ? void 0 : props.itemSubtitles) ? props == null ? void 0 : props.itemSubtitles : Array.isArray(props == null ? void 0 : props.subLabels) ? props == null ? void 0 : props.subLabels : void 0;
     const subtitles = optionalStrings2(subtitleSource);
     const hasExplicitSubtitles = Array.isArray(subtitleSource);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    const isEnglish = cue.language === "en";
+    const stackWidth = isEnglish ? 1070 : 693;
+    const defaultPayload = { subLabel: cue.section.eyebrow };
+    const usedIconNames = /* @__PURE__ */ new Set();
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 84, top: BODY_TOP3, width: 693, display: "grid", gap: 20 }, children: rows3.map((row, i) => {
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", left: 84, top: BODY_TOP3, width: stackWidth, display: "grid", gap: isEnglish ? 18 : 20 }, children: rows3.map((row, i) => {
+        var _a2;
         const p = spring({ frame: f - s - 14 - i * 17, fps, config: { damping: 14, stiffness: 150 } });
         const hudPalette = [BLUE, GOLD, GREEN, "#B26BFF"];
         const accent = hudPalette[i % hudPalette.length];
-        const shine = interpolate(f, [s + 25 + i * 17, s + 55 + i * 17], [-170, 760], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.linear });
-        const subtitle = hasExplicitSubtitles ? subtitles[i] ?? "" : text(cue, props, "subLabel", cue.section.eyebrow);
-        return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { height: 122, padding: "22px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid " + accent, borderRadius: 18, overflow: "hidden", background: "rgba(3,9,18,.9)", boxShadow: "0 0 28px " + accent + "44", opacity: Math.min(1, p), transform: "translateX(" + interpolate(p, [0, 1], [-80, 0]) + "px)" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: shine, top: -32, width: 118, height: 190, transform: "rotate(18deg)", pointerEvents: "none", background: "linear-gradient(90deg, transparent, " + accent + "66, rgba(255,255,255,.62), transparent)", mixBlendMode: "screen" } }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { width: 52, height: 52, borderRadius: "50%", background: accent, color: "#06111c", display: "grid", placeItems: "center", fontSize: 21 }, children: (i + 1 < 10 ? "0" : "") + String(i + 1) }),
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 37, fontWeight: 950, color: WHITE }, children: row }),
-              subtitle ? /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 5, color: accent, fontSize: 18, fontWeight: 900, letterSpacing: 4 }, children: subtitle }) : null
+        const shine = interpolate(f, [s + 25 + i * 17, s + 55 + i * 17], [-170, stackWidth + 68], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.linear });
+        const title = readTextSlot({ title: row }, "title", void 0, "");
+        const subtitle = hasExplicitSubtitles ? (_a2 = subtitles[i]) != null ? _a2 : "" : readTextSlot(props, "subLabel", defaultPayload, cue.section.eyebrow);
+        return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { minHeight: isEnglish ? 136 : 122, height: isEnglish ? void 0 : 122, padding: isEnglish ? "22px 30px" : "22px 28px", display: "flex", alignItems: "center", gap: 22, border: "2px solid " + accent, borderRadius: 18, overflow: "hidden", background: "rgba(3,9,18,.9)", boxShadow: "0 0 28px " + accent + "44", opacity: Math.min(1, p), transform: "translateX(" + interpolate(p, [0, 1], [-80, 0]) + "px)" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", left: shine, top: -32, width: 118, height: 190, transform: "rotate(18deg)", pointerEvents: "none", background: "linear-gradient(90deg, transparent, " + accent + "66, rgba(255,255,255,.62), transparent)", mixBlendMode: "screen" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, minWidth: 0, flex: 1 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { width: 52, height: 52, flex: "0 0 auto", marginRight: 2, borderRadius: "50%", background: "rgba(255,255,255,.08)", border: "2px solid " + accent, color: "#06111c", display: "grid", placeItems: "center", fontSize: 21, boxShadow: "0 0 18px " + accent + "77" }, children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(IcoFontPathIcon, { seed: title + i, color: accent, size: 29, usedNames: usedIconNames, fallbackIndex: i }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { minWidth: 0, flex: 1 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { fontSize: isEnglish ? 36 : 37, lineHeight: isEnglish ? "44px" : void 0, fontWeight: 950, color: WHITE, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "normal", wordBreak: "normal", hyphens: "auto" }, children: title }),
+              subtitle ? /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 5, color: accent, fontSize: 18, fontWeight: 900, letterSpacing: isEnglish ? 2 : 4, display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "normal", wordBreak: "normal", hyphens: "auto" }, children: subtitle }) : null
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: accent, value: "" })
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(CircleMark, { color: accent, value: "" })
         ] }, row + i);
       }) })
     ] });
@@ -42365,44 +42632,46 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const rows3 = items(cue, props, ["items", "steps"], 4);
+    const isSingleItem = rows3.length === 1;
     const body = text(cue, props, "body", text(cue, props, "bodyText", text(cue, props, "effectText", cue.caption.zh || cue.section.subtitle)));
     const tilt = interpolate(f, [s, s + 32], [-3, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
     const entrance = enter2(f, s, -70, 20, 32);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 170, top: 335, width: 1060, minHeight: 550, padding: "90px 82px", background: "#F4EEDB", color: "#101826", boxShadow: "0 24px 48px rgba(0,0,0,.48)", opacity: entrance.opacity, transform: entrance.transform + " rotate(" + tilt + "deg)" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 430, top: -28, width: 250, height: 62, borderRadius: 10, background: "#667689" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 22, fontWeight: 950, letterSpacing: 7 }, children: text(cue, props, "label", "PRODUCT NOTE") }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 34, fontSize: 64, lineHeight: "78px", fontWeight: 950, overflowWrap: "break-word" }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 25, marginTop: 35 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", gap: 18, alignItems: "center", fontSize: 35, fontWeight: 900, ...enter2(f, s + 18 + i * 15, -20, 0) }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { color: "#149D68", fontSize: 38 }, children: "\u2611" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { minWidth: 0, overflowWrap: "break-word" }, children: row })
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 170, top: 335, width: 1060, minHeight: 550, padding: "90px 82px", background: "#F4EEDB", color: "#101826", boxShadow: "0 24px 48px rgba(0,0,0,.48)", opacity: entrance.opacity, transform: entrance.transform + " rotate(" + tilt + "deg)" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", left: 430, top: -28, width: 250, height: 62, borderRadius: 10, background: "#667689" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { fontSize: 22, fontWeight: 950, letterSpacing: 7 }, children: text(cue, props, "label", "PRODUCT NOTE") }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 34, fontSize: 64, lineHeight: "78px", fontWeight: 950, overflowWrap: "break-word" }, children: body }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { display: "grid", gap: isSingleItem ? 0 : 25, marginTop: isSingleItem ? 52 : 35, minHeight: isSingleItem ? 180 : void 0, alignContent: isSingleItem ? "center" : void 0 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", gap: 18, alignItems: "center", minHeight: isSingleItem ? 120 : void 0, justifyContent: isSingleItem ? "center" : "flex-start", fontSize: isSingleItem ? 42 : 35, fontWeight: 900, ...enter2(f, s + 18 + i * 15, -20, 0) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { color: "#149D68", fontSize: 38 }, children: "\u2611" }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { minWidth: 0, overflowWrap: "break-word", wordBreak: "keep-all", lineHeight: 1.28 }, children: row })
         ] }, row + i)) })
       ] })
     ] });
   };
   var RewindMilestones = ({ cue, props }) => {
+    var _a2;
     const f = useCurrentFrame();
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const years = items(cue, props, ["years", "items"], 5);
-    const subtitles = strings2(props?.itemSubtitles ?? props?.subLabels);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    const subtitles = strings2((_a2 = props == null ? void 0 : props.itemSubtitles) != null ? _a2 : props == null ? void 0 : props.subLabels);
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 118, top: BODY_TOP3, width: 1180 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: GOLD, fontSize: 18, fontWeight: 950, letterSpacing: 5 }, children: text(cue, props, "label", "TIME REWIND") }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "relative", height: 275, marginTop: 24 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", top: 58, left: "7%", right: "7%", height: 4, background: "rgba(255,255,255,.72)" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 118, top: BODY_TOP3, width: 1180 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: GOLD, fontSize: 18, fontWeight: 950, letterSpacing: 5 }, children: text(cue, props, "label", "TIME REWIND") }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "relative", height: 275, marginTop: 24 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", top: 58, left: "7%", right: "7%", height: 4, background: "rgba(255,255,255,.72)" } }),
           years.map((year, i) => {
             const x = years.length === 1 ? 50 : 8 + i / (years.length - 1) * 84;
             const p = spring({ frame: f - s - 16 - i * 14, fps, config: { damping: 16, stiffness: 150 } });
-            return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: x + "%", top: 0, width: 210, marginLeft: -105, transform: "scale(" + interpolate(p, [0, 1], [0.8, 1]) + ")", transformOrigin: "top center", opacity: Math.min(1, p), textAlign: "center", overflow: "hidden" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("i", { style: { display: "block", width: 30, height: 30, margin: "0 auto 43px", borderRadius: "50%", background: i === years.length - 1 ? GOLD : BLUE, boxShadow: "0 0 18px " + (i === years.length - 1 ? GOLD : BLUE) } }),
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { display: "block", fontSize: 46, color: WHITE, lineHeight: 1.08, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: year }),
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { display: "block", marginTop: 15, fontSize: 16, color: DIM, fontWeight: 900, letterSpacing: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: subtitles[i] || text(cue, props, "milestoneLabel", "CAPABILITY") })
+            return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: x + "%", top: 0, width: 210, marginLeft: -105, transform: "scale(" + interpolate(p, [0, 1], [0.8, 1]) + ")", transformOrigin: "top center", opacity: Math.min(1, p), textAlign: "center", overflow: "hidden" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("i", { style: { display: "block", width: 30, height: 30, margin: "0 auto 43px", borderRadius: "50%", background: i === years.length - 1 ? GOLD : BLUE, boxShadow: "0 0 18px " + (i === years.length - 1 ? GOLD : BLUE) } }),
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { display: "block", fontSize: 46, color: WHITE, lineHeight: 1.08, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: year }),
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { display: "block", marginTop: 15, fontSize: 16, color: DIM, fontWeight: 900, letterSpacing: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: subtitles[i] || text(cue, props, "milestoneLabel", "CAPABILITY") })
             ] }, year + i);
           }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { position: "absolute", right: 78, top: 196, color: GOLD, fontSize: 20 }, children: "<< REWIND" })
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { position: "absolute", right: 78, top: 196, color: GOLD, fontSize: 20 }, children: "<< REWIND" })
         ] })
       ] })
     ] });
@@ -42412,15 +42681,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const cards = [[-90, -45, GOLD], [0, 0, GOLD], [90, 45, GOLD]];
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    const headline = text(cue, props, "headline", cue.section.subtitle);
+    const body = text(cue, props, "body", text(cue, props, "bodyText", text(cue, props, "effectText", cue.caption.zh)));
+    const headlineLength = Array.from(headline).length;
+    const bodyLength = Array.from(body).length;
+    const titleFontSize = headlineLength > 48 ? 38 : headlineLength > 34 ? 46 : headlineLength > 24 ? 52 : 56;
+    const bodyFontSize = bodyLength > 150 ? 20 : bodyLength > 110 ? 23 : bodyLength > 78 ? 26 : 29;
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 190, top: BODY_TOP3, width: 1050, height: 470 }, children: cards.map(([x, y, color], i) => {
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", left: 190, top: BODY_TOP3, width: 1050, height: 520 }, children: cards.map(([x, y, color], i) => {
         const p = spring({ frame: f - s - 10 - i * 10, fps, config: { damping: 15, stiffness: 150 } });
-        return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0, padding: "58px 70px", background: "#F6F0E2", color: "#101826", borderTop: "14px solid " + color, boxShadow: "0 18px 42px rgba(0,0,0,.36)", opacity: Math.min(1, p), transform: "translate(" + interpolate(p, [0, 1], [x * 2, x]) + "px," + interpolate(p, [0, 1], [y * 2, y]) + "px) rotate(" + (i - 1) * 2 + "deg)" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 20, fontWeight: 950, letterSpacing: 6 }, children: "THE PRODUCT PAPER" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 36, fontSize: 56, fontWeight: 950 }, children: i === 2 ? text(cue, props, "headline", cue.section.subtitle) : text(cue, props, "ghostTitle", cue.section.subtitle) }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 24, borderTop: "2px solid #7E8794" } }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 20, fontSize: 29, fontWeight: 850 }, children: text(cue, props, "body", cue.caption.zh) })
+        return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0, padding: "58px 70px", background: "#F6F0E2", color: "#101826", borderTop: "14px solid " + color, boxShadow: "0 18px 42px rgba(0,0,0,.36)", opacity: Math.min(1, p), transform: "translate(" + interpolate(p, [0, 1], [x * 2, x]) + "px," + interpolate(p, [0, 1], [y * 2, y]) + "px) rotate(" + (i - 1) * 2 + "deg)" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { fontSize: 20, fontWeight: 950, letterSpacing: 6 }, children: "THE PRODUCT PAPER" }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 36, fontSize: titleFontSize, lineHeight: titleFontSize * 1.16 + "px", fontWeight: 950, overflowWrap: "break-word", wordBreak: "keep-all" }, children: i === 2 ? headline : text(cue, props, "ghostTitle", cue.section.subtitle) }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 24, borderTop: "2px solid #7E8794" } }),
+          i === 2 ? /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { "data-flying-paper-body": true, style: { marginTop: 20, fontSize: bodyFontSize, lineHeight: bodyFontSize * 1.3 + "px", fontWeight: 850, overflowWrap: "break-word", wordBreak: "keep-all" }, children: body }) : null
         ] }, i);
       }) })
     ] });
@@ -42430,21 +42705,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const rows3 = items(cue, props);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    const isSingleItem = rows3.length === 1;
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 105, top: BODY_TOP3, width: 860, ...enter2(f, s) }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: GOLD, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", cue.section.eyebrow) }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 72, lineHeight: "86px", fontWeight: 950 }, children: "\u91CD\u70B9\u7B80\u8981\u5185\u5BB9" }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 24, marginTop: 38 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, ...enter2(f, s + 18 + i * 17, -24, 0) }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { width: 54, height: 54, border: "3px solid " + BLUE, color: BLUE, fontSize: 40, lineHeight: "48px", textAlign: "center" }, children: "\u2713" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { fontSize: 42, color: WHITE }, children: row })
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 105, top: BODY_TOP3, width: 860, ...enter2(f, s) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: GOLD, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", cue.section.eyebrow) }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 72, lineHeight: "86px", fontWeight: 950 }, children: "\u91CD\u70B9\u7B80\u8981\u5185\u5BB9" }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { display: "grid", gap: isSingleItem ? 0 : 24, marginTop: isSingleItem ? 62 : 38, minHeight: isSingleItem ? 220 : void 0, alignContent: isSingleItem ? "center" : void 0 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, minHeight: isSingleItem ? 132 : void 0, justifyContent: isSingleItem ? "center" : "flex-start", ...enter2(f, s + 18 + i * 17, -24, 0) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { width: 54, height: 54, flex: "0 0 auto", border: "3px solid " + BLUE, color: BLUE, fontSize: 40, lineHeight: "48px", textAlign: "center" }, children: "\u2713" }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { minWidth: 0, fontSize: isSingleItem ? 48 : 42, lineHeight: 1.24, color: WHITE, overflowWrap: "break-word", wordBreak: "keep-all" }, children: row })
         ] }, row + i)) })
       ] })
     ] });
   };
 
   // src/JasonWu/copyopen/HeroTitle.tsx
-  var import_jsx_runtime61 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime62 = __toESM(require_jsx_runtime());
   var HeroTitle = ({
     title,
     subtitle,
@@ -42456,7 +42732,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const titleChars = title.split("");
-    return /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -42464,8 +42740,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "center",
           background: scrimBackground
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { textAlign: "center", maxWidth: "85%" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)("div", { style: { textAlign: "center", maxWidth: "85%" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
             "div",
             {
               style: {
@@ -42485,7 +42761,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   fps,
                   config: { damping: 12, stiffness: 150 }
                 });
-                return /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
                   "span",
                   {
                     style: {
@@ -42504,7 +42780,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               })
             }
           ),
-          subtitle && /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+          subtitle && /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
             "div",
             {
               style: {
@@ -42524,7 +42800,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: subtitle
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
             "div",
             {
               style: {
@@ -42550,7 +42826,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/ProgressBar.tsx
-  var import_jsx_runtime62 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime63 = __toESM(require_jsx_runtime());
   var ProgressBar = ({
     progress,
     label: label3,
@@ -42625,7 +42901,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const trackWidth = 1344;
     const trackLeft = (1920 - trackWidth) / 2;
     const trackTop = label3 ? 520 : 500;
-    return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -42633,7 +42909,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           justifyContent: "center",
           alignItems: "center"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
           "div",
           {
             style: {
@@ -42646,7 +42922,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               gap: 24
             },
             children: [
-              label3 && /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+              label3 && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                 "div",
                 {
                   style: {
@@ -42664,7 +42940,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: label3
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
                 "div",
                 {
                   style: {
@@ -42672,7 +42948,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     position: "relative"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                       "div",
                       {
                         style: {
@@ -42694,7 +42970,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               config: { damping: 14, stiffness: 80 }
                             });
                             const segWidth = seg.value / 100 * 100;
-                            return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                            return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                               "div",
                               {
                                 style: {
@@ -42711,7 +42987,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           })
                         ) : (
                           // Single fill bar
-                          /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                             "div",
                             {
                               style: {
@@ -42726,7 +43002,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         )
                       }
                     ),
-                    isSegmented && /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                    isSegmented && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                       "div",
                       {
                         style: {
@@ -42741,7 +43017,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                             fps,
                             config: { damping: 20 }
                           });
-                          return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                          return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                             "div",
                             {
                               style: {
@@ -42763,7 +43039,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   ]
                 }
               ),
-              showPercentage && !isSegmented && /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)(
+              showPercentage && !isSegmented && /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
                 "div",
                 {
                   style: {
@@ -42787,7 +43063,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/ComparisonCard.tsx
-  var import_jsx_runtime63 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime64 = __toESM(require_jsx_runtime());
   var ComparisonCard = ({
     leftLabel,
     rightLabel,
@@ -42870,7 +43146,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const directionArrow = changeDirection === "up" ? "\u2191" : changeDirection === "down" ? "\u2193" : "\u2194";
     const directionColor = changeDirection === "up" ? "#10B981" : changeDirection === "down" ? "#EF4444" : "#9CA3AF";
-    return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -42878,7 +43154,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           justifyContent: "center",
           alignItems: "center"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
           "div",
           {
             style: {
@@ -42890,7 +43166,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               gap: 32
             },
             children: [
-              title && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+              title && /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                 "div",
                 {
                   style: {
@@ -42905,7 +43181,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: title
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                 "div",
                 {
                   style: {
@@ -42920,7 +43196,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     minHeight: 280
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                       "div",
                       {
                         style: {
@@ -42935,7 +43211,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           gap: 16
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -42947,7 +43223,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               }
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -42962,7 +43238,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               children: leftLabel
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -42978,7 +43254,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                       "div",
                       {
                         style: {
@@ -42990,7 +43266,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           position: "relative"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43002,7 +43278,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               }
                             }
                           ),
-                          changeIndicator && /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+                          changeIndicator && /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                             "div",
                             {
                               style: {
@@ -43016,7 +43292,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                                 transform: `scale(${indicatorScale})`
                               },
                               children: [
-                                /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                                /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                                   "div",
                                   {
                                     style: {
@@ -43029,7 +43305,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                                       alignItems: "center",
                                       boxShadow: "0 1px 4px rgba(0,0,0,0.1)"
                                     },
-                                    children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                                    children: /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                                       "span",
                                       {
                                         style: {
@@ -43043,7 +43319,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                                     )
                                   }
                                 ),
-                                /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                                /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                                   "div",
                                   {
                                     style: {
@@ -43062,7 +43338,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                       "div",
                       {
                         style: {
@@ -43077,7 +43353,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           gap: 16
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43089,7 +43365,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               }
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43104,7 +43380,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               children: rightLabel
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43131,7 +43407,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/TerminalScene.tsx
-  var import_jsx_runtime64 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime65 = __toESM(require_jsx_runtime());
   var TerminalScene = ({
     title = "Terminal",
     steps,
@@ -43139,6 +43415,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     accentColor = "#22D3EE",
     backgroundColor = "transparent"
   }) => {
+    var _a2, _b, _c, _d, _e;
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const lines = [];
@@ -43146,9 +43423,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     let cursorFrame = 0;
     for (const step of steps) {
       if (step.kind === "cmd") {
-        const speed = step.typeSpeed ?? 0.035;
+        const speed = (_a2 = step.typeSpeed) != null ? _a2 : 0.035;
         const typeFrames = Math.ceil(step.text.length * speed * fps);
-        const hold = Math.ceil((step.holdSeconds ?? 0.3) * fps);
+        const hold = Math.ceil(((_b = step.holdSeconds) != null ? _b : 0.3) * fps);
         lines.push({
           text: step.text,
           isCmd: true,
@@ -43158,7 +43435,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         cursorFrame += typeFrames + hold;
       } else if (step.kind === "out") {
         const revealFrames = Math.max(2, Math.ceil(0.08 * fps));
-        const hold = Math.ceil((step.holdSeconds ?? 0.15) * fps);
+        const hold = Math.ceil(((_c = step.holdSeconds) != null ? _c : 0.15) * fps);
         lines.push({
           text: step.text,
           isCmd: false,
@@ -43169,10 +43446,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       } else if (step.kind === "pause") {
         cursorFrame += Math.ceil(step.seconds * fps);
       } else if (step.kind === "pill") {
-        const dur = Math.ceil((step.durationSeconds ?? 2.2) * fps);
+        const dur = Math.ceil(((_d = step.durationSeconds) != null ? _d : 2.2) * fps);
         pills.push({
           text: step.text,
-          color: step.color ?? accentColor,
+          color: (_e = step.color) != null ? _e : accentColor,
           startFrame: cursorFrame,
           endFrame: cursorFrame + dur
         });
@@ -43184,7 +43461,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const renderedLines = visibleLines.slice(scrollStart);
     const blinkPhase = Math.floor(frame / (fps * 0.55)) % 2 === 0;
     const windowOpacity = spring({ frame, fps, config: { damping: 25, stiffness: 100 } });
-    return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -43194,7 +43471,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           padding: "80px",
           fontFamily: "'JetBrains Mono', 'Consolas', 'Monaco', monospace"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
           "div",
           {
             style: {
@@ -43210,7 +43487,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               position: "relative"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
                 "div",
                 {
                   style: {
@@ -43222,10 +43499,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     borderBottom: "1px solid rgba(255,255,255,0.05)"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#FF5F56" } }),
-                    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#FFBD2E" } }),
-                    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#27C93F" } }),
-                    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#FF5F56" } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#FFBD2E" } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#27C93F" } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                       "div",
                       {
                         style: {
@@ -43241,7 +43518,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                 "div",
                 {
                   style: {
@@ -43263,10 +43540,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       const typed = line.text.slice(0, Math.floor(progress));
                       const isLatest = idx === renderedLines.length - 1;
                       const isActive = frame <= line.endFrame + fps * 0.2;
-                      return /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)("div", { style: { display: "flex", alignItems: "baseline" }, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("span", { style: { color: accentColor, marginRight: 12, fontWeight: 600 }, children: prompt }),
-                        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("span", { style: { color: "#F1F5F9" }, children: typed }),
-                        isLatest && isActive && blinkPhase && /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { style: { display: "flex", alignItems: "baseline" }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("span", { style: { color: accentColor, marginRight: 12, fontWeight: 600 }, children: prompt }),
+                        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("span", { style: { color: "#F1F5F9" }, children: typed }),
+                        isLatest && isActive && blinkPhase && /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                           "span",
                           {
                             style: {
@@ -43287,7 +43564,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         [0, 1],
                         { extrapolateRight: "clamp" }
                       );
-                      return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                         "div",
                         {
                           style: { color: "#9CA3AF", opacity: alpha, paddingLeft: 4 },
@@ -43310,7 +43587,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 const outAlpha = lifeProgress > 0.82 ? interpolate(lifeProgress, [0.82, 1], [1, 0], { extrapolateRight: "clamp" }) : 1;
                 const alpha = Math.min(inAlpha, outAlpha);
                 const translateY = interpolate(inAlpha, [0, 1], [14, 0]);
-                return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                   "div",
                   {
                     style: {
@@ -43342,7 +43619,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/EndTag.tsx
-  var import_jsx_runtime65 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime66 = __toESM(require_jsx_runtime());
   var PALETTES = {
     cool_offwhite_on_black: {
       background: "#000000",
@@ -43409,7 +43686,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     );
     const shimmerVisible = frame >= shimmerStartFrame && frame <= shimmerStartFrame + shimmerTravelFrames;
-    return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -43417,7 +43694,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           justifyContent: "center",
           alignItems: "center"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
           "div",
           {
             style: {
@@ -43428,7 +43705,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               maxWidth: "86%"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                 "div",
                 {
                   style: {
@@ -43447,7 +43724,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: text3
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
                 "div",
                 {
                   style: {
@@ -43458,7 +43735,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     height: 5
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                       "div",
                       {
                         style: {
@@ -43474,7 +43751,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         }
                       }
                     ),
-                    shimmerVisible && /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+                    shimmerVisible && /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                       "div",
                       {
                         style: {
@@ -43501,7 +43778,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/charts/BarChart.tsx
-  var import_jsx_runtime66 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime67 = __toESM(require_jsx_runtime());
   var BarChart = ({
     data,
     title,
@@ -43538,7 +43815,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const y = chartBottom - i / gridLineCount * chartHeight;
       return { value, y };
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -43547,13 +43824,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "center",
           padding: 40
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
           "svg",
           {
             viewBox: "0 0 1920 1080",
             style: { width: "100%", height: "100%" },
             children: [
-              title && /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+              title && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                 "text",
                 {
                   x: 960,
@@ -43574,8 +43851,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   [0, 0.6],
                   { extrapolateRight: "clamp" }
                 );
-                return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("g", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "line",
                     {
                       x1: chartLeft,
@@ -43587,7 +43864,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       opacity: gridOpacity
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "text",
                     {
                       x: chartLeft - 12,
@@ -43603,7 +43880,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   )
                 ] }, `grid-${i}`);
               }),
-              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                 "line",
                 {
                   x1: chartLeft,
@@ -43617,7 +43894,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   })
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                 "line",
                 {
                   x1: chartLeft,
@@ -43685,8 +43962,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   [1, 0],
                   { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
                 );
-                return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("g", { opacity: fadeOut, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { opacity: fadeOut, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "rect",
                     {
                       x: barX,
@@ -43698,7 +43975,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       opacity: barOpacity
                     }
                   ),
-                  showValues && /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                  showValues && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "text",
                     {
                       x: barX + barWidth / 2,
@@ -43717,7 +43994,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       children: formatNumber(datum.value)
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "text",
                     {
                       x: barX + barWidth / 2,
@@ -43747,7 +44024,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
 
   // src/JasonWu/copyopen/charts/LineChart.tsx
-  var import_jsx_runtime67 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime68 = __toESM(require_jsx_runtime());
   var LineChart = ({
     series,
     title,
@@ -43797,7 +44074,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       [1, 0],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -43806,13 +44083,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "center",
           padding: 40
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
           "svg",
           {
             viewBox: "0 0 1920 1080",
             style: { width: "100%", height: "100%" },
             children: [
-              title && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              title && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "text",
                 {
                   x: 960,
@@ -43826,15 +44103,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: title
                 }
               ),
-              showGrid && /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
+              showGrid && /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
                 "g",
                 {
                   opacity: interpolate(frame, [0, 10], [0, 0.5], {
                     extrapolateRight: "clamp"
                   }),
                   children: [
-                    gridLinesY.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    gridLinesY.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "line",
                         {
                           x1: chartLeft,
@@ -43845,7 +44122,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           strokeWidth: 1
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "text",
                         {
                           x: chartLeft - 14,
@@ -43859,8 +44136,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         }
                       )
                     ] }, `gy-${i}`)),
-                    gridLinesX.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    gridLinesX.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "line",
                         {
                           x1: line.x,
@@ -43871,7 +44148,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           strokeWidth: 1
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "text",
                         {
                           x: line.x,
@@ -43888,7 +44165,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "line",
                 {
                   x1: chartLeft,
@@ -43902,7 +44179,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   })
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "line",
                 {
                   x1: chartLeft,
@@ -43916,7 +44193,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   })
                 }
               ),
-              xLabel && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              xLabel && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "text",
                 {
                   x: chartLeft + chartWidth / 2,
@@ -43933,7 +44210,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: xLabel
                 }
               ),
-              yLabel && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              yLabel && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "text",
                 {
                   x: 40,
@@ -43990,8 +44267,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   });
                 }
                 const dashOffset = pathLength * (1 - drawProgress);
-                return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { opacity: fadeOut, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { opacity: fadeOut, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                     "path",
                     {
                       d: pathD,
@@ -44012,7 +44289,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       [0, 1],
                       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
                     );
-                    return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                       "circle",
                       {
                         cx: toSvgX(p.x),
@@ -44028,7 +44305,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   })
                 ] }, s.label);
               }),
-              showLegend && series.length > 1 && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              showLegend && series.length > 1 && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "g",
                 {
                   opacity: interpolate(frame, [15, 25], [0, 1], {
@@ -44038,8 +44315,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: series.map((s, i) => {
                     const color = s.color || colors[i % colors.length];
                     const legendX = 960 - series.length * 160 / 2 + i * 160;
-                    return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "rect",
                         {
                           x: legendX,
@@ -44050,7 +44327,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           fill: color
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "text",
                         {
                           x: legendX + 32,
@@ -44080,7 +44357,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
 
   // src/JasonWu/copyopen/charts/PieChart.tsx
-  var import_jsx_runtime68 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime69 = __toESM(require_jsx_runtime());
   var PieChart = ({
     data,
     title,
@@ -44125,7 +44402,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       [1, 0],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -44134,13 +44411,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "center",
           padding: 40
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
           "svg",
           {
             viewBox: "0 0 1920 1080",
             style: { width: "100%", height: "100%" },
             children: [
-              title && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+              title && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                 "text",
                 {
                   x: 960,
@@ -44154,7 +44431,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: title
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { opacity: fadeOut, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("g", { opacity: fadeOut, children: [
                 slices.map((slice, i) => {
                   let sliceProgress;
                   let sliceOpacity;
@@ -44208,7 +44485,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     effectiveStartAngle,
                     effectiveEndAngle
                   );
-                  return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                  return /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                     "path",
                     {
                       d: path,
@@ -44220,7 +44497,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     slice.datum.label
                   );
                 }),
-                donut && (centerLabel || centerValue) && /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+                donut && (centerLabel || centerValue) && /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
                   "g",
                   {
                     opacity: interpolate(
@@ -44230,7 +44507,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
                     ),
                     children: [
-                      centerValue && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                      centerValue && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                         "text",
                         {
                           x: cx,
@@ -44244,7 +44521,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           children: centerValue
                         }
                       ),
-                      centerLabel && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                      centerLabel && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                         "text",
                         {
                           x: cx,
@@ -44263,7 +44540,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   }
                 )
               ] }),
-              showLegend && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)("g", { opacity: fadeOut, children: slices.map((slice, i) => {
+              showLegend && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("g", { opacity: fadeOut, children: slices.map((slice, i) => {
                 const legendY = cy - slices.length * 44 / 2 + i * 44;
                 const legendX = showLegend ? 1200 : cx + outerRadius + 80;
                 const legendOpacity = spring({
@@ -44271,8 +44548,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   fps,
                   config: { damping: 20 }
                 });
-                return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { opacity: legendOpacity, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("g", { opacity: legendOpacity, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                     "rect",
                     {
                       x: legendX,
@@ -44283,7 +44560,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       fill: slice.color
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                     "text",
                     {
                       x: legendX + 32,
@@ -44295,7 +44572,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       children: slice.datum.label
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+                  /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
                     "text",
                     {
                       x: legendX + 32,
@@ -44351,7 +44628,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
 
   // src/JasonWu/copyopen/charts/KPIGrid.tsx
-  var import_jsx_runtime69 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime70 = __toESM(require_jsx_runtime());
   var KPIGrid = ({
     metrics,
     title,
@@ -44388,7 +44665,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       [1, 0],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(
       AbsoluteFill,
       {
         style: {
@@ -44398,7 +44675,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           fontFamily
         },
         children: [
-          title && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+          title && /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
             "div",
             {
               style: {
@@ -44453,7 +44730,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 [0, 1],
                 { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
               );
-              return /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+              return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
                 "div",
                 {
                   style: {
@@ -44474,7 +44751,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     transform: `translateY(${slideY}px)`,
                     boxShadow: "0 2px 12px rgba(0,0,0,0.06)"
                   },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+                  children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
                     KPICardContent,
                     {
                       metric,
@@ -44500,7 +44777,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 config: { damping: 20 }
               });
             }
-            return /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+            return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
               "div",
               {
                 style: {
@@ -44521,7 +44798,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   transform: `scale(${cardScale})`,
                   boxShadow: "0 2px 12px rgba(0,0,0,0.06)"
                 },
-                children: /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
                   KPICardContent,
                   {
                     metric,
@@ -44573,8 +44850,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       [0, 1],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(import_jsx_runtime69.Fragment, { children: [
-      metric.icon && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(import_jsx_runtime70.Fragment, { children: [
+      metric.icon && /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
         "div",
         {
           style: {
@@ -44584,7 +44861,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: metric.icon
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(
         "div",
         {
           style: {
@@ -44601,7 +44878,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
         "div",
         {
           style: {
@@ -44615,7 +44892,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: metric.label
         }
       ),
-      metric.change !== void 0 && metric.change !== 0 && /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+      metric.change !== void 0 && metric.change !== 0 && /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(
         "div",
         {
           style: {
@@ -44630,7 +44907,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             opacity: changeOpacity
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 18 }, children: metric.change > 0 ? "\u25B2" : "\u25BC" }),
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { style: { fontSize: 18 }, children: metric.change > 0 ? "\u25B2" : "\u25BC" }),
             Math.abs(metric.change).toFixed(1),
             "%"
           ]
@@ -44649,7 +44926,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
 
   // src/JasonWu/CopyOpenComponents.tsx
-  var import_jsx_runtime70 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime71 = __toESM(require_jsx_runtime());
   var TEXT = "#F8FAFC";
   var BLUE2 = "#22D3EE";
   var GREEN2 = "#10B981";
@@ -44658,30 +44935,30 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var GRID = "#334155";
   var str = (props, keys, fallback) => {
     for (const key of keys) {
-      const value = props?.[key];
+      const value = props == null ? void 0 : props[key];
       if (typeof value === "string" && value.trim()) return value;
     }
     return fallback;
   };
   var num = (props, keys, fallback) => {
     for (const key of keys) {
-      const value = Number(props?.[key]);
+      const value = Number(props == null ? void 0 : props[key]);
       if (Number.isFinite(value)) return value;
     }
     return fallback;
   };
   var list = (props, keys, fallback) => {
     for (const key of keys) {
-      const value = props?.[key];
+      const value = props == null ? void 0 : props[key];
       if (Array.isArray(value)) {
-        const rows3 = value.map((item2) => String(item2 ?? "").trim()).filter(Boolean);
+        const rows3 = value.map((item2) => String(item2 != null ? item2 : "").trim()).filter(Boolean);
         if (rows3.length) return rows3;
       }
     }
     return fallback;
   };
   var values = (props, fallback) => {
-    const raw = props?.values;
+    const raw = props == null ? void 0 : props.values;
     if (Array.isArray(raw)) {
       const nums = raw.map(Number).filter(Number.isFinite);
       if (nums.length) return nums;
@@ -44691,26 +44968,105 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var chartData = (props, fallbackLabels, fallbackValues) => {
     const labels = list(props, ["items", "steps", "nodes"], fallbackLabels);
     const nums = values(props, fallbackValues);
-    return labels.slice(0, Math.max(labels.length, nums.length)).map((label3, index) => ({ label: label3 || fallbackLabels[index % fallbackLabels.length], value: nums[index] ?? fallbackValues[index % fallbackValues.length] }));
+    return labels.slice(0, Math.max(labels.length, nums.length)).map((label3, index) => {
+      var _a2;
+      return { label: label3 || fallbackLabels[index % fallbackLabels.length], value: (_a2 = nums[index]) != null ? _a2 : fallbackValues[index % fallbackValues.length] };
+    });
   };
-  var CopyOpenHeroTitle = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(HeroTitle, { title: str(props, ["body", "bodyText", "effectText", "text"], cue.section.subtitle), subtitle: str(props, ["highlightQuote", "subtitle", "subLabel"], ""), accentColor: BLUE2, textColor: TEXT, subtitleColor: PURPLE, scrimBackground: "transparent" });
-  var CopyOpenProgressBar = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ProgressBar, { progress: num(props, ["progress", "value", "marketTo"], 76), label: str(props, ["label", "bodyText", "body", "effectText", "metricLabel"], cue.section.subtitle), backgroundColor: "transparent", trackColor: "#1E293B", textColor: TEXT, color: GREEN2, animationStyle: "pulse" });
-  var CopyOpenComparisonCard = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ComparisonCard, { title: str(props, ["headline", "title"], cue.section.subtitle), leftLabel: str(props, ["leftLabel", "marketLabel"], "Long video"), rightLabel: str(props, ["rightLabel", "engineeringLabel"], "Short clips"), leftValue: str(props, ["leftValue"], String(num(props, ["from"], 58))), rightValue: str(props, ["rightValue"], String(num(props, ["to", "value", "progress"], 8))), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, leftColor: "#F59E0B", rightColor: GREEN2, changeIndicator: str(props, ["body", "effectText"], "ready"), changeDirection: "up" });
+  var CopyOpenHeroTitle = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(HeroTitle, { title: str(props, ["body", "bodyText", "effectText", "text"], cue.section.subtitle), subtitle: str(props, ["highlightQuote", "subtitle", "subLabel"], ""), accentColor: BLUE2, textColor: TEXT, subtitleColor: PURPLE, scrimBackground: "transparent" });
+  var CopyOpenProgressBar = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(ProgressBar, { progress: num(props, ["progress", "value", "marketTo"], 76), label: str(props, ["label", "bodyText", "body", "effectText", "metricLabel"], cue.section.subtitle), backgroundColor: "transparent", trackColor: "#1E293B", textColor: TEXT, color: GREEN2, animationStyle: "pulse" });
+  var CopyOpenComparisonCard = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(ComparisonCard, { title: str(props, ["headline", "title"], cue.section.subtitle), leftLabel: str(props, ["leftLabel", "marketLabel"], "Long video"), rightLabel: str(props, ["rightLabel", "engineeringLabel"], "Short clips"), leftValue: str(props, ["leftValue"], String(num(props, ["from"], 58))), rightValue: str(props, ["rightValue"], String(num(props, ["to", "value", "progress"], 8))), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, leftColor: "#F59E0B", rightColor: GREEN2, changeIndicator: str(props, ["body", "effectText"], "ready"), changeDirection: "up" });
   var CopyOpenTerminalScene = ({ cue, props }) => {
     const rows3 = list(props, ["steps", "items"], ["openmontage clip input.mp4", "transcribing audio...", "ranking highlight candidates...", "8 clips ready", "remotion render JcMotionCards", "done -> out/shorts"]);
     const steps = rows3.map((text3, index) => index % 3 === 0 ? { kind: "cmd", text: text3, typeSpeed: 0.025 } : index % 3 === 2 ? { kind: "pill", text: text3, color: GREEN2 } : { kind: "out", text: text3 });
-    return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(TerminalScene, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", accentColor: GREEN2, steps });
+    return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(TerminalScene, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", accentColor: GREEN2, steps });
   };
-  var CopyOpenEndTag = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(EndTag, { text: str(props, ["body", "effectText", "headline", "title"], cue.section.subtitle), palette: "cool_offwhite_on_black", fadeInSeconds: 0.5, holdSeconds: 3.2, fadeOutSeconds: 0.5, overlay: true });
-  var CopyOpenBarChart = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(BarChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, gridColor: GRID, animationStyle: "pop", data: chartData(props, ["Hook", "Value", "Pace", "Share"], [94, 82, 76, 69]) });
+  var CopyOpenEndTag = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(EndTag, { text: str(props, ["body", "effectText", "headline", "title"], cue.section.subtitle), palette: "cool_offwhite_on_black", fadeInSeconds: 0.5, holdSeconds: 3.2, fadeOutSeconds: 0.5, overlay: true });
+  var CopyOpenBarChart = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(BarChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, gridColor: GRID, animationStyle: "pop", data: chartData(props, ["Hook", "Value", "Pace", "Share"], [94, 82, 76, 69]) });
   var CopyOpenLineChart = ({ cue, props }) => {
     const data = chartData(props, ["0", "10", "20", "30"], [100, 91, 86, 78]);
-    return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(LineChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, gridColor: GRID, xLabel: "seconds", yLabel: "watch", series: [{ label: str(props, ["label", "metricLabel"], "trend"), color: BLUE2, data: data.map((item2, index) => ({ x: Number(item2.label) || index * 10, y: item2.value })) }] });
+    return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(LineChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, gridColor: GRID, xLabel: "seconds", yLabel: "watch", series: [{ label: str(props, ["label", "metricLabel"], "trend"), color: BLUE2, data: data.map((item2, index) => ({ x: Number(item2.label) || index * 10, y: item2.value })) }] });
   };
-  var CopyOpenPieChart = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(PieChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, donut: true, animationStyle: "sequential", data: chartData(props, ["Hook", "Proof", "Story", "CTA"], [35, 30, 20, 15]).map((item2, index) => ({ ...item2, color: [BLUE2, GREEN2, "#F59E0B", PURPLE][index % 4] })) });
+  var CopyOpenPieChart = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(PieChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, donut: true, animationStyle: "sequential", data: chartData(props, ["Hook", "Proof", "Story", "CTA"], [35, 30, 20, 15]).map((item2, index) => ({ ...item2, color: [BLUE2, GREEN2, "#F59E0B", PURPLE][index % 4] })) });
   var CopyOpenKPIGrid = ({ cue, props }) => {
     const data = chartData(props, ["clips", "avg score", "minutes saved"], [8, 86, 74]).slice(0, 6);
-    return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(KPIGrid, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, columns: Math.min(3, Math.max(2, data.length)), animationStyle: "cascade", metrics: data.map((item2, index) => ({ label: item2.label, value: item2.value, suffix: index === 1 ? "%" : void 0, change: [12.4, 5.2, 18.1][index % 3] })) });
+    return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(KPIGrid, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, columns: Math.min(3, Math.max(2, data.length)), animationStyle: "cascade", metrics: data.map((item2, index) => ({ label: item2.label, value: item2.value, suffix: index === 1 ? "%" : void 0, change: [12.4, 5.2, 18.1][index % 3] })) });
+  };
+
+  // src/JasonWu/SpeakerGrowthDashboard.tsx
+  var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+  var ease3 = Easing.bezier(0.16, 1, 0.3, 1);
+  var BLUE3 = "#38BDF8";
+  var GREEN3 = "#37F29A";
+  var WHITE2 = "#FFFFFF";
+  var textProp2 = (props, key, fallback) => {
+    const value = props == null ? void 0 : props[key];
+    return typeof value === "string" ? value : fallback;
+  };
+  var FeatureIcon = ({ seed }) => /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { width: 52, height: 52, borderRadius: 13, border: `1.5px solid rgba(56,132,255,.58)`, boxShadow: "0 0 24px rgba(37,99,235,.36), inset 0 0 22px rgba(37,99,235,.16)", display: "grid", placeItems: "center", background: "rgba(6,18,38,.46)" }, children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(IcoFontPathIcon, { seed, color: BLUE3 }) });
+  var FeatureRow = ({ title, sub, index, start: start2 }) => {
+    const frame = useCurrentFrame();
+    const opacity2 = interpolate(frame, [start2 + index * 12, start2 + 22 + index * 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    const x = interpolate(frame, [start2 + index * 12, start2 + 24 + index * 12], [-22, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "56px minmax(0, 1fr)", alignItems: "center", gap: 18, opacity: opacity2, transform: `translateX(${x}px)` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(FeatureIcon, { seed: `${title}|${sub}|${index}` }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { minWidth: 0 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { color: WHITE2, fontSize: 30, lineHeight: "35px", fontWeight: 900, overflowWrap: "break-word" }, children: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { marginTop: 4, color: "rgba(148,210,255,.74)", fontSize: 15, lineHeight: "18px", fontWeight: 850, letterSpacing: 2.4 }, children: sub })
+      ] })
+    ] });
+  };
+  var BrandBlock = ({ props }) => /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { position: "absolute", left: 72, right: 0, bottom: 185 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { fontSize: 86, lineHeight: "88px", fontWeight: 950, letterSpacing: -1, textShadow: "0 20px 36px rgba(0,0,0,.6)" }, children: textProp2(props, "headline", "Hermes") }),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { marginTop: 18, height: 5, width: 230, borderRadius: 999, background: BLUE3, boxShadow: "0 0 26px rgba(56,189,248,.9)" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { marginTop: 18, color: BLUE3, fontSize: 23, lineHeight: "28px", fontWeight: 950, letterSpacing: 2.2 }, children: textProp2(props, "skillLabel", "\u81EA\u5A92\u4F53\u8FD0\u8425 SKILL") })
+  ] });
+  var GrowthCurve = ({ start: start2 }) => {
+    const frame = useCurrentFrame();
+    const progress = interpolate(frame, [start2, start2 + 78], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    const pathLength = Math.max(1e-3, progress);
+    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("svg", { width: "336", height: "118", viewBox: "0 0 336 118", style: { display: "block", overflow: "visible" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("linearGradient", { id: "speaker-growth-curve", x1: "0", x2: "1", y1: "0", y2: "0", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("stop", { offset: "0%", stopColor: "#1DDC72", stopOpacity: ".35" }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("stop", { offset: "100%", stopColor: GREEN3, stopOpacity: "1" })
+      ] }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("path", { d: "M8 94 C68 88 92 74 126 74 C166 74 169 46 204 45 C238 45 246 18 314 16", fill: "none", stroke: "url(#speaker-growth-curve)", strokeWidth: "5", strokeLinecap: "round", strokeDasharray: "1", strokeDashoffset: 1 - pathLength, pathLength: "1", style: { filter: "drop-shadow(0 0 14px rgba(55,242,154,.9))" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("circle", { cx: 314, cy: 16, r: interpolate(frame, [start2 + 64, start2 + 90], [0, 7], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 }), fill: GREEN3, style: { filter: "drop-shadow(0 0 18px rgba(55,242,154,.95))" } })
+    ] });
+  };
+  var SpeakerGrowthDashboard = ({ cue, props }) => {
+    const frame = useCurrentFrame();
+    const { fps } = useVideoConfig();
+    const start2 = Math.round(cue.start * fps) + 8;
+    const enterOpacity = interpolate(frame, [start2, start2 + 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    const enterX = interpolate(frame, [start2, start2 + 30], [-42, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    const metricValue = textProp2(props, "metricValue", "165");
+    const numeric = Number(String(metricValue).replace(/[^\d.-]/g, ""));
+    const animatedMetric = Number.isFinite(numeric) ? Math.round(interpolate(frame, [start2 + 72, start2 + 142], [0, numeric], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 })).toLocaleString("en-US") : metricValue;
+    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { position: "absolute", left: 0, top: 0, bottom: 0, width: 570, padding: "64px 58px 58px 72px", color: WHITE2, opacity: enterOpacity, transform: `translate(${enterX}px, 150px)`, overflow: "visible" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { position: "absolute", left: 0, top: 0, bottom: 0, width: 2, background: "linear-gradient(180deg, transparent, rgba(56,189,248,.82), transparent)" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { height: 179 } }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { marginTop: 54, display: "grid", gap: 48 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(FeatureRow, { title: textProp2(props, "feature1Title", "\u8BC4\u8BBA\u533A\u81EA\u52A8\u56DE\u590D"), sub: textProp2(props, "feature1Sub", "AUTO-REPLY"), index: 0, start: start2 + 44 }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(FeatureRow, { title: textProp2(props, "feature2Title", "\u59D4\u5A49\u63A8\u8350 \xB7 \u8D22\u52A1\u81EA\u7531\u56E2"), sub: textProp2(props, "feature2Sub", "SOFT CTA"), index: 1, start: start2 + 44 })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { marginTop: 58, position: "relative", minHeight: 250 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "54px minmax(0, 1fr)", gap: 18, alignItems: "start" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { width: 50, height: 50, borderRadius: 16, background: "rgba(55,242,154,.1)", border: "1px solid rgba(55,242,154,.55)", display: "grid", placeItems: "center", boxShadow: "0 0 28px rgba(55,242,154,.2)" }, children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(IcoFontPathIcon, { seed: textProp2(props, "metricTitle", "\u5165\u7FA4\u7387 \u731B\u589E"), color: GREEN3 }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { color: GREEN3, fontSize: 27, lineHeight: "32px", fontWeight: 950, letterSpacing: 1.4, textShadow: "0 0 20px rgba(55,242,154,.55)" }, children: textProp2(props, "metricTitle", "\u5165\u7FA4\u7387 \u731B\u589E") }),
+            /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 14, marginTop: 4 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { style: { color: GREEN3, fontSize: 102, lineHeight: "108px", fontWeight: 950, letterSpacing: -2, textShadow: "0 0 32px rgba(55,242,154,.68)" }, children: animatedMetric }),
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { style: { color: "rgba(226,255,239,.88)", fontSize: 24, fontWeight: 900 }, children: textProp2(props, "metricUnit", "\u751F\u6548\u4F1A\u5458") })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { color: "rgba(164,255,204,.64)", fontSize: 15, fontWeight: 850, letterSpacing: 2.2 }, children: textProp2(props, "metricSub", "NEW MEMBERS \xB7 \u8FD1 30 \u5929") })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { position: "absolute", left: 52, top: 128 }, children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(GrowthCurve, { start: start2 + 90 }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(BrandBlock, { props }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { position: "absolute", left: 72, right: 90, bottom: 86, borderTop: "1px solid rgba(56,189,248,.34)", paddingTop: 18, color: "rgba(214,241,255,.68)", fontSize: 17, lineHeight: "23px", fontWeight: 900, letterSpacing: 2.4 }, children: textProp2(props, "footer", "\u83B7\u5BA2\u4E00\u628A\u597D\u624B \xB7 GROWTH ENGINE") })
+    ] });
   };
 
   // src/design/tokens.ts
@@ -44720,42 +45076,46 @@ Check that all your Remotion packages are on the same version. If your dependenc
     yellow: { primary: "#FBBF24", bg: "rgba(251,191,36,.14)", glow: "rgba(217,119,6,.58)", deep: "#D97706" },
     red: { primary: "#F87171", bg: "rgba(248,113,113,.14)", glow: "rgba(220,38,38,.58)", deep: "#DC2626" }
   };
-  var getAccentTheme = (accent = "blue") => ACCENT_THEMES[accent] ?? ACCENT_THEMES.blue;
+  var getAccentTheme = (accent = "blue") => {
+    var _a2;
+    return (_a2 = ACCENT_THEMES[accent]) != null ? _a2 : ACCENT_THEMES.blue;
+  };
 
   // src/JasonWu/ValueVerdict.tsx
-  var import_jsx_runtime71 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime73 = __toESM(require_jsx_runtime());
   var clean3 = (value, fallback = "") => typeof value === "string" ? value : fallback;
   var metricText = (value) => value === void 0 || value === null ? "" : String(value).trim();
   var accentOf = (value) => ["blue", "green", "yellow", "red"].includes(String(value)) ? String(value) : "blue";
   var ValueVerdict = ({ cue, props }) => {
+    var _a2, _b, _c, _d, _e, _f, _g;
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const start2 = Math.round(cue.start * fps) + 8;
-    const title = clean3(props?.headline, cue.section.subtitle);
-    const body = clean3(props?.body, clean3(props?.effectText, cue.caption.zh));
-    const value = metricText(props?.metricValue ?? props?.value ?? cue.metric?.value);
-    const label3 = clean3(props?.metricLabel, clean3(props?.label, cue.metric?.label ?? "KEY SIGNAL"));
-    const unit = clean3(props?.metricUnit, clean3(props?.unit, cue.metric?.suffix ?? ""));
+    const title = clean3(props == null ? void 0 : props.headline, cue.section.subtitle);
+    const body = clean3(props == null ? void 0 : props.body, clean3(props == null ? void 0 : props.effectText, cue.caption.zh));
+    const value = metricText((_c = (_a2 = props == null ? void 0 : props.metricValue) != null ? _a2 : props == null ? void 0 : props.value) != null ? _c : (_b = cue.metric) == null ? void 0 : _b.value);
+    const label3 = clean3(props == null ? void 0 : props.metricLabel, clean3(props == null ? void 0 : props.label, (_e = (_d = cue.metric) == null ? void 0 : _d.label) != null ? _e : "KEY SIGNAL"));
+    const unit = clean3(props == null ? void 0 : props.metricUnit, clean3(props == null ? void 0 : props.unit, (_g = (_f = cue.metric) == null ? void 0 : _f.suffix) != null ? _g : ""));
     const hasMetric = Boolean(value);
-    const theme = getAccentTheme(accentOf(props?.accent));
+    const theme = getAccentTheme(accentOf(props == null ? void 0 : props.accent));
     const opacity2 = interpolate(frame, [start2, start2 + 18], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
     const translateX = interpolate(frame, [start2, start2 + 24], [-42, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", left: 86, top: 300, width: hasMetric ? 760 : 620, padding: "26px 30px 24px", borderRadius: 14, color: "#FFFFFF", background: "rgba(5,12,21,.76)", border: "1px solid " + theme.primary, boxShadow: "0 12px 34px rgba(0,0,0,.32), 0 0 26px " + theme.glow, opacity: opacity2, transform: "translateX(" + translateX + "px)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { color: theme.primary, fontSize: 17, fontWeight: 950, letterSpacing: 4 }, children: "VALUE VERDICT" }),
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 10, maxWidth: hasMetric ? 430 : 560, fontSize: 42, lineHeight: "52px", fontWeight: 950, overflowWrap: "break-word" }, children: title }),
-      body ? /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 12, maxWidth: hasMetric ? 430 : 560, color: "rgba(255,255,255,.78)", fontSize: 25, lineHeight: "34px", fontWeight: 750, overflowWrap: "break-word" }, children: body }) : null,
-      hasMetric ? /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", right: 24, top: 24, minWidth: 210, padding: "16px 18px", borderRadius: 12, background: theme.bg, border: "1px solid " + theme.primary, textAlign: "right", opacity: interpolate(frame, [start2 + 12, start2 + 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }), transform: "scale(" + interpolate(frame, [start2 + 12, start2 + 28], [0.9, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + ")" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 14, fontWeight: 950, letterSpacing: 2, color: theme.primary }, children: label3 }),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 2, fontSize: 52, lineHeight: "58px", fontWeight: 950 }, children: value }),
-        unit ? /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 21, fontWeight: 900, color: "rgba(255,255,255,.8)" }, children: unit }) : null
+    return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", left: 86, top: 300, width: hasMetric ? 760 : 620, padding: "26px 30px 24px", borderRadius: 14, color: "#FFFFFF", background: "rgba(5,12,21,.76)", border: "1px solid " + theme.primary, boxShadow: "0 12px 34px rgba(0,0,0,.32), 0 0 26px " + theme.glow, opacity: opacity2, transform: "translateX(" + translateX + "px)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { color: theme.primary, fontSize: 17, fontWeight: 950, letterSpacing: 4 }, children: "VALUE VERDICT" }),
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { marginTop: 10, maxWidth: hasMetric ? 430 : 560, fontSize: 42, lineHeight: "52px", fontWeight: 950, overflowWrap: "break-word" }, children: title }),
+      body ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { marginTop: 12, maxWidth: hasMetric ? 430 : 560, color: "rgba(255,255,255,.78)", fontSize: 25, lineHeight: "34px", fontWeight: 750, overflowWrap: "break-word" }, children: body }) : null,
+      hasMetric ? /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", right: 24, top: 24, minWidth: 210, padding: "16px 18px", borderRadius: 12, background: theme.bg, border: "1px solid " + theme.primary, textAlign: "right", opacity: interpolate(frame, [start2 + 12, start2 + 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }), transform: "scale(" + interpolate(frame, [start2 + 12, start2 + 28], [0.9, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + ")" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontSize: 14, fontWeight: 950, letterSpacing: 2, color: theme.primary }, children: label3 }),
+        /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { marginTop: 2, fontSize: 52, lineHeight: "58px", fontWeight: 950 }, children: value }),
+        unit ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontSize: 21, fontWeight: 900, color: "rgba(255,255,255,.8)" }, children: unit }) : null
       ] }) : null
     ] });
   };
 
   // src/design/components.registry.json
   var components_registry_default = {
-    schemaVersion: 4,
-    updatedAt: "2026-09-15T01:37:09.883Z",
+    schemaVersion: 5,
+    updatedAt: "2026-09-16T03:20:50.682Z",
     families: [
       {
         id: "metrics",
@@ -44888,7 +45248,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           metricLabel: "\u6838\u5FC3\u4FE1\u606F",
           unit: "%"
         },
-        updatedAt: "2026-09-14T20:58:35.002Z",
+        updatedAt: "2026-09-15T19:01:08.602Z",
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
@@ -44954,7 +45314,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         data: [
           "percentage"
         ],
-        version: 17,
+        version: 19,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
@@ -45013,12 +45373,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentPayload: {
             type: "metrics",
             value: 92,
-            label: "\u7EA2\u8272",
-            bodyText: "GOODS",
+            unit: "GOODSwhat",
+            label: "\u7EA2\u8272\u5C0F\u7231\u5FC3",
+            bodyText: "GOODSwhat",
             detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
           },
           categoryTag: "DESIGNRENEW",
-          label: "\u7EA2\u8272",
+          label: "\u7EA2\u8272\u5C0F\u7231\u5FC3",
           title: "GOODS",
           value: 92,
           progress: 92,
@@ -45027,22 +45388,25 @@ Check that all your Remotion packages are on the same version. If your dependenc
             92,
             92
           ],
-          metric: "\u7EA2\u8272",
+          metric: "\u7EA2\u8272\u5C0F\u7231\u5FC3",
           marketTo: 71,
           marketLabel: "--------------",
-          metricLabel: "\u7EA2\u8272",
+          metricLabel: "\u7EA2\u8272\u5C0F\u7231\u5FC3",
           marketSuffix: "SAFASDFAS",
           engineeringLabel: "\u589E\u957F\u6307\u6807",
           engineeringTo: 9,
           engineeringSuffix: "SAFASDFAS",
-          bodyText: "GOODS",
-          unit: "GOODS",
-          detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
+          bodyText: "GOODSwhat",
+          unit: "GOODSwhat",
+          detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
         },
         occupancyScore: 0.56,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T21:16:51.196Z",
+        updatedAt: "2026-09-15T14:43:52.456Z",
         editorSchema: {
           version: 1,
           kind: "metrics",
@@ -45248,118 +45612,84 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        id: "platform-shift-line",
-        name: "\u4EA7\u54C1\u7EBF\u589E\u957F",
-        family: "metrics",
-        description: "metrics \xB7 timeline \xB7 product",
-        tags: [
-          "metrics",
-          "timeline",
-          "product"
-        ],
-        data: [
-          "list",
-          "number"
-        ],
-        version: 9,
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 76,
-          boundsY: 300,
-          boundsWidth: 1120,
-          boundsHeight: 640,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 0.72,
-          spring: "spring-up",
-          sfx: "none",
-          accentColor: "#00F2FE",
-          defaultItemCount: 3,
-          staggerFrames: 15,
-          headerScale: 1,
-          contentScale: 0.72
-        },
+        version: 13,
         sfx: {
           enter: "none",
           exit: "none",
           volume: 0.65
         },
+        occupancyScore: 0.82,
+        faceAvoidanceEligible: false,
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-15T15:28:36.528Z",
+        id: "copyopen-progress-bar",
+        name: "\u5355\u8FDB\u5EA6\u6761\uFF08\u53CD\u5F39\uFF09",
+        family: "metrics",
+        description: "CopyOpen \xB7 fill pulse progress",
+        tags: [
+          "copyopen",
+          "metrics",
+          "progress"
+        ],
+        data: [
+          "percentage"
+        ],
+        tokens: {
+          mountMode: "top-left",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 1246,
+          boundsY: 300,
+          boundsWidth: 760,
+          boundsHeight: 320,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "fade-scale",
+          sfx: "none",
+          accentColor: "#22D3EE",
+          defaultItemCount: 1,
+          staggerFrames: 8,
+          headerScale: 1,
+          contentScale: 0.76
+        },
         mockData: {
-          headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          eyebrow: "DESIGN SYSTEM",
-          effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          text: "Signal confirmed. Visual system ready.",
-          items: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          steps: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          years: [
-            "\u8D77\u70B9",
-            "\u73B0\u5728",
-            "\u4E0B\u4E00\u6B65"
-          ],
-          nodes: [
-            "\u8F93\u5165",
-            "\u5904\u7406",
-            "\u8F93\u51FA"
-          ],
-          comments: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          metricLabel: "\u6838\u5FC3\u4FE1\u606F001",
-          count: 3,
-          milestones: [
-            "\u57FA\u7840",
-            "\u6269\u5C55",
-            "\u89C4\u6A21\u5316"
-          ],
-          category: "DESIGN SYSTEM",
+          category: "COPYOPEN 001",
+          headline: "Highlight extraction 002",
+          progress: 86,
+          value: 86,
+          label: "COPYOPEN 001",
+          body: "Highlight extraction",
+          effectText: "Highlight extraction",
           contentPayload: {
             type: "metrics",
-            value: 72,
+            value: 86,
             unit: "%",
-            label: "\u6838\u5FC3\u4FE1\u606F001",
-            bodyText: "\u89C6\u89C9\u8282\u594F",
-            detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
+            label: "Highlight",
+            bodyText: "%",
+            detailText: "Highlight extraction"
           },
-          categoryTag: "DESIGN SYSTEM",
-          label: "\u6838\u5FC3\u4FE1\u606F001",
-          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          value: 72,
-          progress: 72,
-          values: [
-            72,
-            72,
-            72
-          ],
-          metric: "\u6838\u5FC3\u4FE1\u606F001",
-          marketTo: 72,
-          marketLabel: "\u6838\u5FC3\u4FE1\u606F001",
+          eyebrow: "COPYOPEN 001",
+          categoryTag: "COPYOPEN 001",
+          title: "Highlight extraction 002",
+          values: [],
+          metric: "Highlight",
+          metricLabel: "Highlight",
           unit: "%",
-          marketSuffix: "\u89C6\u89C9\u8282\u594F",
+          marketLabel: "Highlight extraction",
+          marketTo: 8,
+          marketSuffix: "%",
           engineeringLabel: "\u589E\u957F\u6307\u6807",
-          engineeringTo: 72,
+          engineeringTo: 8,
           engineeringSuffix: "%",
-          bodyText: "\u89C6\u89C9\u8282\u594F",
-          detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
+          bodyText: "%",
+          detailText: "Highlight extraction",
+          effectZh: "Highlight extraction",
+          items: [],
+          steps: [],
+          comments: []
         },
-        occupancyScore: 0.56,
-        faceAvoidanceEligible: true,
-        displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T21:28:20.828Z",
         editorSchema: {
           version: 1,
           kind: "metrics",
@@ -45378,57 +45708,61 @@ Check that all your Remotion packages are on the same version. If your dependenc
               key: "unit",
               label: "\u5355\u4F4D",
               control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
             }
           ]
         },
         manifest: {
-          id: "platform-shift-line",
-          intent: "system",
+          id: "copyopen-progress-bar",
+          intent: "metrics",
           capacity: {
-            minItems: 3,
-            maxItems: 5
+            minItems: 1,
+            maxItems: 1
           },
           keywords: [
-            "\u4EA7\u54C1\u7EBF",
-            "\u5E73\u53F0",
-            "\u6F14\u8FDB",
-            "\u6269\u5C55",
-            "\u94FE\u8DEF"
+            "\u8FDB\u5EA6",
+            "\u767E\u5206\u6BD4",
+            "\u5B8C\u6210",
+            "%"
           ],
-          visualWeight: "medium"
+          visualWeight: "light"
         }
       },
       {
-        id: "hud-glow-stack",
-        name: "HUD \u6D6E\u52A8\u53D1\u5149",
+        id: "check-progress",
+        name: "\u8FDB\u5EA6100%\u786E\u8BA4\u6E05\u5355",
         family: "metrics",
-        description: "metrics \xB7 product \xB7 statement",
+        description: "process \xB7 confirmation \xB7 progress",
         tags: [
-          "metrics",
-          "product",
-          "statement"
+          "process",
+          "confirmation",
+          "progress"
         ],
         data: [
           "list",
-          "number"
+          "percentage"
         ],
-        version: 19,
+        version: 11,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 76,
+          boundsX: 96,
           boundsY: 300,
-          boundsWidth: 735,
-          boundsHeight: 590,
+          boundsWidth: 760,
+          boundsHeight: 360,
           padding: 48,
           gap: 16,
           position: "center",
-          scale: 0.76,
+          scale: 0.78,
           spring: "spring-up",
           sfx: "none",
           accentColor: "#00F2FE",
-          defaultItemCount: 5,
+          defaultItemCount: 3,
           staggerFrames: 15,
           headerScale: 1,
           contentScale: 0.72
@@ -45441,116 +45775,112 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           eyebrow: "DESIGN SYSTEM",
-          effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          text: "Signal confirmed. Visual system ready.",
+          effectText: "PRODUCT RECOVERY",
+          text: "PRODUCT RECOVERY",
           items: [
             "\u6838\u5FC3\u4FE1\u606F",
-            "\u7EC4\u7EC7\u4FE1\u606F002",
-            "\u5B8C\u6210\u9A8C\u8BC1004",
-            "\u65B0\u6807555\u7B7E"
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           steps: [
             "\u6838\u5FC3\u4FE1\u606F",
-            "\u7EC4\u7EC7\u4FE1\u606F002",
-            "\u5B8C\u6210\u9A8C\u8BC1004",
-            "\u65B0\u6807555\u7B7E"
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           years: [
-            "\u8D77\u70B9",
-            "\u73B0\u5728",
-            "\u4E0B\u4E00\u6B65"
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           nodes: [
-            "\u8F93\u5165",
-            "\u5904\u7406",
-            "\u8F93\u51FA"
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           comments: [
             "\u6838\u5FC3\u4FE1\u606F",
-            "\u7EC4\u7EC7\u4FE1\u606F002",
-            "\u5B8C\u6210\u9A8C\u8BC1004",
-            "\u65B0\u6807555\u7B7E"
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           category: "DESIGN SYSTEM",
           contentPayload: {
-            type: "chips",
-            items: [
+            type: "steps",
+            steps: [
               {
-                title: "\u6838\u5FC3\u4FE1\u606F",
-                subtitle: ""
+                stepNumber: 1,
+                text: "\u6838\u5FC3\u4FE1\u606F"
               },
               {
-                title: "\u7EC4\u7EC7\u4FE1\u606F002",
-                subtitle: ""
+                stepNumber: 2,
+                text: "\u89C6\u89C9\u8282\u594F"
               },
               {
-                title: "\u5B8C\u6210\u9A8C\u8BC1004",
-                subtitle: ""
-              },
-              {
-                title: "\u65B0\u6807555\u7B7E",
-                subtitle: ""
+                stepNumber: 3,
+                text: "\u5B8C\u6210\u9A8C\u8BC1"
               }
-            ]
+            ],
+            progress: 100,
+            bodyText: "PRODUCT RECOVERY"
           },
           categoryTag: "DESIGN SYSTEM",
+          units: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
+          ],
+          progress: 100,
+          value: 100,
+          label: "DESIGN SYSTEM",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          subLabel: "",
-          itemSubtitles: [
-            "",
-            "",
-            "",
-            ""
+          body: "PRODUCT RECOVERY",
+          effectZh: "PRODUCT RECOVERY",
+          values: [
+            100,
+            100,
+            100
           ],
-          subLabels: [
-            "",
-            "",
-            "",
-            ""
-          ],
-          label: "DESIGN SYSTEM"
+          bodyText: "PRODUCT RECOVERY"
         },
-        occupancyScore: 0.56,
+        occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T21:50:02.861Z",
+        updatedAt: "2026-09-15T15:26:14.065Z",
         editorSchema: {
           version: 1,
-          kind: "chips",
+          kind: "steps",
           fields: [
             {
-              key: "items",
-              label: "\u6807\u7B7E\u9879",
-              control: "chip-list",
-              capacity: 3,
-              itemFields: [
-                {
-                  key: "title",
-                  label: "\u6807\u7B7E",
-                  control: "text"
-                },
-                {
-                  key: "subtitle",
-                  label: "\u526F\u6807",
-                  control: "text"
-                }
-              ]
+              key: "bodyText",
+              label: "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+              control: "text"
+            },
+            {
+              key: "steps",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "string-list",
+              capacity: 3
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
             }
           ]
         },
         manifest: {
-          id: "hud-glow-stack",
-          intent: "system",
+          id: "check-progress",
+          intent: "process",
           capacity: {
             minItems: 2,
-            maxItems: 4
+            maxItems: 5
           },
           keywords: [
-            "\u7CFB\u7EDF",
-            "\u4FE1\u53F7",
-            "\u94FE\u8DEF",
-            "\u6A21\u5757",
-            "\u95ED\u73AF"
+            "\u786E\u8BA4",
+            "\u68C0\u67E5",
+            "\u5B8C\u6210",
+            "\u6B65\u9AA4"
           ],
           visualWeight: "medium"
         }
@@ -46227,32 +46557,32 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        id: "check-progress",
-        name: "\u8FDB\u5EA6\u786E\u8BA4",
+        id: "platform-shift-line",
+        name: "\u4EA7\u54C1\u7EBF\u589E\u957F",
         family: "metrics",
-        description: "process \xB7 confirmation \xB7 progress",
+        description: "metrics \xB7 timeline \xB7 product",
         tags: [
-          "process",
-          "confirmation",
-          "progress"
+          "metrics",
+          "timeline",
+          "product"
         ],
         data: [
           "list",
-          "percentage"
+          "number"
         ],
-        version: 10,
+        version: 12,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 96,
+          boundsX: 76,
           boundsY: 300,
-          boundsWidth: 760,
-          boundsHeight: 360,
+          boundsWidth: 1120,
+          boundsHeight: 640,
           padding: 48,
           gap: 16,
           position: "center",
-          scale: 0.78,
+          scale: 0.72,
           spring: "spring-up",
           sfx: "none",
           accentColor: "#00F2FE",
@@ -46269,112 +46599,121 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           eyebrow: "DESIGN SYSTEM",
-          effectText: "PRODUCT RECOVERY",
-          text: "PRODUCT RECOVERY",
+          effectText: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          text: "Signal confirmed. Visual system ready.",
           items: [
             "\u6838\u5FC3\u4FE1\u606F",
             "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u884C\u52A8\u7ED3\u8BBA"
           ],
           steps: [
             "\u6838\u5FC3\u4FE1\u606F",
             "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u884C\u52A8\u7ED3\u8BBA"
           ],
           years: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u8D77\u70B9",
+            "\u73B0\u5728",
+            "\u4E0B\u4E00\u6B65"
           ],
           nodes: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u8F93\u5165",
+            "\u5904\u7406",
+            "\u8F93\u51FA"
           ],
           comments: [
             "\u6838\u5FC3\u4FE1\u606F",
             "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u884C\u52A8\u7ED3\u8BBA"
+          ],
+          metricLabel: "2026\u5E74\u4E2D\u5C0F\u4F01\u4E1A\u7834\u4EA7\u6570\u91CF",
+          count: 72,
+          milestones: [
+            "\u57FA\u7840",
+            "\u6269\u5C55",
+            "\u89C4\u6A21\u5316"
           ],
           category: "DESIGN SYSTEM",
           contentPayload: {
-            type: "steps",
-            steps: [
-              {
-                stepNumber: 1,
-                text: "\u6838\u5FC3\u4FE1\u606F"
-              },
-              {
-                stepNumber: 2,
-                text: "\u89C6\u89C9\u8282\u594F"
-              },
-              {
-                stepNumber: 3,
-                text: "\u5B8C\u6210\u9A8C\u8BC1"
-              }
-            ],
-            progress: 100,
-            bodyText: "PRODUCT RECOVERY"
+            type: "metrics",
+            value: 72,
+            unit: "%",
+            label: "2026\u5E74\u4E2D\u5C0F\u4F01\u4E1A\u7834\u4EA7\u6570\u91CF",
+            bodyText: "\u89C6\u89C9\u8282\u594F",
+            detailText: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E"
           },
           categoryTag: "DESIGN SYSTEM",
-          units: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
-          ],
-          progress: 100,
-          value: 100,
-          label: "DESIGN SYSTEM",
+          label: "2026\u5E74\u4E2D\u5C0F\u4F01\u4E1A\u7834\u4EA7\u6570\u91CF",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          body: "PRODUCT RECOVERY",
-          effectZh: "PRODUCT RECOVERY",
+          value: 72,
+          progress: 72,
           values: [
-            100,
-            100,
-            100
+            72,
+            72,
+            72
           ],
-          bodyText: "PRODUCT RECOVERY"
+          metric: "2026\u5E74\u4E2D\u5C0F\u4F01\u4E1A\u7834\u4EA7\u6570\u91CF",
+          marketTo: 72,
+          marketLabel: "\u6838\u5FC3\u4FE1\u606F001",
+          unit: "%",
+          marketSuffix: "\u89C6\u89C9\u8282\u594F",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 72,
+          engineeringSuffix: "%",
+          bodyText: "\u89C6\u89C9\u8282\u594F",
+          detailText: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          body: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          effectZh: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          summary: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          startLabel: "2020",
+          endLabel: "2025"
         },
-        occupancyScore: 0.32,
+        occupancyScore: 0.56,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T22:50:23.336Z",
+        updatedAt: "2026-09-15T15:12:03.827Z",
         editorSchema: {
-          version: 1,
-          kind: "steps",
           fields: [
             {
-              key: "bodyText",
-              label: "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
               control: "text"
             },
             {
-              key: "steps",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "string-list",
-              capacity: 3
+              key: "value",
+              label: "\u6570\u503C\u5185\u5BB9",
+              control: "number"
             },
             {
-              key: "progress",
-              label: "\u5B8C\u6210\u5EA6",
-              control: "number",
-              minimum: 0,
-              maximum: 100
+              key: "detailText",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "startLabel",
+              label: "\u8D77\u70B9\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "endLabel",
+              label: "\u7EC8\u70B9\u5185\u5BB9",
+              control: "text"
             }
           ]
         },
         manifest: {
-          id: "check-progress",
-          intent: "process",
+          id: "platform-shift-line",
+          intent: "system",
           capacity: {
-            minItems: 2,
+            minItems: 3,
             maxItems: 5
           },
           keywords: [
-            "\u786E\u8BA4",
-            "\u68C0\u67E5",
-            "\u5B8C\u6210",
-            "\u6B65\u9AA4"
+            "\u4EA7\u54C1\u7EBF",
+            "\u5E73\u53F0",
+            "\u6F14\u8FDB",
+            "\u6269\u5C55",
+            "\u94FE\u8DEF"
           ],
           visualWeight: "medium"
         }
@@ -49931,7 +50270,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        version: 12,
+        version: 8,
         sfx: {
           enter: "none",
           exit: "none",
@@ -49940,222 +50279,311 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-15T01:13:08.106Z",
-        id: "copyopen-progress-bar",
-        name: "\u8FDB\u5EA6\u67612",
+        updatedAt: "2026-09-15T01:13:41.484Z",
+        id: "copyopen-pie-chart",
+        name: "\u591A\u5F69\u73AF\u5F62\u56FE",
         family: "metrics",
-        description: "CopyOpen \xB7 fill pulse progress",
+        description: "CopyOpen \xB7 donut category split",
         tags: [
           "copyopen",
-          "metrics",
-          "progress"
+          "chart",
+          "pie"
         ],
         data: [
+          "list",
           "percentage"
         ],
         tokens: {
           mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 1246,
+          boundsX: 96,
           boundsY: 300,
-          boundsWidth: 760,
-          boundsHeight: 320,
+          boundsWidth: 720,
+          boundsHeight: 460,
           padding: 48,
           gap: 16,
           position: "center",
-          scale: 0.76,
+          scale: 1.2,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
-          defaultItemCount: 1,
+          defaultItemCount: 4,
           staggerFrames: 8,
-          headerScale: 1,
-          contentScale: 0.76
+          headerScale: 1.2,
+          contentScale: 1.2
         },
         mockData: {
-          category: "COPYOPEN 001",
-          headline: "Highlight extraction 002",
-          progress: 86,
-          value: 86,
-          label: "COPYOPEN 001",
-          body: "Highlight extraction",
-          effectText: "Highlight extraction",
+          category: "\u7AE0\u828209",
+          headline: "\u591A\u5F69\u73AF\u5F62\u56FE",
+          items: [
+            "Hook",
+            "Proof",
+            "Story",
+            "CTA"
+          ],
+          steps: [
+            "Hook",
+            "Proof",
+            "Story",
+            "CTA"
+          ],
+          values: [
+            35,
+            30,
+            20,
+            15
+          ],
+          value: 8,
+          label: "\u7AE0\u828209",
           contentPayload: {
-            type: "metrics",
-            value: 86,
-            unit: "%",
-            label: "Highlight",
-            bodyText: "%",
-            detailText: "Highlight extraction"
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "Hook"
+              },
+              {
+                stepNumber: 2,
+                text: "Proof"
+              },
+              {
+                stepNumber: 3,
+                text: "Story"
+              },
+              {
+                stepNumber: 4,
+                text: "CTA"
+              }
+            ]
           },
-          eyebrow: "COPYOPEN 001",
-          categoryTag: "COPYOPEN 001",
-          title: "Highlight extraction 002",
-          values: [],
-          metric: "Highlight",
-          metricLabel: "Highlight",
-          unit: "%",
-          marketLabel: "Highlight extraction",
-          marketTo: 8,
-          marketSuffix: "%",
-          engineeringLabel: "\u589E\u957F\u6307\u6807",
-          engineeringTo: 8,
-          engineeringSuffix: "%",
-          bodyText: "%",
-          detailText: "Highlight extraction",
-          effectZh: "Highlight extraction",
-          items: [],
-          steps: [],
-          comments: []
+          eyebrow: "\u7AE0\u828209",
+          categoryTag: "\u7AE0\u828209",
+          title: "\u591A\u5F69\u73AF\u5F62\u56FE"
         },
         editorSchema: {
           version: 1,
-          kind: "metrics",
+          kind: "steps",
           fields: [
             {
-              key: "label",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "text"
-            },
-            {
-              key: "value",
-              label: "\u6570\u503C",
-              control: "number"
-            },
-            {
-              key: "unit",
-              label: "\u5355\u4F4D",
-              control: "text"
-            },
-            {
-              key: "detailText",
-              label: "\u8BF4\u660E\u5185\u5BB9",
-              control: "textarea"
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
             }
           ]
         },
         manifest: {
-          id: "copyopen-progress-bar",
+          id: "copyopen-pie-chart",
           intent: "metrics",
           capacity: {
-            minItems: 1,
-            maxItems: 1
+            minItems: 3,
+            maxItems: 5
           },
           keywords: [
-            "\u8FDB\u5EA6",
-            "\u767E\u5206\u6BD4",
-            "\u5B8C\u6210",
-            "%"
+            "\u5360\u6BD4",
+            "\u6BD4\u4F8B",
+            "\u5206\u5E03",
+            "\u4EFD\u989D"
           ],
-          visualWeight: "light"
+          visualWeight: "medium"
         }
       },
       {
-        version: 2,
+        id: "hud-glow-stack",
+        name: "HUD \u6D6E\u52A8\u53D1\u5149",
+        family: "metrics",
+        description: "metrics \xB7 product \xB7 statement",
+        tags: [
+          "metrics",
+          "product",
+          "statement"
+        ],
+        data: [
+          "list",
+          "number"
+        ],
+        version: 19,
+        tokens: {
+          mountMode: "top-left",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 76,
+          boundsY: 300,
+          boundsWidth: 735,
+          boundsHeight: 590,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 15,
+          headerScale: 1,
+          contentScale: 0.72
+        },
         sfx: {
           enter: "none",
           exit: "none",
           volume: 0.65
         },
-        occupancyScore: 0.82,
-        faceAvoidanceEligible: false,
-        displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00Z",
-        id: "copyopen-comparison-card",
-        name: "\u524D\u540E\u5BF9\u6BD4\u5361",
-        family: "metrics",
-        description: "CopyOpen \xB7 left/right metric reveal",
-        tags: [
-          "copyopen",
-          "comparison",
-          "metrics"
-        ],
-        data: [
-          "number",
-          "comparison"
-        ],
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 1216,
-          boundsY: 300,
-          boundsWidth: 800,
-          boundsHeight: 420,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 0.76,
-          spring: "fade-scale",
-          sfx: "none",
-          accentColor: "#22D3EE",
-          defaultItemCount: 1,
-          staggerFrames: 8,
-          headerScale: 1,
-          contentScale: 0.76
-        },
         mockData: {
-          category: "COPYOPEN",
-          headline: "Before / After",
-          leftLabel: "Long video",
-          rightLabel: "Short clips",
-          leftValue: "58 min",
-          rightValue: "8 clips",
-          body: "ready",
-          effectText: "ready",
+          headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
+          eyebrow: "DESIGN SYSTEM",
+          effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          text: "Signal confirmed. Visual system ready.",
+          items: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ],
+          steps: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ],
+          years: [
+            "\u8D77\u70B9",
+            "\u73B0\u5728",
+            "\u4E0B\u4E00\u6B65"
+          ],
+          nodes: [
+            "\u8F93\u5165",
+            "\u5904\u7406",
+            "\u8F93\u51FA"
+          ],
+          comments: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ],
+          category: "DESIGN SYSTEM",
           contentPayload: {
-            type: "metrics",
-            value: 8,
-            unit: "clips",
-            label: "Short clips",
-            detailText: "ready"
+            type: "chips",
+            items: [
+              {
+                title: "\u6838\u5FC3\u4FE1\u606F",
+                subtitle: ""
+              },
+              {
+                title: "\u7EC4\u7EC7\u4FE1\u606F002",
+                subtitle: ""
+              },
+              {
+                title: "\u5B8C\u6210\u9A8C\u8BC1004",
+                subtitle: ""
+              },
+              {
+                title: "\u65B0\u6807555\u7B7E",
+                subtitle: ""
+              }
+            ]
           },
-          label: "Before / After",
-          value: 76,
-          unit: "Before / After",
-          detailText: "Before / After"
+          categoryTag: "DESIGN SYSTEM",
+          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
+          subLabel: "",
+          itemSubtitles: [
+            "",
+            "",
+            "",
+            ""
+          ],
+          subLabels: [
+            "",
+            "",
+            "",
+            ""
+          ],
+          label: "DESIGN SYSTEM",
+          tags: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ]
         },
+        occupancyScore: 0.56,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-15T16:47:39.667Z",
         editorSchema: {
           version: 1,
-          kind: "metrics",
+          kind: "chips",
           fields: [
             {
-              key: "label",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "text"
-            },
-            {
-              key: "value",
-              label: "\u6570\u503C",
-              control: "number"
-            },
-            {
-              key: "unit",
-              label: "\u5355\u4F4D",
-              control: "text"
-            },
-            {
-              key: "detailText",
-              label: "\u8BF4\u660E\u5185\u5BB9",
-              control: "textarea"
+              key: "tags",
+              type: "string_array",
+              control: "chip-list",
+              label: "\u6807\u7B7E\u680F\u76EE\u5217\u8868",
+              default: [
+                "\u6838\u5FC3\u4FE1\u606F",
+                "\u7EC4\u7EC7\u4FE1\u606F002",
+                "\u5B8C\u6210\u9A8C\u8BC1004",
+                "\u65B0\u6807555\u7B7E"
+              ],
+              capacity: 4,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
             }
           ]
         },
         manifest: {
-          id: "copyopen-comparison-card",
+          id: "hud-glow-stack",
           intent: "metrics",
           capacity: {
             minItems: 2,
-            maxItems: 2
+            maxItems: 4
           },
           keywords: [
-            "\u5BF9\u6BD4",
-            "\u5DEE\u5F02",
-            "\u6570\u503C",
-            "\u589E\u957F"
+            "\u7CFB\u7EDF",
+            "\u4FE1\u53F7",
+            "\u94FE\u8DEF",
+            "\u6A21\u5757",
+            "\u95ED\u73AF"
           ],
           visualWeight: "medium"
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u6838\u5FC3\u4FE1\u606F",
+              subtitle: ""
+            },
+            {
+              title: "\u7EC4\u7EC7\u4FE1\u606F002",
+              subtitle: ""
+            },
+            {
+              title: "\u5B8C\u6210\u9A8C\u8BC1004",
+              subtitle: ""
+            },
+            {
+              title: "\u65B0\u6807555\u7B7E",
+              subtitle: ""
+            }
+          ],
+          tags: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ]
         }
       },
       {
@@ -50368,6 +50796,113 @@ Check that all your Remotion packages are on the same version. If your dependenc
             "\u6536\u675F"
           ],
           visualWeight: "light"
+        }
+      },
+      {
+        version: 2,
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.82,
+        faceAvoidanceEligible: false,
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
+        id: "copyopen-comparison-card",
+        name: "\u524D\u540E\u5BF9\u6BD4\u5361",
+        family: "metrics",
+        description: "CopyOpen \xB7 left/right metric reveal",
+        tags: [
+          "copyopen",
+          "comparison",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "comparison"
+        ],
+        tokens: {
+          mountMode: "top-left",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 1216,
+          boundsY: 300,
+          boundsWidth: 800,
+          boundsHeight: 420,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "fade-scale",
+          sfx: "none",
+          accentColor: "#22D3EE",
+          defaultItemCount: 1,
+          staggerFrames: 8,
+          headerScale: 1,
+          contentScale: 0.76
+        },
+        mockData: {
+          category: "COPYOPEN",
+          headline: "Before / After",
+          leftLabel: "Long video",
+          rightLabel: "Short clips",
+          leftValue: "58 min",
+          rightValue: "8 clips",
+          body: "ready",
+          effectText: "ready",
+          contentPayload: {
+            type: "metrics",
+            value: 8,
+            unit: "clips",
+            label: "Short clips",
+            detailText: "ready"
+          },
+          label: "Before / After",
+          value: 76,
+          unit: "Before / After",
+          detailText: "Before / After"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "copyopen-comparison-card",
+          intent: "metrics",
+          capacity: {
+            minItems: 2,
+            maxItems: 2
+          },
+          keywords: [
+            "\u5BF9\u6BD4",
+            "\u5DEE\u5F02",
+            "\u6570\u503C",
+            "\u589E\u957F"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -50623,126 +51158,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
             "\u589E\u957F",
             "\u66F2\u7EBF",
             "\u65F6\u95F4"
-          ],
-          visualWeight: "medium"
-        }
-      },
-      {
-        version: 8,
-        sfx: {
-          enter: "none",
-          exit: "none",
-          volume: 0.65
-        },
-        occupancyScore: 0.82,
-        faceAvoidanceEligible: false,
-        displayIntent: "side-overlay",
-        updatedAt: "2026-09-15T01:13:41.484Z",
-        id: "copyopen-pie-chart",
-        name: "\u591A\u5F69\u73AF\u5F62\u56FE",
-        family: "metrics",
-        description: "CopyOpen \xB7 donut category split",
-        tags: [
-          "copyopen",
-          "chart",
-          "pie"
-        ],
-        data: [
-          "list",
-          "percentage"
-        ],
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 96,
-          boundsY: 300,
-          boundsWidth: 720,
-          boundsHeight: 460,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 1.2,
-          spring: "fade-scale",
-          sfx: "none",
-          accentColor: "#22D3EE",
-          defaultItemCount: 4,
-          staggerFrames: 8,
-          headerScale: 1.2,
-          contentScale: 1.2
-        },
-        mockData: {
-          category: "\u7AE0\u828209",
-          headline: "\u591A\u5F69\u73AF\u5F62\u56FE",
-          items: [
-            "Hook",
-            "Proof",
-            "Story",
-            "CTA"
-          ],
-          steps: [
-            "Hook",
-            "Proof",
-            "Story",
-            "CTA"
-          ],
-          values: [
-            35,
-            30,
-            20,
-            15
-          ],
-          value: 8,
-          label: "\u7AE0\u828209",
-          contentPayload: {
-            type: "steps",
-            steps: [
-              {
-                stepNumber: 1,
-                text: "Hook"
-              },
-              {
-                stepNumber: 2,
-                text: "Proof"
-              },
-              {
-                stepNumber: 3,
-                text: "Story"
-              },
-              {
-                stepNumber: 4,
-                text: "CTA"
-              }
-            ]
-          },
-          eyebrow: "\u7AE0\u828209",
-          categoryTag: "\u7AE0\u828209",
-          title: "\u591A\u5F69\u73AF\u5F62\u56FE"
-        },
-        editorSchema: {
-          version: 1,
-          kind: "steps",
-          fields: [
-            {
-              key: "steps",
-              label: "\u6B65\u9AA4\u5185\u5BB9",
-              control: "string-list",
-              capacity: 4
-            }
-          ]
-        },
-        manifest: {
-          id: "copyopen-pie-chart",
-          intent: "metrics",
-          capacity: {
-            minItems: 3,
-            maxItems: 5
-          },
-          keywords: [
-            "\u5360\u6BD4",
-            "\u6BD4\u4F8B",
-            "\u5206\u5E03",
-            "\u4EFD\u989D"
           ],
           visualWeight: "medium"
         }
@@ -51336,7 +51751,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       {
         id: "jc-metrics-big-number",
-        name: "[JC] \u5927\u6570\u5B57\u8BA1\u6570",
+        name: "\u5927\u6570\u5B57\u8BA1\u6570",
         family: "metrics",
         description: "JC imported metrics visual component",
         tags: [
@@ -51347,7 +51762,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 1,
+        version: 2,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -51379,18 +51794,42 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           category: "METRICS",
           headline: "\u5927\u6570\u5B57\u8BA1\u6570",
-          effectText: "",
+          effectText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
           contentPayload: {
             type: "metrics",
-            value: 72,
+            value: 75,
             unit: "%",
             label: "\u8F6C\u5316\u63D0\u5347",
-            detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+            bodyText: "%",
+            detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002"
           },
           label: "\u8F6C\u5316\u63D0\u5347",
-          value: 72,
+          value: 75,
           unit: "%",
-          detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+          detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u5927\u6570\u5B57\u8BA1\u6570",
+          progress: 75,
+          count: 75,
+          values: [],
+          metric: "\u8F6C\u5316\u63D0\u5347",
+          metricLabel: "\u8F6C\u5316\u63D0\u5347",
+          marketLabel: "\u8F6C\u5316\u63D0\u5347",
+          marketTo: 75,
+          marketSuffix: "%",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 75,
+          engineeringSuffix: "%",
+          bodyText: "%",
+          summary: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
+          body: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
+          effectZh: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
+          startLabel: "\u8D77\u70B9",
+          endLabel: "\u76EE\u6807\u9636\u6BB5",
+          items: [],
+          steps: [],
+          comments: []
         },
         defaultPayload: {
           type: "metrics",
@@ -51443,7 +51882,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         runtime: {
           exportName: "BigNumber",
           adapter: "jc-metrics-big-number"
-        }
+        },
+        updatedAt: "2026-09-15T15:30:43.865Z"
       },
       {
         id: "jc-narrative-bilingual-sub",
@@ -52135,7 +52575,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         data: [
           "text"
         ],
-        version: 1,
+        version: 4,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -52166,15 +52606,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
         displayIntent: "side-overlay",
         mockData: {
           category: "CONTRAST",
-          headline: "\u514B\u9686\u98CE\u9669\u7EA7\u8054",
-          effectText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+          headline: "\u514B\u9686\u98CE\u9669\u7EA7\u8054\u6781\u5927",
+          effectText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
           contentPayload: {
             type: "narrative",
-            bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+            bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
             highlightQuote: "COPY RISK"
           },
           bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
-          highlightQuote: "COPY RISK"
+          highlightQuote: "COPY RISK",
+          title: "\u514B\u9686\u98CE\u9669\u7EA7\u8054\u6781\u5927",
+          eyebrow: "CONTRAST",
+          categoryTag: "CONTRAST",
+          body: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
+          effectZh: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
+          text: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
+          bullText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0"
         },
         defaultPayload: {
           type: "narrative",
@@ -52215,7 +52662,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         runtime: {
           exportName: "CloneCascade",
           adapter: "jc-contrast-clone-cascade"
-        }
+        },
+        updatedAt: "2026-09-15T21:52:22.045Z"
       },
       {
         id: "jc-contrast-compare-card",
@@ -52351,7 +52799,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       {
         id: "jc-metrics-curve-overlay",
-        name: "[JC] \u589E\u957F\u66F2\u7EBF",
+        name: "\u589E\u957F\u66F2\u7EBF",
         family: "metrics",
         description: "JC imported metrics visual component",
         tags: [
@@ -52362,7 +52810,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 1,
+        version: 3,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -52394,25 +52842,46 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           category: "METRICS",
           headline: "\u589E\u957F\u66F2\u7EBF",
-          effectText: "",
+          effectText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
           contentPayload: {
             type: "metrics",
             value: 74,
             unit: "%",
-            label: "\u589E\u957F\u66F2\u7EBF",
-            detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+            label: "\u589E\u957F\u66F2\u7EBF111"
           },
-          label: "\u589E\u957F\u66F2\u7EBF",
+          label: "\u589E\u957F\u66F2\u7EBF111",
           value: 74,
           unit: "%",
-          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u589E\u957F\u66F2\u7EBF",
+          progress: 74,
+          count: 74,
+          values: [],
+          metric: "\u589E\u957F\u66F2\u7EBF111",
+          metricLabel: "\u589E\u957F\u66F2\u7EBF111",
+          marketLabel: "\u589E\u957F\u66F2\u7EBF1",
+          marketTo: 74,
+          marketSuffix: "%",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 74,
+          engineeringSuffix: "%",
+          bodyText: "%",
+          summary: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
+          body: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
+          effectZh: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
+          startLabel: "\u8D77\u70B9",
+          endLabel: "\u76EE\u6807\u9636\u6BB5",
+          items: [],
+          steps: [],
+          comments: []
         },
         defaultPayload: {
           type: "metrics",
           value: 74,
           unit: "%",
-          label: "\u589E\u957F\u66F2\u7EBF",
-          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+          label: "\u589E\u957F\u66F2\u7EBF"
         },
         editorSchema: {
           version: 1,
@@ -52422,21 +52891,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
               key: "label",
               label: "\u6B63\u6587\u5185\u5BB9",
               control: "text"
-            },
-            {
-              key: "value",
-              label: "\u6570\u503C",
-              control: "number"
-            },
-            {
-              key: "unit",
-              label: "\u5355\u4F4D",
-              control: "text"
-            },
-            {
-              key: "detailText",
-              label: "\u8BF4\u660E\u5185\u5BB9",
-              control: "textarea"
             }
           ]
         },
@@ -52458,7 +52912,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         runtime: {
           exportName: "CurveOverlay",
           adapter: "jc-metrics-curve-overlay"
-        }
+        },
+        updatedAt: "2026-09-15T16:11:03.353Z"
       },
       {
         id: "jc-narrative-dm-card-stack",
@@ -54855,7 +55310,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       {
         id: "jc-metrics-unit-matrix",
-        name: "[JC] \u5355\u5143\u77E9\u9635",
+        name: "\u5355\u5143\u77E9\u9635%",
         family: "metrics",
         description: "JC imported metrics visual component",
         tags: [
@@ -54866,7 +55321,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 1,
+        version: 6,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -54898,18 +55353,42 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           category: "METRICS",
           headline: "\u5355\u5143\u77E9\u9635",
-          effectText: "",
+          effectText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
           contentPayload: {
             type: "metrics",
-            value: 68,
+            value: 90,
             unit: "%",
             label: "\u7ED3\u6784\u5360\u6BD4",
+            bodyText: "%",
             detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
           },
           label: "\u7ED3\u6784\u5360\u6BD4",
-          value: 68,
+          value: 90,
           unit: "%",
-          detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
+          detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u5355\u5143\u77E9\u9635",
+          progress: 90,
+          count: 90,
+          values: [],
+          metric: "\u7ED3\u6784\u5360\u6BD4",
+          metricLabel: "\u7ED3\u6784\u5360\u6BD4",
+          marketLabel: "\u7ED3\u6784\u5360\u6BD4",
+          marketTo: 69,
+          marketSuffix: "%",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 69,
+          engineeringSuffix: "%",
+          bodyText: "%",
+          summary: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
+          body: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
+          effectZh: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
+          startLabel: "\u8D77\u70B9",
+          endLabel: "\u76EE\u6807\u9636\u6BB5",
+          items: [],
+          steps: [],
+          comments: []
         },
         defaultPayload: {
           type: "metrics",
@@ -54962,7 +55441,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         runtime: {
           exportName: "UnitMatrix",
           adapter: "jc-metrics-unit-matrix"
-        }
+        },
+        updatedAt: "2026-09-16T00:28:03.411Z"
       },
       {
         id: "jc-contrast-verdict-box",
@@ -55100,7 +55580,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       {
         id: "jc-metrics-views-badge",
-        name: "[JC] \u89C2\u770B\u91CF\u5FBD\u7AE0",
+        name: " \u89C2\u770B\u89C6\u89D2",
         family: "metrics",
         description: "JC imported metrics visual component",
         tags: [
@@ -55111,7 +55591,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 3,
+        version: 5,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -55148,11 +55628,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
             type: "metrics",
             value: 80,
             unit: "M+",
-            label: "\u7F8E\u5143\u57FA\u91D1",
+            label: "\u7F8E\u5143\u57FA\u91D1\u6492\u65E6\u53D1\u751F",
             bodyText: "M+",
             detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002"
           },
-          label: "\u7F8E\u5143\u57FA\u91D1",
+          label: "\u7F8E\u5143\u57FA\u91D1\u6492\u65E6\u53D1\u751F",
           value: 80,
           unit: "M+",
           detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
@@ -55161,8 +55641,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u89C2\u770B\u91CF\u5FBD\u7AE0",
           progress: 80,
           values: [],
-          metric: "\u7F8E\u5143\u57FA\u91D1",
-          metricLabel: "\u7F8E\u5143\u57FA\u91D1",
+          metric: "\u7F8E\u5143\u57FA\u91D1\u6492\u65E6\u53D1\u751F",
+          metricLabel: "\u7F8E\u5143\u57FA\u91D1\u6492\u65E6\u53D1\u751F",
           marketLabel: "\u89E6\u8FBE\u89C4\u6A21",
           marketTo: 8,
           marketSuffix: "M+",
@@ -55174,7 +55654,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
           effectZh: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
           items: [],
           steps: [],
-          comments: []
+          comments: [],
+          count: 80,
+          summary: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          startLabel: "\u8D77\u70B9",
+          endLabel: "\u76EE\u6807\u9636\u6BB5"
         },
         defaultPayload: {
           type: "metrics",
@@ -55228,7 +55712,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           exportName: "ViewsBadge",
           adapter: "jc-metrics-views-badge"
         },
-        updatedAt: "2026-09-15T01:17:42.023Z"
+        updatedAt: "2026-09-15T15:50:28.524Z"
       },
       {
         id: "jc-system-window-card",
@@ -55323,6 +55807,154 @@ Check that all your Remotion packages are on the same version. If your dependenc
           exportName: "WindowCard",
           adapter: "jc-system-window-card"
         }
+      },
+      {
+        id: "speaker-growth-dashboard",
+        name: "\u53E3\u64AD\u589E\u957F\u4EEA\u8868\u76D8",
+        family: "metrics",
+        description: "\u67F1\u5B50\u54E5/TzFilm \u98CE\u683C\u5DE6\u4FA7\u53E3\u64AD\u589E\u957F\u6570\u636E\u4EEA\u8868\u76D8",
+        tags: [
+          "metrics",
+          "growth",
+          "speaker",
+          "tzfilm"
+        ],
+        data: [
+          "number",
+          "text"
+        ],
+        version: 2,
+        tokens: {
+          mountMode: "top-left",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 76,
+          boundsY: 58,
+          boundsWidth: 570,
+          boundsHeight: 960,
+          padding: 0,
+          gap: 18,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#38BDF8",
+          defaultItemCount: 2,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        mockData: {
+          headline: "Hermes",
+          category: "LIVE \xB7 AI AGENT",
+          eyebrow: "LIVE \xB7 AI AGENT",
+          subline: "\u81EA\u5A92\u4F53\u8FD0\u8425 \xB7 \u5B9E\u65F6\u6F14\u793A",
+          skillLabel: "\u81EA\u5A92\u4F53\u8FD0\u8425 SKILL",
+          feature1Title: "\u8BC4\u8BBA\u533A\u81EA\u52A8\u56DE\u590D",
+          feature1Sub: "AUTO-REPLY",
+          feature2Title: "\u59D4\u5A49\u63A8\u8350 \xB7 \u8D22\u52A1\u81EA\u7531\u56E2",
+          feature2Sub: "SOFT CTA",
+          metricTitle: "\u5165\u7FA4\u7387 \u731B\u589E",
+          metricValue: "299",
+          metricUnit: "\u751F\u6548\u4F1A\u5458",
+          metricSub: "NEW MEMBERS \xB7 \u8FD190\u5929",
+          footer: "\u83B7\u5BA2\u4E00\u628A\u597D\u624B \xB7 GROWTH ENGINE",
+          contentPayload: {
+            type: "metrics",
+            label: "\u5165\u7FA4\u7387 \u731B\u589E",
+            value: 165,
+            unit: "\u751F\u6548\u4F1A\u5458",
+            bodyText: "\u81EA\u5A92\u4F53\u8FD0\u8425 \xB7 \u5B9E\u65F6\u6F14\u793A"
+          }
+        },
+        editorSchema: {
+          fields: [
+            {
+              key: "eyebrow",
+              label: "\u9876\u7AEF\u6807\u7B7E",
+              type: "text"
+            },
+            {
+              key: "subline",
+              label: "\u526F\u6807\u9898",
+              type: "text"
+            },
+            {
+              key: "skillLabel",
+              label: "\u80FD\u529B\u6807\u7B7E",
+              type: "text"
+            },
+            {
+              key: "feature1Title",
+              label: "\u529F\u80FD1\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+              type: "text"
+            },
+            {
+              key: "feature1Sub",
+              label: "\u529F\u80FD1\u3010\u526F\u6587\u5185\u5BB9\u3011",
+              type: "text"
+            },
+            {
+              key: "feature2Title",
+              label: "\u529F\u80FD2\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+              type: "text"
+            },
+            {
+              key: "feature2Sub",
+              label: "\u529F\u80FD2\u3010\u526F\u6587\u5185\u5BB9\u3011",
+              type: "text"
+            },
+            {
+              key: "metricTitle",
+              label: "\u589E\u957F\u6307\u6807\u6807\u9898",
+              type: "text"
+            },
+            {
+              key: "metricValue",
+              label: "\u589E\u957F\u6570\u5B57",
+              type: "text"
+            },
+            {
+              key: "metricUnit",
+              label: "\u6570\u5B57\u5355\u4F4D",
+              type: "text"
+            },
+            {
+              key: "metricSub",
+              label: "\u6307\u6807\u526F\u6587",
+              type: "text"
+            },
+            {
+              key: "footer",
+              label: "\u5E95\u90E8\u8BF4\u660E",
+              type: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "speaker-growth-dashboard",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u53E3\u64AD",
+            "\u81EA\u5A92\u4F53",
+            "\u589E\u957F",
+            "\u83B7\u5BA2",
+            "\u4F1A\u5458",
+            "\u8F6C\u5316"
+          ],
+          visualWeight: "heavy"
+        },
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-16T03:20:50.682Z"
       }
     ],
     subtitleAssets: [
@@ -55349,92 +55981,48 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/common/MotionWrapper.tsx
-  var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime74 = __toESM(require_jsx_runtime());
   var BOTTOM_SUBTITLE_SAFE_PCT = 22;
-  var anchors = {
-    center: [0, 0],
-    "bottom-left": [-470, 260],
-    "bottom-right": [470, 260],
-    "top-right": [470, -245],
-    "center-right": [520, 0]
-  };
-  var DEFAULT_COMMON_PROPS = {
-    enterOffset: 0,
-    exitOffset: 0,
-    position: "center",
-    offsetX: 0,
-    offsetY: 0,
-    scale: 1,
-    enterAnimation: "spring-up",
-    exitAnimation: "none",
-    sfx: "none"
-  };
-  var MotionWrapper = ({ commonProps, designTokens, beatDuration, entranceDurationSeconds = 2.2, textRole, preserveNativeMotion = false, children }) => {
+  var DEFAULT_COMMON_PROPS = { enterOffset: 0, exitOffset: 0, offsetX: 0, offsetY: 0, scale: 1, enterAnimation: "spring-up", exitAnimation: "none", sfx: "none" };
+  var MotionWrapper = ({ commonProps, layoutProps, designTokens, beatDuration, entranceDurationSeconds = 2.2, textRole, language = "zh", preserveNativeMotion = false, children }) => {
+    var _a2, _b, _c, _d, _e, _f, _g;
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
-    const props = { ...DEFAULT_COMMON_PROPS, ...commonProps ?? {} };
+    const props = { ...DEFAULT_COMMON_PROPS, ...commonProps != null ? commonProps : {} };
     const enterFrames = Math.max(0, Math.round(props.enterOffset * fps));
-    const fixedFrames = props.duration ? Math.max(1, Math.round(props.duration * fps)) : Math.max(1, Math.round(beatDuration * fps) - enterFrames - Math.round((props.exitOffset ?? 0) * fps));
-    const exitStart = Math.min(Math.max(enterFrames + 1, Math.round(beatDuration * fps) - Math.round((props.exitOffset ?? 0) * fps)), enterFrames + fixedFrames);
+    const fixedFrames = props.duration ? Math.max(1, Math.round(props.duration * fps)) : Math.max(1, Math.round(beatDuration * fps) - enterFrames - Math.round(((_a2 = props.exitOffset) != null ? _a2 : 0) * fps));
+    const exitStart = Math.min(Math.max(enterFrames + 1, Math.round(beatDuration * fps) - Math.round(((_b = props.exitOffset) != null ? _b : 0) * fps)), enterFrames + fixedFrames);
     const entranceFrames = Math.max(1, Math.round(entranceDurationSeconds * fps));
     const enterProgress = preserveNativeMotion ? 1 : interpolate(frame, [enterFrames, enterFrames + entranceFrames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-    const exitProgress = props.exitAnimation === "none" ? 0 : interpolate(frame, [exitStart, exitStart + 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-    const hiddenBeforeEnter = !preserveNativeMotion && frame < enterFrames;
-    const [anchorX, anchorY] = anchors[props.position] ?? anchors.center;
-    const mountMode = designTokens?.mountMode ?? "center";
-    const mountX = Number.isFinite(designTokens?.mountX) ? Number(designTokens?.mountX) : 0;
-    const mountY = Number.isFinite(designTokens?.mountY) ? Number(designTokens?.mountY) : 0;
-    const boundsX = Number.isFinite(designTokens?.boundsX) ? Number(designTokens?.boundsX) : 0;
-    const boundsY = Number.isFinite(designTokens?.boundsY) ? Number(designTokens?.boundsY) : 0;
-    const boundsWidth = Math.max(1, Number.isFinite(designTokens?.boundsWidth) ? Number(designTokens?.boundsWidth) : 1920);
-    const boundsHeight = Math.max(1, Number.isFinite(designTokens?.boundsHeight) ? Number(designTokens?.boundsHeight) : 1080);
-    const presenterSafeMaxWidth = Number.isFinite(designTokens?.presenterSafeMaxWidth) ? Number(designTokens?.presenterSafeMaxWidth) : 0;
-    const presenterSafeLogicalWidth = presenterSafeMaxWidth > 0 ? Math.min(boundsWidth, Math.max(1, Number(designTokens?.presenterSafeLogicalWidth) || Math.round(presenterSafeMaxWidth / Math.max(0.01, props.scale ?? 1)))) : 0;
-    const presenterSafeInset = designTokens?.presenterSafeInset;
-    const safeClipX = presenterSafeInset === "right" ? boundsX + Math.max(0, boundsWidth - presenterSafeLogicalWidth) : boundsX;
-    const safeClipRight = presenterSafeLogicalWidth > 0 ? Math.max(0, 1920 - safeClipX - presenterSafeLogicalWidth) : 0;
-    const safeClipPath = presenterSafeLogicalWidth > 0 ? "inset(" + Math.max(0, boundsY) + "px " + safeClipRight + "px " + Math.max(0, 1080 - boundsY - boundsHeight) + "px " + Math.max(0, safeClipX) + "px)" : void 0;
+    const exitProgress = props.exitAnimation === "none" ? 0 : interpolate(frame, [exitStart, exitStart + 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    const mountMode = (_d = (_c = layoutProps == null ? void 0 : layoutProps.align) != null ? _c : designTokens == null ? void 0 : designTokens.mountMode) != null ? _d : "center";
+    const mountX = Number.isFinite(designTokens == null ? void 0 : designTokens.mountX) ? Number(designTokens == null ? void 0 : designTokens.mountX) : 0;
+    const mountY = Number.isFinite(designTokens == null ? void 0 : designTokens.mountY) ? Number(designTokens == null ? void 0 : designTokens.mountY) : 0;
+    const boundsX = Number.isFinite(designTokens == null ? void 0 : designTokens.boundsX) ? Number(designTokens == null ? void 0 : designTokens.boundsX) : 0;
+    const boundsY = Number.isFinite(designTokens == null ? void 0 : designTokens.boundsY) ? Number(designTokens == null ? void 0 : designTokens.boundsY) : 0;
+    const boundsWidth = Math.max(1, Number.isFinite(designTokens == null ? void 0 : designTokens.boundsWidth) ? Number(designTokens == null ? void 0 : designTokens.boundsWidth) : 1920);
+    const boundsHeight = Math.max(1, Number.isFinite(designTokens == null ? void 0 : designTokens.boundsHeight) ? Number(designTokens == null ? void 0 : designTokens.boundsHeight) : 1080);
+    const presenterSafeInset = designTokens == null ? void 0 : designTokens.presenterSafeInset;
     const centeredOffsetX = 960 - (boundsX + boundsWidth / 2) + mountX;
     const centeredOffsetY = 540 - (boundsY + boundsHeight / 2) + mountY;
     const mountOffsetX = mountMode === "top-left" ? mountX : mountMode === "left" ? 96 - boundsX + mountX : mountMode === "right" ? 1824 - (boundsX + boundsWidth) + mountX : centeredOffsetX;
     const rawMountOffsetY = mountMode === "top-left" ? mountY : mountMode === "top" ? 216 - boundsY + mountY : mountMode === "bottom" ? 864 - (boundsY + boundsHeight) + mountY : centeredOffsetY;
-    const bottomSubtitleSafePx = 1080 * ((Number.isFinite(designTokens?.bottomSubtitleSafePct) ? Number(designTokens?.bottomSubtitleSafePct) : BOTTOM_SUBTITLE_SAFE_PCT) / 100);
-    const maxSafeBottomY = 1080 - bottomSubtitleSafePx;
-    const maxMountOffsetY = maxSafeBottomY - boundsY - boundsHeight;
+    const bottomSubtitleSafePx = 1080 * ((Number.isFinite(designTokens == null ? void 0 : designTokens.bottomSubtitleSafePct) ? Number(designTokens == null ? void 0 : designTokens.bottomSubtitleSafePct) : BOTTOM_SUBTITLE_SAFE_PCT) / 100);
+    const maxMountOffsetY = 1080 - bottomSubtitleSafePx - boundsY - boundsHeight;
     const isFullCanvasBounds = boundsX === 0 && boundsY === 0 && boundsWidth >= 1920 && boundsHeight >= 1080;
     const clampedMountOffsetY = isFullCanvasBounds ? rawMountOffsetY : Math.min(rawMountOffsetY, maxMountOffsetY);
     const enterX = props.enterAnimation === "slide-left" ? interpolate(enterProgress, [0, 1], [-110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "slide-right" ? interpolate(enterProgress, [0, 1], [110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
     const enterY = props.enterAnimation === "spring-up" ? interpolate(enterProgress, [0, 1], [76, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
-    const enterScale = props.enterAnimation === "fade-scale" ? interpolate(enterProgress, [0, 1], [0.86, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "glitch" ? 1 + Math.sin(frame * 2.2) * (frame < enterFrames + 10 ? 0.015 : 0) : 1;
+    const enterScale = props.enterAnimation === "fade-scale" ? interpolate(enterProgress, [0, 1], [0.86, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 1;
     const exitY = props.exitAnimation === "slide-down" ? interpolate(exitProgress, [0, 1], [0, 96]) : 0;
     const exitScale = props.exitAnimation === "scale-down" ? interpolate(exitProgress, [0, 1], [1, 0.86]) : 1;
-    const opacity2 = hiddenBeforeEnter ? 0 : props.exitAnimation === "fade-out" ? 1 - exitProgress : interpolate(enterProgress, [0, 1], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    const scale = Math.min(1.2, Math.max(0.6, props.scale ?? 1)) * enterScale * exitScale;
-    const presenterSafeCss = presenterSafeLogicalWidth > 0 ? [
-      ".presenter-safe-overlay .layout-effect-root{width:var(--presenter-safe-logical-width)!important;max-width:100%!important;overflow:hidden;}",
-      ".presenter-safe-overlay .layout-effect-root > *{width:100%;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;}",
-      ".presenter-safe-overlay .layout-effect-root [style]{max-width:100%!important;box-sizing:border-box!important;}"
-    ].join("") : "";
-    const commercialTextCss = !textRole ? "" : [
-      ".motion-commercial-analysis [style*='color: rgb(255, 255, 255)'],.motion-commercial-analysis [style*='color: rgb(248, 250, 252)'],.motion-commercial-analysis [style*='color: #F8FAFC'],.motion-commercial-analysis [style*='color: white']{",
-      "-webkit-text-stroke:none!important;text-shadow:0 5px 18px rgba(0,0,0,0.52)!important;",
-      "}",
-      ".motion-text-role-risk [style*='color: rgb(255, 107, 107)'],.motion-text-role-risk [style*='color: #FF6B6B']{",
-      "background:rgba(162,36,48,0.92);padding:4px 10px;border-radius:5px;-webkit-text-stroke:none!important;",
-      "}"
-    ].join("");
-    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(AbsoluteFill, { className: [textRole ? "motion-commercial-analysis motion-text-role-" + textRole : "", presenterSafeLogicalWidth > 0 ? "presenter-safe-overlay" : ""].filter(Boolean).join(" "), style: {
-      pointerEvents: "none",
-      opacity: opacity2,
-      transform: "translate(" + (mountOffsetX + anchorX + (props.offsetX ?? 0) + enterX) + "px," + (clampedMountOffsetY + anchorY + (props.offsetY ?? 0) + enterY + exitY) + "px) scale(" + scale + ")",
-      transformOrigin: (mountMode === "top-left" || presenterSafeInset === "left" ? boundsX : presenterSafeInset === "right" ? boundsX + boundsWidth : boundsX + boundsWidth / 2) + "px " + (mountMode === "top-left" ? boundsY : boundsY + boundsHeight / 2) + "px",
-      clipPath: safeClipPath,
-      "--presenter-safe-logical-width": presenterSafeLogicalWidth + "px",
-      "--cinematic-center-corridor-pct": String(designTokens?.cinematicCenterCorridorPct ?? 0),
-      wordBreak: "keep-all",
-      overflowWrap: "break-word"
-    }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("style", { children: presenterSafeCss + commercialTextCss }),
+    const opacity2 = frame < enterFrames && !preserveNativeMotion ? 0 : props.exitAnimation === "fade-out" ? 1 - exitProgress : enterProgress;
+    const scale = Math.min(1.2, Math.max(0.35, (_e = props.scale) != null ? _e : 1)) * enterScale * exitScale;
+    const isEnglish = language === "en";
+    const englishTextCss = isEnglish ? ".motion-language-en .layout-effect-root :is(div,span,p,h1,h2,h3){min-width:0!important;overflow-wrap:break-word!important;word-break:keep-all!important;hyphens:auto!important}.motion-language-en .layout-effect-root{font-size:.85em;line-height:1.38}" : "";
+    const commercialTextCss = !textRole ? "" : '.motion-commercial-analysis [style*="color: white"],.motion-commercial-analysis [style*="color: #F8FAFC"]{-webkit-text-stroke:none!important;text-shadow:0 5px 18px rgba(0,0,0,0.52)!important}' + (textRole === "risk" ? '.motion-text-role-risk [style*="color: #FF6B6B"]{background:rgba(162,36,48,.92);padding:4px 10px;border-radius:5px;-webkit-text-stroke:none!important}' : "");
+    return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)(AbsoluteFill, { className: [textRole ? "motion-commercial-analysis motion-text-role-" + textRole : "", isEnglish ? "motion-language-en" : ""].filter(Boolean).join(" "), style: { pointerEvents: "none", opacity: opacity2, transform: "translate(" + (mountOffsetX + ((_f = props.offsetX) != null ? _f : 0) + enterX) + "px," + (clampedMountOffsetY + ((_g = props.offsetY) != null ? _g : 0) + enterY + exitY) + "px) scale(" + scale + ")", transformOrigin: (mountMode === "top-left" || presenterSafeInset === "left" ? boundsX : presenterSafeInset === "right" ? boundsX + boundsWidth : boundsX + boundsWidth / 2) + "px " + (mountMode === "top-left" ? boundsY : boundsY + boundsHeight / 2) + "px", wordBreak: "keep-all", overflowWrap: "break-word", hyphens: "auto", lineHeight: isEnglish ? 1.38 : void 0, fontSize: isEnglish ? "0.85em" : void 0 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("style", { children: englishTextCss + commercialTextCss }),
       children
     ] });
   };
@@ -55446,7 +56034,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var import_react125 = __toESM(require_react(), 1);
 
   // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs
-  var toKebabCase = (string) => string?.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+  var toKebabCase = (string) => string == null ? void 0 : string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
   // node_modules/.pnpm/lucide-react@1.45.0_react@19.2.3/node_modules/lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs
   function toLucideIconData(iconName, iconNode, aliases = []) {
@@ -55512,15 +56100,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return value !== null && value !== void 0;
   }
   function buildLucideIconNode(icon, params = {}) {
-    const attributeNames = params.attributeNames ?? {};
-    const getAttributeName = (attributeName) => attributeNames[attributeName] ?? attributeName;
-    const viewBoxWidth = icon.size ?? icon.width ?? defaultAttributes["width"];
-    const viewBoxHeight = icon.size ?? icon.height ?? defaultAttributes["height"];
-    const aliasClassNames = icon.aliases?.filter((alias) => typeof alias === "string" && alias.trim() !== "").map((alias) => `lucide-${alias}`) ?? [];
+    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
+    const attributeNames = (_a2 = params.attributeNames) != null ? _a2 : {};
+    const getAttributeName = (attributeName) => {
+      var _a3;
+      return (_a3 = attributeNames[attributeName]) != null ? _a3 : attributeName;
+    };
+    const viewBoxWidth = (_c = (_b = icon.size) != null ? _b : icon.width) != null ? _c : defaultAttributes["width"];
+    const viewBoxHeight = (_e = (_d = icon.size) != null ? _d : icon.height) != null ? _e : defaultAttributes["height"];
+    const aliasClassNames = (_g = (_f = icon.aliases) == null ? void 0 : _f.filter((alias) => typeof alias === "string" && alias.trim() !== "").map((alias) => `lucide-${alias}`)) != null ? _g : [];
     const iconClassNames = [...icon.name ? [`lucide-${icon.name}`] : [], ...aliasClassNames];
-    const classNamesFromClassName = params.className?.split(" ").filter(Boolean) ?? [];
+    const classNamesFromClassName = (_i = (_h = params.className) == null ? void 0 : _h.split(" ").filter(Boolean)) != null ? _i : [];
     const className2 = params.includeDefaultClasses === false ? mergeClasses(...classNamesFromClassName) : mergeClasses("lucide", ...iconClassNames, ...classNamesFromClassName);
-    const calculatedStrokeWidth = params.absoluteStrokeWidth ? Number(params.strokeWidth ?? defaultAttributes["stroke-width"]) * Number(icon.size ?? icon.width ?? defaultAttributes["width"]) / Number(params.size ?? params.width ?? defaultAttributes["width"]) : params.strokeWidth ?? defaultAttributes["stroke-width"];
+    const calculatedStrokeWidth = params.absoluteStrokeWidth ? Number((_j = params.strokeWidth) != null ? _j : defaultAttributes["stroke-width"]) * Number((_l = (_k = icon.size) != null ? _k : icon.width) != null ? _l : defaultAttributes["width"]) / Number((_n = (_m = params.size) != null ? _m : params.width) != null ? _n : defaultAttributes["width"]) : (_o = params.strokeWidth) != null ? _o : defaultAttributes["stroke-width"];
     const attributes = {
       ...Object.entries(defaultAttributes).reduce((attrs, [attrName, value]) => {
         attrs[getAttributeName(attrName)] = value;
@@ -55610,6 +56202,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       ...rest
     }, ref) => {
+      var _a2, _b, _c;
       const {
         size: contextSize = 24,
         strokeWidth: contextStrokeWidth = 2,
@@ -55617,15 +56210,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
         nonScalingStroke: contextNonScalingStroke = false,
         color: contextColor = "currentColor",
         className: contextClass = ""
-      } = useLucideContext() ?? {};
+      } = (_a2 = useLucideContext()) != null ? _a2 : {};
       const hasAccessibleProp = Boolean(children) || hasA11yProp(rest);
       const [name, svgAttributes, builtIconNode = []] = buildLucideIconForReact(icon, {
-        color: color ?? contextColor,
-        width: width ?? size ?? contextSize,
-        height: height ?? size ?? contextSize,
-        strokeWidth: strokeWidth ?? contextStrokeWidth,
-        absoluteStrokeWidth: absoluteStrokeWidth ?? contextAbsoluteStrokeWidth,
-        nonScalingStroke: nonScalingStroke ?? contextNonScalingStroke,
+        color: color != null ? color : contextColor,
+        width: (_b = width != null ? width : size) != null ? _b : contextSize,
+        height: (_c = height != null ? height : size) != null ? _c : contextSize,
+        strokeWidth: strokeWidth != null ? strokeWidth : contextStrokeWidth,
+        absoluteStrokeWidth: absoluteStrokeWidth != null ? absoluteStrokeWidth : contextAbsoluteStrokeWidth,
+        nonScalingStroke: nonScalingStroke != null ? nonScalingStroke : contextNonScalingStroke,
         className: mergeClasses(contextClass, className2),
         hasA11yProp: hasAccessibleProp,
         attributes: rest
@@ -56018,22 +56611,48 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var rows2 = (value) => Array.isArray(value) ? value.map((item2) => stringValue(item2)).filter((item2) => item2.trim()) : [];
   var numbers = (value) => Array.isArray(value) ? value.map((item2) => Number(item2)).filter(Number.isFinite) : [];
   var isPayload = (value) => !!value && typeof value === "object" && ["narrative", "chips", "metrics", "steps"].indexOf(String(value.type)) >= 0;
+  var cloneValue = (value) => Array.isArray(value) ? value.map(cloneValue) : value && typeof value === "object" ? Object.fromEntries(Object.entries(value).map(([key, item2]) => [key, cloneValue(item2)])) : value;
+  var deepMerge = (base, next) => {
+    if (Array.isArray(base)) {
+      if (!Array.isArray(next) || next.length === 0) return cloneValue(base);
+      return next.map((item2, index) => {
+        var _a2, _b;
+        return deepMerge((_b = (_a2 = base[index]) != null ? _a2 : base[0]) != null ? _b : {}, item2);
+      });
+    }
+    if (base && typeof base === "object" && !Array.isArray(base)) {
+      const source = next && typeof next === "object" && !Array.isArray(next) ? next : {};
+      const merged = {};
+      for (const key of Object.keys(base)) merged[key] = deepMerge(base[key], source[key]);
+      for (const [key, value] of Object.entries(source)) if (!(key in merged)) merged[key] = cloneValue(value);
+      return merged;
+    }
+    return next === void 0 || next === null ? cloneValue(base) : next;
+  };
+  var hydratePayload = (payload, fallback) => isPayload(payload) && isPayload(fallback) && payload.type === fallback.type ? deepMerge(fallback, payload) : isPayload(payload) ? payload : isPayload(fallback) ? fallback : payload;
+  var chipItems = (payload, source) => {
+    const tagged = rows2(source.tags);
+    const sourceItems = Array.isArray(payload.items) ? payload.items : tagged.map((title) => ({ title, subtitle: "" }));
+    return sourceItems.map((item2) => ({ title: stringValue(item2 == null ? void 0 : item2.title), subtitle: typeof (item2 == null ? void 0 : item2.subtitle) === "string" ? item2.subtitle : "" }));
+  };
   var normalizeComponentContent = (source) => {
-    const input = source ?? {};
+    var _a2, _b, _c;
+    const input = source != null ? source : {};
     const projectLayer = input.__projectLayer === true;
     const category = stringValue(input.category, stringValue(input.eyebrow, stringValue(input.categoryTag, projectLayer ? "" : "DESIGN SYSTEM")));
     const headline = stringValue(input.headline, stringValue(input.title, projectLayer ? "" : "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7"));
-    const payload = input.contentPayload;
+    const payload = hydratePayload(input.contentPayload, input.defaultPayload);
     if (isPayload(payload)) {
       if (payload.type === "narrative") return { category, headline, contentPayload: { type: "narrative", bodyText: stringValue(payload.bodyText, stringValue(input.bullText, stringValue(input.body, stringValue(input.effectText, stringValue(input.text, projectLayer ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))))), ...typeof payload.bearText === "string" || stringValue(input.bearText) ? { bearText: typeof payload.bearText === "string" ? payload.bearText : stringValue(input.bearText) } : {}, ...typeof payload.highlightQuote === "string" || stringValue(input.highlightQuote) ? { highlightQuote: typeof payload.highlightQuote === "string" ? payload.highlightQuote : stringValue(input.highlightQuote) } : {} } };
-      if (payload.type === "chips") return { category, headline, contentPayload: { type: "chips", items: (Array.isArray(payload.items) ? payload.items : []).map((item2) => ({ title: stringValue(item2?.title), subtitle: typeof item2?.subtitle === "string" ? item2.subtitle : "" })) } };
-      if (payload.type === "metrics") return { category, headline, contentPayload: { type: "metrics", value: payload.value ?? input.value ?? input.progress ?? (projectLayer ? "" : 71), unit: stringValue(payload.unit), label: stringValue(payload.label, stringValue(input.label, stringValue(input.metric, projectLayer ? "" : "\u5173\u952E\u6307\u6807"))), ...typeof payload.bodyText === "string" || typeof input.bodyText === "string" || typeof input.unit === "string" ? { bodyText: stringValue(payload.bodyText, stringValue(input.bodyText, stringValue(input.unit))) } : {}, ...typeof payload.detailText === "string" || typeof input.detailText === "string" || typeof input.body === "string" || typeof input.effectText === "string" ? { detailText: stringValue(payload.detailText, stringValue(input.detailText, stringValue(input.body, stringValue(input.effectText)))) } : {} } };
-      return { category, headline, contentPayload: { type: "steps", steps: (Array.isArray(payload.steps) ? payload.steps : []).map((item2, index) => ({ stepNumber: Number(item2?.stepNumber) || index + 1, text: stringValue(item2?.text) })), ...Number.isFinite(Number(payload.progress)) ? { progress: Number(payload.progress) } : {}, ...typeof payload.bodyText === "string" ? { bodyText: payload.bodyText } : {} } };
+      if (payload.type === "chips") return { category, headline, contentPayload: { type: "chips", items: chipItems(payload, input) } };
+      if (payload.type === "metrics") return { category, headline, contentPayload: { type: "metrics", value: (_c = (_b = (_a2 = payload.value) != null ? _a2 : input.value) != null ? _b : input.progress) != null ? _c : projectLayer ? "" : 71, unit: stringValue(payload.unit), label: stringValue(payload.label, stringValue(input.label, stringValue(input.metric, projectLayer ? "" : "\u5173\u952E\u6307\u6807"))), ...typeof payload.bodyText === "string" || typeof input.bodyText === "string" || typeof input.unit === "string" ? { bodyText: stringValue(payload.bodyText, stringValue(input.bodyText, stringValue(input.unit))) } : {}, ...typeof payload.detailText === "string" || typeof input.detailText === "string" || typeof input.body === "string" || typeof input.effectText === "string" ? { detailText: stringValue(payload.detailText, stringValue(input.detailText, stringValue(input.body, stringValue(input.effectText)))) } : {} } };
+      return { category, headline, contentPayload: { type: "steps", steps: (Array.isArray(payload.steps) ? payload.steps : []).map((item2, index) => ({ stepNumber: Number(item2 == null ? void 0 : item2.stepNumber) || index + 1, text: stringValue(item2 == null ? void 0 : item2.text) })), ...Number.isFinite(Number(payload.progress)) ? { progress: Number(payload.progress) } : {}, ...typeof payload.bodyText === "string" ? { bodyText: payload.bodyText } : {} } };
     }
-    const list3 = rows2(input.steps).length ? rows2(input.steps) : rows2(input.items).length ? rows2(input.items) : rows2(input.years).length ? rows2(input.years) : rows2(input.nodes).length ? rows2(input.nodes) : rows2(input.units);
+    const list3 = rows2(input.steps).length ? rows2(input.steps) : rows2(input.items).length ? rows2(input.items) : rows2(input.tags).length ? rows2(input.tags) : rows2(input.years).length ? rows2(input.years) : rows2(input.nodes).length ? rows2(input.nodes) : rows2(input.units);
     return { category, headline, contentPayload: list3.length ? { type: "steps", steps: list3.map((text3, index) => ({ stepNumber: index + 1, text: text3 })) } : { type: "narrative", bodyText: stringValue(input.body, stringValue(input.effectText, stringValue(input.text, "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))) } };
   };
   var toRendererContentProps = (source) => {
+    var _a2, _b, _c;
     const normalized = normalizeComponentContent(source);
     const base = { category: normalized.category, eyebrow: normalized.category, categoryTag: normalized.category, headline: normalized.headline, title: normalized.headline };
     const payload = normalized.contentPayload;
@@ -56041,18 +56660,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (payload.type === "chips") {
       const values3 = payload.items.map((item2) => item2.title);
       const subtitles = payload.items.map((item2) => typeof item2.subtitle === "string" ? item2.subtitle : "");
-      return { ...base, items: values3, steps: values3, comments: values3, itemSubtitles: subtitles, subLabels: subtitles, subLabel: subtitles.find((value) => value.trim()) || "" };
+      return { ...base, tags: values3, items: values3, steps: values3, comments: values3, itemSubtitles: subtitles, subLabels: subtitles, subLabel: subtitles.find((value) => value.trim()) || "" };
     }
     if (payload.type === "metrics") {
-      const list3 = rows2(source?.items).length ? rows2(source?.items) : rows2(source?.steps);
+      const list3 = rows2(source == null ? void 0 : source.items).length ? rows2(source == null ? void 0 : source.items) : rows2(source == null ? void 0 : source.steps);
       const numeric = Number(payload.value);
       const bodyText2 = stringValue(payload.bodyText, stringValue(payload.unit, normalized.headline));
-      const detailText = stringValue(payload.detailText, stringValue(source?.body, stringValue(source?.effectText, source?.__projectLayer === true ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE")));
-      return { ...base, value: payload.value, progress: payload.value, values: list3.length && Number.isFinite(numeric) ? list3.map(() => numeric) : numbers(source?.values), metric: payload.label, label: payload.label, metricLabel: payload.label, unit: payload.unit, marketLabel: stringValue(source?.marketLabel, payload.label), marketTo: source?.marketTo ?? payload.value, marketSuffix: stringValue(source?.marketSuffix, payload.unit), engineeringLabel: stringValue(source?.engineeringLabel, source?.__projectLayer === true ? "" : "\u589E\u957F\u6307\u6807"), engineeringTo: source?.engineeringTo ?? source?.value2 ?? payload.value, engineeringSuffix: stringValue(source?.engineeringSuffix, payload.unit), bodyText: bodyText2, detailText, body: detailText, effectText: detailText, effectZh: detailText, items: list3, steps: list3, comments: list3 };
+      const detailText = stringValue(payload.detailText, stringValue(source == null ? void 0 : source.summary, stringValue(source == null ? void 0 : source.body, stringValue(source == null ? void 0 : source.effectText, (source == null ? void 0 : source.__projectLayer) === true ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))));
+      return { ...base, value: payload.value, progress: payload.value, count: payload.value, values: list3.length && Number.isFinite(numeric) ? list3.map(() => numeric) : numbers(source == null ? void 0 : source.values), metric: payload.label, label: payload.label, metricLabel: payload.label, unit: payload.unit, marketLabel: stringValue(source == null ? void 0 : source.marketLabel, payload.label), marketTo: (_a2 = source == null ? void 0 : source.marketTo) != null ? _a2 : payload.value, marketSuffix: stringValue(source == null ? void 0 : source.marketSuffix, payload.unit), engineeringLabel: stringValue(source == null ? void 0 : source.engineeringLabel, (source == null ? void 0 : source.__projectLayer) === true ? "" : "\u589E\u957F\u6307\u6807"), engineeringTo: (_c = (_b = source == null ? void 0 : source.engineeringTo) != null ? _b : source == null ? void 0 : source.value2) != null ? _c : payload.value, engineeringSuffix: stringValue(source == null ? void 0 : source.engineeringSuffix, payload.unit), bodyText: bodyText2, detailText, summary: detailText, body: detailText, effectText: detailText, effectZh: detailText, startLabel: stringValue(source == null ? void 0 : source.startLabel, "\u8D77\u70B9"), endLabel: stringValue(source == null ? void 0 : source.endLabel, "\u76EE\u6807\u9636\u6BB5"), items: list3, steps: list3, comments: list3 };
     }
     const values2 = payload.steps.map((item2) => item2.text);
-    const bodyText = typeof payload.bodyText === "string" ? payload.bodyText : stringValue(source?.body, stringValue(source?.effectText, stringValue(source?.text)));
-    return { ...base, steps: values2, items: values2, years: values2, nodes: values2, units: values2, comments: values2, label: stringValue(source?.label, normalized.category), title: stringValue(source?.title, normalized.headline), body: bodyText, bodyText, effectText: bodyText, effectZh: bodyText, text: bodyText, ...typeof payload.progress === "number" ? { progress: payload.progress, value: payload.progress, values: values2.map(() => payload.progress) } : { values: numbers(source?.values) } };
+    const bodyText = typeof payload.bodyText === "string" ? payload.bodyText : stringValue(source == null ? void 0 : source.body, stringValue(source == null ? void 0 : source.effectText, stringValue(source == null ? void 0 : source.text)));
+    return { ...base, steps: values2, items: values2, years: values2, nodes: values2, units: values2, comments: values2, label: stringValue(source == null ? void 0 : source.label, normalized.category), title: stringValue(source == null ? void 0 : source.title, normalized.headline), body: bodyText, bodyText, effectText: bodyText, effectZh: bodyText, text: bodyText, ...typeof payload.progress === "number" ? { progress: payload.progress, value: payload.progress, values: values2.map(() => payload.progress) } : { values: numbers(source == null ? void 0 : source.values) } };
   };
 
   // src/JasonWu/JcFontGate.tsx
@@ -56240,11 +56859,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/BadgeCard.tsx
-  var import_jsx_runtime73 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime75 = __toESM(require_jsx_runtime());
   var BadgeCard = ({ icon, zhTitle, zhResult, enKicker, accent = "yellow", enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "up");
     const c3 = COLOR[accent];
-    return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
       "div",
       {
         style: {
@@ -56261,24 +56880,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          icon ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: zhTitle }),
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(ArrowDown, { size: 22, strokeWidth: 2.8, color: c3 }),
-            /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: c3 }, children: zhResult })
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: zhTitle }),
+          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(ArrowDown, { size: 22, strokeWidth: 2.8, color: c3 }),
+            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: c3 }, children: zhResult })
           ] }),
-          enKicker ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.3em", color: `${c3}CC` }, children: enKicker.toUpperCase() }) : null
+          enKicker ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.3em", color: `${c3}CC` }, children: enKicker.toUpperCase() }) : null
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/BarChart.tsx
-  var import_jsx_runtime74 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime76 = __toESM(require_jsx_runtime());
   var BarChart2 = ({ items: items2, accent = "yellow", width = 420, enterAt = 0 }) => {
     const frame = useCurrentFrame();
     const max = Math.max(...items2.map((i) => i.value));
-    return /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 2 }, children: items2.map((item2, i) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime76.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 2 }, children: items2.map((item2, i) => {
       const start2 = enterAt + i * MOTION.stagger;
       const t = interpolate(frame, [start2, start2 + 24], [0, 1], {
         extrapolateLeft: "clamp",
@@ -56286,8 +56905,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         easing: Easing.out(Easing.cubic)
       });
       const barW = item2.value / max * width * t;
-      return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 14, opacity: t === 0 ? 0 : 1 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+      return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 14, opacity: t === 0 ? 0 : 1 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
           "div",
           {
             style: {
@@ -56302,7 +56921,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: item2.label
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
           "div",
           {
             style: {
@@ -56313,7 +56932,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
           "div",
           {
             style: {
@@ -56331,7 +56950,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/BigNumber.tsx
-  var import_jsx_runtime75 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime77 = __toESM(require_jsx_runtime());
   var BigNumber = ({
     value,
     countFrom = 0,
@@ -56355,8 +56974,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const text3 = grouping ? v.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) : v.toFixed(decimals);
     const c3 = color === "white" ? COLOR.white : COLOR[color];
-    return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(
         "div",
         {
           style: {
@@ -56374,7 +56993,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           ]
         }
       ),
-      enKicker ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+      enKicker ? /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
         "div",
         {
           style: {
@@ -56388,7 +57007,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: enKicker.toUpperCase()
         }
       ) : null,
-      zhSub ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+      zhSub ? /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
         "div",
         {
           style: {
@@ -56406,7 +57025,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/BilingualSub.tsx
-  var import_jsx_runtime76 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime78 = __toESM(require_jsx_runtime());
   var SUB_ZH_SIZE = SIZE.subZh;
   var SUB_EN_SIZE = SIZE.subEn;
   var SUB_PLATE = "rgba(4,6,8,0.84)";
@@ -56418,7 +57037,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     bottom = SAFE.subtitleBottom
   }) => {
     const { height } = useVideoConfig();
-    return /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
       "div",
       {
         style: {
@@ -56429,7 +57048,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           height,
           pointerEvents: "none"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(
           "div",
           {
             style: {
@@ -56445,7 +57064,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               // 两行箱子分离，间距 8-10px（specs.md 字幕行）
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
                 "div",
                 {
                   "data-qc": "subtitle",
@@ -56471,7 +57090,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: zh
                 }
               ),
-              en ? /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+              en ? /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
                 "div",
                 {
                   style: {
@@ -56505,16 +57124,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/Breathe.tsx
-  var import_jsx_runtime77 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime79 = __toESM(require_jsx_runtime());
   var Breathe = ({ children, phase = 0, amp = 1 }) => {
     const frame = useCurrentFrame();
     const s = 1 + 6e-3 * amp * Math.sin((frame + phase) / 22);
     const y = 3 * amp * Math.sin((frame + phase) / 28);
-    return /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { transform: `translateY(${y}px) scale(${s})`, transformOrigin: "center" }, children });
+    return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)("div", { style: { transform: `translateY(${y}px) scale(${s})`, transformOrigin: "center" }, children });
   };
 
   // src/JasonWu/components/jc/BrickWall.tsx
-  var import_jsx_runtime78 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime80 = __toESM(require_jsx_runtime());
   var BRICK_W = 150;
   var BRICK_H = 56;
   var GAP = GRID2;
@@ -56527,11 +57146,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const totalBricks = rows3 * cols;
     const [g0, g1] = GRADIENT.yellow;
     const chipEnter = useEnter(enterAt + totalBricks * 3 + 6, "up");
-    return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW_YELLOW})` }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { position: "absolute", inset: 0, overflow: "hidden", borderRadius: GRID2 * 0.75 }, children: Array.from({ length: rows3 }).map((_, row) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW_YELLOW})` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("div", { style: { position: "absolute", inset: 0, overflow: "hidden", borderRadius: GRID2 * 0.75 }, children: Array.from({ length: rows3 }).map((_, row) => {
         const offset = row % 2 === 1;
         const rowCols = offset ? cols + 1 : cols;
-        return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
           "div",
           {
             style: {
@@ -56548,7 +57167,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 extrapolateRight: "clamp",
                 easing: Easing.out(Easing.cubic)
               });
-              return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+              return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
                 "div",
                 {
                   style: {
@@ -56568,7 +57187,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           row
         );
       }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(
         "div",
         {
           style: {
@@ -56589,7 +57208,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             whiteSpace: "nowrap"
           },
           children: [
-            enLabel ? /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+            enLabel ? /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
               "span",
               {
                 style: {
@@ -56603,7 +57222,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: enLabel
               }
             ) : null,
-            /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: SIZE.chip, color: COLOR.white }, children: label3 })
+            /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: SIZE.chip, color: COLOR.white }, children: label3 })
           ]
         }
       )
@@ -56611,10 +57230,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/CardWall.tsx
-  var import_jsx_runtime79 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime81 = __toESM(require_jsx_runtime());
   var AVATAR_COLORS = ["#3B82F6", "#F59E0B", "#22C55E", "#EF4444", "#8B5CF6", "#F97316"];
   var CardWall = ({ items: items2, cols = 4, cardWidth = 424, gap = 18, enterAt = 0, staggerFrames = 4 }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
       "div",
       {
         style: {
@@ -56622,15 +57241,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
           gridTemplateColumns: `repeat(${cols}, ${cardWidth}px)`,
           gap
         },
-        children: items2.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(WallCardView, { card: c3, index: i, enterAt: enterAt + i * staggerFrames }, i))
+        children: items2.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(WallCardView, { card: c3, index: i, enterAt: enterAt + i * staggerFrames }, i))
       }
     );
   };
   var WallCardView = ({ card, index, enterAt }) => {
+    var _a2;
     const enter3 = useEnter(enterAt, "up");
-    const color = card.avatarColor ?? AVATAR_COLORS[index % AVATAR_COLORS.length];
+    const color = (_a2 = card.avatarColor) != null ? _a2 : AVATAR_COLORS[index % AVATAR_COLORS.length];
     const initial = /[a-zA-Z]/.test(card.name[0]) ? card.name[0].toUpperCase() : card.name[0];
-    return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)(
       "div",
       {
         style: {
@@ -56645,7 +57265,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
             "div",
             {
               style: {
@@ -56665,9 +57285,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: initial
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { style: { minWidth: 0 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 500, fontSize: 17, color: "#8B9098" }, children: card.name }),
-            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)("div", { style: { minWidth: 0 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime81.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 500, fontSize: 17, color: "#8B9098" }, children: card.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
               "div",
               {
                 style: {
@@ -56688,11 +57308,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/Chip.tsx
-  var import_jsx_runtime80 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime82 = __toESM(require_jsx_runtime());
   var Chip = ({ segments, icon, accent = "blue", outlined = false, dimmed = false, surface = "dark", enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "left");
     const isLight = surface === "light";
-    return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
       "div",
       {
         style: {
@@ -56708,8 +57328,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           boxShadow: isLight ? SURFACE.light.shadow : "0 4px 18px rgba(0,0,0,0.35)"
         },
         children: [
-          icon ? /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { fontSize: SIZE.chip - 4, color: COLOR[accent], lineHeight: 1, display: "inline-flex", alignItems: "center" }, children: icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { whiteSpace: "nowrap" }, children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime82.jsx)("span", { style: { fontSize: SIZE.chip - 4, color: COLOR[accent], lineHeight: 1, display: "inline-flex", alignItems: "center" }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)("span", { style: { whiteSpace: "nowrap" }, children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
             "span",
             {
               style: {
@@ -56728,9 +57348,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/Checklist.tsx
-  var import_jsx_runtime81 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime83 = __toESM(require_jsx_runtime());
   var Checklist = ({ items: items2, accent = "blue", outlined = false, top = 200, staggerFrames = MOTION.stagger }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
       "div",
       {
         style: {
@@ -56742,32 +57362,40 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "flex-start",
           gap: GRID2 * 2
         },
-        children: items2.map((item2, i) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          Chip,
-          {
-            segments: item2.segments,
-            icon: item2.icon,
-            accent,
-            outlined,
-            dimmed: item2.dimmed,
-            enterAt: item2.enterAt ?? i * staggerFrames
-          },
-          i
-        ))
+        children: items2.map((item2, i) => {
+          var _a2;
+          return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+            Chip,
+            {
+              segments: item2.segments,
+              icon: item2.icon,
+              accent,
+              outlined,
+              dimmed: item2.dimmed,
+              enterAt: (_a2 = item2.enterAt) != null ? _a2 : i * staggerFrames
+            },
+            i
+          );
+        })
       }
     );
   };
 
   // src/JasonWu/components/jc/CloneCascade.tsx
-  var import_jsx_runtime82 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime84 = __toESM(require_jsx_runtime());
   var CARD2 = GRID2 * 15;
+  var SOURCE_PALETTE = ["#4D9EFF", "#FFC53D", "#3DDC84", "#B26BFF"];
+  var STAR_PALETTE = ["#4D9EFF", "#FF4D4D", "#FFC53D", "#B26BFF", "#3DDC84", "#FDE047"];
+  var CLONE_LABELS = ["A", "B", "C", "D"];
   var SourceCard = ({
     icon,
     label: label3,
-    enterAt
+    enterAt,
+    palette
   }) => {
     const enter3 = useEnter(enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
+    const [blue2, gold, green2, purple] = palette;
+    return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
       "div",
       {
         style: {
@@ -56779,25 +57407,35 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "div",
             {
               style: {
                 width: CARD2,
                 height: CARD2,
                 borderRadius: RADIUS.card,
-                background: "linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92))",
-                border: "2.5px solid rgba(255,255,255,0.92)",
+                background: `linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92)) padding-box, linear-gradient(135deg, ${blue2}, ${gold}, ${green2}, ${purple}) border-box`,
+                border: "2.5px solid transparent",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: COLOR.white,
-                boxShadow: "0 14px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.18)"
+                color: blue2,
+                boxShadow: `0 14px 40px rgba(0,0,0,0.55), 0 0 26px ${blue2}55, 0 0 34px ${gold}33, 0 0 38px ${green2}22, inset 0 1px 0 rgba(255,255,255,0.18)`
               },
-              children: icon
+              children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    color: blue2,
+                    filter: `drop-shadow(0 0 10px ${blue2}AA) drop-shadow(0 0 18px ${gold}66) drop-shadow(0 0 24px ${purple}44)`
+                  },
+                  children: icon
+                }
+              )
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "span",
             {
               style: {
@@ -56818,10 +57456,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     icon,
     index,
     fade,
-    enterAt
+    enterAt,
+    starColor
   }) => {
+    var _a2;
     const enter3 = useEnter(enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
       "div",
       {
         style: {
@@ -56833,7 +57473,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "div",
             {
               style: {
@@ -56845,13 +57485,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: COLOR.grey,
-                boxShadow: "0 8px 24px rgba(0,0,0,0.4)"
+                color: starColor,
+                boxShadow: `0 8px 24px rgba(0,0,0,0.4), 0 0 18px ${starColor}55`
               },
-              children: icon
+              children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    color: starColor,
+                    filter: `drop-shadow(0 0 8px ${starColor}AA) drop-shadow(0 0 16px ${starColor}66)`
+                  },
+                  children: icon
+                }
+              )
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "span",
             {
               style: {
@@ -56861,7 +57511,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 color: COLOR.greyDim,
                 whiteSpace: "nowrap"
               },
-              children: `\u4EFF\u54C1 ${index + 1}`
+              children: (_a2 = CLONE_LABELS[index]) != null ? _a2 : String.fromCharCode(65 + index)
             }
           )
         ]
@@ -56872,9 +57522,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const warnAt = enterAt + MOTION.stagger * (cloneCount + 1);
     const warnEnter = useEnter(warnAt, "left");
     const arrowEnter = useEnter(enterAt + MOTION.stagger, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: GRID2 * 2 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(SourceCard, { icon, label: label3, enterAt }),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: GRID2 * 2 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(SourceCard, { icon, label: label3, enterAt, palette: SOURCE_PALETTE }),
+      /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
         "span",
         {
           style: {
@@ -56889,17 +57539,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: "\u2192"
         }
       ),
-      Array.from({ length: cloneCount }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      Array.from({ length: cloneCount }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
         CloneCard,
         {
           icon,
           index: i,
           fade: Math.max(0.4, 0.85 - i * 0.15),
-          enterAt: enterAt + MOTION.stagger * (i + 1)
+          enterAt: enterAt + MOTION.stagger * (i + 1),
+          starColor: STAR_PALETTE[(i + 1) % STAR_PALETTE.length]
         },
         i
       )),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
         "div",
         {
           style: {
@@ -56914,7 +57565,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             transform: warnEnter.transform,
             marginBottom: GRID2 * 4
           },
-          children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "span",
             {
               style: {
@@ -56933,14 +57584,26 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/CompareCard.tsx
-  var import_jsx_runtime83 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime85 = __toESM(require_jsx_runtime());
+  var LOGO_PALETTE = ["#4D9EFF", "#FFC53D", "#3DDC84", "#B26BFF"];
   var CompareCard = ({ items: items2, width = 700, enterAt = 0, staggerFrames = MOTION.stagger }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 20 }, children: items2.map((it, i) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(ItemView, { item: it, width, enterAt: enterAt + i * staggerFrames }, i)) });
+    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 20 }, children: items2.map((it, i) => /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(ItemView, { item: it, index: i, width, enterAt: enterAt + i * staggerFrames }, i)) });
   };
-  var ItemView = ({ item: item2, width, enterAt }) => {
+  var ItemView = ({ item: item2, index, width, enterAt }) => {
+    var _a2, _b;
     const enter3 = useEnter(enterAt, "left");
-    const strong = COLOR[item2.strongColor ?? "blue"];
-    return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+    const strong = COLOR[(_a2 = item2.strongColor) != null ? _a2 : "blue"];
+    const logoColor = LOGO_PALETTE[index % LOGO_PALETTE.length];
+    const logoGlow = LOGO_PALETTE[(index + 1) % LOGO_PALETTE.length];
+    const defaultPayload = {
+      name: `ITEM ${index + 1}`,
+      weak: "\u5F85\u8865\u5145\u9650\u5236",
+      strong: "\u5F85\u8865\u5145\u4F18\u52BF"
+    };
+    const name = readTextSlot(item2, "name", defaultPayload, defaultPayload.name);
+    const weak = readTextSlot(item2, "weak", defaultPayload, defaultPayload.weak);
+    const strongText = readTextSlot(item2, "strong", defaultPayload, defaultPayload.strong);
+    return /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
       "div",
       {
         style: {
@@ -56957,28 +57620,40 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
             "div",
             {
               style: {
                 width: 68,
                 height: 68,
                 borderRadius: 15,
-                background: "#FFFFFF",
+                background: `linear-gradient(165deg, rgba(20,24,29,0.94), rgba(8,10,13,0.96)) padding-box, linear-gradient(135deg, ${logoColor}, ${logoGlow}, rgba(255,255,255,0.86)) border-box`,
+                border: "2px solid transparent",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#16181D",
+                color: logoColor,
                 flexShrink: 0,
-                overflow: "hidden"
+                overflow: "hidden",
+                boxShadow: `0 0 20px ${logoColor}55, 0 0 34px ${logoGlow}2F, inset 0 1px 0 rgba(255,255,255,0.28)`
               },
-              children: item2.logo
+              children: /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    color: logoColor,
+                    filter: `drop-shadow(0 0 9px ${logoColor}AA) drop-shadow(0 0 18px ${logoGlow}66)`
+                  },
+                  children: (_b = item2.logo) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(IcoFontPathIcon, { seed: `${name}|${weak}|${index}`, color: logoColor, size: 38, fallbackIndex: index })
+                }
+              )
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: item2.name }),
-            /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { style: { display: "flex", gap: 12, marginTop: 10 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: name }),
+            /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("div", { style: { display: "flex", gap: 12, marginTop: 10 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
                 "span",
                 {
                   style: {
@@ -56994,12 +57669,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     color: COLOR.grey
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(X, { size: 17, strokeWidth: 3 }),
-                    item2.weak
+                    /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(X, { size: 17, strokeWidth: 3 }),
+                    weak
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
                 "span",
                 {
                   style: {
@@ -57015,8 +57690,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     color: COLOR.white
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Check, { size: 17, strokeWidth: 3, color: strong }),
-                    item2.strong
+                    /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(Check, { size: 17, strokeWidth: 3, color: strong }),
+                    strongText
                   ]
                 }
               )
@@ -57028,7 +57703,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/CurveOverlay.tsx
-  var import_jsx_runtime84 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime86 = __toESM(require_jsx_runtime());
   var CurveOverlay = ({ width, height, color = "yellow", strokeWidth = 6, exponent = 2.2, growFrames = 70, enterAt = 0 }) => {
     const frame = useCurrentFrame();
     const p = interpolate(frame, [enterAt, enterAt + growFrames], [0, 1], {
@@ -57042,7 +57717,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const y = Math.pow(x, exponent);
       return `${(x * width).toFixed(1)},${(height * (0.96 - 0.9 * y)).toFixed(1)}`;
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("svg", { width, height, style: { display: "block" }, children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("svg", { width, height, style: { display: "block" }, children: /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(
       "polyline",
       {
         points: pts.join(" "),
@@ -57058,10 +57733,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/DMCardStack.tsx
-  var import_jsx_runtime85 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime87 = __toESM(require_jsx_runtime());
   var DMCardStack = ({ cards, enterAt = 0, staggerFrames = MOTION.stagger }) => {
     const rots = [-3, 2.5, -1.5, 2];
-    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { position: "relative" }, children: cards.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime87.jsx)("div", { style: { position: "relative" }, children: cards.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
       DMCardView,
       {
         card: c3,
@@ -57074,19 +57749,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
     )) });
   };
   var DMCardView = ({ card, rotate: rotate2, offsetX, offsetY, enterAt }) => {
+    var _a2, _b, _c;
     const enter3 = useEnter(enterAt, "up");
-    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
       "div",
       {
         style: {
           position: "absolute",
           left: offsetX,
           top: offsetY,
-          width: card.width ?? 440,
+          width: (_a2 = card.width) != null ? _a2 : 440,
           opacity: enter3.opacity,
           transform: `${enter3.transform} rotate(${rotate2}deg)`
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
           "div",
           {
             style: {
@@ -57100,14 +57776,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
               alignItems: "flex-start"
             },
             children: [
-              card.chip ? /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              card.chip ? /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
                 "div",
                 {
                   style: {
                     position: "absolute",
                     top: -16,
                     left: -12,
-                    background: COLOR[card.chip.color ?? "blue"],
+                    background: COLOR[(_b = card.chip.color) != null ? _b : "blue"],
                     borderRadius: 999,
                     padding: "5px 16px",
                     fontFamily: FONT.zh,
@@ -57120,25 +57796,25 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: card.chip.text
                 }
               ) : null,
-              card.avatarSrc ? /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              card.avatarSrc ? /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
                 Img,
                 {
                   src: card.avatarSrc,
                   style: { width: 44, height: 44, borderRadius: 8, objectFit: "cover", flexShrink: 0 }
                 }
-              ) : /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              ) : /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
                 "div",
                 {
                   style: {
                     width: 44,
                     height: 44,
                     borderRadius: 8,
-                    background: card.avatarColor ?? "#31363E",
+                    background: (_c = card.avatarColor) != null ? _c : "#31363E",
                     flexShrink: 0
                   }
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
                 "div",
                 {
                   style: {
@@ -57160,16 +57836,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
 
   // src/JasonWu/components/jc/FlowChain.tsx
   var import_react127 = __toESM(require_react());
-  var import_jsx_runtime86 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime88 = __toESM(require_jsx_runtime());
   var FlowChain = ({ nodes, nodeWidth = 190, surface = "dark", enterAt = 0, staggerFrames = MOTION.stagger }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: nodes.map((nd, i) => /* @__PURE__ */ (0, import_jsx_runtime86.jsxs)(import_react127.default.Fragment, { children: [
-      i > 0 ? /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(Arrow, { enterAt: enterAt + i * staggerFrames }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(NodeView, { node: nd, width: nodeWidth, surface, enterAt: enterAt + i * staggerFrames })
+    return /* @__PURE__ */ (0, import_jsx_runtime88.jsx)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: nodes.map((nd, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(import_react127.default.Fragment, { children: [
+      i > 0 ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(Arrow, { enterAt: enterAt + i * staggerFrames }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(NodeView, { node: nd, width: nodeWidth, surface, enterAt: enterAt + i * staggerFrames })
     ] }, i)) });
   };
   var Arrow = ({ enterAt }) => {
     const enter3 = useEnter(enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
       "span",
       {
         style: {
@@ -57190,10 +57866,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     surface,
     enterAt
   }) => {
+    var _a2;
     const enter3 = useEnter(enterAt, "up");
-    const c3 = COLOR[node.accent ?? "blue"];
+    const c3 = COLOR[(_a2 = node.accent) != null ? _a2 : "blue"];
     const isLight = surface === "light";
-    return /* @__PURE__ */ (0, import_jsx_runtime86.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
       "div",
       {
         style: {
@@ -57213,15 +57890,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          node.icon ? /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: node.icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { textAlign: "center" }, children: node.lines.map((l, i) => /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 24, lineHeight: 1.5, color: isLight ? SURFACE.light.fg : COLOR.white }, children: l }, i)) })
+          node.icon ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: node.icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime88.jsx)("div", { style: { textAlign: "center" }, children: node.lines.map((l, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 24, lineHeight: 1.5, color: isLight ? SURFACE.light.fg : COLOR.white }, children: l }, i)) })
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/Flywheel.tsx
-  var import_jsx_runtime87 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime89 = __toESM(require_jsx_runtime());
   var Flywheel = ({
     size = 340,
     color = "green",
@@ -57234,7 +57911,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const radius = size * 0.39;
     const circumference = Math.PI * 2 * radius;
     const segment = circumference * (39 / 360);
-    return /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)(
       "div",
       {
         style: {
@@ -57246,7 +57923,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           filter: `drop-shadow(0 0 26px ${color === "green" ? "rgba(61,220,132,0.4)" : `${accent}66`})`
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)(
             "svg",
             {
               width: size,
@@ -57254,7 +57931,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               viewBox: `0 0 ${size} ${size}`,
               style: { transform: `rotate(${frame * 1}deg)` },
               children: [
-                Array.from({ length: 8 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                Array.from({ length: 8 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime89.jsx)(
                   "circle",
                   {
                     cx: size / 2,
@@ -57274,8 +57951,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   const a3 = (index * 45 - 90) * Math.PI / 180;
                   const cx = size / 2, cy = size / 2;
                   const r0 = size * 0.19, r1 = radius - GRID2;
-                  return /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)("g", { children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                  return /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)("g", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime89.jsx)(
                       "line",
                       {
                         x1: cx + r0 * Math.cos(a3),
@@ -57287,7 +57964,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         opacity: 0.75
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime89.jsx)(
                       "circle",
                       {
                         cx: cx + radius * Math.cos(a3 + 0.28),
@@ -57301,7 +57978,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime89.jsx)(
             "div",
             {
               style: {
@@ -57329,7 +58006,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/HeroText.tsx
-  var import_jsx_runtime88 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime90 = __toESM(require_jsx_runtime());
   var scaleShift = (e, shiftPx) => {
     if (shiftPx === MOTION.popInShift) return e;
     const k = shiftPx / MOTION.popInShift;
@@ -57351,7 +58028,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
-    const kickerAt = kickerEnterAt ?? Math.max(0, enterAt - 10);
+    const kickerAt = kickerEnterAt != null ? kickerEnterAt : Math.max(0, enterAt - 10);
     const kickerEnter = scaleShift(useEnter(kickerAt, "up"), shiftPx);
     const mainEnter = scaleShift(useEnter(enterAt, "up"), shiftPx);
     const tailEnter = scaleShift(useEnter(enterAt + 8, "up"), shiftPx);
@@ -57361,7 +58038,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       config: { damping: 200 },
       durationInFrames: 12
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime90.jsxs)(
       "div",
       {
         "data-qc": "text",
@@ -57373,7 +58050,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           textShadow: "0 2px 12px rgba(0,0,0,0.6)"
         },
         children: [
-          kicker ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+          kicker ? /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
             "div",
             {
               style: {
@@ -57386,7 +58063,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 opacity: kickerEnter.opacity,
                 transform: kickerEnter.transform
               },
-              children: typeof kicker === "string" ? kicker.toUpperCase() : kicker.map((k, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+              children: typeof kicker === "string" ? kicker.toUpperCase() : kicker.map((k, i) => /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
                 "span",
                 {
                   style: { color: k.color ? COLOR[k.color] : COLOR.white },
@@ -57396,7 +58073,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ))
             }
           ) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
             "div",
             {
               style: {
@@ -57404,7 +58081,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 opacity: mainEnter.opacity,
                 transform: mainEnter.transform
               },
-              children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
+              children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime90.jsxs)(
                 "span",
                 {
                   style: {
@@ -57417,7 +58094,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   },
                   children: [
                     s.t,
-                    s.strike ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+                    s.strike ? /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
                       "span",
                       {
                         style: {
@@ -57437,7 +58114,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ))
             }
           ),
-          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
             "div",
             {
               style: {
@@ -57452,7 +58129,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: zhSub
             }
           ) : null,
-          echo ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+          echo ? /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
             "div",
             {
               style: {
@@ -57474,12 +58151,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/InfoCard.tsx
-  var import_jsx_runtime89 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime91 = __toESM(require_jsx_runtime());
   var InfoCard = ({ icon, en, zh, accent = "blue", surface = "dark", enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "left");
     const c3 = COLOR[accent];
     const isLight = surface === "light";
-    return /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime91.jsxs)(
       "div",
       {
         style: {
@@ -57495,10 +58172,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          icon ? /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("span", { style: { color: c3, display: "inline-flex", flexShrink: 0 }, children: icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.kicker, letterSpacing: "0.26em", color: c3 }, children: en.toUpperCase() }),
-            /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("div", { style: { marginTop: 5, fontFamily: FONT.zh, fontWeight: 700, fontSize: 26, color: isLight ? SURFACE.light.fg : COLOR.white }, children: zh })
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime91.jsx)("span", { style: { color: c3, display: "inline-flex", flexShrink: 0 }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime91.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime91.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.kicker, letterSpacing: "0.26em", color: c3 }, children: en.toUpperCase() }),
+            /* @__PURE__ */ (0, import_jsx_runtime91.jsx)("div", { style: { marginTop: 5, fontFamily: FONT.zh, fontWeight: 700, fontSize: 26, color: isLight ? SURFACE.light.fg : COLOR.white }, children: zh })
           ] })
         ]
       }
@@ -57506,13 +58183,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/InfoScrim.tsx
-  var import_jsx_runtime90 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime92 = __toESM(require_jsx_runtime());
   var InfoScrim = ({
     strength = 1,
     side = "right"
   }) => {
     const deg = side === "right" ? 90 : 270;
-    return /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -57524,7 +58201,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/LoopDiagram.tsx
-  var import_jsx_runtime91 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime93 = __toESM(require_jsx_runtime());
   var LoopNode = ({ label: label3, index, size, enterAt }) => {
     const frame = useCurrentFrame();
     const angle = -Math.PI / 2 + index * (Math.PI / 2);
@@ -57541,7 +58218,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         easing: Easing.out(Easing.cubic)
       }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
       "div",
       {
         style: {
@@ -57583,8 +58260,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       extrapolateRight: "clamp",
       easing: Easing.out(Easing.quad)
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime91.jsxs)("div", { style: { position: "relative", width: size, height: size, opacity: bodyOpacity }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)("div", { style: { position: "relative", width: size, height: size, opacity: bodyOpacity }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
         "svg",
         {
           width: ringSize,
@@ -57598,7 +58275,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             transform: `rotate(${frame * 0.25}deg)`,
             filter: `drop-shadow(0 0 18px ${accent}66)`
           },
-          children: /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
             "circle",
             {
               cx: ringSize / 2,
@@ -57613,7 +58290,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           )
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
         "div",
         {
           style: {
@@ -57635,12 +58312,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: "LOOP"
         }
       ),
-      labels.slice(0, 4).map((label3, index) => /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(LoopNode, { label: label3, index, size, enterAt }, `${label3}-${index}`))
+      labels.slice(0, 4).map((label3, index) => /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(LoopNode, { label: label3, index, size, enterAt }, `${label3}-${index}`))
     ] });
   };
 
   // src/JasonWu/components/jc/MatrixIcon.tsx
-  var import_jsx_runtime92 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime94 = __toESM(require_jsx_runtime());
   var CELL_GRADIENT = {
     green: ["#55E698", "#1FA85D"],
     red: ["#FF6B6B", "#D92B35"],
@@ -57658,14 +58335,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [g0, g1] = CELL_GRADIENT[color];
     const W = cols * cell + (cols - 1) * gap;
     const H = rows3 * cell + (rows3 - 1) * gap;
-    return /* @__PURE__ */ (0, import_jsx_runtime92.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW[color]})` }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW[color]})` }, children: [
       Array.from({ length: rows3 * cols }, (_, i) => {
         const t = interpolate(frame, [enterAt + i * 1.4, enterAt + i * 1.4 + 12], [0, 1], {
           extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
           easing: Easing.out(Easing.cubic)
         });
-        return /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(
           "div",
           {
             style: {
@@ -57684,7 +58361,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           i
         );
       }),
-      icon ? /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
+      icon ? /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(
         "div",
         {
           style: {
@@ -57711,13 +58388,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
 
   // src/JasonWu/components/jc/NamePlate.tsx
   var import_react128 = __toESM(require_react());
-  var import_jsx_runtime93 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime95 = __toESM(require_jsx_runtime());
   var GOLD2 = "#C9A227";
   var NamePlate = ({ name, slug, avatarText, avatarSrc: avatarSrc2, avatarImgStyle, enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "up");
     const [imgFailed, setImgFailed] = import_react128.default.useState(false);
     const showImg = Boolean(avatarSrc2) && !imgFailed;
-    return /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)(
       "div",
       {
         style: {
@@ -57735,7 +58412,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
             "div",
             {
               style: {
@@ -57755,7 +58432,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 fontSize: 26,
                 color: GOLD2
               },
-              children: showImg ? /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+              children: showImg ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
                 Img,
                 {
                   src: avatarSrc2,
@@ -57775,9 +58452,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ) : avatarText
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime93.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.t3, color: COLOR.white, lineHeight: 1 }, children: name }),
-            /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.t3, color: COLOR.white, lineHeight: 1 }, children: name }),
+            /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
               "span",
               {
                 style: {
@@ -57799,12 +58476,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/PersonBadge.tsx
-  var import_jsx_runtime94 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime96 = __toESM(require_jsx_runtime());
   var PersonBadge = ({ avatarSrc: avatarSrc2, name, zhSub, accent = "blue", enterAt = 0 }) => {
     const frame = useCurrentFrame();
     const enter3 = useEnter(enterAt, "left");
     if (frame < enterAt) return null;
-    return /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
       "div",
       {
         style: {
@@ -57820,13 +58497,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(Img, { src: avatarSrc2, style: { width: 44, height: 44, borderRadius: 22, objectFit: "cover", display: "block" } }),
-          /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime94.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.08em", color: COLOR.white, lineHeight: 1.1 }, children: name.toUpperCase() }),
-              /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(BadgeCheck, { size: 20, color: COLOR[accent], strokeWidth: 2.4 })
+          /* @__PURE__ */ (0, import_jsx_runtime96.jsx)(Img, { src: avatarSrc2, style: { width: 44, height: 44, borderRadius: 22, objectFit: "cover", display: "block" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.08em", color: COLOR.white, lineHeight: 1.1 }, children: name.toUpperCase() }),
+              /* @__PURE__ */ (0, import_jsx_runtime96.jsx)(BadgeCheck, { size: 20, color: COLOR[accent], strokeWidth: 2.4 })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime94.jsx)("div", { style: { marginTop: 3, fontFamily: FONT.zh, fontWeight: 700, fontSize: 18, color: COLOR.grey, lineHeight: 1.1 }, children: zhSub })
+            /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { marginTop: 3, fontFamily: FONT.zh, fontWeight: 700, fontSize: 18, color: COLOR.grey, lineHeight: 1.1 }, children: zhSub })
           ] })
         ]
       }
@@ -57834,12 +58511,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/PersonCard.tsx
-  var import_jsx_runtime95 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime97 = __toESM(require_jsx_runtime());
   var PersonCard = ({ name, zhRole, avatarSrc: avatarSrc2, avatarText, avatarColor = "#3E6FB0", ringColor = COLOR.blue, orgChip, kickerNote, enterAt = 0 }) => {
+    var _a2;
     const enter3 = useEnter(enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 12px rgba(0,0,0,0.55)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: [
-        avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 12px rgba(0,0,0,0.55)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: [
+        avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
           Img,
           {
             src: avatarSrc2,
@@ -57852,7 +58530,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               flexShrink: 0
             }
           }
-        ) : /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
+        ) : /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
           "div",
           {
             style: {
@@ -57870,23 +58548,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
               color: "#fff",
               flexShrink: 0
             },
-            children: avatarText ?? name.slice(0, 1)
+            children: avatarText != null ? avatarText : name.slice(0, 1)
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: SIZE.card - 4, color: COLOR.white, letterSpacing: "0.02em" }, children: name.toUpperCase() }),
-          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: zhRole })
+        /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: SIZE.card - 4, color: COLOR.white, letterSpacing: "0.02em" }, children: name.toUpperCase() }),
+          /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: zhRole })
         ] })
       ] }),
-      orgChip || kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 16, marginTop: 14, marginLeft: (avatarSrc2 ? 110 : 84) + 18 }, children: [
-        orgChip ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(Chip, { segments: [{ t: orgChip.text }], accent: orgChip.color ?? "blue", outlined: true, enterAt: enterAt + 8 }) : null,
-        kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.22em", color: COLOR.greyDim }, children: kickerNote.toUpperCase() }) : null
+      orgChip || kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 16, marginTop: 14, marginLeft: (avatarSrc2 ? 110 : 84) + 18 }, children: [
+        orgChip ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(Chip, { segments: [{ t: orgChip.text }], accent: (_a2 = orgChip.color) != null ? _a2 : "blue", outlined: true, enterAt: enterAt + 8 }) : null,
+        kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.22em", color: COLOR.greyDim }, children: kickerNote.toUpperCase() }) : null
       ] }) : null
     ] });
   };
 
   // src/JasonWu/components/jc/PhoneMockup.tsx
-  var import_jsx_runtime96 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime98 = __toESM(require_jsx_runtime());
   var PhoneMockup = ({
     children,
     header: header2,
@@ -57907,7 +58585,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       extrapolateRight: "clamp",
       easing: Easing.inOut(Easing.cubic)
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)(
       "div",
       {
         style: {
@@ -57923,7 +58601,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           position: "relative"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime96.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
             "div",
             {
               style: {
@@ -57939,7 +58617,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)(
             "div",
             {
               style: {
@@ -57951,8 +58629,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 position: "relative"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { transform: `translateY(${y}px)` }, children }),
-                header2 ? /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }, children: header2 }) : null
+                /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("div", { style: { transform: `translateY(${y}px)` }, children }),
+                header2 ? /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("div", { style: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }, children: header2 }) : null
               ]
             }
           )
@@ -57962,7 +58640,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/QuoteDoc.tsx
-  var import_jsx_runtime97 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime99 = __toESM(require_jsx_runtime());
   var QuoteDoc = ({ title, blocks, zhNote, zhNoteYPct, zhNoteX = -18, source, width = 1100, enterAt = 0, highlightAt, noteAt }) => {
     const enter3 = useEnter(enterAt, "up");
     const frame = useCurrentFrame();
@@ -57976,8 +58654,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       extrapolateRight: "clamp",
       easing: Easing.out(Easing.cubic)
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { position: "relative", width, opacity: enter3.opacity, transform: enter3.transform }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)("div", { style: { position: "relative", width, opacity: enter3.opacity, transform: enter3.transform }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
         "div",
         {
           style: {
@@ -57987,7 +58665,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             boxShadow: "0 24px 80px rgba(0,0,0,0.6)"
           },
           children: [
-            title ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+            title ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
               "div",
               {
                 style: {
@@ -58001,8 +58679,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: title
               }
             ) : null,
-            /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16 }, children: blocks.map(
-              (b3, i) => b3.heading ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime99.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16 }, children: blocks.map(
+              (b3, i) => b3.heading ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
                 "div",
                 {
                   style: {
@@ -58017,8 +58695,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 i
               ) : b3.hl ? (
                 // 高亮段：黄底层 scaleX 扫过（origin 左），文字随扫过变深
-                /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { position: "relative", padding: "10px 12px" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)("div", { style: { position: "relative", padding: "10px 12px" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
                     "div",
                     {
                       style: {
@@ -58032,7 +58710,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       }
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
                     "div",
                     {
                       style: {
@@ -58047,7 +58725,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     }
                   )
                 ] }, i)
-              ) : /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+              ) : /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
                 "div",
                 {
                   style: {
@@ -58062,11 +58740,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 i
               )
             ) }),
-            source ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { marginTop: 24, fontFamily: FONT.en, fontWeight: 700, fontSize: 17, color: "#9AA0A8" }, children: source }) : null
+            source ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)("div", { style: { marginTop: 24, fontFamily: FONT.en, fontWeight: 700, fontSize: 17, color: "#9AA0A8" }, children: source }) : null
           ]
         }
       ),
-      zhNote && noteT > 0 ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+      zhNote && noteT > 0 ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
         "div",
         {
           style: {
@@ -58094,7 +58772,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/ScoreBoard.tsx
-  var import_jsx_runtime98 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime100 = __toESM(require_jsx_runtime());
   var ScoreRowView = ({ row, start: start2 }) => {
     const frame = useCurrentFrame();
     const enter3 = useEnter(start2, "up");
@@ -58105,9 +58783,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const l = Math.round(row.left * t);
     const r = Math.round(row.right * t);
-    return /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
           "span",
           {
             style: {
@@ -58120,9 +58798,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: row.enKicker.toUpperCase()
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: row.zhLabel })
+        /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: row.zhLabel })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
         "div",
         {
           style: {
@@ -58137,13 +58815,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
             textShadow: "0 2px 14px rgba(0,0,0,0.6)"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.green }, children: l }),
-            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.grey, fontSize: SIZE.h2 }, children: ":" }),
-            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.red }, children: r })
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("span", { style: { color: COLOR.green }, children: l }),
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("span", { style: { color: COLOR.grey, fontSize: SIZE.h2 }, children: ":" }),
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("span", { style: { color: COLOR.red }, children: r })
           ]
         }
       ),
-      row.note ? /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
+      row.note ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
         "div",
         {
           style: {
@@ -58159,11 +58837,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var ScoreBoard = ({ rows: rows3, enterAt = 0 }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 4 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(ScoreRowView, { row, start: enterAt + i * (MOTION.stagger * 2) }, i)) });
+    return /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 4 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(ScoreRowView, { row, start: enterAt + i * (MOTION.stagger * 2) }, i)) });
   };
 
   // src/JasonWu/components/jc/ShotCard.tsx
-  var import_jsx_runtime99 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime101 = __toESM(require_jsx_runtime());
   var ShotCard = ({
     src,
     children,
@@ -58180,16 +58858,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
     punch,
     enterAt = 0
   }) => {
+    var _a2, _b, _c, _d;
     const frame = useCurrentFrame();
     const enter3 = usePop(enterAt);
     const glowColor = glow === "none" ? void 0 : glow === "purple" ? "#B26BFF" : COLOR[glow];
-    const punchT = punch ? interpolate(frame, [punch.at, punch.at + (punch.durFrames ?? 15)], [0, 1], {
+    const punchT = punch ? interpolate(frame, [punch.at, punch.at + ((_a2 = punch.durFrames) != null ? _a2 : 15)], [0, 1], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
       easing: Easing.inOut(Easing.cubic)
     }) : 0;
-    const punchScale = 1 + punchT * ((punch?.scale ?? 1.6) - 1);
-    return /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
+    const punchScale = 1 + punchT * (((_b = punch == null ? void 0 : punch.scale) != null ? _b : 1.6) - 1);
+    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
       "div",
       {
         style: {
@@ -58199,35 +58878,36 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: `${enter3.transform} rotate(${rotate2}deg)`
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
             "div",
             {
               style: {
                 borderRadius: radius,
                 overflow: "hidden",
-                border: strokeWidth ? `${strokeWidth}px solid ${stroke ?? "rgba(255,255,255,0.9)"}` : void 0,
+                border: strokeWidth ? `${strokeWidth}px solid ${stroke != null ? stroke : "rgba(255,255,255,0.9)"}` : void 0,
                 boxShadow: glowColor ? `0 0 30px ${glowColor}66, 0 0 80px ${glowColor}33, 0 24px 70px rgba(0,0,0,0.6)` : "0 24px 70px rgba(0,0,0,0.6)",
                 lineHeight: 0,
                 background: "#fff"
               },
-              children: /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
+              children: /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
                 "div",
                 {
                   style: {
                     position: "relative",
                     transform: punch ? `scale(${punchScale})` : void 0,
-                    transformOrigin: punch ? `${punch.originX ?? "0%"} ${punch.originY ?? "0%"}` : void 0
+                    transformOrigin: punch ? `${(_c = punch.originX) != null ? _c : "0%"} ${(_d = punch.originY) != null ? _d : "0%"}` : void 0
                   },
                   children: [
-                    src ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(Img, { src, style: { width: "100%", display: "block" } }) : children,
-                    (highlights ?? []).map((h, i) => {
-                      const sweep = interpolate(frame, [h.at ?? 0, (h.at ?? 0) + 12], [0, 1], {
+                    src ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(Img, { src, style: { width: "100%", display: "block" } }) : children,
+                    (highlights != null ? highlights : []).map((h, i) => {
+                      var _a3, _b2;
+                      const sweep = interpolate(frame, [(_a3 = h.at) != null ? _a3 : 0, ((_b2 = h.at) != null ? _b2 : 0) + 12], [0, 1], {
                         extrapolateLeft: "clamp",
                         extrapolateRight: "clamp",
                         easing: Easing.out(Easing.cubic)
                       });
                       if (sweep <= 0) return null;
-                      return /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
                         "div",
                         {
                           style: {
@@ -58247,20 +58927,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         `hl${i}`
                       );
                     }),
-                    (zhBars ?? []).map((b3, i) => {
-                      const t = interpolate(frame, [b3.at ?? 0, (b3.at ?? 0) + MOTION.popInFrames], [0, 1], {
+                    (zhBars != null ? zhBars : []).map((b3, i) => {
+                      var _a3, _b2, _c2, _d2;
+                      const t = interpolate(frame, [(_a3 = b3.at) != null ? _a3 : 0, ((_b2 = b3.at) != null ? _b2 : 0) + MOTION.popInFrames], [0, 1], {
                         extrapolateLeft: "clamp",
                         extrapolateRight: "clamp",
                         easing: Easing.out(Easing.cubic)
                       });
                       if (t <= 0) return null;
-                      return /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
                         "div",
                         {
                           style: {
                             position: "absolute",
-                            left: `${b3.xPct ?? 2}%`,
-                            top: `${b3.yPct ?? 80}%`,
+                            left: `${(_c2 = b3.xPct) != null ? _c2 : 2}%`,
+                            top: `${(_d2 = b3.yPct) != null ? _d2 : 80}%`,
                             maxWidth: "86%",
                             background: "rgba(10,12,15,0.92)",
                             borderRadius: 8,
@@ -58279,7 +58960,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         `bar${i}`
                       );
                     }),
-                    highlight ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                    highlight ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
                       "div",
                       {
                         style: {
@@ -58300,7 +58981,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               )
             }
           ),
-          zhBar ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+          zhBar ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
             "div",
             {
               style: {
@@ -58328,11 +59009,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/SideLabel.tsx
-  var import_jsx_runtime100 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime102 = __toESM(require_jsx_runtime());
   var SideLabel = ({ color, en, zh, sub, icon, side = "left", enterAt = 0, variant = "label" }) => {
     const accent = COLOR[color];
     const enter3 = useEnter(enterAt, "left");
-    const kickerRow = /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
+    const kickerRow = /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
       "div",
       {
         style: {
@@ -58342,7 +59023,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           textShadow: "0 1px 8px rgba(0,0,0,0.55)"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
             "span",
             {
               style: {
@@ -58355,8 +59036,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: en.toUpperCase()
             }
           ),
-          variant === "label" ? /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(import_jsx_runtime100.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          variant === "label" ? /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(import_jsx_runtime102.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
               "span",
               {
                 style: {
@@ -58369,7 +59050,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: "\xB7"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
               "span",
               {
                 style: {
@@ -58386,7 +59067,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         ]
       }
     );
-    const subRow = sub ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+    const subRow = sub ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
       "div",
       {
         style: {
@@ -58400,7 +59081,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         children: sub
       }
     ) : null;
-    return /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
       "div",
       {
         "data-qc": "text",
@@ -58415,7 +59096,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           gap: 14
         },
         children: [
-          icon ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
             "span",
             {
               style: {
@@ -58427,7 +59108,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: icon
             }
           ) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
             "div",
             {
               style: {
@@ -58441,8 +59122,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          variant === "title" ? /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          variant === "title" ? /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
               "div",
               {
                 style: {
@@ -58463,9 +59144,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: zh
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("div", { style: { marginTop: 10 }, children: kickerRow }),
+            /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("div", { style: { marginTop: 10 }, children: kickerRow }),
             subRow
-          ] }) : /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { children: [
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)("div", { children: [
             kickerRow,
             subRow
           ] })
@@ -58475,7 +59156,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/SolventTank.tsx
-  var import_jsx_runtime101 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime103 = __toESM(require_jsx_runtime());
   var CUBE = 62;
   var CGAP = 14;
   var GLASS_L = 48;
@@ -58530,8 +59211,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       outline = COLOR.green;
       outlineW = rt * 3;
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(import_jsx_runtime101.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(import_jsx_runtime103.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
         "div",
         {
           style: {
@@ -58557,7 +59238,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         });
         if (bt <= 0 || bt >= 1) return null;
         const bs = 7 + b3 * 3;
-        return /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
           "div",
           {
             style: {
@@ -58587,7 +59268,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame();
     const t = interpolate(frame, [at, at + 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
     if (t <= 0) return null;
-    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(
       "div",
       {
         style: {
@@ -58604,9 +59285,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           opacity: t
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { width: 14, height: 14, borderRadius: 4, background: GRAD[color], flexShrink: 0 } }),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 900, fontSize: 24, color: COLOR[color], whiteSpace: "nowrap" }, children: zh }),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.16em", color: COLOR[color], opacity: 0.85 }, children: en })
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { width: 14, height: 14, borderRadius: 4, background: GRAD[color], flexShrink: 0 } }),
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 900, fontSize: 24, color: COLOR[color], whiteSpace: "nowrap" }, children: zh }),
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.16em", color: COLOR[color], opacity: 0.85 }, children: en })
         ]
       }
     );
@@ -58625,7 +59306,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const wave = Math.sin(frame / 9) * 3;
     const stream = interpolate(frame, [pourAt - 2, pourAt + 12], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(
       "div",
       {
         style: {
@@ -58637,7 +59318,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transformOrigin: "center 60%"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
             "div",
             {
               style: {
@@ -58652,7 +59333,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          stream > 0.02 ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          stream > 0.02 ? /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
             "div",
             {
               style: {
@@ -58667,7 +59348,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
             "div",
             {
               style: {
@@ -58685,8 +59366,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("div", { style: { position: "absolute", left: GLASS_L - 8, top: GLASS_TOP - 2, width: GLASS_W + 16, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.62)" } }),
-          [0.28, 0.46, 0.64, 0.82].map((p) => /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("div", { style: { position: "absolute", left: GLASS_L - 8, top: GLASS_TOP - 2, width: GLASS_W + 16, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.62)" } }),
+          [0.28, 0.46, 0.64, 0.82].map((p) => /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
             "div",
             {
               style: {
@@ -58700,16 +59381,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
             },
             p
           )),
-          Array.from({ length: N }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(Cube, { i, pourAt, dissolveAt, resistAt }, i)),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(CampTag, { zh: "\u80FD\u88AB\u6EB6\u89E3", en: "DISSOLVED", color: "red", at: dissolveAt + 6, row: 0 }),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(CampTag, { zh: "\u4E0D\u80FD\u88AB\u6EB6\u89E3", en: "RESISTANT", color: "green", at: resistAt + 6, row: 1 })
+          Array.from({ length: N }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(Cube, { i, pourAt, dissolveAt, resistAt }, i)),
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(CampTag, { zh: "\u80FD\u88AB\u6EB6\u89E3", en: "DISSOLVED", color: "red", at: dissolveAt + 6, row: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(CampTag, { zh: "\u4E0D\u80FD\u88AB\u6EB6\u89E3", en: "RESISTANT", color: "green", at: resistAt + 6, row: 1 })
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/Stamp.tsx
-  var import_jsx_runtime102 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime104 = __toESM(require_jsx_runtime());
   var plateBg = (color) => {
     const hex = GRADIENT[color][1].replace("#", "");
     const r = Math.round(parseInt(hex.slice(0, 2), 16) * 0.35);
@@ -58735,7 +59416,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const settle = frame - (enterAt + 10);
     const shake = settle > 0 && settle < 12 ? Math.sin(settle * 1.3) * Math.exp(-settle * 0.35) * 1.2 : 0;
     const accent = COLOR[color];
-    return /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
       "div",
       {
         style: {
@@ -58757,7 +59438,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           boxShadow: `0 0 14px ${accent}22, inset 0 0 12px ${accent}14`
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
             "div",
             {
               style: {
@@ -58767,12 +59448,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 letterSpacing: "0.18em"
               },
               children: [
-                icon ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("span", { style: { display: "inline-flex", alignItems: "center" }, children: icon }) : null,
-                /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("span", { children: text3 })
+                icon ? /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { display: "inline-flex", alignItems: "center" }, children: icon }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { children: text3 })
               ]
             }
           ),
-          enSub ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
+          enSub ? /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
             "div",
             {
               style: {
@@ -58792,9 +59473,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/StepList.tsx
-  var import_jsx_runtime103 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime105 = __toESM(require_jsx_runtime());
   var StepList = ({ steps, accent = "blue", enterAt = 0, staggerFrames = MOTION.stagger }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }, children: steps.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(StepView, { step: s, n: i + 1, accent, enterAt: enterAt + i * staggerFrames }, i)) });
+    return /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }, children: steps.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(StepView, { step: s, n: i + 1, accent, enterAt: enterAt + i * staggerFrames }, i)) });
   };
   var StepView = ({
     step,
@@ -58804,7 +59485,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }) => {
     const enter3 = useEnter(enterAt, "left");
     const c3 = COLOR[accent];
-    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)(
       "div",
       {
         style: {
@@ -58820,7 +59501,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
             "span",
             {
               style: {
@@ -58840,20 +59521,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: n
             }
           ),
-          step.icon ? /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center" }, children: step.icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 28, color: COLOR.white, whiteSpace: "nowrap" }, children: step.text })
+          step.icon ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center" }, children: step.icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 28, color: COLOR.white, whiteSpace: "nowrap" }, children: step.text })
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/TimelineCard.tsx
-  var import_jsx_runtime104 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime106 = __toESM(require_jsx_runtime());
   var TimelineCard = ({ title = "THE DEAL", subtitle = "\u7ED3\u5C40", nodes, enterAt, stagger = 10, width = 340 }) => {
     const frame = useCurrentFrame();
     const card = useEnter(enterAt, "up");
     const rows3 = nodes.slice(0, 4);
-    return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)(
       "div",
       {
         "data-qc": "box",
@@ -58871,8 +59552,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: card.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 10, marginBottom: 16 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 10, marginBottom: 16 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
               "span",
               {
                 style: {
@@ -58885,12 +59566,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: title
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.grey }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.grey }, children: [
               "\xB7 ",
               subtitle
             ] })
           ] }),
           rows3.map((n, i) => {
+            var _a2;
             const local = frame - (enterAt + 6 + i * stagger);
             const t = interpolate(local, [0, MOTION.popInFrames], [0, 1], {
               extrapolateLeft: "clamp",
@@ -58902,8 +59584,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
               extrapolateRight: "clamp"
             });
             const shift = (1 - t) * 24;
-            const c3 = COLOR[n.color ?? "red"];
-            return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
+            const c3 = COLOR[(_a2 = n.color) != null ? _a2 : "red"];
+            return /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)(
               "div",
               {
                 style: {
@@ -58917,7 +59599,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   transform: `translateY(${shift}px)`
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
                     "span",
                     {
                       style: {
@@ -58931,8 +59613,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       children: n.date
                     }
                   ),
-                  n.icon ? /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center", flexShrink: 0 }, children: n.icon }) : null,
-                  /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.white, whiteSpace: "nowrap" }, children: n.label })
+                  n.icon ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center", flexShrink: 0 }, children: n.icon }) : null,
+                  /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.white, whiteSpace: "nowrap" }, children: n.label })
                 ]
               },
               i
@@ -58944,7 +59626,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/TimelineEvents.tsx
-  var import_jsx_runtime105 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime107 = __toESM(require_jsx_runtime());
   var TimelineEvents = ({ events, width = 760, enterAt = 0 }) => {
     const frame = useCurrentFrame();
     const lineT = interpolate(frame, [enterAt, enterAt + 30], [0, 1], {
@@ -58952,9 +59634,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       extrapolateRight: "clamp",
       easing: Easing.out(Easing.cubic)
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "relative", width, height: 150 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width, height: 3, borderRadius: 2, background: "rgba(255,255,255,0.15)" } }),
-      /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width: width * lineT, height: 3, borderRadius: 2, background: COLOR.blue } }),
+    return /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "relative", width, height: 150 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width, height: 3, borderRadius: 2, background: "rgba(255,255,255,0.15)" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width: width * lineT, height: 3, borderRadius: 2, background: COLOR.blue } }),
       events.map((ev, i) => {
         const start2 = enterAt + 10 + i * (MOTION.stagger + 6);
         const t = interpolate(frame, [start2, start2 + MOTION.popInFrames], [0, 1], {
@@ -58963,8 +59645,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           easing: Easing.out(Easing.cubic)
         });
         const x = ev.xPct / 100 * width;
-        return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "absolute", left: x, top: 0, opacity: t, transform: `translateY(${(1 - t) * 14}px)` }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "absolute", left: x, top: 0, opacity: t, transform: `translateY(${(1 - t) * 14}px)` }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
             "div",
             {
               style: {
@@ -58979,11 +59661,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "absolute", top: -8, left: -6, whiteSpace: "nowrap" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.chip, color: COLOR.white }, children: ev.title }),
-            ev.sub ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { marginLeft: 10, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: ev.sub }) : null
+          /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "absolute", top: -8, left: -6, whiteSpace: "nowrap" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.chip, color: COLOR.white }, children: ev.title }),
+            ev.sub ? /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("span", { style: { marginLeft: 10, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: ev.sub }) : null
           ] }),
-          ev.chip ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
+          ev.chip ? /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
             "div",
             {
               style: {
@@ -59009,7 +59691,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/TweetCard.tsx
-  var import_jsx_runtime106 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime108 = __toESM(require_jsx_runtime());
   var TweetCard = ({
     name,
     zhIdentity,
@@ -59028,13 +59710,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
     kickerAt,
     mainAt
   }) => {
-    const idEnter = useEnter(identityAt ?? enterAt, "left");
-    const kickerEnter = useEnter(kickerAt ?? enterAt, "left");
-    const mainEnter = useEnter(mainAt ?? enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, opacity: idEnter.opacity, transform: idEnter.transform }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { position: "relative", flexShrink: 0 }, children: [
-          avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(Img, { src: avatarSrc2, style: { width: 116, height: 116, borderRadius: 58, objectFit: "cover", display: "block" } }) : /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+    const idEnter = useEnter(identityAt != null ? identityAt : enterAt, "left");
+    const kickerEnter = useEnter(kickerAt != null ? kickerAt : enterAt, "left");
+    const mainEnter = useEnter(mainAt != null ? mainAt : enterAt, "left");
+    return /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, opacity: idEnter.opacity, transform: idEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { position: "relative", flexShrink: 0 }, children: [
+          avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(Img, { src: avatarSrc2, style: { width: 116, height: 116, borderRadius: 58, objectFit: "cover", display: "block" } }) : /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
             "div",
             {
               style: {
@@ -59051,10 +59733,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 fontSize: 44,
                 color: "#fff"
               },
-              children: avatarText ?? name.slice(0, 1)
+              children: avatarText != null ? avatarText : name.slice(0, 1)
             }
           ),
-          badgeSrc ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+          badgeSrc ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
             Img,
             {
               src: badgeSrc,
@@ -59070,13 +59752,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
             }
           ) : null
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 36, color: COLOR.white, letterSpacing: "0.03em" }, children: name.toUpperCase() }),
-          /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall + 2, color: COLOR.grey }, children: zhIdentity })
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 36, color: COLOR.white, letterSpacing: "0.03em" }, children: name.toUpperCase() }),
+          /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall + 2, color: COLOR.grey }, children: zhIdentity })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { opacity: kickerEnter.opacity, transform: kickerEnter.transform }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { opacity: kickerEnter.opacity, transform: kickerEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
           "div",
           {
             style: {
@@ -59090,10 +59772,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: "\u201C"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { marginTop: 26, fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 42, color: COLOR.white, letterSpacing: "0.01em", whiteSpace: "nowrap" }, children: headlineTop.toUpperCase() })
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { marginTop: 26, fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 42, color: COLOR.white, letterSpacing: "0.01em", whiteSpace: "nowrap" }, children: headlineTop.toUpperCase() })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { opacity: mainEnter.opacity, transform: mainEnter.transform }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { opacity: mainEnter.opacity, transform: mainEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
           "div",
           {
             style: {
@@ -59110,17 +59792,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: headlineMain.toUpperCase()
           }
         ),
-        zhSub || headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 18, marginTop: 12 }, children: [
-          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white, whiteSpace: "nowrap" }, children: zhSub }) : null,
-          headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.24em", color: COLOR.grey, whiteSpace: "nowrap" }, children: headlineSub.toUpperCase() }) : null
+        zhSub || headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 18, marginTop: 12 }, children: [
+          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white, whiteSpace: "nowrap" }, children: zhSub }) : null,
+          headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.24em", color: COLOR.grey, whiteSpace: "nowrap" }, children: headlineSub.toUpperCase() }) : null
         ] }) : null
       ] }),
-      chips.length ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { display: "flex", gap: 12, marginTop: 24 }, children: chips.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(Chip, { segments: [{ t: c3.text }], accent: c3.color ?? "blue", enterAt: enterAt + 10 + i * 8 }, i)) }) : null
+      chips.length ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { display: "flex", gap: 12, marginTop: 24 }, children: chips.map((c3, i) => {
+        var _a2;
+        return /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(Chip, { segments: [{ t: c3.text }], accent: (_a2 = c3.color) != null ? _a2 : "blue", enterAt: enterAt + 10 + i * 8 }, i);
+      }) }) : null
     ] });
   };
 
   // src/JasonWu/components/jc/UnitMatrix.tsx
-  var import_jsx_runtime107 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime109 = __toESM(require_jsx_runtime());
   var GLOW2 = {
     green: "rgba(61,220,132,0.4)",
     red: "rgba(255,77,77,0.4)",
@@ -59135,20 +59820,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
     return 1;
   };
   var MatrixGroup = ({ rows: rows3, cols, color, cell, gap, fillRatio, enterAt, stages }) => {
+    var _a2, _b;
     const frame = useCurrentFrame();
     const [g0, g1] = GRADIENT[color];
     const [gg0, gg1] = GRADIENT.green;
     const total = rows3 * cols;
     const stride = pickStride(total);
     const litCount = fillRatio == null ? total : Math.round(Math.max(0, Math.min(1, fillRatio)) * total);
-    const greenCount = stages?.greenCount ?? 0;
-    const fillFrames = stages?.fillFrames ?? 45;
+    const greenCount = (_a2 = stages == null ? void 0 : stages.greenCount) != null ? _a2 : 0;
+    const fillFrames = (_b = stages == null ? void 0 : stages.fillFrames) != null ? _b : 45;
     const stagger = stages ? Math.max(0.15, fillFrames / Math.max(1, litCount)) : Math.min(1.4, 110 / Math.max(1, litCount));
     const baseAt = stages ? stages.placeholderAt : enterAt;
     const fillAt = stages ? stages.fillAt : enterAt;
     const W = cols * cell + (cols - 1) * gap;
     const H = rows3 * cell + (rows3 - 1) * gap;
-    return /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW2[color]})` }, children: Array.from({ length: total }, (_, i) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime109.jsx)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW2[color]})` }, children: Array.from({ length: total }, (_, i) => {
       const rank = i * stride % total;
       const isRed = rank < litCount;
       const isGreen = stages != null && !isRed && rank < litCount + greenCount;
@@ -59170,7 +59856,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           easing: Easing.out(Easing.cubic)
         });
         grad = [g0, g1];
-      } else if (isGreen && stages?.greenAt != null) {
+      } else if (isGreen && (stages == null ? void 0 : stages.greenAt) != null) {
         const gRank = rank - litCount;
         t = interpolate(frame, [stages.greenAt + gRank * 1.2, stages.greenAt + gRank * 1.2 + 8], [0, 1], {
           extrapolateLeft: "clamp",
@@ -59179,8 +59865,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         });
         grad = [gg0, gg1];
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "absolute", left, top, width: cell, height: cell }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+      return /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)("div", { style: { position: "absolute", left, top, width: cell, height: cell }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(
           "div",
           {
             style: {
@@ -59192,7 +59878,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             }
           }
         ),
-        grad && t > 0 ? /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+        grad && t > 0 ? /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(
           "div",
           {
             style: {
@@ -59210,7 +59896,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }) });
   };
   var UnitMatrix = ({ groups = 3, rows: rows3 = 5, cols = 8, color = "red", cell = 30, gap = 6, fillRatio, enterAt, stages }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { display: "flex", gap: GRID2 * 3, alignItems: "flex-start" }, children: Array.from({ length: groups }, (_, g) => /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime109.jsx)("div", { style: { display: "flex", gap: GRID2 * 3, alignItems: "flex-start" }, children: Array.from({ length: groups }, (_, g) => /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(
       MatrixGroup,
       {
         rows: rows3,
@@ -59227,7 +59913,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/VerdictBox.tsx
-  var import_jsx_runtime108 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime110 = __toESM(require_jsx_runtime());
   var ChipTile = ({
     icon,
     label: label3,
@@ -59235,8 +59921,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     accent
   }) => {
     const enter3 = useEnter(revealAt, "up");
-    return /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8, width: 76 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8, width: 76 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
         "div",
         {
           style: {
@@ -59255,7 +59941,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: icon
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
         "div",
         {
           style: {
@@ -59289,7 +59975,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }) => {
     const accent = COLOR[color];
     const pop = usePop(boxEnterAt);
-    return /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
       "div",
       {
         style: {
@@ -59297,11 +59983,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
           top,
           ...side === "left" ? { left: offsetX } : { right: offsetX }
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(Breathe, { phase, children: /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(Breathe, { phase, children: /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
           "div",
           {
             "data-qc": "box",
-            "data-qc-id": qcId ?? `verdict-${color}`,
+            "data-qc-id": qcId != null ? qcId : `verdict-${color}`,
             style: {
               position: "relative",
               width,
@@ -59319,10 +60005,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
               transform: pop.transform
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { display: "inline-flex", alignItems: "center", color: accent }, children: headerIcon }),
-                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: accent, whiteSpace: "nowrap" }, children: headerZh }),
-                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { display: "inline-flex", alignItems: "center", color: accent }, children: headerIcon }),
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: accent, whiteSpace: "nowrap" }, children: headerZh }),
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
                   "span",
                   {
                     style: {
@@ -59341,7 +60027,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   }
                 )
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { display: "flex", gap: 14, justifyContent: "center" }, children: chips.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(ChipTile, { icon: c3.icon, label: c3.label, revealAt: c3.revealAt, accent }, i)) })
+              /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { display: "flex", gap: 14, justifyContent: "center" }, children: chips.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(ChipTile, { icon: c3.icon, label: c3.label, revealAt: c3.revealAt, accent }, i)) })
             ]
           }
         ) })
@@ -59350,7 +60036,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/ViewsBadge.tsx
-  var import_jsx_runtime109 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime111 = __toESM(require_jsx_runtime());
   var ViewsBadge = ({ from = 0, to, unit = "M+", label: label3 = "VIEWS", enterAt = 0, countFrames = 20 }) => {
     const frame = useCurrentFrame();
     const enter3 = useEnter(enterAt, "left");
@@ -59362,7 +60048,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         easing: Easing.out(Easing.cubic)
       })
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(
       "div",
       {
         style: {
@@ -59378,23 +60064,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(Eye, { size: 28, color: COLOR.yellow, strokeWidth: 2.4 }),
-          /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 36, color: COLOR.yellow, lineHeight: 1, fontVariantNumeric: "tabular-nums" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Eye, { size: 28, color: COLOR.yellow, strokeWidth: 2.4 }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 36, color: COLOR.yellow, lineHeight: 1, fontVariantNumeric: "tabular-nums" }, children: [
             n,
             unit
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime109.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 700, fontSize: 20, letterSpacing: "0.22em", color: COLOR.grey, lineHeight: 1 }, children: label3 })
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 700, fontSize: 20, letterSpacing: "0.22em", color: COLOR.grey, lineHeight: 1 }, children: label3 })
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/WindowCard.tsx
-  var import_jsx_runtime110 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime112 = __toESM(require_jsx_runtime());
   var WindowCard = ({ title, icon, chip, width, height, children, enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "up");
     const chipColor = chip ? chip.color === "purple" ? "#B26BFF" : COLOR[chip.color] : void 0;
-    return /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime112.jsxs)(
       "div",
       {
         style: {
@@ -59411,7 +60097,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime112.jsxs)(
             "div",
             {
               style: {
@@ -59423,10 +60109,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 flexShrink: 0
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { display: "flex", gap: 7 }, children: ["#FF5F57", "#FEBC2E", "#28C840"].map((c3) => /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { width: 13, height: 13, borderRadius: 7, background: c3 } }, c3)) }),
-                icon ? /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { display: "inline-flex", alignItems: "center", marginLeft: 6 }, children: icon }) : null,
-                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 24, color: COLOR.white }, children: title }),
-                chip ? /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("div", { style: { display: "flex", gap: 7 }, children: ["#FF5F57", "#FEBC2E", "#28C840"].map((c3) => /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("div", { style: { width: 13, height: 13, borderRadius: 7, background: c3 } }, c3)) }),
+                icon ? /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("span", { style: { display: "inline-flex", alignItems: "center", marginLeft: 6 }, children: icon }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 24, color: COLOR.white }, children: title }),
+                chip ? /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(
                   "span",
                   {
                     style: {
@@ -59445,35 +60131,41 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { flex: 1, padding: 18, overflow: "hidden", position: "relative" }, children })
+          /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("div", { style: { flex: 1, padding: 18, overflow: "hidden", position: "relative" }, children })
         ]
       }
     );
   };
 
   // src/JasonWu/JcNativeRecipes.tsx
-  var import_jsx_runtime111 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime113 = __toESM(require_jsx_runtime());
   var validColors = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
   var avatarSrc = "data:image/svg+xml,%3Csvg%20xmlns=%27http%3A%2F%2Fwww.w3.org%2F2000%200%20160%20160%27%3E%3Crect%20width%3D%27160%27%20height%3D%27160%27%20fill%3D%27%23131a2a%27%2F%3E%3Ccircle%20cx%3D%2780%27%20cy%3D%2762%27%20r%3D%2732%27%20fill%3D%27%234d9eff%27%2F%3E%3Crect%20x%3D%2734%27%20y%3D%27104%27%20width%3D%2792%27%20height%3D%2736%27%20rx%3D%2718%27%20fill%3D%27%233ddc84%27%2F%3E%3C%2Fsvg%3E";
   var asText = (value, fallback = "") => typeof value === "string" && value.trim() ? value.trim() : fallback;
   var asNumber = (value, fallback = 72) => Number.isFinite(Number(value)) ? Number(value) : fallback;
   var stringList = (value) => Array.isArray(value) ? value.map((item2) => asText(item2)).filter(Boolean) : [];
   var recipeContent = (source) => {
+    var _a2, _b;
     const normalized = normalizeComponentContent(source);
     const renderer = toRendererContentProps(source);
     const payload = normalized.contentPayload;
     const lines = payload.type === "chips" ? payload.items.map((item2) => item2.title).filter(Boolean) : payload.type === "steps" ? payload.steps.map((item2) => item2.text).filter(Boolean) : stringList(renderer.items).length ? stringList(renderer.items) : stringList(renderer.steps).length ? stringList(renderer.steps) : [normalized.headline];
     const body = payload.type === "narrative" ? payload.bodyText : payload.type === "metrics" ? asText(payload.detailText, asText(renderer.body, normalized.headline)) : asText(renderer.body, normalized.headline);
-    const metric = payload.type === "metrics" ? { label: payload.label, value: asNumber(payload.value), unit: payload.unit ?? "", detail: payload.detailText ?? "" } : { label: asText(renderer.label, normalized.headline), value: asNumber(renderer.value), unit: asText(renderer.unit), detail: body };
-    return { category: normalized.category, headline: normalized.headline, body, lines: lines.length ? lines : [normalized.headline], metric };
+    const subtext = payload.type === "narrative" ? asText(payload.highlightQuote, asText(renderer.highlightQuote)) : asText(renderer.highlightQuote);
+    const metric = payload.type === "metrics" ? { label: payload.label, value: asNumber(payload.value), unit: (_a2 = payload.unit) != null ? _a2 : "", detail: (_b = payload.detailText) != null ? _b : "" } : { label: asText(renderer.label, normalized.headline), value: asNumber(renderer.value), unit: asText(renderer.unit), detail: body };
+    return { category: normalized.category, headline: normalized.headline, body, subtext, lines: lines.length ? lines : [normalized.headline], metric };
   };
   var sourceAccent = (source, nativeColor) => {
+    var _a2;
     if (source.__jcUseLayerAccent !== true) return nativeColor;
-    const requested = String(source.accent ?? "");
+    const requested = String((_a2 = source.accent) != null ? _a2 : "");
     return validColors.has(requested) ? requested : nativeColor;
   };
-  var lineAt = (content2, index) => content2.lines[index] ?? content2.lines[content2.lines.length - 1] ?? content2.headline;
-  var JcNativeStageBackdrop = ({ children, scrim = true }) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(
+  var lineAt = (content2, index) => {
+    var _a2, _b;
+    return (_b = (_a2 = content2.lines[index]) != null ? _a2 : content2.lines[content2.lines.length - 1]) != null ? _b : content2.headline;
+  };
+  var JcNativeStageBackdrop = ({ children, scrim = true }) => /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(
     AbsoluteFill,
     {
       style: {
@@ -59481,8 +60173,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         overflow: "hidden"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(JcFontGate, {}),
-        scrim ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoScrim, { strength: 0.62, side: "left" }) : null,
+        /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(JcFontGate, {}),
+        scrim ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(InfoScrim, { strength: 0.62, side: "left" }) : null,
         children
       ]
     }
@@ -59496,112 +60188,117 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const color = (nativeColor) => sourceAccent(source, nativeColor);
     switch (exportName) {
       case "BadgeCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 610, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BadgeCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Crown, { size: 64 }), zhTitle: headline, zhResult: body, enKicker: content2.category, accent: color("yellow"), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 610, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BadgeCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Crown, { size: 64 }), zhTitle: headline, zhResult: body, enKicker: content2.category, accent: color("yellow"), enterAt: 0 }) });
       case "BarChart":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 430, top: 285 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BarChart2, { width: 760, accent: color("yellow"), items: lines.slice(0, 4).map((label3, index) => ({ label: label3, value: Math.max(12, metric.value - index * 14), display: String(Math.max(12, metric.value - index * 14)), highlight: index === 0 })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 430, top: 285 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BarChart2, { width: 760, accent: color("yellow"), items: lines.slice(0, 4).map((label3, index) => ({ label: label3, value: Math.max(12, metric.value - index * 14), display: String(Math.max(12, metric.value - index * 14)), highlight: index === 0 })) }) });
       case "BigNumber":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 500, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BigNumber, { value: metric.value, suffix: metric.unit || "%", color: color("green"), enKicker: metric.label || content2.category, zhSub: metric.detail || body, size: "mega", enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 500, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BigNumber, { value: metric.value, suffix: metric.unit || "%", color: color("green"), enKicker: metric.label || content2.category, zhSub: metric.detail || body, size: "mega", enterAt: 0 }) });
       case "BilingualSub":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: "CAPTION", segments: [{ t: headline, color: color("blue") }], top: 250, enterAt: 0 }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BilingualSub, { zh: body, en: content2.category })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_jsx_runtime113.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(HeroText, { kicker: "CAPTION", segments: [{ t: headline, color: color("blue") }], top: 250, enterAt: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BilingualSub, { zh: body, en: content2.category })
         ] });
       case "Breathe":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 690, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Breathe, { amp: 2, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { width: 360, height: 360, borderRadius: 180, border: `6px solid ${COLOR.green}`, color: COLOR.green, boxShadow: `0 0 90px ${COLOR.green}66`, display: "flex", alignItems: "center", justifyContent: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ShieldCheck, { size: 150 }) }) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 690, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Breathe, { amp: 2, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { width: 360, height: 360, borderRadius: 180, border: `6px solid ${COLOR.green}`, color: COLOR.green, boxShadow: `0 0 90px ${COLOR.green}66`, display: "flex", alignItems: "center", justifyContent: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(ShieldCheck, { size: 150 }) }) }) });
       case "BrickWall":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 470, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BrickWall, { label: headline, enLabel: content2.category, rows: 3, width: 880, enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 470, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BrickWall, { label: headline, enLabel: content2.category, rows: 3, width: 880, enterAt: 0 }) });
       case "CardWall":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 250, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CardWall, { cols: 3, cardWidth: 360, gap: 22, items: lines.slice(0, 6).map((text3, index) => ({ name: String.fromCharCode(65 + index), text: text3 })), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 250, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CardWall, { cols: 3, cardWidth: 360, gap: 22, items: lines.slice(0, 6).map((text3, index) => ({ name: String.fromCharCode(65 + index), text: text3 })), enterAt: 0 }) });
       case "Checklist":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Checklist, { accent: color("green"), top: 250, items: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Eye, { size: 34 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 34 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 34 }), segments: [{ t: text3 }], enterAt: index * 10 })) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Checklist, { accent: color("green"), top: 250, items: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Eye, { size: 34 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flame, { size: 34 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 34 }), segments: [{ t: text3 }], enterAt: index * 10 })) });
       case "Chip":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 520, top: 420, display: "flex", gap: 28 }, children: lines.slice(0, 3).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Chip, { icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Sparkles, { size: 32 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 32 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 32 }), accent: color(index === 0 ? "blue" : index === 1 ? "red" : "green"), outlined: index === 1, segments: [{ t: text3 }], enterAt: index * 10 }, `${text3}-${index}`)) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 520, top: 420, display: "flex", gap: 28 }, children: lines.slice(0, 3).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Chip, { icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Sparkles, { size: 32 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flame, { size: 32 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 32 }), accent: color(index === 0 ? "blue" : index === 1 ? "red" : "green"), outlined: index === 1, segments: [{ t: text3 }], enterAt: index * 10 }, `${text3}-${index}`)) });
       case "CloneCascade":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 260, top: 405 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CloneCascade, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Star, { size: 46 }), label: headline, cloneCount: 4, warnText: body, enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 260, top: 405 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CloneCascade, { icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Star, { size: 46 }), label: content2.subtext || headline, cloneCount: 4, warnText: body, accent: color("red"), enterAt: 0 }) });
       case "CompareCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 390, top: 240 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CompareCard, { width: 900, items: lines.slice(0, 3).map((name, index) => ({ logo: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Bot, { size: 38 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WandSparkles, { size: 38 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CodeXml, { size: 38 }), name, weak: index === 0 ? lineAt(content2, 1) : body, strong: index === 0 ? body : lineAt(content2, index - 1), strongColor: color(index === 0 ? "green" : index === 1 ? "blue" : "yellow") })) }) });
-      case "CurveOverlay":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { position: "absolute", left: 260, top: 250 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CurveOverlay, { width: 1120, height: 520, color: color("yellow"), strokeWidth: 10, enterAt: 0 }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { color: COLOR.yellow, fontSize: 44, fontWeight: 900, marginTop: -70 }, children: metric.label || headline })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 390, top: 240 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CompareCard, { width: 900, items: lines.slice(0, 3).map((name, index) => ({ logo: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Bot, { size: 38 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(WandSparkles, { size: 38 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CodeXml, { size: 38 }), name, weak: index === 0 ? lineAt(content2, 1) : body, strong: index === 0 ? body : lineAt(content2, index - 1), strongColor: color(index === 0 ? "green" : index === 1 ? "blue" : "yellow") })) }) });
+      case "CurveOverlay": {
+        const curveColor = color("blue");
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { style: { position: "absolute", left: 260, top: 250 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CurveOverlay, { width: 1120, height: 520, color: curveColor, strokeWidth: 10, enterAt: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { color: COLOR[curveColor], fontSize: 44, fontWeight: 900, marginTop: -98 }, children: metric.label || headline })
         ] });
+      }
       case "DMCardStack":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 420, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(DMCardStack, { cards: lines.slice(0, 3).map((text3, index) => ({ chip: { text: index === 0 ? content2.category : index === 1 ? "SIGNAL" : "RESULT", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") }, text: text3, width: 640 - index * 40 })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 420, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(DMCardStack, { cards: lines.slice(0, 3).map((text3, index) => ({ chip: { text: index === 0 ? content2.category : index === 1 ? "SIGNAL" : "RESULT", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") }, text: text3, width: 640 - index * 40 })) }) });
       case "FlowChain":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 260, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FlowChain, { nodeWidth: 230, nodes: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Bot, { size: 46 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(GitBranch, { size: 46 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Package, { size: 46 }), lines: [text3], accent: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 260, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(FlowChain, { nodeWidth: 230, nodes: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Bot, { size: 46 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(GitBranch, { size: 46 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Package, { size: 46 }), lines: [text3], accent: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") })) }) });
       case "Flywheel":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 680, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flywheel, { size: 430, color: color("green"), icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Zap, { size: 88 }) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 680, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flywheel, { size: 430, color: color("green"), icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Zap, { size: 88 }) }) });
       case "HeroText":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: [{ t: content2.category.toLowerCase(), color: color("blue") }, { t: " system" }], segments: [{ t: headline, color: color("yellow") }], zhSub: body, echo: "motion card hero", top: 270, enterAt: 8 });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(HeroText, { kicker: [{ t: content2.category.toLowerCase(), color: color("blue") }, { t: " system" }], segments: [{ t: headline, color: color("yellow") }], zhSub: body, echo: "motion card hero", top: 270, enterAt: 8 });
       case "InfoCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 520, top: 380 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Lightbulb, { size: 56 }), en: content2.category, zh: body, accent: color("yellow"), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 520, top: 380 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(InfoCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Lightbulb, { size: 56 }), en: content2.category, zh: body, accent: color("yellow"), enterAt: 0 }) });
       case "InfoScrim":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoScrim, { strength: 0.9, side: "right" }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: "SCRIM", segments: [{ t: headline, color: color("blue") }], top: 330, enterAt: 0 })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_jsx_runtime113.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(InfoScrim, { strength: 0.9, side: "right" }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(HeroText, { kicker: "SCRIM", segments: [{ t: headline, color: color("blue") }], top: 330, enterAt: 0 })
         ] });
       case "LoopDiagram":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 620, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(LoopDiagram, { size: 500, color: color("blue"), labels: lines.slice(0, 4) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 620, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(LoopDiagram, { size: 500, color: color("blue"), labels: lines.slice(0, 4) }) });
       case "MatrixIcon":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 670, top: 260 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(MatrixIcon, { color: color("yellow"), rows: 5, cols: 5, cell: 58, gap: 12, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Scale, { size: 92 }) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 670, top: 260 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(MatrixIcon, { color: color("yellow"), rows: 5, cols: 5, cell: 58, gap: 12, icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Scale, { size: 92 }) }) });
       case "NamePlate":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(NamePlate, { name: headline, slug: content2.category, avatarText: headline.charAt(0) || "J", enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(NamePlate, { name: headline, slug: content2.category, avatarText: headline.charAt(0) || "J", enterAt: 0 }) });
       case "PersonBadge":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PersonBadge, { avatarSrc, name: headline, zhSub: body, accent: color("blue"), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(PersonBadge, { avatarSrc, name: headline, zhSub: body, accent: color("blue"), enterAt: 0 }) });
       case "PersonCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 360, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PersonCard, { name: headline, zhRole: body, avatarText: headline.charAt(0) || "J", orgChip: { text: content2.category, color: color("green") }, kickerNote: "SANDBOXED", enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 360, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(PersonCard, { name: headline, zhRole: body, avatarText: headline.charAt(0) || "J", orgChip: { text: content2.category, color: color("green") }, kickerNote: "SANDBOXED", enterAt: 0 }) });
       case "PhoneMockup":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 720, top: 95 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PhoneMockup, { width: 340, glow: "purple", scrollTo: -170, scrollStart: 20, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { minHeight: 930, padding: "78px 30px 30px", background: "#f3f4f6", color: "#111827", fontSize: 28, lineHeight: 1.55 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("b", { children: headline }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {}),
-          lines.slice(0, 4).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_react129.default.Fragment, { children: [
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 720, top: 95 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(PhoneMockup, { width: 340, glow: "purple", scrollTo: -170, scrollStart: 20, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { style: { minHeight: 930, padding: "78px 30px 30px", background: "#f3f4f6", color: "#111827", fontSize: 28, lineHeight: 1.55 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("b", { children: headline }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("br", {}),
+          lines.slice(0, 4).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_react129.default.Fragment, { children: [
             index + 1,
             ". ",
             text3,
-            /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {})
+            /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("br", {})
           ] }, `${text3}-${index}`)),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("br", {}),
           body
         ] }) }) });
       case "QuoteDoc":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 360, top: 190 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(QuoteDoc, { width: 960, source: content2.category, title: headline, zhNote: body, zhNoteYPct: 60, blocks: lines.slice(0, 3).map((text3, index) => ({ t: text3, heading: index === 0, hl: index === 2 })), highlightAt: 18, noteAt: 28 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 360, top: 190 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(QuoteDoc, { width: 960, source: content2.category, title: headline, zhNote: body, zhNoteYPct: 60, blocks: lines.slice(0, 3).map((text3, index) => ({ t: text3, heading: index === 0, hl: index === 2 })), highlightAt: 18, noteAt: 28 }) });
       case "ScoreBoard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 500, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ScoreBoard, { rows: lines.slice(0, 3).map((text3, index) => ({ enKicker: content2.category, zhLabel: text3, left: Math.max(4, metric.value - index * 8), right: Math.max(1, metric.value - 13 - index * 8), note: index === 0 ? body : void 0 })), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 500, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(ScoreBoard, { rows: lines.slice(0, 3).map((text3, index) => ({ enKicker: content2.category, zhLabel: text3, left: Math.max(4, metric.value - index * 8), right: Math.max(1, metric.value - 13 - index * 8), note: index === 0 ? body : void 0 })), enterAt: 0 }) });
       case "ShotCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 400, top: 230 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ShotCard, { width: 920, radius: 26, glow: "purple", highlight: { xPct: 12, yPct: 33, wPct: 62, hPct: 18 }, zhBar: { text: body }, enterAt: 0, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { background: "#fff", padding: 52, color: "#111827", minHeight: 430, lineHeight: 1.45 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { fontSize: 48, fontWeight: 900 }, children: headline }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { marginTop: 32, fontSize: 30 }, children: body }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { marginTop: 28, fontSize: 30, color: "#475467" }, children: lineAt(content2, 0) })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 400, top: 230 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(ShotCard, { width: 920, radius: 26, glow: "purple", highlight: { xPct: 12, yPct: 33, wPct: 62, hPct: 18 }, zhBar: { text: body }, enterAt: 0, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { style: { background: "#fff", padding: 52, color: "#111827", minHeight: 430, lineHeight: 1.45 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { fontSize: 48, fontWeight: 900 }, children: headline }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { marginTop: 32, fontSize: 30 }, children: body }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { marginTop: 28, fontSize: 30, color: "#475467" }, children: lineAt(content2, 0) })
         ] }) }) });
       case "SideLabel":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SideLabel, { color: color("blue"), en: content2.category, zh: headline, sub: body, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Sparkles, { size: 28 }), variant: "title" });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(SideLabel, { color: color("blue"), en: content2.category, zh: headline, sub: body, icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Sparkles, { size: 28 }), variant: "title" });
       case "SolventTank":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 610, top: 160 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SolventTank, { enterAt: 0, pourAt: 12, dissolveAt: 45, resistAt: 75 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 610, top: 160 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(SolventTank, { enterAt: 0, pourAt: 12, dissolveAt: 45, resistAt: 75 }) });
       case "Stamp":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 650, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Stamp, { text: headline, color: color("green"), fontSize: 110, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 92 }), enSub: content2.category, enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 650, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Stamp, { text: headline, color: color("green"), fontSize: 110, icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 92 }), enSub: content2.category, enterAt: 0 }) });
       case "StepList":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 430, top: 270 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(StepList, { accent: color("blue"), steps: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FileText, { size: 30 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 30 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WandSparkles, { size: 30 }), text: text3 })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 430, top: 270 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(StepList, { accent: color("blue"), steps: lines.slice(0, 3).map((text3, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(FileText, { size: 30 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flame, { size: 30 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(WandSparkles, { size: 30 }), text: text3 })) }) });
       case "TimelineCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 630, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TimelineCard, { width: 520, title: content2.category, subtitle: headline, enterAt: 0, nodes: lines.slice(0, 3).map((label3, index) => ({ date: index < 9 ? "0" + String(index + 1) : String(index + 1), label: label3, color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green"), icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FileText, { size: 20 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Play, { size: 20 }) })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 630, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(TimelineCard, { width: 520, title: content2.category, subtitle: headline, enterAt: 0, nodes: lines.slice(0, 3).map((label3, index) => ({ date: index < 9 ? "0" + String(index + 1) : String(index + 1), label: label3, color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green"), icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(FileText, { size: 20 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flame, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Play, { size: 20 }) })) }) });
       case "TimelineEvents":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 300, top: 430 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TimelineEvents, { width: 1080, events: lines.slice(0, 3).map((title, index) => ({ xPct: [5, 47, 86][index] ?? 86, title, sub: index === 0 ? body : "", chip: { text: index === 0 ? "OPEN" : index === 1 ? "PAYOFF" : "DONE", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") } })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 300, top: 430 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(TimelineEvents, { width: 1080, events: lines.slice(0, 3).map((title, index) => {
+          var _a2;
+          return { xPct: (_a2 = [5, 47, 86][index]) != null ? _a2 : 86, title, sub: index === 0 ? body : "", chip: { text: index === 0 ? "OPEN" : index === 1 ? "PAYOFF" : "DONE", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") } };
+        }) }) });
       case "TweetCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 320, top: 210 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TweetCard, { name: content2.category, zhIdentity: body, avatarText: content2.category.charAt(0) || "J", headlineTop: content2.category, headlineMain: headline, headlineColor: color("red"), zhSub: body, headlineSub: "BY MOTION CARDS", chips: lines.slice(0, 2).map((text3, index) => ({ text: text3, color: color(index === 0 ? "blue" : "yellow") })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 320, top: 210 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(TweetCard, { name: content2.category, zhIdentity: body, avatarText: content2.category.charAt(0) || "J", headlineTop: content2.category, headlineMain: headline, headlineColor: color("red"), zhSub: body, headlineSub: "BY MOTION CARDS", chips: lines.slice(0, 2).map((text3, index) => ({ text: text3, color: color(index === 0 ? "blue" : "yellow") })) }) });
       case "UnitMatrix":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 390, top: 300 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(UnitMatrix, { groups: 2, rows: 6, cols: 10, color: color("green"), cell: 44, gap: 9, fillRatio: Math.max(0.01, Math.min(1, metric.value / 100)), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 390, top: 300 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(UnitMatrix, { groups: 2, rows: 6, cols: 10, color: color("green"), cell: 44, gap: 9, fillRatio: Math.max(0.01, Math.min(1, metric.value / 100)), enterAt: 0 }) });
       case "VerdictBox":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(VerdictBox, { color: color("red"), side: "left", headerZh: headline, headerEn: "DROP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(X, { size: 28 }), boxEnterAt: 0, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(X, { size: 34 }), label: label3, revealAt: 12 + index * 10 })) }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(VerdictBox, { color: color("green"), side: "right", headerZh: body, headerEn: "KEEP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 28 }), boxEnterAt: 8, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 34 }), label: label3, revealAt: 20 + index * 10 })) })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_jsx_runtime113.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(VerdictBox, { color: color("red"), side: "left", headerZh: headline, headerEn: "DROP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(X, { size: 28 }), boxEnterAt: 0, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(X, { size: 34 }), label: label3, revealAt: 12 + index * 10 })) }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(VerdictBox, { color: color("green"), side: "right", headerZh: body, headerEn: "KEEP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 28 }), boxEnterAt: 8, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 34 }), label: label3, revealAt: 20 + index * 10 })) })
         ] });
       case "ViewsBadge":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 650, top: 420 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ViewsBadge, { from: 0, to: metric.value, unit: metric.unit || "M+", label: metric.label || content2.category, enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 650, top: 420 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(ViewsBadge, { from: 0, to: metric.value, unit: metric.unit || "M+", label: metric.label || content2.category, enterAt: 0 }) });
       case "WindowCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 450, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WindowCard, { title: headline, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SquareTerminal, { size: 34 }), width: 820, height: 430, chip: { text: content2.category, color: color("blue") }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { color: "#F8FAFC", fontSize: 30, lineHeight: 1.7, fontFamily: FONT.en }, children: [
-          lines.slice(0, 4).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_react129.default.Fragment, { children: [
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 450, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(WindowCard, { title: headline, icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(SquareTerminal, { size: 34 }), width: 820, height: 430, chip: { text: content2.category, color: color("blue") }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { style: { color: "#F8FAFC", fontSize: 30, lineHeight: 1.7, fontFamily: FONT.en }, children: [
+          lines.slice(0, 4).map((text3, index) => /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_react129.default.Fragment, { children: [
             "entry: ",
             text3,
-            /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {})
+            /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("br", {})
           ] }, `${text3}-${index}`)),
           "status: ",
           body
@@ -59612,26 +60309,29 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/jcLayoutRegistry.tsx
-  var import_jsx_runtime112 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime114 = __toESM(require_jsx_runtime());
   var semanticAccents = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
   var accentOf2 = (value) => semanticAccents.has(value) ? value : "blue";
   var entryById = new Map(components_registry_default.components.filter((entry) => entry.id.startsWith("jc-")).map((entry) => [entry.id, entry]));
   var JcEffectAdapter = ({ cue, props }) => {
-    const entry = entryById.get(String(props.__jcLayoutId ?? cue.layout));
-    const exportName = entry?.runtime?.exportName;
-    const motion = props.__jcMotion ?? {};
+    var _a2, _b, _c, _d, _e, _f, _g, _h;
+    const entry = entryById.get(String((_a2 = props.__jcLayoutId) != null ? _a2 : cue.layout));
+    const exportName = (_b = entry == null ? void 0 : entry.runtime) == null ? void 0 : _b.exportName;
+    const motion = (_c = props.__jcMotion) != null ? _c : {};
     if (!exportName) return null;
     const recipe = renderJcNativeRecipe(exportName, props);
     if (!recipe) return null;
-    const stage = props.__jcStageBackdropProvided === true ? recipe : /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(JcNativeStageBackdrop, { children: recipe });
-    return /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(
+    const stage = props.__jcStageBackdropProvided === true ? recipe : /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(JcNativeStageBackdrop, { children: recipe });
+    return /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(
       MotionWrapper,
       {
         commonProps: motion.commonProps,
-        designTokens: motion.designTokens ?? props.designTokens,
-        beatDuration: motion.beatDuration ?? Math.max(1, cue.end - cue.start),
-        entranceDurationSeconds: motion.entranceDurationSeconds ?? 2.2,
-        accent: accentOf2(motion.accent ?? props.accent),
+        designTokens: (_d = motion.designTokens) != null ? _d : props.designTokens,
+        beatDuration: (_e = motion.beatDuration) != null ? _e : Math.max(1, cue.end - cue.start),
+        entranceDurationSeconds: (_f = motion.entranceDurationSeconds) != null ? _f : 2.2,
+        accent: accentOf2((_g = motion.accent) != null ? _g : props.accent),
+        layoutProps: motion.layoutProps,
+        language: (_h = motion.language) != null ? _h : cue.language,
         preserveNativeMotion: true,
         children: stage
       }
@@ -59639,8 +60339,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var categoryFor = (intent) => intent === "metrics" ? "data" : intent === "narrative" || intent === "contrast" ? "story" : intent === "process" ? "interactive" : "data";
   var jcLayoutDefinitions = [...entryById.values()].map((entry) => {
+    var _a2;
     const manifest = entry.manifest;
-    if (!manifest || !entry.runtime?.exportName) {
+    if (!manifest || !((_a2 = entry.runtime) == null ? void 0 : _a2.exportName)) {
       throw new Error(`Invalid JC registry entry: ${entry.id}`);
     }
     return {
@@ -59699,7 +60400,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     "time-rewind": [text2("headline", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u65F6\u95F4\u8282\u70B9"), prose("bodyText", "\u65F6\u95F4\u56DE\u6EAF\u5185\u5BB9\u6B63\u6587")],
     "clipboard-note": [text2("label", "\u4FBF\u7B7E\u6807\u7B7E"), prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField],
     "closing-checklist": [text2("title", "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846"), checkboxColorField],
-    "platform-shift-line": [text2("metricLabel", "\u589E\u957F\u6307\u6807\u6807\u7B7E"), { key: "count", label: "\u589E\u957F\u6570\u91CF", type: "number" }, prose("summary", "\u589E\u957F\u8BF4\u660E"), list2("milestones", "\u4EA7\u54C1\u7EBF\u8282\u70B9"), text2("startLabel", "\u8D77\u70B9\u6807\u7B7E"), text2("endLabel", "\u7EC8\u70B9\u6807\u7B7E")],
+    "platform-shift-line": [text2("metricLabel", "\u6B63\u6587\u5185\u5BB9"), { key: "count", label: "\u6570\u503C\u5185\u5BB9", type: "number" }, text2("summary", "\u526F\u6587\u5185\u5BB9"), text2("startLabel", "\u8D77\u70B9\u5185\u5BB9"), text2("endLabel", "\u7EC8\u70B9\u5185\u5BB9")],
     "tradeoff-reject-round": [text2("label", "\u5426\u5B9A\u9879\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u5426\u5B9A\u9879", "\u4E09\u9879\u4F1A\u663E\u793A\u5728\u98CE\u9669\u6392\u9664\u4E0B\u65B9\u7684\u7EA2\u8272\u53C9\u53F7\u5217\u8868\u4E2D")],
     "recovery-progress-bars": [text2("label", "\u8FDB\u5EA6\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u8FDB\u5EA6\u9879\u76EE"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number", description: "\u6BCF\u6761\u8FDB\u5EA6\u4F1A\u5728\u8BE5\u6570\u5B57\u6B63\u8D1F 15% \u5185\u7A33\u5B9A\u6D6E\u52A8" }],
     "hud-glow-stack": [text2("subLabel", "\u5361\u7247\u8F85\u52A9\u6807\u7B7E"), list2("items", "HUD \u5361\u7247\u5185\u5BB9")],
@@ -59716,9 +60417,27 @@ Check that all your Remotion packages are on the same version. If your dependenc
     "copyopen-bar-chart": [list2("items", "\u67F1\u72B6\u6807\u7B7E"), { key: "values", label: "\u67F1\u72B6\u6570\u503C", type: "string-list" }],
     "copyopen-line-chart": [list2("items", "\u6298\u7EBF\u6A2A\u8F74"), { key: "values", label: "\u6298\u7EBF\u6570\u503C", type: "string-list" }],
     "copyopen-pie-chart": [list2("items", "\u5206\u533A\u6807\u7B7E"), { key: "values", label: "\u5206\u533A\u6570\u503C", type: "string-list" }],
-    "copyopen-kpi-grid": [list2("items", "\u6307\u6807\u6807\u7B7E"), { key: "values", label: "\u6307\u6807\u6570\u503C", type: "string-list" }]
+    "copyopen-kpi-grid": [list2("items", "\u6307\u6807\u6807\u7B7E"), { key: "values", label: "\u6307\u6807\u6570\u503C", type: "string-list" }],
+    "speaker-growth-dashboard": [text2("eyebrow", "\u9876\u7AEF\u6807\u7B7E"), text2("subline", "\u526F\u6807\u9898"), text2("skillLabel", "\u80FD\u529B\u6807\u7B7E"), text2("feature1Title", "\u529F\u80FD1\u3010\u6B63\u6587\u5185\u5BB9\u3011"), text2("feature1Sub", "\u529F\u80FD1\u3010\u526F\u6587\u5185\u5BB9\u3011"), text2("feature2Title", "\u529F\u80FD2\u3010\u6B63\u6587\u5185\u5BB9\u3011"), text2("feature2Sub", "\u529F\u80FD2\u3010\u526F\u6587\u5185\u5BB9\u3011"), text2("metricTitle", "\u589E\u957F\u6307\u6807\u6807\u9898"), text2("metricValue", "\u589E\u957F\u6570\u5B57"), text2("metricUnit", "\u6570\u5B57\u5355\u4F4D"), text2("metricSub", "\u6307\u6807\u526F\u6587"), text2("footer", "\u5E95\u90E8\u8BF4\u660E")]
   };
   var LAYOUT_MANIFEST = {
+    "speaker-growth-dashboard": {
+      "id": "speaker-growth-dashboard",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u53E3\u64AD",
+        "\u81EA\u5A92\u4F53",
+        "\u589E\u957F",
+        "\u83B7\u5BA2",
+        "\u4F1A\u5458",
+        "\u8F6C\u5316"
+      ],
+      "visualWeight": "heavy"
+    },
     "capital-dashboard": {
       "id": "capital-dashboard",
       "intent": "metrics",
@@ -60427,10 +61146,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }
   };
   var mergeFields = (key, editableFields) => {
-    const merged = [...CONTROLLED_FIELDS[key] ?? [], ...editableFields];
+    var _a2;
+    const merged = [...(_a2 = CONTROLLED_FIELDS[key]) != null ? _a2 : [], ...editableFields];
     return merged.filter((field, index) => merged.findIndex((candidate) => candidate.key === field.key) === index);
   };
-  var item = (key, component, label3, description, category, renderLayer = "primary", editableFields = copy, defaultProps = {}) => ({ key, component, editableFields: mergeFields(key, editableFields), defaultProps, meta: { category, label: label3, description }, renderLayer, manifest: LAYOUT_MANIFEST[key] ?? { id: key, intent: "narrative", capacity: { minItems: 1, maxItems: 1 }, keywords: [label3, description, category], visualWeight: "medium" } });
+  var item = (key, component, label3, description, category, renderLayer = "primary", editableFields = copy, defaultProps = {}) => {
+    var _a2;
+    return { key, component, editableFields: mergeFields(key, editableFields), defaultProps, meta: { category, label: label3, description }, renderLayer, manifest: (_a2 = LAYOUT_MANIFEST[key]) != null ? _a2 : { id: key, intent: "narrative", capacity: { minItems: 1, maxItems: 1 }, keywords: [label3, description, category], visualWeight: "medium" } };
+  };
   var LAYOUT_DEFINITIONS = [
     item("person-rank", DemoAvatarFlip, "\u4EBA\u7269\u4EA4\u63A5", "\u53CC\u4EBA\u7269\u4EA4\u63A5\u4E0E\u6743\u529B\u8F6C\u6362", "story", "primary", [{ key: "leftName", label: "\u5DE6\u4FA7\u4EBA\u7269", type: "text" }, { key: "rightName", label: "\u53F3\u4FA7\u4EBA\u7269", type: "text" }], { leftName: "\u4EBA\u7269 A", rightName: "\u4EBA\u7269 B" }),
     item("event-timeline", GrowthTimelineLine, "\u589E\u957F\u65F6\u95F4\u8F74", "\u6A2A\u5411\u8282\u70B9\u7EBF\u4E0E\u5149\u70B9\u63A8\u8FDB", "data", "enhancement", [list2("years", "\u65F6\u95F4\u8282\u70B9")], { years: ["\u8D77\u6B65", "\u8FED\u4EE3", "\u89C4\u6A21\u5316", "\u76EE\u6807"] }),
@@ -60463,7 +61186,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     item("time-rewind", TimeRewind, "\u65F6\u95F4\u56DE\u6EAF", "\u9006\u5411\u65F6\u95F4\u7EBF\u53D9\u4E8B", "story", "primary", [], { bodyText: "\u65F6\u95F4\u56DE\u5F52" }),
     item("clipboard-note", ClipboardNote, "\u526A\u8D34\u677F\u6279\u6CE8", "\u4FBF\u7B7E\u4E0E\u6279\u6CE8\u4FE1\u606F", "interactive", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField], { boxColor: "auto", body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E" }),
     item("closing-checklist", ClosingChecklist, "\u7ED3\u5C3E\u6E05\u5355", "\u7ED3\u8BBA\u9879\u76EE\u9010\u9879\u786E\u8BA4", "story", "primary", [{ key: "title", label: "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09", type: "text" }, { key: "items", label: "\u6E05\u5355\u5185\u5BB9", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846" }, checkboxColorField], { title: "\u6838\u5FC3\u7ED3\u8BBA", boxColor: "auto" }),
-    item("platform-shift-line", PlatformShiftLine, "\u4EA7\u54C1\u7EBF\u589E\u957F", "\u84DD\u8272\u589E\u957F\u6570\u5B57\u4E0E\u4EA7\u54C1\u7EBF\u8282\u70B9", "data", "primary", [], { count: 3, metricLabel: "\u4EA7\u54C1\u7EBF", milestones: ["\u57FA\u7840\u80FD\u529B", "\u4EA7\u54C1\u6269\u5C55", "\u89C4\u6A21\u589E\u957F"], startLabel: "\u8D77\u70B9", endLabel: "\u76EE\u6807\u9636\u6BB5" }),
+    item("platform-shift-line", PlatformShiftLine, "\u4EA7\u54C1\u7EBF\u589E\u957F", "\u84DD\u8272\u589E\u957F\u6570\u5B57\u4E0E\u4EA7\u54C1\u7EBF\u8282\u70B9", "data", "primary", [text2("metricLabel", "\u6B63\u6587\u5185\u5BB9"), { key: "count", label: "\u6570\u503C\u5185\u5BB9", type: "number" }, text2("summary", "\u526F\u6587\u5185\u5BB9"), text2("startLabel", "\u8D77\u70B9\u5185\u5BB9"), text2("endLabel", "\u7EC8\u70B9\u5185\u5BB9")], { count: 3, metricLabel: "\u4EA7\u54C1\u7EBF", summary: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", startLabel: "\u8D77\u70B9", endLabel: "\u76EE\u6807\u9636\u6BB5" }),
     item("tradeoff-reject-round", TradeoffRejectRound, "\u5706\u5F62\u7EA2\u8272\u5426\u5B9A\u9879", "\u65E0\u8FB9\u6846\u7EA2\u8272\u5706\u53C9\u7684\u98CE\u9669\u6E05\u5355", "story", "primary", [{ key: "label", label: "\u5426\u5B9A\u9879\u6807\u7B7E", type: "text" }, { key: "bodyText", label: "\u6B63\u6587\u5185\u5BB9", type: "textarea" }, { key: "items", label: "\u5426\u5B9A\u9879", type: "string-list" }], { label: "\u98CE\u9669\u6392\u9664", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"] }),
     item("recovery-progress-bars", RecoveryProgressBars, "\u8FDB\u5EA6\u786E\u8BA4\u6761", "\u8FDB\u5EA6\u6761\u4E0E\u53F3\u4FA7\u786E\u8BA4\u6807\u8BB0", "data", "primary", [], { label: "\u6267\u884C\u8FDB\u5EA6", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u9700\u6C42\u786E\u8BA4", "\u80FD\u529B\u5EFA\u8BBE", "\u7ED3\u679C\u9A8C\u8BC1"], progress: 76 }),
     item("hud-glow-stack", HudGlowStack, "HUD \u6D6E\u52A8\u53D1\u5149", "\u53E0\u653E\u7684\u9AD8\u4EAE HUD \u4FE1\u606F\u5361", "interactive", "primary", [], { subLabel: "LIVE SIGNAL", items: ["\u6838\u5FC3\u4FE1\u53F7", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65\u52A8\u4F5C"] }),
@@ -60481,54 +61204,69 @@ Check that all your Remotion packages are on the same version. If your dependenc
     item("copyopen-line-chart", CopyOpenLineChart, "CopyOpen LineChart", "CopyOpen \u539F\u7248\u6298\u7EBF\u7ED8\u5236\u56FE", "data", "primary", [], { items: ["0", "10", "20", "30"], values: [100, 91, 86, 78] }),
     item("copyopen-pie-chart", CopyOpenPieChart, "CopyOpen PieChart", "CopyOpen \u539F\u7248\u73AF\u5F62\u5206\u5E03\u56FE", "data", "primary", [], { items: ["Hook", "Proof", "Story", "CTA"], values: [35, 30, 20, 15], value: 8, label: "clips" }),
     item("copyopen-kpi-grid", CopyOpenKPIGrid, "CopyOpen KPIGrid", "CopyOpen \u539F\u7248 KPI \u4EEA\u8868\u7F51\u683C", "data", "primary", [], { items: ["clips", "avg score", "minutes saved"], values: [8, 86, 74] }),
+    item("speaker-growth-dashboard", SpeakerGrowthDashboard, "\u53E3\u64AD\u589E\u957F\u4EEA\u8868\u76D8", "\u67F1\u5B50\u54E5/TzFilm \u98CE\u683C\u5DE6\u4FA7\u53E3\u64AD\u589E\u957F\u6570\u636E\u4EEA\u8868\u76D8", "data", "primary", [], { eyebrow: "LIVE \xB7 AI AGENT", subline: "\u81EA\u5A92\u4F53\u8FD0\u8425 \xB7 \u5B9E\u65F6\u6F14\u793A", headline: "Hermes", skillLabel: "\u81EA\u5A92\u4F53\u8FD0\u8425 SKILL", feature1Title: "\u8BC4\u8BBA\u533A\u81EA\u52A8\u56DE\u590D", feature1Sub: "AUTO-REPLY", feature2Title: "\u59D4\u5A49\u63A8\u8350 \xB7 \u8D22\u52A1\u81EA\u7531\u56E2", feature2Sub: "SOFT CTA", metricTitle: "\u5165\u7FA4\u7387 \u731B\u589E", metricValue: "165", metricUnit: "\u751F\u6548\u4F1A\u5458", metricSub: "NEW MEMBERS \xB7 \u8FD1 30 \u5929", footer: "\u83B7\u5BA2\u4E00\u628A\u597D\u624B \xB7 GROWTH ENGINE" }),
     ...jcLayoutDefinitions
   ];
   var LAYOUT_BY_KEY = new Map(LAYOUT_DEFINITIONS.map((definition) => [definition.key, definition]));
-  var getLayoutDefinition = (layout) => LAYOUT_BY_KEY.get(layout) ?? LAYOUT_DEFINITIONS[0];
+  var getLayoutDefinition = (layout) => {
+    var _a2;
+    return (_a2 = LAYOUT_BY_KEY.get(layout)) != null ? _a2 : LAYOUT_DEFINITIONS[0];
+  };
   var LAYOUT_METADATA = LAYOUT_DEFINITIONS.map(({ key, editableFields, defaultProps, meta, renderLayer, manifest }) => ({ key, editableFields, defaultProps, meta, renderLayer, manifest }));
 
   // src/design/component-preset-resolver.ts
   var { resolveFaceAwareLayer } = require_face_aware_layout();
   var registry = components_registry_default;
-  var fallbackTokens = { padding: 48, gap: 16, position: "center", scale: 1, headerScale: 1, contentScale: 1, spring: "spring-up", sfx: "none", accentColor: "#00F2FE", defaultItemCount: 1, staggerFrames: 15, mountMode: "center", mountX: 0, mountY: 0, boundsX: 0, boundsY: 0, boundsWidth: 1920, boundsHeight: 1080 };
+  var fallbackTokens = { padding: 48, gap: 16, scale: 1, headerScale: 1, contentScale: 1, spring: "spring-up", sfx: "none", accentColor: "#00F2FE", defaultItemCount: 1, staggerFrames: 15, mountMode: "center", mountX: 0, mountY: 0, boundsX: 0, boundsY: 0, boundsWidth: 1920, boundsHeight: 1080 };
   var getComponentPreset = (layout) => registry.components.find((component) => component.id === layout);
-  var getComponentTokens = (layout) => ({ ...fallbackTokens, ...getComponentPreset(layout)?.tokens ?? {} });
+  var getComponentTokens = (layout) => {
+    var _a2, _b;
+    return { ...fallbackTokens, ...(_b = (_a2 = getComponentPreset(layout)) == null ? void 0 : _a2.tokens) != null ? _b : {} };
+  };
   var isTokenObject = (value) => !!value && typeof value === "object" && !Array.isArray(value);
-  var resolveComponentProps = (layout, effectProps) => ({ ...effectProps ?? {}, designTokens: { ...getComponentTokens(layout), ...isTokenObject(effectProps?.designTokens) ? effectProps.designTokens : {} }, designPresetVersion: getComponentPreset(layout)?.version ?? 0 });
+  var resolveComponentProps = (layout, effectProps) => {
+    var _a2, _b, _c;
+    const preset = getComponentPreset(layout);
+    return { defaultPayload: (_b = preset == null ? void 0 : preset.defaultPayload) != null ? _b : (_a2 = preset == null ? void 0 : preset.mockData) == null ? void 0 : _a2.contentPayload, ...effectProps != null ? effectProps : {}, designTokens: { ...getComponentTokens(layout), ...isTokenObject(effectProps == null ? void 0 : effectProps.designTokens) ? effectProps.designTokens : {} }, designPresetVersion: (_c = preset == null ? void 0 : preset.version) != null ? _c : 0 };
+  };
 
   // src/JasonWu/DemoEffectAdditions.tsx
-  var import_jsx_runtime113 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime115 = __toESM(require_jsx_runtime());
   var semanticAccents2 = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
   var headerAccentOf = (value) => semanticAccents2.has(value) ? value : "blue";
-  var StandardComponentHeader = ({ category, headline, accent = "blue" }) => {
+  var StandardComponentHeader = ({ category, headline, accent = "blue", language = "zh" }) => {
     const frame = useCurrentFrame();
     const theme = getAccentTheme(accent);
     const headerFadeIn = interpolate(frame, [0, 15], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { className: "static-header-anchor", style: { position: "absolute", left: 76, top: 58, zIndex: 50, maxWidth: 860, pointerEvents: "none", opacity: headerFadeIn, borderLeft: "5px solid " + theme.primary, paddingLeft: 18, textShadow: "0 2px 14px rgba(0,0,0,0.55)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { color: theme.primary, fontSize: 22, fontWeight: 800, letterSpacing: "0.28em", textTransform: "uppercase", textShadow: "0 0 20px " + theme.glow }, children: category }),
-      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { marginTop: 8, color: "#FFFFFF", fontSize: 44, lineHeight: 1.1, fontWeight: 900 }, children: headline })
+    const isEnglish = language === "en";
+    return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "static-header-anchor", style: { position: "absolute", left: 76, top: 58, zIndex: 50, maxWidth: isEnglish ? 730 : 860, pointerEvents: "none", opacity: headerFadeIn, borderLeft: "5px solid " + theme.primary, paddingLeft: 18, textShadow: "0 2px 14px rgba(0,0,0,0.55)", overflowWrap: "break-word", wordBreak: "keep-all", hyphens: "auto" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { style: { color: theme.primary, fontSize: isEnglish ? 19 : 22, fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", textShadow: "0 0 20px " + theme.glow }, children: isEnglish ? String(category).toUpperCase() : category }),
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { style: { marginTop: 8, color: "#FFFFFF", fontSize: isEnglish ? 37.4 : 44, lineHeight: isEnglish ? 1.38 : 1.1, fontWeight: 900, overflowWrap: "break-word", wordBreak: "keep-all", hyphens: "auto" }, children: headline })
     ] });
   };
   var resolveHeaderContent = (cue, layout) => {
-    const sourceProps = { ...getLayoutDefinition(layout ?? cue.layout).defaultProps, ...resolveComponentProps(layout ?? cue.layout, cue.effectProps) };
+    var _a2, _b;
+    const sourceProps = { ...getLayoutDefinition(layout != null ? layout : cue.layout).defaultProps, ...resolveComponentProps(layout != null ? layout : cue.layout, cue.effectProps) };
     const content2 = normalizeComponentContent(sourceProps);
-    return { ...content2, category: typeof cue.section?.eyebrow === "string" ? cue.section.eyebrow : content2.category, headline: typeof cue.section?.subtitle === "string" ? cue.section.subtitle : content2.headline };
+    return { ...content2, category: typeof ((_a2 = cue.section) == null ? void 0 : _a2.eyebrow) === "string" ? cue.section.eyebrow : content2.category, headline: typeof ((_b = cue.section) == null ? void 0 : _b.subtitle) === "string" ? cue.section.subtitle : content2.headline };
   };
   var LayoutEffectHeader = ({ cue, layout }) => {
+    var _a2, _b, _c, _d;
     const content2 = resolveHeaderContent(cue, layout);
-    const accent = headerAccentOf(cue.effectProps?.accent ?? cue.effectProps?.contentPayload?.accent);
-    return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(StandardComponentHeader, { category: content2.category, headline: content2.headline, accent });
+    const accent = headerAccentOf((_d = (_a2 = cue.effectProps) == null ? void 0 : _a2.accent) != null ? _d : (_c = (_b = cue.effectProps) == null ? void 0 : _b.contentPayload) == null ? void 0 : _c.accent);
+    return /* @__PURE__ */ (0, import_jsx_runtime115.jsx)(StandardComponentHeader, { category: content2.category, headline: content2.headline, accent, language: cue.language });
   };
 
   // src/JasonWu/StudioLivePreview.tsx
-  var import_jsx_runtime114 = __toESM(require_jsx_runtime());
-  var DirectLayerCanvas = ({ cue, props, ActiveVisualComponent }) => /* @__PURE__ */ (0, import_jsx_runtime114.jsxs)(AbsoluteFill, { style: { position: "relative", overflow: "hidden", background: "#090d16" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(LayoutEffectHeader, { cue }),
-    /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(ActiveVisualComponent, { cue, props })
+  var import_jsx_runtime116 = __toESM(require_jsx_runtime());
+  var DirectLayerCanvas = ({ cue, props, ActiveVisualComponent }) => /* @__PURE__ */ (0, import_jsx_runtime116.jsxs)(AbsoluteFill, { style: { position: "relative", overflow: "hidden", background: "#090d16" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(LayoutEffectHeader, { cue }),
+    /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(ActiveVisualComponent, { cue, props })
   ] });
   var PreviewApp = ({ payload }) => {
+    var _a2, _b;
     const definition = LAYOUT_BY_KEY.get(payload.layout);
-    const ActiveVisualComponent = definition?.component;
+    const ActiveVisualComponent = definition == null ? void 0 : definition.component;
     const playerRef = (0, import_react130.useRef)(null);
     const replayTimer = (0, import_react130.useRef)(void 0);
     const [playing, setPlaying] = (0, import_react130.useState)(false);
@@ -60539,15 +61277,17 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     }, []);
     const reset = (0, import_react130.useCallback)(() => {
+      var _a3, _b2;
       clearReplayTimer();
-      playerRef.current?.pause();
-      playerRef.current?.seekTo(0);
+      (_a3 = playerRef.current) == null ? void 0 : _a3.pause();
+      (_b2 = playerRef.current) == null ? void 0 : _b2.seekTo(0);
       setPlaying(false);
     }, [clearReplayTimer]);
     const replay = (0, import_react130.useCallback)(() => {
+      var _a3, _b2;
       clearReplayTimer();
-      playerRef.current?.seekTo(0);
-      playerRef.current?.play();
+      (_a3 = playerRef.current) == null ? void 0 : _a3.seekTo(0);
+      (_b2 = playerRef.current) == null ? void 0 : _b2.play();
       setPlaying(true);
       replayTimer.current = window.setTimeout(() => setPlaying(false), 4e3);
     }, [clearReplayTimer]);
@@ -60560,7 +61300,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, [replay, clearReplayTimer]);
     if (!ActiveVisualComponent) return null;
     const preset = getComponentPreset(payload.layout);
-    const mockData = { ...definition.defaultProps, ...preset?.mockData ?? {} };
+    const mockData = { ...definition.defaultProps, ...(_a2 = preset == null ? void 0 : preset.mockData) != null ? _a2 : {} };
     const templateText = (key, fallback) => typeof mockData[key] === "string" ? mockData[key] : fallback;
     const tokens = getComponentTokens(payload.layout);
     const cue = {
@@ -60570,10 +61310,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
       layout: payload.layout,
       section: { eyebrow: templateText("category", templateText("eyebrow", "DESIGN SYSTEM")), subtitle: templateText("headline", templateText("title", "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7")) },
       caption: { zh: templateText("effectText", templateText("body", "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE")), en: "Template preview" },
-      effectProps: { ...mockData, designTokens: tokens, accent: payload.accent ?? "blue", __externalSectionLabel: true, __jcUseLayerAccent: true }
+      effectProps: { ...mockData, designTokens: tokens, accent: (_b = payload.accent) != null ? _b : "blue", __externalSectionLabel: true, __jcUseLayerAccent: true }
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime114.jsxs)("div", { title: "\u5F53\u524D Layer \u52A8\u753B\u9884\u89C8", onMouseEnter: replay, onMouseLeave: reset, style: { position: "relative", width: "100%", height: "100%", display: "grid", placeItems: "center", overflow: "hidden", background: "#090d16" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime116.jsxs)("div", { title: "\u5F53\u524D Layer \u52A8\u753B\u9884\u89C8", onMouseEnter: replay, onMouseLeave: reset, style: { position: "relative", width: "100%", height: "100%", display: "grid", placeItems: "center", overflow: "hidden", background: "#090d16" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(
         Player,
         {
           ref: playerRef,
@@ -60590,9 +61330,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         payload.previewKey
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime114.jsxs)("button", { type: "button", "aria-label": "\u64AD\u653E\u5F53\u524D\u6548\u679C\u6A21\u677F", onClick: replay, className: playing ? "hover-preview-pill active" : "hover-preview-pill", style: { pointerEvents: "auto", cursor: "pointer" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime114.jsx)("span", { className: "hover-preview-icon", children: playing ? "\u21BB" : "\u25B6" }),
-        /* @__PURE__ */ (0, import_jsx_runtime114.jsx)("span", { children: playing ? "playing" : "hover to play" })
+      /* @__PURE__ */ (0, import_jsx_runtime116.jsxs)("button", { type: "button", "aria-label": "\u64AD\u653E\u5F53\u524D\u6548\u679C\u6A21\u677F", onClick: replay, className: playing ? "hover-preview-pill active" : "hover-preview-pill", style: { pointerEvents: "auto", cursor: "pointer" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime116.jsx)("span", { className: "hover-preview-icon", children: playing ? "\u21BB" : "\u25B6" }),
+        /* @__PURE__ */ (0, import_jsx_runtime116.jsx)("span", { children: playing ? "playing" : "hover to play" })
       ] })
     ] });
   };
@@ -60604,7 +61344,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         root = (0, import_client.createRoot)(container2);
         roots.set(container2, root);
       }
-      root.render(/* @__PURE__ */ (0, import_jsx_runtime114.jsx)(PreviewApp, { payload }, payload.previewKey));
+      root.render(/* @__PURE__ */ (0, import_jsx_runtime116.jsx)(PreviewApp, { payload }, payload.previewKey));
     },
     unmount(container2) {
       const root = roots.get(container2);

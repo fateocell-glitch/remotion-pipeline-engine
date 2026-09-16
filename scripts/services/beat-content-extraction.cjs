@@ -9,7 +9,13 @@ const {inferCommercialTextRole, assignSemanticAccent} = require('./commercial-an
 
 const toSeconds = (value) => { const number = Number(value); if (!Number.isFinite(number)) return 0; return Math.abs(number) > 10000 ? number / 1000 : number; };
 const timeLabel = (seconds) => { const value = Math.max(0, Math.floor(toSeconds(seconds))); return String(Math.floor(value / 60)).padStart(2, '0') + ':' + String(value % 60).padStart(2, '0'); };
-const normalizeCaption = (caption, index) => ({...caption, id: caption?.id || 'subtitle-' + String(index + 1).padStart(3, '0'), start: toSeconds(caption?.start ?? caption?.offsets?.from), end: toSeconds(caption?.end ?? caption?.offsets?.to), zh: normalizeSimplifiedChinese(caption?.zh ?? caption?.text)});
+const stripLeadingEnglishConjunction = (value) => {
+  const stripped = String(value ?? "").trim()
+    .replace(/^(?:(?:and|but|so|also|meanwhile|because)\b[\s,;:—–-]*)+/i, "")
+    .trim();
+  return stripped ? stripped.charAt(0).toUpperCase() + stripped.slice(1) : "";
+};
+const normalizeCaption = (caption, index) => ({...caption, id: caption?.id || 'subtitle-' + String(index + 1).padStart(3, '0'), start: toSeconds(caption?.start ?? caption?.offsets?.from), end: toSeconds(caption?.end ?? caption?.offsets?.to), zh: normalizeSimplifiedChinese(caption?.zh ?? caption?.text), en: stripLeadingEnglishConjunction(caption?.en)});
 const overlapRatio = (caption, beat) => { const overlap = Math.max(0, Math.min(caption.end, beat.end) - Math.max(caption.start, beat.start)); const duration = Math.max(.01, caption.end - caption.start); return overlap / duration; };
 
 function matchWindowCaptions(captions, beat, minimumOverlap = .3) {
@@ -120,7 +126,7 @@ function extractBeatContent(beatId, windowCaptions, beatTimeRange, index = 0) {
   const textRole = inferCommercialTextRole({captions: local, layerIndex: beatTimeRange?.layerIndex, layerCount: beatTimeRange?.layerCount});
   const sourceText = local.map((caption) => caption.zh || caption.en || "").join(" ");
   const accent = assignSemanticAccent({role: textRole, text: sourceText, previousAccent: beatTimeRange?.previousAccent});
-  if (beatTimeRange?.language === "en") return {...englishBeatContent(windowCaptions, index), textRole, role: textRole, accent};
+  if (beatTimeRange?.language === "en") return {...englishBeatContent(local, index), textRole, role: textRole, accent};
   if (!local.length) {
     const fallback = localizedFallback(local, beatTimeRange);
     return {chapter: String(index + 1).padStart(2, "0") + " · 字幕待补充", ...fallback, textRole, role: textRole, accent, effectEn: "", source: "silence"};
@@ -143,11 +149,42 @@ function extractBeatContent(beatId, windowCaptions, beatTimeRange, index = 0) {
 }
 
 const payloadPlaceholder = /^(?:识别关键机制|降低行动阻力|持续放大优势|核心信息|视觉节奏|行动结论|定义目标|组织信息|完成验证)$/;
-const payloadClean = (value) => normalizeSimplifiedChinese(value).replace(/^(?:但是|而且|所以|然后|其实|这个|这|那|就是)[，,、\s]*/, '').trim();
+const payloadClean = (value) => stripLeadingEnglishConjunction(normalizeSimplifiedChinese(value).replace(/^(?:但是|而且|所以|然后|其实|这个|这|那|就是)[，,、\s]*/, '').trim());
 const payloadSourceText = (captions) => (captions || []).map((caption) => payloadClean(caption?.zh ?? caption?.en)).filter(Boolean).join('。');
 const payloadPhrases = (captions) => payloadSourceText(captions).split(/[。！？；，,]/).map(payloadClean).filter((value) => value.length >= 3 && !payloadPlaceholder.test(value));
 const payloadNumbers = (captions) => [...payloadSourceText(captions).matchAll(/(?:^|[^\d])(\d+(?:\.\d+)?)(?=(?:\s|$|[%％万亿倍元件款年]))/g)].map((match) => Number(match[1])).filter(Number.isFinite);
 const payloadUnit = (captions) => { const source = payloadSourceText(captions); return /[%％|百分之]/.test(source) ? '%' : /元/.test(source) ? '元' : /倍/.test(source) ? '倍' : ''; };
+const isPlainPayloadObject = (value) => value && typeof value === "object" && !Array.isArray(value);
+const clonePayloadValue = (value) => Array.isArray(value) ? value.map(clonePayloadValue) : isPlainPayloadObject(value) ? Object.fromEntries(Object.entries(value).map(([key, item]) => [key, clonePayloadValue(item)])) : value;
+function deepMergePayload(defaultValue, extractedValue) {
+  if (Array.isArray(defaultValue)) {
+    if (!Array.isArray(extractedValue) || extractedValue.length === 0) return clonePayloadValue(defaultValue);
+    return extractedValue.map((item, index) => deepMergePayload(defaultValue[index] ?? defaultValue[0] ?? {}, item));
+  }
+  if (isPlainPayloadObject(defaultValue)) {
+    const source = isPlainPayloadObject(extractedValue) ? extractedValue : {};
+    const merged = {};
+    for (const key of Object.keys(defaultValue)) merged[key] = deepMergePayload(defaultValue[key], source[key]);
+    for (const [key, value] of Object.entries(source)) if (!Object.prototype.hasOwnProperty.call(merged, key)) merged[key] = clonePayloadValue(value);
+    return merged;
+  }
+  return extractedValue === undefined || extractedValue === null ? clonePayloadValue(defaultValue) : extractedValue;
+}
+const standardPayloadFallback = (kind) => kind === "chips" ? {type: "chips", items: []} : kind === "metrics" ? {type: "metrics", value: "", unit: "", label: "", bodyText: "", detailText: ""} : kind === "steps" ? {type: "steps", steps: [], bodyText: ""} : {type: "narrative", bodyText: "", highlightQuote: ""};
+function hydrateContentPayload(defaultPayload, extractedPayload, kind = "narrative") {
+  const fallback = isPlainPayloadObject(defaultPayload) ? defaultPayload : standardPayloadFallback(kind);
+  const hydrated = deepMergePayload(fallback, isPlainPayloadObject(extractedPayload) ? extractedPayload : {});
+  if (!hydrated.type) hydrated.type = fallback.type || kind;
+  if (hydrated.type === "chips" && !Array.isArray(hydrated.items)) hydrated.items = [];
+  if (hydrated.type === "steps" && !Array.isArray(hydrated.steps)) hydrated.steps = [];
+  return hydrated;
+}
+function defaultContentPayloadFor(componentDefaultPayload, mockData, kind) {
+  if (isPlainPayloadObject(componentDefaultPayload?.contentPayload)) return componentDefaultPayload.contentPayload;
+  if (isPlainPayloadObject(componentDefaultPayload) && ["narrative", "chips", "metrics", "steps"].includes(String(componentDefaultPayload.type))) return componentDefaultPayload;
+  if (isPlainPayloadObject(mockData?.contentPayload)) return mockData.contentPayload;
+  return standardPayloadFallback(kind);
+}
 
 function editorPayloadKind(editorSchema = {}, family = '') {
   const kind = String(editorSchema.kind || '');
@@ -162,6 +199,32 @@ function editorPayloadKind(editorSchema = {}, family = '') {
   return 'narrative';
 }
 
+const LIST_CONTENT_KEYS = new Set(["items", "steps", "chips", "milestones", "years", "values", "badges", "specList"]);
+const comparablePayloadText = (value) => payloadClean(value).toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, "");
+const uniquePayloadItems = (values) => {
+  const seen = new Set();
+  return values.map(payloadClean).filter((value) => {
+    if (!value || payloadPlaceholder.test(value)) return false;
+    const comparable = comparablePayloadText(value);
+    if (!comparable || seen.has(comparable)) return false;
+    seen.add(comparable);
+    return true;
+  });
+};
+const schemaNeedsMultipleItems = (editorSchema = {}, kind = "") => {
+  if (kind === "chips" || kind === "steps") return true;
+  return (editorSchema.fields || []).some((field) => LIST_CONTENT_KEYS.has(field.key) && ["string-list", "string_array", "chips", "chip-list", "list"].includes(field.type || field.control));
+};
+const enrichMultiItemList = ({values, phrases, headline, effectText, bodyText, editorSchema, kind}) => {
+  const items = uniquePayloadItems(values);
+  if (!schemaNeedsMultipleItems(editorSchema, kind) || items.length >= 2) return items;
+  const contextualCandidates = uniquePayloadItems([effectText, headline, ...phrases, bodyText]);
+  for (const candidate of contextualCandidates) {
+    if (items.length >= 2) break;
+    if (!items.some((item) => comparablePayloadText(item) === comparablePayloadText(candidate))) items.push(candidate);
+  }
+  return items;
+};
 const LAYER_DIVERSITY_RULES = [
   [/(?:收银台|口香糖|充电线|纸巾|货架中央)/, {headline:"货架边缘触发顺手加购", effectZh:"低价配件缩短即时购买路径"}],
   [/(?:采购价格|物流成本|设备效率|溢价能力)/, {headline:"供应链规模拉开成本差", effectZh:"采购物流效率决定单位成本"}],
@@ -185,7 +248,19 @@ function diversifyVisualCard(card, blockedHeadline, captions = []) {
   return {...card, headline:copy.headline, effectZh:copy.effectZh, effectText:copy.effectZh, bodyText:sourcePhrases.find((value) => value.length >= 12 && value.length <= 80) || card.bodyText};
 }
 
-function extractComponentPayload({layout, editorSchema = {}, family = '', captions = [], copy = {}} = {}) {
+const isImageAssetValue = (value) => /^(?:data:image\/|https?:\/\/\S+|(?:[A-Za-z]:)?[\\/\w.-]+\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#].*)?)$/i.test(String(value || "").trim());
+const isAssetField = (field = {}) => field.control === "image" || field.type === "image" || /(?:image|img|avatar|url)$/i.test(String(field.key || "")) || /^photo\d+$/i.test(String(field.key || ""));
+const isListEditorField = (field = {}) => ["string-list", "string_array", "chips", "chip-list", "list"].includes(field.type || field.control);
+const stripLeadingLabel = (value, patterns = []) => {
+  let text = payloadClean(value);
+  for (const pattern of patterns) text = text.replace(pattern, "");
+  return payloadClean(text);
+};
+const photoSlotIndex = (key, prefix) => {
+  const match = String(key || "").match(new RegExp("^" + prefix + "(\\d+)$", "i"));
+  return match ? Number(match[1]) - 1 : -1;
+};
+function extractComponentPayload({layout, editorSchema = {}, family = '', captions = [], copy = {}, defaultPayload, mockData} = {}) {
   const phrases = payloadPhrases(captions);
   const semanticItems = (Array.isArray(copy.steps) ? copy.steps : []).map(payloadClean).filter((value) => value && !payloadPlaceholder.test(value));
   const values = (semanticItems.length ? semanticItems : phrases).filter((value, index, all) => all.indexOf(value) === index);
@@ -195,7 +270,8 @@ function extractComponentPayload({layout, editorSchema = {}, family = '', captio
   const bodyText = payloadClean(copy.bodyText) || payloadSourceText(captions);
   const unit = payloadUnit(captions);
   const kind = editorPayloadKind(editorSchema, family);
-  const list = values.length ? values : [effectText || headline].filter(Boolean);
+  const baseList = values.length ? values : [effectText || headline].filter(Boolean);
+  const list = enrichMultiItemList({values: baseList, phrases, headline, effectText, bodyText, editorSchema, kind});
   const contentPayload = kind === 'chips'
     ? {type: 'chips', items: list.slice(0, 4).map((title, index) => ({title, subtitle: index === 0 ? effectText : ''}))}
     : kind === 'metrics'
@@ -203,12 +279,19 @@ function extractComponentPayload({layout, editorSchema = {}, family = '', captio
       : kind === 'steps'
         ? {type: 'steps', steps: list.slice(0, 4).map((text, index) => ({stepNumber: index + 1, text})), bodyText}
         : {type: 'narrative', bodyText, highlightQuote: effectText};
+  const contentDefaults = defaultContentPayloadFor(defaultPayload, mockData, kind);
+  const hydratedContentPayload = hydrateContentPayload(contentDefaults, contentPayload, kind);
   const fields = {};
   let textIndex = 0;
   let numberIndex = 0;
   for (const field of editorSchema.fields || []) {
     const key = field.key;
-    if (key === 'marketLabel' || key === 'leftLabel') fields[key] = list[0] || headline;
+    const photoTitleIndex = layout === "photo-wall" ? photoSlotIndex(key, "photoTitle") : -1;
+    const photoSubtitleIndex = layout === "photo-wall" ? photoSlotIndex(key, "photoSubtitle") : -1;
+    if (isAssetField(field)) fields[key] = isImageAssetValue(copy[key]) ? String(copy[key]).trim() : "";
+    else if (photoTitleIndex >= 0) fields[key] = list[photoTitleIndex] || "";
+    else if (photoSubtitleIndex >= 0) fields[key] = photoSubtitleIndex === 0 ? effectText : "";
+    else if (key === 'marketLabel' || key === 'leftLabel') fields[key] = list[0] || headline;
     else if (key === 'engineeringLabel' || key === 'rightLabel') fields[key] = list[1] || effectText || headline;
     else if (key === 'marketTo') fields[key] = numbers[numberIndex++] ?? '';
     else if (key === 'engineeringTo') fields[key] = numbers[numberIndex++] ?? '';
@@ -218,12 +301,14 @@ function extractComponentPayload({layout, editorSchema = {}, family = '', captio
     else if (key === 'value' || key === 'progress') fields[key] = numbers[numberIndex++] ?? '';
     else if (key === 'label' || key === 'metricLabel') fields[key] = headline;
     else if (key === 'detailText') fields[key] = effectText;
+    else if (isListEditorField(field)) fields[key] = list.slice(0, 4);
     else if (key === 'bodyText' || key === 'body' || key === 'text') fields[key] = bodyText;
     else if (key === 'highlightQuote') fields[key] = effectText;
-    else if (key === 'bearText') fields[key] = list[1] || effectText;
+    else if (key === 'bullText') fields[key] = stripLeadingLabel(bodyText || list[0] || headline, [/^(?:看多的是|看多|多方观点是|多方观点[:：]?)/]);
+    else if (key === 'bearText') fields[key] = stripLeadingLabel(effectText || list[1] || headline, [/^(?:风险是|风险提示是|风险提示[:：]?|空方是|空方观点是|空方观点[:：]?)/]);
     else if (key !== 'items' && key !== 'steps') fields[key] = list[textIndex++] || effectText || headline;
   }
-  return {layout, contentPayload, fields, sourcePhrases: phrases};
+  return {layout, contentPayload: hydratedContentPayload, fields: deepMergePayload(isPlainPayloadObject(defaultPayload) && !defaultPayload.type ? defaultPayload : {}, fields), sourcePhrases: phrases};
 }
 
 function enforceBeatTextSeparation(beats, captions, {onlyAuto = false} = {}) {
@@ -258,5 +343,5 @@ function enforceHeadlineDiversity(beats, captions) {
   return {beats: repairedBeats, ratio: new Set(repairedBeats.map((beat) => beat.subtitle)).size / repairedBeats.length, repaired: true};
 }
 
-module.exports = {diversifyVisualCard, editorPayloadKind, enforceBeatTextSeparation, enforceHeadlineDiversity, extractBeatContent, extractComponentPayload, matchWindowCaptions, normalizeCaption, separateBeatText, timeLabel, overlap};
+module.exports = {deepMergePayload, diversifyVisualCard, editorPayloadKind, enforceBeatTextSeparation, enforceHeadlineDiversity, extractBeatContent, extractComponentPayload, hydrateContentPayload, matchWindowCaptions, normalizeCaption, separateBeatText, timeLabel, overlap};
 

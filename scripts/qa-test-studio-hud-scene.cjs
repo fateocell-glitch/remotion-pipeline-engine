@@ -209,28 +209,28 @@ async function main() {
     await waitFor(() => evaluate(send, 'Boolean(typeof APP !== "undefined" && typeof init === "function")'), "Studio boot");
 
     await evaluate(send, "init(" + JSON.stringify(projectId) + ")");
-    await waitFor(() => evaluate(send, "APP.projectId === " + JSON.stringify(projectId) + " && document.querySelector('[data-schema-chip-list=\"items\"]')"), "HUD inspector");
+    await waitFor(() => evaluate(send, "APP.projectId === " + JSON.stringify(projectId) + " && document.querySelector('[data-schema-chip-list=\"tags\"]')"), "HUD inspector");
 
     const initial = JSON.parse(await evaluate(send, `JSON.stringify({
-      titleRows: document.querySelectorAll('[data-schema-chip-title="items"]').length,
-      subtitleRows: document.querySelectorAll('[data-schema-chip-subtitle="items"]').length,
-      addEnabled: !document.querySelector('[data-schema-chip-list="items"] button').disabled
+      titleRows: document.querySelectorAll('[data-schema-chip-title="tags"]').length,
+      subtitleRows: document.querySelectorAll('[data-schema-chip-subtitle="tags"]').length,
+      addEnabled: !document.querySelector('[data-schema-chip-list="tags"] button').disabled
     })`));
     assert.deepEqual(initial, {titleRows: 1, subtitleRows: 1, addEnabled: true}, "HUD must expose an addable label and subtitle form.");
 
     const addProbe = JSON.parse(await evaluate(send, `(() => {
-      const button = document.querySelector('[data-schema-chip-list="items"] button');
+      const button = document.querySelector('[data-schema-chip-list="tags"] button');
       button.click();
       return JSON.stringify({
-        rows: document.querySelectorAll('[data-schema-chip-title="items"]').length,
-        titles: [...document.querySelectorAll('[data-schema-chip-title="items"]')].map((node) => node.value),
-        subtitles: [...document.querySelectorAll('[data-schema-chip-subtitle="items"]')].map((node) => node.value)
+        rows: document.querySelectorAll('[data-schema-chip-title="tags"]').length,
+        titles: [...document.querySelectorAll('[data-schema-chip-title="tags"]')].map((node) => node.value),
+        subtitles: [...document.querySelectorAll('[data-schema-chip-subtitle="tags"]')].map((node) => node.value)
       });
     })()`));
     assert.equal(addProbe.rows, 2, "HUD add control did not create a new row: " + JSON.stringify({addProbe, consoleErrors}));
     const added = JSON.parse(await evaluate(send, `(() => {
-      const titles = [...document.querySelectorAll('[data-schema-chip-title="items"]')];
-      const subtitles = [...document.querySelectorAll('[data-schema-chip-subtitle="items"]')];
+      const titles = [...document.querySelectorAll('[data-schema-chip-title="tags"]')];
+      const subtitles = [...document.querySelectorAll('[data-schema-chip-subtitle="tags"]')];
       const setValue = (node, value) => {
         const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set;
         setter.call(node, value);
@@ -255,40 +255,36 @@ async function main() {
 
     const beforeSave = await evaluate(send, "APP.dirty === true");
     assert.equal(beforeSave, true, "HUD input edits must mark the layer dirty before saving.");
-    await evaluate(send, `(() => {
-      document.querySelector('[data-scene-mode="speaker_mode"]').click();
-      document.querySelector('[data-align-option="left"]').click();
-      const mount = document.getElementById("layer-position");
-      mount.value = "center-right";
-      mount.dispatchEvent(new Event("input", {bubbles: true}));
-      mount.dispatchEvent(new Event("change", {bubbles: true}));
-      document.getElementById("save-beat").click();
-      return true;
-    })()`);
-    await waitFor(() => evaluate(send, "APP.dirty === false"), "Studio save");
+    const sceneBeforeSave = JSON.parse(await evaluate(send, `(() => {
+      setLayerSceneMode("speaker");
+      setLayerAlign("left");
+      return JSON.stringify(APP.project.beats[0].layers[0].layoutProps);
+    })()`));
+    assert.deepEqual(sceneBeforeSave, {sceneMode: "speaker", align: "left"}, "Scene controls must update the selected Layer before persistence.");
+    await evaluate(send, "saveBeat(true).then(() => true)");
 
     const persisted = JSON.parse(await evaluate(send, `fetch("/api/projects/${projectId}").then((response) => response.json()).then((project) => JSON.stringify(project.beats[0].layers[0]))`));
-    assert.equal(persisted.commonProps.sceneModeOverride, "speaker_mode", "Scene mode must persist inside the selected layer.");
-    assert.equal(persisted.commonProps.alignOverride, "left", "Scene alignment must persist inside the selected layer.");
-    assert.equal(persisted.commonProps.position, "center-right", "The selected mount position must remain stored for later automatic use.");
+    assert.deepEqual(persisted.layoutProps, {sceneMode: "speaker", align: "left"}, "Scene layout must persist as the selected layer’s sole position authority.");
+    assert.equal(persisted.commonProps.position, undefined, "The retired mount position must not be persisted.");
 
     await evaluate(send, "init(" + JSON.stringify(projectId) + ")");
-    await waitFor(() => evaluate(send, `document.querySelector('[data-scene-mode="speaker_mode"]')?.getAttribute("aria-pressed") === "true" && document.querySelector('[data-align-option="left"]')?.getAttribute("aria-pressed") === "true"`), "persisted scene selection");
+    await waitFor(() => evaluate(send, `document.querySelector('[data-scene-mode="speaker"]')?.getAttribute("aria-pressed") === "true" && document.querySelector('[data-align-option="left"]')?.getAttribute("aria-pressed") === "true"`), "persisted scene selection");
     const reloaded = JSON.parse(await evaluate(send, `JSON.stringify({
       current: document.querySelector(".scene-mode-title span")?.textContent || "",
       help: document.querySelector(".scene-mode-panel .field-help")?.textContent || "",
-      titles: [...document.querySelectorAll('[data-schema-chip-title="items"]')].map((node) => node.value),
-      subtitles: [...document.querySelectorAll('[data-schema-chip-subtitle="items"]')].map((node) => node.value)
+      titles: [...document.querySelectorAll('[data-schema-chip-title="tags"]')].map((node) => node.value),
+      subtitles: [...document.querySelectorAll('[data-schema-chip-subtitle="tags"]')].map((node) => node.value)
     })`));
     assert.match(reloaded.current, /人物口播/, "The reloaded inspector must show the persisted speaker scene mode.");
     assert.match(reloaded.current, /靠左/, "The reloaded inspector must show the persisted left scene alignment.");
-    assert.match(reloaded.help, /场景布局优先/, "The inspector must explain scene-layout precedence.");
+    assert.match(reloaded.help, /唯一位置来源/, "The inspector must explain the single layout authority.");
     assert.deepEqual(reloaded.titles, ["Existing label", "New label"], "Reload must restore HUD labels.");
     assert.deepEqual(reloaded.subtitles, ["Existing subtitle", "New subtitle"], "Reload must restore HUD subtitles.");
 
     const resolved = resolveFaceAwareLayer({
       layout: "hud-glow-stack",
       commonProps: persisted.commonProps,
+      layoutProps: persisted.layoutProps,
       tokens: {boundsWidth: 1180, boundsHeight: 520, mountMode: "right"},
       faceZone: {faceX: .62, faceY: .12, faceW: .20, faceH: .45, safeX: .57, safeY: .07, safeW: .30, safeH: .56, faceArea: "right"},
       family: "metrics",
@@ -296,7 +292,7 @@ async function main() {
       displayIntent: "side-overlay",
       beatIndex: 0,
     });
-    assert.equal(resolved.commonProps.position, "center", "An explicit scene layout must reset mount position before conflict resolution.");
+    assert.equal(resolved.commonProps.position, undefined, "The resolver must not revive the retired mount position.");
     assert.equal(resolved.tokens.mountMode, "left", "Left scene alignment must override a conflicting right mount position.");
     assert.equal(resolved.commonProps.scale, .78, "Speaker safe-island mode must apply the shared 78% safe scale.");
 
@@ -306,7 +302,7 @@ async function main() {
     console.log(JSON.stringify({
       projectId,
       hud: {items: reloaded.titles, subtitles: reloaded.subtitles},
-      scene: {mode: persisted.commonProps.sceneModeOverride, align: persisted.commonProps.alignOverride, mount: persisted.commonProps.position},
+      scene: {mode: persisted.layoutProps.sceneMode, align: persisted.layoutProps.align},
       precedence: {resolvedMount: resolved.tokens.mountMode, scale: resolved.commonProps.scale},
       browserConsoleErrors: consoleErrors,
       screenshot: screenshotFile,

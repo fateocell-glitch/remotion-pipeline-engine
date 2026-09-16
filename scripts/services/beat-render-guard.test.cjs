@@ -38,11 +38,33 @@ test("rejects duplicated headline and effect copy", () => {
   assert.ok(result.errors.some((error) => error.code === "copy-duplicate"));
 });
 
-test("rejects empty multi-item component values", () => {
+test("rejects multi-item component values with no real content", () => {
   const beat = validChineseBeat();
-  beat.layers[0].effectProps.steps = ["需求验证", ""];
+  beat.layers[0].effectProps.steps = ["", "核心判断"];
   const result = validateBeatIntegrity(beat, {language: "zh"});
   assert.ok(result.errors.some((error) => error.code === "component-items"));
+});
+
+test("allows one real briefing-poster item", () => {
+  const beat = validChineseBeat();
+  beat.layers[0] = {
+    layout: "briefing-poster",
+    payload: {items: ["单价之外，采购与物流效率共同决定实际成交成本。"]},
+    commonProps: props(0, 14)
+  };
+  const result = validateBeatIntegrity(beat, {language: "zh"});
+  assert.equal(result.errors.some((error) => error.code === "component-items"), false);
+});
+
+test("allows one real checklist-editorial item", () => {
+  const beat = validChineseBeat();
+  beat.layers[0] = {
+    layout: "checklist-editorial",
+    payload: {items: ["先验证真实需求，再把交付路径压缩到可复购的流程。"]},
+    commonProps: props(0, 14)
+  };
+  const result = validateBeatIntegrity(beat, {language: "zh"});
+  assert.equal(result.errors.some((error) => error.code === "component-items"), false);
 });
 
 test("rejects dangling English headlines", () => {
@@ -87,3 +109,4 @@ test("allows a clipboard note with one supporting label and narrative body", () 
   const result = validateBeatIntegrity(beat, {language: "zh"});
   assert.equal(result.errors.some((error) => error.code === "component-items"), false);
 });
+

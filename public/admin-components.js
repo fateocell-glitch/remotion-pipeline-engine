@@ -21725,10 +21725,14 @@
   var require_face_aware_layout = __commonJS({
     "scripts/services/face-aware-layout.cjs"(exports, module) {
       "use strict";
-      var SAFE_ISLAND_WIDTH = Math.round(1920 * 0.48);
-      var SAFE_ISLAND_SCALE = 0.78;
-      var CINEMATIC_WIDE_WIDTH = Math.round(1920 * 0.6);
-      var CINEMATIC_WIDE_SCALE = 0.92;
+      var SIDE_OVERLAY_WIDTH = Math.round(1920 / 3);
+      var MIN_OVERLAY_SCALE = 0.35;
+      var SAFE_ISLAND_WIDTH = SIDE_OVERLAY_WIDTH;
+      var SAFE_ISLAND_SCALE = 1;
+      var ENGLISH_SAFE_WIDTH = SIDE_OVERLAY_WIDTH;
+      var ENGLISH_SAFE_SCALE = 1;
+      var CINEMATIC_WIDE_WIDTH = SIDE_OVERLAY_WIDTH;
+      var CINEMATIC_WIDE_SCALE = 1;
       var CINEMATIC_CENTER_CORRIDOR_PCT = 35;
       var BOTTOM_SUBTITLE_SAFE_PCT2 = 22;
       var clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -21744,7 +21748,7 @@
         var _a2, _b;
         const width = clamp(Number(tokens.boundsWidth || 1180) / 1920, 0.18, 1);
         const height = clamp(Number(tokens.boundsHeight || 520) / 1080, 0.12, 1);
-        const scale = clamp(Number((_b = (_a2 = commonProps.scale) != null ? _a2 : tokens.scale) != null ? _b : 1), 0.72, 1.2);
+        const scale = clamp(Number((_b = (_a2 = commonProps.scale) != null ? _a2 : tokens.scale) != null ? _b : 1), MIN_OVERLAY_SCALE, 1.2);
         const w = width * scale, h = height * scale;
         const mode = tokens.mountMode || "center";
         let x = 0.5 - w / 2, y = 0.5 - h / 2;
@@ -21782,65 +21786,70 @@
         if (!nextAlign) nextAlign = Number(beatIndex || 0) % 2 === 0 ? "left" : "right";
         return { sceneMode: scene, align: nextAlign, faceZone: face ? { ...faceZone, faceAreaRatio, facePresenceRatio } : null, faceAreaRatio, facePresenceRatio };
       }
+      function fitSideOverlay(tokens, commonProps) {
+        var _a2;
+        const rawBoundsWidth = Number(tokens.boundsWidth);
+        const authoredWidth = Number.isFinite(rawBoundsWidth) && rawBoundsWidth > 0 ? rawBoundsWidth : 1180;
+        const fitScale = SIDE_OVERLAY_WIDTH / authoredWidth;
+        tokens.presenterSafeMaxWidth = SIDE_OVERLAY_WIDTH;
+        tokens.presenterSafeLogicalWidth = authoredWidth;
+        commonProps.scale = Math.min(Number((_a2 = commonProps.scale) != null ? _a2 : 1), fitScale);
+      }
       function applyPresenterSafeIsland(tokens, commonProps, faceZone, align) {
-        var _a2, _b, _c, _d;
-        const face = safeRect(faceZone);
-        const inset = 96, gap = 32;
-        const leftWidth = Math.max(0, Math.round(((_a2 = face == null ? void 0 : face.x) != null ? _a2 : 0.5) * 1920 - inset - gap));
-        const rightWidth = Math.max(0, Math.round((1 - (((_b = face == null ? void 0 : face.x) != null ? _b : 0.5) + ((_c = face == null ? void 0 : face.w) != null ? _c : 0))) * 1920 - inset - gap));
         const faceArea = (faceZone == null ? void 0 : faceZone.faceArea) || "center";
-        const side = align === "left" || align === "right" ? align : faceArea === "right" ? "left" : faceArea === "left" ? "right" : leftWidth >= rightWidth ? "left" : "right";
-        const available = side === "left" ? leftWidth : rightWidth;
-        const maxWidth = Math.max(280, Math.min(SAFE_ISLAND_WIDTH, available || SAFE_ISLAND_WIDTH));
-        tokens.presenterSafeMaxWidth = maxWidth;
-        tokens.presenterSafeLogicalWidth = Math.round(maxWidth / SAFE_ISLAND_SCALE);
+        const side = align === "left" || align === "right" ? align : faceArea === "right" ? "left" : faceArea === "left" ? "right" : "left";
+        fitSideOverlay(tokens, commonProps);
         tokens.mountMode = side;
         tokens.presenterSafeInset = side;
         tokens.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
-        commonProps.scale = Math.min(Number((_d = commonProps.scale) != null ? _d : 1), SAFE_ISLAND_SCALE);
         if (side === "left") commonProps.offsetX = Math.min(Number(commonProps.offsetX || 0), 0);
         else commonProps.offsetX = Math.max(Number(commonProps.offsetX || 0), 0);
         return faceArea === "center" ? "presenter-safe-center-" + side : "presenter-safe-" + faceArea;
       }
       function applyCinematicWing(tokens, commonProps, align) {
-        var _a2;
         const side = align === "right" ? "right" : "left";
+        fitSideOverlay(tokens, commonProps);
         tokens.mountMode = side;
         tokens.presenterSafeInset = side;
-        tokens.presenterSafeMaxWidth = CINEMATIC_WIDE_WIDTH;
-        tokens.presenterSafeLogicalWidth = Math.round(CINEMATIC_WIDE_WIDTH / CINEMATIC_WIDE_SCALE);
         tokens.cinematicCenterCorridorPct = CINEMATIC_CENTER_CORRIDOR_PCT;
         tokens.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
-        commonProps.scale = Math.min(Number((_a2 = commonProps.scale) != null ? _a2 : 1), CINEMATIC_WIDE_SCALE);
         commonProps.offsetX = side === "left" ? Math.min(Number(commonProps.offsetX || 0), 0) : Math.max(Number(commonProps.offsetX || 0), 0);
         return "cinematic-wide-" + side;
       }
-      function resolveFaceAwareLayer2({ layout, commonProps, tokens, faceZone, family, candidates, displayIntent = "side-overlay", sceneMode, beatIndex = 0 }) {
+      function resolveFaceAwareLayer2({ layout, commonProps, layoutProps, tokens, faceZone, family, candidates, displayIntent = "side-overlay", sceneMode, beatIndex = 0, language }) {
         var _a2, _b, _c;
         const sourceCommon = copy2(commonProps);
         const sourceTokens = copy2(tokens);
-        const explicitSceneMode = sourceCommon.sceneModeOverride === "speaker_mode" || sourceCommon.sceneModeOverride === "cinematic_mode" ? sourceCommon.sceneModeOverride : sceneMode;
-        const explicitAlign = sourceCommon.alignOverride === "left" || sourceCommon.alignOverride === "right" ? sourceCommon.alignOverride : void 0;
-        const hasSceneLayoutOverride = Boolean(explicitSceneMode || explicitAlign);
-        if (hasSceneLayoutOverride) sourceCommon.position = "center";
+        const sourceLayout = copy2(layoutProps);
+        const explicitSceneMode = sourceLayout.sceneMode === "speaker" ? "speaker_mode" : sourceLayout.sceneMode === "cinematic" ? "cinematic_mode" : sceneMode;
+        const explicitAlign = sourceLayout.align === "left" || sourceLayout.align === "right" ? sourceLayout.align : void 0;
         const scene = detectSceneMode({ faceZone, sceneMode: explicitSceneMode, beatIndex, align: explicitAlign });
         const face = safeRect(scene.faceZone);
         const base = { layout, commonProps: sourceCommon, tokens: sourceTokens, avoidance: { applied: false, reason: scene.sceneMode === "cinematic_mode" ? "cinematic" : "no-face", collision: 0, faceArea: ((_a2 = scene.faceZone) == null ? void 0 : _a2.faceArea) || null, displayIntent, sceneMode: scene.sceneMode, align: scene.align } };
         if (displayIntent === "fullscreen-modal") return { ...base, avoidance: { ...base.avoidance, reason: "fullscreen-modal" } };
-        if (sourceCommon.faceAvoidanceMode === "manual" && !explicitAlign && !explicitSceneMode) return { ...base, avoidance: { ...base.avoidance, reason: "manual" } };
+        if (sourceCommon.faceAvoidanceMode === "manual" && !explicitAlign && !sourceLayout.sceneMode) return { ...base, avoidance: { ...base.avoidance, reason: "manual" } };
         if (scene.sceneMode === "cinematic_mode") {
           const nextCommon2 = copy2(sourceCommon);
           const nextTokens2 = copy2(sourceTokens);
-          const reason2 = applyCinematicWing(nextTokens2, nextCommon2, scene.align);
+          const reason2 = applyCinematicWing(nextTokens2, nextCommon2, scene.align, language);
           return { layout, commonProps: nextCommon2, tokens: nextTokens2, avoidance: { ...base.avoidance, applied: true, reason: reason2, maxWidth: nextTokens2.presenterSafeMaxWidth } };
         }
-        if (!face) return base;
+        if (!face) {
+          const nextCommon2 = copy2(sourceCommon);
+          const nextTokens2 = copy2(sourceTokens);
+          fitSideOverlay(nextTokens2, nextCommon2);
+          nextTokens2.mountMode = scene.align;
+          nextTokens2.presenterSafeInset = scene.align;
+          nextTokens2.bottomSubtitleSafePct = BOTTOM_SUBTITLE_SAFE_PCT2;
+          nextCommon2.offsetX = scene.align === "left" ? Math.min(Number(nextCommon2.offsetX || 0), 0) : Math.max(Number(nextCommon2.offsetX || 0), 0);
+          return { layout, commonProps: nextCommon2, tokens: nextTokens2, avoidance: { ...base.avoidance, applied: true, reason: "side-lane-" + scene.align, maxWidth: nextTokens2.presenterSafeMaxWidth } };
+        }
         const before = componentRect(sourceTokens, sourceCommon);
         const collision = area(face) ? overlapArea(before, face) / area(face) : 0;
         const nextCommon = copy2(sourceCommon);
         const nextTokens = copy2(sourceTokens);
         const faceArea = scene.faceZone.faceArea || "center";
-        const reason = applyPresenterSafeIsland(nextTokens, nextCommon, scene.faceZone, scene.align);
+        const reason = applyPresenterSafeIsland(nextTokens, nextCommon, scene.faceZone, scene.align, language);
         const after = componentRect(nextTokens, nextCommon);
         const remaining = area(face) ? overlapArea(after, face) / area(face) : 0;
         let nextLayout = layout;
@@ -21857,7 +21866,7 @@
         }
         return { layout: nextLayout, commonProps: nextCommon, tokens: nextTokens, avoidance: { applied: true, reason, collision, remainingCollision: remaining, faceArea, displayIntent, maxWidth: nextTokens.presenterSafeMaxWidth, sceneMode: scene.sceneMode, align: scene.align } };
       }
-      module.exports = { BOTTOM_SUBTITLE_SAFE_PCT: BOTTOM_SUBTITLE_SAFE_PCT2, CINEMATIC_CENTER_CORRIDOR_PCT, CINEMATIC_WIDE_SCALE, CINEMATIC_WIDE_WIDTH, SAFE_ISLAND_SCALE, SAFE_ISLAND_WIDTH, componentRect, detectSceneMode, resolveFaceAwareLayer: resolveFaceAwareLayer2 };
+      module.exports = { BOTTOM_SUBTITLE_SAFE_PCT: BOTTOM_SUBTITLE_SAFE_PCT2, CINEMATIC_CENTER_CORRIDOR_PCT, CINEMATIC_WIDE_SCALE, CINEMATIC_WIDE_WIDTH, ENGLISH_SAFE_SCALE, ENGLISH_SAFE_WIDTH, MIN_OVERLAY_SCALE, SAFE_ISLAND_SCALE, SAFE_ISLAND_WIDTH, SIDE_OVERLAY_WIDTH, componentRect, detectSceneMode, resolveFaceAwareLayer: resolveFaceAwareLayer2 };
     }
   });
 
@@ -42115,11 +42124,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const body = textProp(props, "body", textProp(props, "bodyText", textProp(props, "effectText", cue.caption.zh || cue.section.subtitle)));
     const quote = textProp(props, "highlightQuote", cue.section.eyebrow);
     const mark = textProp(props, "mark", "A").slice(0, 2);
-    return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 125, top: BODY_TOP2, display: "flex", alignItems: "center", gap: 32, ...enter(f, s), transform: `scale(${interpolate(p, [0, 1], [0.72, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })})` }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { width: 140, height: 140, borderRadius: 26, background: C.blue, boxShadow: "0 0 40px rgba(10,132,255,.75)", display: "flex", alignItems: "center", justifyContent: "center", color: C.white, fontSize: 74, fontWeight: 950 }, children: mark }),
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { maxWidth: 820 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: 76, lineHeight: "88px", fontWeight: 950, overflowWrap: "break-word" }, children: body }),
-        quote ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { marginTop: 8, color: C.gold, fontSize: 22, lineHeight: "30px", fontWeight: 950, letterSpacing: 6, overflowWrap: "break-word" }, children: quote }) : null
+    const bodyLength = Array.from(body).length;
+    const logoBodyFontSize = bodyLength > 76 ? 38 : bodyLength > 56 ? 46 : bodyLength > 40 ? 54 : bodyLength > 28 ? 64 : 76;
+    const logoBodyLineHeight = Math.round(logoBodyFontSize * 1.16);
+    return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { position: "absolute", left: 125, top: BODY_TOP2, width: 1050, display: "flex", alignItems: "center", gap: 32, ...enter(f, s), transform: `scale(${interpolate(p, [0, 1], [0.72, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })})` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { width: 140, height: 140, flex: "0 0 140px", borderRadius: 26, background: C.blue, boxShadow: "0 0 40px rgba(10,132,255,.75)", display: "flex", alignItems: "center", justifyContent: "center", color: C.white, fontSize: 74, fontWeight: 950 }, children: mark }),
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { style: { minWidth: 0, flex: 1 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { color: C.white, fontSize: logoBodyFontSize, lineHeight: logoBodyLineHeight + "px", fontWeight: 950, overflowWrap: "break-word", wordBreak: "keep-all" }, children: body }),
+        quote ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { style: { marginTop: 10, color: C.gold, fontSize: bodyLength > 56 ? 18 : 22, lineHeight: "30px", fontWeight: 950, letterSpacing: 4, overflowWrap: "break-word", wordBreak: "keep-all" }, children: quote }) : null
       ] })
     ] });
   };
@@ -42409,8 +42421,57 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
 
-  // src/JasonWu/RecoveredEffectComponents.tsx
+  // src/JasonWu/components/common/IcoFontPathIcon.tsx
   var import_jsx_runtime60 = __toESM(require_jsx_runtime());
+  var ICOFONT_GLYPHS = [
+    { name: "chat", path: "M937 633c0 11 0 23-3 34-14 62-64 101-129 101-204 0-408 0-612 0-75 0-130-56-130-131-1-133-1-265 0-398 0-11 1-22 3-32 14-59 63-99 124-100 25 0 50 0 78 0-4-19-7-36-12-52-10-35-23-68-46-97-10-13-5-24 11-25 11-1 24-1 34 3 40 18 79 37 117 58 45 25 74 67 108 104 6 6 11 9 20 9 103 0 206-1 308 0 75 1 129 57 130 131 0 132 0 263-1 395z" },
+    { name: "comment", path: "M935 736c-4 25-16 37-41 39-11 0-22 1-33 1-242 0-484 0-726 0-13 0-26-1-39-4-18-3-27-16-31-33-1-10-3-19-3-29v-491c0-8 1-16 2-23 5-29 16-40 45-40 55-1 110-1 166-2h18v-203c0-9-1-20 10-25 11-5 18 2 26 9 77 71 154 141 232 212 5 4 13 7 20 7 96 1 191 0 287 1 13 0 26 1 39 3 16 3 25 14 28 30 1 10 2 20 2 30v493c1 8 0 17-2 25z m-734-237h298v-68h-298v68z m483-206h-483v68h483v-68z m115 277h-598v67h598v-67z" },
+    { name: "reply", path: "M399 541v159c0 10-6 13-13 5l-318-318c-7-7-7-19 0-26l318-318c7-7 13-5 13 5v164c0 11 9 19 19 19 229-4 392-78 511-236 7-8 10-6 8 4-52 235-196 466-519 520-10 2-19 11-19 22z" },
+    { name: "send-mail", path: "M915 547h-489c-16 0-31-13-34-28l-70-338c-3-16 7-28 23-28h489c15 0 30 12 33 28l70 338c3 15-7 28-22 28z m-59-113l-217-105c-9-4-20-4-27 0l-174 105c-13 7-15 25-4 39 7 10 18 16 29 16 5 0 9-2 13-4l162-97 201 97c5 2 10 4 15 4 11 0 19-6 22-16 5-14-4-32-20-39z m-717 39h211c11 0 20 9 20 20s-9 20-20 20h-211c-11 0-20-9-20-20 0-11 9-20 20-20z m154-143h-210c-11 0-20-9-20-20s9-21 20-21h210c12 0 21 9 21 21s-9 20-21 20z m49 73c0 11-9 20-20 20h-126c-11 0-20-9-20-20 0-11 9-21 20-21h126c11 0 20 9 20 21z" },
+    { name: "signal", path: "M747 727v-754c0-33 27-61 60-61h25c34 0 61 27 61 61v754c0 33-27 61-61 61h-25c-33 0-60-27-60-61z m-152-814h25c33 0 60 27 60 60v607c0 33-27 60-60 60h-25c-34 0-61-27-61-60v-607c0-33 27-60 61-60z m-214-1h26c33 0 61 27 61 61v459c0 33-27 60-61 60h-26c-33 0-61-27-61-60v-459c0-34 28-61 61-61z m-212 1h24c33 0 61 27 61 60v312c0 33-27 60-61 60h-24c-34 0-61-27-61-60v-312c0-33 27-60 61-60z" },
+    { name: "share", path: "M752 251c-58 0-110-29-140-74l-214 119c12 23 19 50 19 78 0 28-7 54-19 77l163 71c31-44 82-73 139-73 94 0 170 76 170 169s-76 170-170 170-169-76-169-170c0-19 3-37 9-55l-169-73c-31 33-75 54-123 54-94 0-170-76-170-170 0-93 76-169 170-169 48 0 91 20 122 53l221-123c-5-16-8-34-8-53 0-94 76-169 169-169s169 76 169 169-75 169-169 169z" },
+    { name: "paper-plane", path: "M923 627c-281-59-559-117-839-176-14-3-23-7-21-8 1-2 2-3 4-4 62-48 124-96 187-145 5-4 7-8 7-15 0-66 0-132 0-197v-7c0-4 9-1 20 7 41 26 110 72 150 98 46-32 91-65 137-98 11-8 26-5 34 7 110 174 221 347 332 522 8 12 3 19-11 16z m-97-75c-7-4-13-8-20-13-140-89-280-178-419-268-7-4-12-9-16-16-23-38-45-76-67-114-1-2-2-3-3-4-2-3-3 6-3 20v76c0 20 0 40 0 60 0 7 2 10 8 13 77 37 153 74 230 112 100 48 200 97 300 145 1 1 3 1 5 2 2 0-4-6-15-13z" },
+    { name: "plus-circle", path: "M500 788c-242 0-437-196-437-438 0-242 195-438 437-438 242 0 438 196 438 438 0 242-196 438-438 438z m302-467c-1-9-2-19-5-30h-238v-238c-11-3-21-4-31-5-10-1-20-1-30-1-9 0-18 0-27 1-9 1-19 2-30 5v238h-238c-2 11-4 21-5 31-1 10-1 20-1 30 0 9 0 18 1 27 1 9 3 19 5 30h238v238c11 2 21 4 31 5 10 1 20 1 30 1 9 0 18 0 27-1 9-1 19-3 30-5v-238h238c3-11 4-21 5-31 1-10 1-20 1-30 0-9 0-18-1-27z" }
+  ];
+  var stableIconIndex = (seed, length = ICOFONT_GLYPHS.length) => {
+    const safeLength = Math.max(1, length);
+    let hash = 0;
+    for (let index = 0; index < seed.length; index++) hash = hash * 31 + seed.charCodeAt(index) | 0;
+    return Math.abs(hash) % safeLength;
+  };
+  var pickIcoFontGlyph = ({ seed, usedNames, fallbackIndex = 0 }) => {
+    const start2 = seed ? stableIconIndex(seed, ICOFONT_GLYPHS.length) : Math.abs(fallbackIndex) % ICOFONT_GLYPHS.length;
+    for (let offset = 0; offset < ICOFONT_GLYPHS.length; offset++) {
+      const glyph2 = ICOFONT_GLYPHS[(start2 + offset) % ICOFONT_GLYPHS.length];
+      if (!(usedNames == null ? void 0 : usedNames.has(glyph2.name))) {
+        usedNames == null ? void 0 : usedNames.add(glyph2.name);
+        return glyph2;
+      }
+    }
+    const glyph = ICOFONT_GLYPHS[start2];
+    usedNames == null ? void 0 : usedNames.add(glyph.name);
+    return glyph;
+  };
+  var IcoFontPathIcon = ({ seed = "", color, size = 29, usedNames, fallbackIndex = 0 }) => {
+    const icon = pickIcoFontGlyph({ seed, usedNames, fallbackIndex });
+    return /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("svg", { width: size, height: size, viewBox: "0 0 1000 1000", "aria-hidden": "true", style: { filter: `drop-shadow(0 0 8px ${color})` }, "data-icofont-name": icon.name, children: /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("g", { transform: "translate(0 850) scale(1 -1)", children: /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("path", { d: icon.path, fill: color }) }) });
+  };
+
+  // src/JasonWu/components/common/EditableTextSlots.ts
+  var presentText = (value) => {
+    if (value !== void 0 && value !== null) return typeof value === "string" ? value : String(value);
+    return void 0;
+  };
+  var readTextSlot = (props, key, defaultPayload, fallback = "") => {
+    const value = presentText(props == null ? void 0 : props[key]);
+    if (value !== void 0) return value;
+    const defaultValue = presentText(defaultPayload == null ? void 0 : defaultPayload[key]);
+    if (defaultValue !== void 0) return defaultValue;
+    return fallback;
+  };
+
+  // src/JasonWu/RecoveredEffectComponents.tsx
+  var import_jsx_runtime61 = __toESM(require_jsx_runtime());
   var BLUE = "#0A84FF";
   var GOLD = "#FFD166";
   var GREEN = "#38D7A6";
@@ -42441,12 +42502,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var enter2 = (frame, at, x = -44, y = 20, frames = 24) => ({ opacity: interpolate(frame, [at, at + frames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }), transform: "translate(" + interpolate(frame, [at, at + frames], [x, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }) + "px," + interpolate(frame, [at, at + frames], [y, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }) + "px)" });
   var header = (cue, props) => {
     const headerScale = tokenNumber(props, "headerScale", 1);
-    return (props == null ? void 0 : props.__externalSectionLabel) ? null : /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 76, top: 58, zIndex: 3, transform: "scale(" + headerScale + ")", transformOrigin: "top left" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: BLUE, fontSize: 30, fontWeight: 950, letterSpacing: 8, textShadow: "0 0 20px rgba(0,132,255,.55)" }, children: text(cue, props, "eyebrow", cue.section.eyebrow).toUpperCase() }),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 8, color: WHITE, fontSize: 25, fontWeight: 950 }, children: text(cue, props, "headline", cue.section.subtitle) })
+    return (props == null ? void 0 : props.__externalSectionLabel) ? null : /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 76, top: 58, zIndex: 3, transform: "scale(" + headerScale + ")", transformOrigin: "top left" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: BLUE, fontSize: 30, fontWeight: 950, letterSpacing: 8, textShadow: "0 0 20px rgba(0,132,255,.55)" }, children: text(cue, props, "eyebrow", cue.section.eyebrow).toUpperCase() }),
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 8, color: WHITE, fontSize: 25, fontWeight: 950 }, children: text(cue, props, "headline", cue.section.subtitle) })
     ] });
   };
-  var CircleMark = ({ color, value }) => /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { width: 52, height: 52, borderRadius: "50%", border: "3px solid " + color, color, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 34, fontWeight: 950, boxShadow: "0 0 18px " + color + "66" }, children: value });
+  var CircleMark = ({ color, value }) => /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { width: 52, height: 52, flex: "0 0 auto", borderRadius: "50%", border: "3px solid " + color, color, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 34, fontWeight: 950, boxShadow: "0 0 18px " + color + "66" }, children: value });
   var PlatformShiftLine = ({ cue, props }) => {
     var _a2, _b;
     const f = useCurrentFrame();
@@ -42456,25 +42517,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const value = Math.round(interpolate(f, [s + 20, s + 88], [0, count], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 }));
     const dots = items(cue, props, ["milestones", "items"]);
     const line = interpolate(f, [s + 34, s + 110], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 74, top: BODY_TOP3, ...enter2(f, s) }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 24 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 136, color: WHITE, fontWeight: 950, lineHeight: 1 }, children: "\u25CF" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 136, color: WHITE, fontWeight: 950, lineHeight: 1 }, children: value }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: BLUE, fontSize: 38, fontWeight: 950, letterSpacing: 5 }, children: text(cue, props, "metricLabel", "\u4EA7\u54C1\u7EBF") })
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 74, top: BODY_TOP3, ...enter2(f, s) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 24 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { fontSize: 136, color: WHITE, fontWeight: 950, lineHeight: 1 }, children: value }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: BLUE, fontSize: 38, fontWeight: 950, letterSpacing: 5 }, children: text(cue, props, "metricLabel", "\u4EA7\u54C1\u7EBF") })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { marginTop: 150, color: DIM, fontSize: 30, fontWeight: 900 }, children: [
-          text(cue, props, "summary", cue.caption.zh),
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { color: BLUE, fontSize: 68 }, children: value })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "relative", marginTop: 58, width: 1e3, height: 92 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", top: 25, left: 0, width: 1e3, height: 5, background: "rgba(255,255,255,.5)" } }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", top: 25, left: 0, width: 1e3 * line, height: 5, background: BLUE, boxShadow: "0 0 18px rgba(0,132,255,.8)" } }),
-          Array.from({ length: Math.max(4, dots.length + 2) }).map((_, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("i", { style: { position: "absolute", top: i === Math.max(4, dots.length + 2) - 1 ? 7 : 16, left: i / Math.max(3, dots.length + 1) * 960, width: i === Math.max(4, dots.length + 2) - 1 ? 40 : 19, height: i === Math.max(4, dots.length + 2) - 1 ? 40 : 19, borderRadius: "50%", background: i === Math.max(4, dots.length + 2) - 1 ? BLUE : WHITE, boxShadow: i === Math.max(4, dots.length + 2) - 1 ? "0 0 24px " + BLUE : "none" } }, i)),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { position: "absolute", left: 0, top: 73, color: GOLD, fontSize: 25, letterSpacing: 3 }, children: text(cue, props, "startLabel", "\u8D77\u70B9") }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { position: "absolute", right: 0, top: 73, color: BLUE, fontSize: 25, letterSpacing: 3 }, children: text(cue, props, "endLabel", "\u76EE\u6807\u9636\u6BB5") })
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 150, color: BLUE, fontSize: 35, fontWeight: 900 }, children: text(cue, props, "summary", cue.caption.zh) }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "relative", marginTop: 58, width: 1e3, height: 92 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", top: 25, left: 0, width: 1e3, height: 5, background: "rgba(255,255,255,.5)" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", top: 25, left: 0, width: 1e3 * line, height: 5, background: BLUE, boxShadow: "0 0 18px rgba(0,132,255,.8)" } }),
+          Array.from({ length: Math.max(4, dots.length + 2) }).map((_, i) => /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("i", { style: { position: "absolute", top: i === Math.max(4, dots.length + 2) - 1 ? 7 : 16, left: i / Math.max(3, dots.length + 1) * 960, width: i === Math.max(4, dots.length + 2) - 1 ? 40 : 19, height: i === Math.max(4, dots.length + 2) - 1 ? 40 : 19, borderRadius: "50%", background: i === Math.max(4, dots.length + 2) - 1 ? BLUE : WHITE, boxShadow: i === Math.max(4, dots.length + 2) - 1 ? "0 0 24px " + BLUE : "none" } }, i)),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { position: "absolute", left: 0, top: 73, color: GOLD, fontSize: 25, letterSpacing: 3 }, children: text(cue, props, "startLabel", "\u8D77\u70B9") }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { position: "absolute", right: 0, top: 73, color: BLUE, fontSize: 25, letterSpacing: 3 }, children: text(cue, props, "endLabel", "\u76EE\u6807\u9636\u6BB5") })
         ] })
       ] })
     ] });
@@ -42485,14 +42541,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const s = start(cue, fps) + 12;
     const rows3 = items(cue, props, ["items", "steps"], 3);
     const body = text(cue, props, "bodyText", text(cue, props, "body", text(cue, props, "effectText", cue.section.subtitle)));
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 96, top: BODY_TOP3, ...enter2(f, s) }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: RED, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", "\u98CE\u9669\u6392\u9664") }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 58, lineHeight: "68px", fontWeight: 950, maxWidth: 960, overflowWrap: "break-word" }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 30, marginTop: 42 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 22, ...enter2(f, s + 15 + i * 16, -30, 0) }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: RED, value: "\xD7" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { color: WHITE, fontSize: 40, fontWeight: 950 }, children: row })
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 96, top: BODY_TOP3, ...enter2(f, s) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: RED, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", "\u98CE\u9669\u6392\u9664") }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 58, lineHeight: "68px", fontWeight: 950, maxWidth: 960, overflowWrap: "break-word" }, children: body }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { display: "grid", gap: 30, marginTop: 42 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 22, ...enter2(f, s + 15 + i * 16, -30, 0) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(CircleMark, { color: RED, value: "\xD7" }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { color: WHITE, fontSize: 40, fontWeight: 950 }, children: row })
         ] }, row + i)) })
       ] })
     ] });
@@ -42510,26 +42566,26 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const body = text(cue, props, "bodyText", text(cue, props, "body", text(cue, props, "effectText", cue.section.subtitle)));
     const contentScale = tokenNumber(props, "contentScale", 0.66);
     const entrance = enter2(f, s);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 100, top: BODY_TOP3, width: 1130, opacity: entrance.opacity, transform: entrance.transform + " scale(" + contentScale + ")", transformOrigin: "top left" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: GREEN, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", text(cue, props, "category", "RECOVERY TRACK")) }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 24, color: WHITE, fontSize: 58, fontWeight: 950 }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 31, marginTop: 42 }, children: rows3.map((row, i) => {
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 100, top: BODY_TOP3, width: 1130, opacity: entrance.opacity, transform: entrance.transform + " scale(" + contentScale + ")", transformOrigin: "top left" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: GREEN, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", text(cue, props, "category", "RECOVERY TRACK")) }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 24, color: WHITE, fontSize: 58, fontWeight: 950 }, children: body }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { display: "grid", gap: 31, marginTop: 42 }, children: rows3.map((row, i) => {
           const target = Math.max(0, Math.min(100, baseProgress + progressOffsets[i % progressOffsets.length]));
           const progress = interpolate(f, [s + 30 + i * 16, s + 96 + i * 16], [0, target], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
-          return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { ...enter2(f, s + 14 + i * 16, 0, 14) }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 18 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { fontSize: 34, fontWeight: 950, color: WHITE }, children: row }),
-                subtitles[i] ? /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { display: "block", marginTop: 4, fontSize: 16, color: DIM, fontWeight: 850, letterSpacing: 2 }, children: subtitles[i] }) : null
+          return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { ...enter2(f, s + 14 + i * 16, 0, 14) }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 18 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { fontSize: 34, fontWeight: 950, color: WHITE }, children: row }),
+                subtitles[i] ? /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { display: "block", marginTop: 4, fontSize: 16, color: DIM, fontWeight: 850, letterSpacing: 2 }, children: subtitles[i] }) : null
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("span", { style: { fontSize: 34, color: GREEN, fontWeight: 950 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("span", { style: { fontSize: 34, color: GREEN, fontWeight: 950 }, children: [
                 Math.round(target),
                 "%"
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { height: 18, marginTop: 13, borderRadius: 20, background: "rgba(255,255,255,.2)", overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { height: "100%", width: progress + "%", background: i === 1 ? GOLD : GREEN, boxShadow: "0 0 18px " + (i === 1 ? GOLD : GREEN) } }) })
+            /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { height: 18, marginTop: 13, borderRadius: 20, background: "rgba(255,255,255,.2)", overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { height: "100%", width: progress + "%", background: i === 1 ? GOLD : GREEN, boxShadow: "0 0 18px " + (i === 1 ? GOLD : GREEN) } }) })
           ] }, row + i);
         }) })
       ] })
@@ -42543,25 +42599,30 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const subtitleSource = Array.isArray(props == null ? void 0 : props.itemSubtitles) ? props == null ? void 0 : props.itemSubtitles : Array.isArray(props == null ? void 0 : props.subLabels) ? props == null ? void 0 : props.subLabels : void 0;
     const subtitles = optionalStrings2(subtitleSource);
     const hasExplicitSubtitles = Array.isArray(subtitleSource);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    const isEnglish = cue.language === "en";
+    const stackWidth = isEnglish ? 1070 : 693;
+    const defaultPayload = { subLabel: cue.section.eyebrow };
+    const usedIconNames = /* @__PURE__ */ new Set();
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 84, top: BODY_TOP3, width: 693, display: "grid", gap: 20 }, children: rows3.map((row, i) => {
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", left: 84, top: BODY_TOP3, width: stackWidth, display: "grid", gap: isEnglish ? 18 : 20 }, children: rows3.map((row, i) => {
         var _a2;
         const p = spring({ frame: f - s - 14 - i * 17, fps, config: { damping: 14, stiffness: 150 } });
         const hudPalette = [BLUE, GOLD, GREEN, "#B26BFF"];
         const accent = hudPalette[i % hudPalette.length];
-        const shine = interpolate(f, [s + 25 + i * 17, s + 55 + i * 17], [-170, 760], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.linear });
-        const subtitle = hasExplicitSubtitles ? (_a2 = subtitles[i]) != null ? _a2 : "" : text(cue, props, "subLabel", cue.section.eyebrow);
-        return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { height: 122, padding: "22px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid " + accent, borderRadius: 18, overflow: "hidden", background: "rgba(3,9,18,.9)", boxShadow: "0 0 28px " + accent + "44", opacity: Math.min(1, p), transform: "translateX(" + interpolate(p, [0, 1], [-80, 0]) + "px)" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: shine, top: -32, width: 118, height: 190, transform: "rotate(18deg)", pointerEvents: "none", background: "linear-gradient(90deg, transparent, " + accent + "66, rgba(255,255,255,.62), transparent)", mixBlendMode: "screen" } }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { width: 52, height: 52, borderRadius: "50%", background: accent, color: "#06111c", display: "grid", placeItems: "center", fontSize: 21 }, children: (i + 1 < 10 ? "0" : "") + String(i + 1) }),
-            /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 37, fontWeight: 950, color: WHITE }, children: row }),
-              subtitle ? /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 5, color: accent, fontSize: 18, fontWeight: 900, letterSpacing: 4 }, children: subtitle }) : null
+        const shine = interpolate(f, [s + 25 + i * 17, s + 55 + i * 17], [-170, stackWidth + 68], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.linear });
+        const title = readTextSlot({ title: row }, "title", void 0, "");
+        const subtitle = hasExplicitSubtitles ? (_a2 = subtitles[i]) != null ? _a2 : "" : readTextSlot(props, "subLabel", defaultPayload, cue.section.eyebrow);
+        return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { minHeight: isEnglish ? 136 : 122, height: isEnglish ? void 0 : 122, padding: isEnglish ? "22px 30px" : "22px 28px", display: "flex", alignItems: "center", gap: 22, border: "2px solid " + accent, borderRadius: 18, overflow: "hidden", background: "rgba(3,9,18,.9)", boxShadow: "0 0 28px " + accent + "44", opacity: Math.min(1, p), transform: "translateX(" + interpolate(p, [0, 1], [-80, 0]) + "px)" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", left: shine, top: -32, width: 118, height: 190, transform: "rotate(18deg)", pointerEvents: "none", background: "linear-gradient(90deg, transparent, " + accent + "66, rgba(255,255,255,.62), transparent)", mixBlendMode: "screen" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, minWidth: 0, flex: 1 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { width: 52, height: 52, flex: "0 0 auto", marginRight: 2, borderRadius: "50%", background: "rgba(255,255,255,.08)", border: "2px solid " + accent, color: "#06111c", display: "grid", placeItems: "center", fontSize: 21, boxShadow: "0 0 18px " + accent + "77" }, children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(IcoFontPathIcon, { seed: title + i, color: accent, size: 29, usedNames: usedIconNames, fallbackIndex: i }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { minWidth: 0, flex: 1 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { fontSize: isEnglish ? 36 : 37, lineHeight: isEnglish ? "44px" : void 0, fontWeight: 950, color: WHITE, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "normal", wordBreak: "normal", hyphens: "auto" }, children: title }),
+              subtitle ? /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 5, color: accent, fontSize: 18, fontWeight: 900, letterSpacing: isEnglish ? 2 : 4, display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "normal", wordBreak: "normal", hyphens: "auto" }, children: subtitle }) : null
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(CircleMark, { color: accent, value: "" })
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(CircleMark, { color: accent, value: "" })
         ] }, row + i);
       }) })
     ] });
@@ -42571,18 +42632,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const rows3 = items(cue, props, ["items", "steps"], 4);
+    const isSingleItem = rows3.length === 1;
     const body = text(cue, props, "body", text(cue, props, "bodyText", text(cue, props, "effectText", cue.caption.zh || cue.section.subtitle)));
     const tilt = interpolate(f, [s, s + 32], [-3, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease2 });
     const entrance = enter2(f, s, -70, 20, 32);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 170, top: 335, width: 1060, minHeight: 550, padding: "90px 82px", background: "#F4EEDB", color: "#101826", boxShadow: "0 24px 48px rgba(0,0,0,.48)", opacity: entrance.opacity, transform: entrance.transform + " rotate(" + tilt + "deg)" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 430, top: -28, width: 250, height: 62, borderRadius: 10, background: "#667689" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 22, fontWeight: 950, letterSpacing: 7 }, children: text(cue, props, "label", "PRODUCT NOTE") }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 34, fontSize: 64, lineHeight: "78px", fontWeight: 950, overflowWrap: "break-word" }, children: body }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 25, marginTop: 35 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", gap: 18, alignItems: "center", fontSize: 35, fontWeight: 900, ...enter2(f, s + 18 + i * 15, -20, 0) }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { color: "#149D68", fontSize: 38 }, children: "\u2611" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { minWidth: 0, overflowWrap: "break-word" }, children: row })
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 170, top: 335, width: 1060, minHeight: 550, padding: "90px 82px", background: "#F4EEDB", color: "#101826", boxShadow: "0 24px 48px rgba(0,0,0,.48)", opacity: entrance.opacity, transform: entrance.transform + " rotate(" + tilt + "deg)" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", left: 430, top: -28, width: 250, height: 62, borderRadius: 10, background: "#667689" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { fontSize: 22, fontWeight: 950, letterSpacing: 7 }, children: text(cue, props, "label", "PRODUCT NOTE") }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 34, fontSize: 64, lineHeight: "78px", fontWeight: 950, overflowWrap: "break-word" }, children: body }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { display: "grid", gap: isSingleItem ? 0 : 25, marginTop: isSingleItem ? 52 : 35, minHeight: isSingleItem ? 180 : void 0, alignContent: isSingleItem ? "center" : void 0 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", gap: 18, alignItems: "center", minHeight: isSingleItem ? 120 : void 0, justifyContent: isSingleItem ? "center" : "flex-start", fontSize: isSingleItem ? 42 : 35, fontWeight: 900, ...enter2(f, s + 18 + i * 15, -20, 0) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { color: "#149D68", fontSize: 38 }, children: "\u2611" }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { minWidth: 0, overflowWrap: "break-word", wordBreak: "keep-all", lineHeight: 1.28 }, children: row })
         ] }, row + i)) })
       ] })
     ] });
@@ -42594,22 +42656,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const s = start(cue, fps) + 12;
     const years = items(cue, props, ["years", "items"], 5);
     const subtitles = strings2((_a2 = props == null ? void 0 : props.itemSubtitles) != null ? _a2 : props == null ? void 0 : props.subLabels);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 118, top: BODY_TOP3, width: 1180 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: GOLD, fontSize: 18, fontWeight: 950, letterSpacing: 5 }, children: text(cue, props, "label", "TIME REWIND") }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "relative", height: 275, marginTop: 24 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", top: 58, left: "7%", right: "7%", height: 4, background: "rgba(255,255,255,.72)" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 118, top: BODY_TOP3, width: 1180 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: GOLD, fontSize: 18, fontWeight: 950, letterSpacing: 5 }, children: text(cue, props, "label", "TIME REWIND") }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "relative", height: 275, marginTop: 24 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", top: 58, left: "7%", right: "7%", height: 4, background: "rgba(255,255,255,.72)" } }),
           years.map((year, i) => {
             const x = years.length === 1 ? 50 : 8 + i / (years.length - 1) * 84;
             const p = spring({ frame: f - s - 16 - i * 14, fps, config: { damping: 16, stiffness: 150 } });
-            return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: x + "%", top: 0, width: 210, marginLeft: -105, transform: "scale(" + interpolate(p, [0, 1], [0.8, 1]) + ")", transformOrigin: "top center", opacity: Math.min(1, p), textAlign: "center", overflow: "hidden" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("i", { style: { display: "block", width: 30, height: 30, margin: "0 auto 43px", borderRadius: "50%", background: i === years.length - 1 ? GOLD : BLUE, boxShadow: "0 0 18px " + (i === years.length - 1 ? GOLD : BLUE) } }),
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { display: "block", fontSize: 46, color: WHITE, lineHeight: 1.08, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: year }),
-              /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { display: "block", marginTop: 15, fontSize: 16, color: DIM, fontWeight: 900, letterSpacing: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: subtitles[i] || text(cue, props, "milestoneLabel", "CAPABILITY") })
+            return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: x + "%", top: 0, width: 210, marginLeft: -105, transform: "scale(" + interpolate(p, [0, 1], [0.8, 1]) + ")", transformOrigin: "top center", opacity: Math.min(1, p), textAlign: "center", overflow: "hidden" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("i", { style: { display: "block", width: 30, height: 30, margin: "0 auto 43px", borderRadius: "50%", background: i === years.length - 1 ? GOLD : BLUE, boxShadow: "0 0 18px " + (i === years.length - 1 ? GOLD : BLUE) } }),
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { display: "block", fontSize: 46, color: WHITE, lineHeight: 1.08, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: year }),
+              /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { display: "block", marginTop: 15, fontSize: 16, color: DIM, fontWeight: 900, letterSpacing: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }, children: subtitles[i] || text(cue, props, "milestoneLabel", "CAPABILITY") })
             ] }, year + i);
           }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { position: "absolute", right: 78, top: 196, color: GOLD, fontSize: 20 }, children: "<< REWIND" })
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { position: "absolute", right: 78, top: 196, color: GOLD, fontSize: 20 }, children: "<< REWIND" })
         ] })
       ] })
     ] });
@@ -42619,15 +42681,21 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const cards = [[-90, -45, GOLD], [0, 0, GOLD], [90, 45, GOLD]];
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    const headline = text(cue, props, "headline", cue.section.subtitle);
+    const body = text(cue, props, "body", text(cue, props, "bodyText", text(cue, props, "effectText", cue.caption.zh)));
+    const headlineLength = Array.from(headline).length;
+    const bodyLength = Array.from(body).length;
+    const titleFontSize = headlineLength > 48 ? 38 : headlineLength > 34 ? 46 : headlineLength > 24 ? 52 : 56;
+    const bodyFontSize = bodyLength > 150 ? 20 : bodyLength > 110 ? 23 : bodyLength > 78 ? 26 : 29;
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { position: "absolute", left: 190, top: BODY_TOP3, width: 1050, height: 470 }, children: cards.map(([x, y, color], i) => {
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { position: "absolute", left: 190, top: BODY_TOP3, width: 1050, height: 520 }, children: cards.map(([x, y, color], i) => {
         const p = spring({ frame: f - s - 10 - i * 10, fps, config: { damping: 15, stiffness: 150 } });
-        return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0, padding: "58px 70px", background: "#F6F0E2", color: "#101826", borderTop: "14px solid " + color, boxShadow: "0 18px 42px rgba(0,0,0,.36)", opacity: Math.min(1, p), transform: "translate(" + interpolate(p, [0, 1], [x * 2, x]) + "px," + interpolate(p, [0, 1], [y * 2, y]) + "px) rotate(" + (i - 1) * 2 + "deg)" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { fontSize: 20, fontWeight: 950, letterSpacing: 6 }, children: "THE PRODUCT PAPER" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 36, fontSize: 56, fontWeight: 950 }, children: i === 2 ? text(cue, props, "headline", cue.section.subtitle) : text(cue, props, "ghostTitle", cue.section.subtitle) }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 24, borderTop: "2px solid #7E8794" } }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 20, fontSize: 29, fontWeight: 850 }, children: text(cue, props, "body", cue.caption.zh) })
+        return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0, padding: "58px 70px", background: "#F6F0E2", color: "#101826", borderTop: "14px solid " + color, boxShadow: "0 18px 42px rgba(0,0,0,.36)", opacity: Math.min(1, p), transform: "translate(" + interpolate(p, [0, 1], [x * 2, x]) + "px," + interpolate(p, [0, 1], [y * 2, y]) + "px) rotate(" + (i - 1) * 2 + "deg)" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { fontSize: 20, fontWeight: 950, letterSpacing: 6 }, children: "THE PRODUCT PAPER" }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 36, fontSize: titleFontSize, lineHeight: titleFontSize * 1.16 + "px", fontWeight: 950, overflowWrap: "break-word", wordBreak: "keep-all" }, children: i === 2 ? headline : text(cue, props, "ghostTitle", cue.section.subtitle) }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 24, borderTop: "2px solid #7E8794" } }),
+          i === 2 ? /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { "data-flying-paper-body": true, style: { marginTop: 20, fontSize: bodyFontSize, lineHeight: bodyFontSize * 1.3 + "px", fontWeight: 850, overflowWrap: "break-word", wordBreak: "keep-all" }, children: body }) : null
         ] }, i);
       }) })
     ] });
@@ -42637,21 +42705,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const { fps } = useVideoConfig();
     const s = start(cue, fps) + 12;
     const rows3 = items(cue, props);
-    return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
+    const isSingleItem = rows3.length === 1;
+    return /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       header(cue, props),
-      /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { position: "absolute", left: 105, top: BODY_TOP3, width: 860, ...enter2(f, s) }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { color: GOLD, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", cue.section.eyebrow) }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 72, lineHeight: "86px", fontWeight: 950 }, children: "\u91CD\u70B9\u7B80\u8981\u5185\u5BB9" }),
-        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { style: { display: "grid", gap: 24, marginTop: 38 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, ...enter2(f, s + 18 + i * 17, -24, 0) }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("span", { style: { width: 54, height: 54, border: "3px solid " + BLUE, color: BLUE, fontSize: 40, lineHeight: "48px", textAlign: "center" }, children: "\u2713" }),
-          /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("b", { style: { fontSize: 42, color: WHITE }, children: row })
+      /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { position: "absolute", left: 105, top: BODY_TOP3, width: 860, ...enter2(f, s) }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { color: GOLD, fontSize: 24, fontWeight: 950, letterSpacing: 6 }, children: text(cue, props, "label", cue.section.eyebrow) }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { marginTop: 28, color: WHITE, fontSize: 72, lineHeight: "86px", fontWeight: 950 }, children: "\u91CD\u70B9\u7B80\u8981\u5185\u5BB9" }),
+        /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { style: { display: "grid", gap: isSingleItem ? 0 : 24, marginTop: isSingleItem ? 62 : 38, minHeight: isSingleItem ? 220 : void 0, alignContent: isSingleItem ? "center" : void 0 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, minHeight: isSingleItem ? 132 : void 0, justifyContent: isSingleItem ? "center" : "flex-start", ...enter2(f, s + 18 + i * 17, -24, 0) }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("span", { style: { width: 54, height: 54, flex: "0 0 auto", border: "3px solid " + BLUE, color: BLUE, fontSize: 40, lineHeight: "48px", textAlign: "center" }, children: "\u2713" }),
+          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("b", { style: { minWidth: 0, fontSize: isSingleItem ? 48 : 42, lineHeight: 1.24, color: WHITE, overflowWrap: "break-word", wordBreak: "keep-all" }, children: row })
         ] }, row + i)) })
       ] })
     ] });
   };
 
   // src/JasonWu/copyopen/HeroTitle.tsx
-  var import_jsx_runtime61 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime62 = __toESM(require_jsx_runtime());
   var HeroTitle = ({
     title,
     subtitle,
@@ -42663,7 +42732,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const titleChars = title.split("");
-    return /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -42671,8 +42740,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "center",
           background: scrimBackground
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime61.jsxs)("div", { style: { textAlign: "center", maxWidth: "85%" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)("div", { style: { textAlign: "center", maxWidth: "85%" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
             "div",
             {
               style: {
@@ -42692,7 +42761,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   fps,
                   config: { damping: 12, stiffness: 150 }
                 });
-                return /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
                   "span",
                   {
                     style: {
@@ -42711,7 +42780,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               })
             }
           ),
-          subtitle && /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+          subtitle && /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
             "div",
             {
               style: {
@@ -42731,7 +42800,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: subtitle
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
             "div",
             {
               style: {
@@ -42757,7 +42826,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/ProgressBar.tsx
-  var import_jsx_runtime62 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime63 = __toESM(require_jsx_runtime());
   var ProgressBar = ({
     progress,
     label: label3,
@@ -42832,7 +42901,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const trackWidth = 1344;
     const trackLeft = (1920 - trackWidth) / 2;
     const trackTop = label3 ? 520 : 500;
-    return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -42840,7 +42909,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           justifyContent: "center",
           alignItems: "center"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
           "div",
           {
             style: {
@@ -42853,7 +42922,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               gap: 24
             },
             children: [
-              label3 && /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+              label3 && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                 "div",
                 {
                   style: {
@@ -42871,7 +42940,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: label3
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
                 "div",
                 {
                   style: {
@@ -42879,7 +42948,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     position: "relative"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                       "div",
                       {
                         style: {
@@ -42901,7 +42970,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               config: { damping: 14, stiffness: 80 }
                             });
                             const segWidth = seg.value / 100 * 100;
-                            return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                            return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                               "div",
                               {
                                 style: {
@@ -42918,7 +42987,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           })
                         ) : (
                           // Single fill bar
-                          /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                             "div",
                             {
                               style: {
@@ -42933,7 +43002,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         )
                       }
                     ),
-                    isSegmented && /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                    isSegmented && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                       "div",
                       {
                         style: {
@@ -42948,7 +43017,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                             fps,
                             config: { damping: 20 }
                           });
-                          return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+                          return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
                             "div",
                             {
                               style: {
@@ -42970,7 +43039,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   ]
                 }
               ),
-              showPercentage && !isSegmented && /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)(
+              showPercentage && !isSegmented && /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
                 "div",
                 {
                   style: {
@@ -42994,7 +43063,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/ComparisonCard.tsx
-  var import_jsx_runtime63 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime64 = __toESM(require_jsx_runtime());
   var ComparisonCard = ({
     leftLabel,
     rightLabel,
@@ -43077,7 +43146,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const directionArrow = changeDirection === "up" ? "\u2191" : changeDirection === "down" ? "\u2193" : "\u2194";
     const directionColor = changeDirection === "up" ? "#10B981" : changeDirection === "down" ? "#EF4444" : "#9CA3AF";
-    return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -43085,7 +43154,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           justifyContent: "center",
           alignItems: "center"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
           "div",
           {
             style: {
@@ -43097,7 +43166,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               gap: 32
             },
             children: [
-              title && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+              title && /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                 "div",
                 {
                   style: {
@@ -43112,7 +43181,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: title
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                 "div",
                 {
                   style: {
@@ -43127,7 +43196,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     minHeight: 280
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                       "div",
                       {
                         style: {
@@ -43142,7 +43211,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           gap: 16
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43154,7 +43223,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               }
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43169,7 +43238,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               children: leftLabel
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43185,7 +43254,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                       "div",
                       {
                         style: {
@@ -43197,7 +43266,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           position: "relative"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43209,7 +43278,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               }
                             }
                           ),
-                          changeIndicator && /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+                          changeIndicator && /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                             "div",
                             {
                               style: {
@@ -43223,7 +43292,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                                 transform: `scale(${indicatorScale})`
                               },
                               children: [
-                                /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                                /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                                   "div",
                                   {
                                     style: {
@@ -43236,7 +43305,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                                       alignItems: "center",
                                       boxShadow: "0 1px 4px rgba(0,0,0,0.1)"
                                     },
-                                    children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                                    children: /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                                       "span",
                                       {
                                         style: {
@@ -43250,7 +43319,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                                     )
                                   }
                                 ),
-                                /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                                /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                                   "div",
                                   {
                                     style: {
@@ -43269,7 +43338,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
                       "div",
                       {
                         style: {
@@ -43284,7 +43353,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           gap: 16
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43296,7 +43365,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               }
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43311,7 +43380,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                               children: rightLabel
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
                             "div",
                             {
                               style: {
@@ -43338,7 +43407,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/TerminalScene.tsx
-  var import_jsx_runtime64 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime65 = __toESM(require_jsx_runtime());
   var TerminalScene = ({
     title = "Terminal",
     steps,
@@ -43392,7 +43461,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const renderedLines = visibleLines.slice(scrollStart);
     const blinkPhase = Math.floor(frame / (fps * 0.55)) % 2 === 0;
     const windowOpacity = spring({ frame, fps, config: { damping: 25, stiffness: 100 } });
-    return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -43402,7 +43471,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           padding: "80px",
           fontFamily: "'JetBrains Mono', 'Consolas', 'Monaco', monospace"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
           "div",
           {
             style: {
@@ -43418,7 +43487,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               position: "relative"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
                 "div",
                 {
                   style: {
@@ -43430,10 +43499,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     borderBottom: "1px solid rgba(255,255,255,0.05)"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#FF5F56" } }),
-                    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#FFBD2E" } }),
-                    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#27C93F" } }),
-                    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#FF5F56" } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#FFBD2E" } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { style: { width: 12, height: 12, borderRadius: "50%", background: "#27C93F" } }),
+                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                       "div",
                       {
                         style: {
@@ -43449,7 +43518,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                 "div",
                 {
                   style: {
@@ -43471,10 +43540,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       const typed = line.text.slice(0, Math.floor(progress));
                       const isLatest = idx === renderedLines.length - 1;
                       const isActive = frame <= line.endFrame + fps * 0.2;
-                      return /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)("div", { style: { display: "flex", alignItems: "baseline" }, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("span", { style: { color: accentColor, marginRight: 12, fontWeight: 600 }, children: prompt }),
-                        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("span", { style: { color: "#F1F5F9" }, children: typed }),
-                        isLatest && isActive && blinkPhase && /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { style: { display: "flex", alignItems: "baseline" }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("span", { style: { color: accentColor, marginRight: 12, fontWeight: 600 }, children: prompt }),
+                        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("span", { style: { color: "#F1F5F9" }, children: typed }),
+                        isLatest && isActive && blinkPhase && /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                           "span",
                           {
                             style: {
@@ -43495,7 +43564,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         [0, 1],
                         { extrapolateRight: "clamp" }
                       );
-                      return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                         "div",
                         {
                           style: { color: "#9CA3AF", opacity: alpha, paddingLeft: 4 },
@@ -43518,7 +43587,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 const outAlpha = lifeProgress > 0.82 ? interpolate(lifeProgress, [0.82, 1], [1, 0], { extrapolateRight: "clamp" }) : 1;
                 const alpha = Math.min(inAlpha, outAlpha);
                 const translateY = interpolate(inAlpha, [0, 1], [14, 0]);
-                return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                   "div",
                   {
                     style: {
@@ -43550,7 +43619,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/EndTag.tsx
-  var import_jsx_runtime65 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime66 = __toESM(require_jsx_runtime());
   var PALETTES = {
     cool_offwhite_on_black: {
       background: "#000000",
@@ -43617,7 +43686,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       }
     );
     const shimmerVisible = frame >= shimmerStartFrame && frame <= shimmerStartFrame + shimmerTravelFrames;
-    return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -43625,7 +43694,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           justifyContent: "center",
           alignItems: "center"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
           "div",
           {
             style: {
@@ -43636,7 +43705,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               maxWidth: "86%"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                 "div",
                 {
                   style: {
@@ -43655,7 +43724,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: text4
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
                 "div",
                 {
                   style: {
@@ -43666,7 +43735,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     height: 5
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                       "div",
                       {
                         style: {
@@ -43682,7 +43751,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         }
                       }
                     ),
-                    shimmerVisible && /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+                    shimmerVisible && /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                       "div",
                       {
                         style: {
@@ -43709,7 +43778,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/copyopen/charts/BarChart.tsx
-  var import_jsx_runtime66 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime67 = __toESM(require_jsx_runtime());
   var BarChart = ({
     data,
     title,
@@ -43746,7 +43815,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const y = chartBottom - i / gridLineCount * chartHeight;
       return { value, y };
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -43755,13 +43824,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "center",
           padding: 40
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
           "svg",
           {
             viewBox: "0 0 1920 1080",
             style: { width: "100%", height: "100%" },
             children: [
-              title && /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+              title && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                 "text",
                 {
                   x: 960,
@@ -43782,8 +43851,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   [0, 0.6],
                   { extrapolateRight: "clamp" }
                 );
-                return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("g", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "line",
                     {
                       x1: chartLeft,
@@ -43795,7 +43864,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       opacity: gridOpacity
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "text",
                     {
                       x: chartLeft - 12,
@@ -43811,7 +43880,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   )
                 ] }, `grid-${i}`);
               }),
-              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                 "line",
                 {
                   x1: chartLeft,
@@ -43825,7 +43894,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   })
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                 "line",
                 {
                   x1: chartLeft,
@@ -43893,8 +43962,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   [1, 0],
                   { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
                 );
-                return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("g", { opacity: fadeOut, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { opacity: fadeOut, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "rect",
                     {
                       x: barX,
@@ -43906,7 +43975,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       opacity: barOpacity
                     }
                   ),
-                  showValues && /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                  showValues && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "text",
                     {
                       x: barX + barWidth / 2,
@@ -43925,7 +43994,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       children: formatNumber(datum.value)
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
                     "text",
                     {
                       x: barX + barWidth / 2,
@@ -43955,7 +44024,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
 
   // src/JasonWu/copyopen/charts/LineChart.tsx
-  var import_jsx_runtime67 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime68 = __toESM(require_jsx_runtime());
   var LineChart = ({
     series,
     title,
@@ -44005,7 +44074,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       [1, 0],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -44014,13 +44083,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "center",
           padding: 40
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
           "svg",
           {
             viewBox: "0 0 1920 1080",
             style: { width: "100%", height: "100%" },
             children: [
-              title && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              title && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "text",
                 {
                   x: 960,
@@ -44034,15 +44103,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: title
                 }
               ),
-              showGrid && /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
+              showGrid && /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
                 "g",
                 {
                   opacity: interpolate(frame, [0, 10], [0, 0.5], {
                     extrapolateRight: "clamp"
                   }),
                   children: [
-                    gridLinesY.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    gridLinesY.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "line",
                         {
                           x1: chartLeft,
@@ -44053,7 +44122,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           strokeWidth: 1
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "text",
                         {
                           x: chartLeft - 14,
@@ -44067,8 +44136,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         }
                       )
                     ] }, `gy-${i}`)),
-                    gridLinesX.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    gridLinesX.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "line",
                         {
                           x1: line.x,
@@ -44079,7 +44148,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           strokeWidth: 1
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "text",
                         {
                           x: line.x,
@@ -44096,7 +44165,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "line",
                 {
                   x1: chartLeft,
@@ -44110,7 +44179,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   })
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "line",
                 {
                   x1: chartLeft,
@@ -44124,7 +44193,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   })
                 }
               ),
-              xLabel && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              xLabel && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "text",
                 {
                   x: chartLeft + chartWidth / 2,
@@ -44141,7 +44210,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: xLabel
                 }
               ),
-              yLabel && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              yLabel && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "text",
                 {
                   x: 40,
@@ -44198,8 +44267,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   });
                 }
                 const dashOffset = pathLength * (1 - drawProgress);
-                return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { opacity: fadeOut, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { opacity: fadeOut, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                     "path",
                     {
                       d: pathD,
@@ -44220,7 +44289,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       [0, 1],
                       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
                     );
-                    return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                       "circle",
                       {
                         cx: toSvgX(p.x),
@@ -44236,7 +44305,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   })
                 ] }, s.label);
               }),
-              showLegend && series.length > 1 && /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+              showLegend && series.length > 1 && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                 "g",
                 {
                   opacity: interpolate(frame, [15, 25], [0, 1], {
@@ -44246,8 +44315,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: series.map((s, i) => {
                     const color = s.color || colors[i % colors.length];
                     const legendX = 960 - series.length * 160 / 2 + i * 160;
-                    return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)("g", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "rect",
                         {
                           x: legendX,
@@ -44258,7 +44327,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           fill: color
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                         "text",
                         {
                           x: legendX + 32,
@@ -44288,7 +44357,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
 
   // src/JasonWu/copyopen/charts/PieChart.tsx
-  var import_jsx_runtime68 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime69 = __toESM(require_jsx_runtime());
   var PieChart = ({
     data,
     title,
@@ -44333,7 +44402,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       [1, 0],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -44342,13 +44411,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           alignItems: "center",
           padding: 40
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
           "svg",
           {
             viewBox: "0 0 1920 1080",
             style: { width: "100%", height: "100%" },
             children: [
-              title && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+              title && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                 "text",
                 {
                   x: 960,
@@ -44362,7 +44431,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: title
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { opacity: fadeOut, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("g", { opacity: fadeOut, children: [
                 slices.map((slice, i) => {
                   let sliceProgress;
                   let sliceOpacity;
@@ -44416,7 +44485,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     effectiveStartAngle,
                     effectiveEndAngle
                   );
-                  return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                  return /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                     "path",
                     {
                       d: path,
@@ -44428,7 +44497,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     slice.datum.label
                   );
                 }),
-                donut && (centerLabel || centerValue) && /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+                donut && (centerLabel || centerValue) && /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
                   "g",
                   {
                     opacity: interpolate(
@@ -44438,7 +44507,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
                     ),
                     children: [
-                      centerValue && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                      centerValue && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                         "text",
                         {
                           x: cx,
@@ -44452,7 +44521,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                           children: centerValue
                         }
                       ),
-                      centerLabel && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                      centerLabel && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                         "text",
                         {
                           x: cx,
@@ -44471,7 +44540,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   }
                 )
               ] }),
-              showLegend && /* @__PURE__ */ (0, import_jsx_runtime68.jsx)("g", { opacity: fadeOut, children: slices.map((slice, i) => {
+              showLegend && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("g", { opacity: fadeOut, children: slices.map((slice, i) => {
                 const legendY = cy - slices.length * 44 / 2 + i * 44;
                 const legendX = showLegend ? 1200 : cx + outerRadius + 80;
                 const legendOpacity = spring({
@@ -44479,8 +44548,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   fps,
                   config: { damping: 20 }
                 });
-                return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("g", { opacity: legendOpacity, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("g", { opacity: legendOpacity, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                     "rect",
                     {
                       x: legendX,
@@ -44491,7 +44560,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       fill: slice.color
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
                     "text",
                     {
                       x: legendX + 32,
@@ -44503,7 +44572,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       children: slice.datum.label
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+                  /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
                     "text",
                     {
                       x: legendX + 32,
@@ -44559,7 +44628,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
 
   // src/JasonWu/copyopen/charts/KPIGrid.tsx
-  var import_jsx_runtime69 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime70 = __toESM(require_jsx_runtime());
   var KPIGrid = ({
     metrics,
     title,
@@ -44596,7 +44665,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       [1, 0],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(
       AbsoluteFill,
       {
         style: {
@@ -44606,7 +44675,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           fontFamily
         },
         children: [
-          title && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+          title && /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
             "div",
             {
               style: {
@@ -44661,7 +44730,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 [0, 1],
                 { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
               );
-              return /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+              return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
                 "div",
                 {
                   style: {
@@ -44682,7 +44751,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     transform: `translateY(${slideY}px)`,
                     boxShadow: "0 2px 12px rgba(0,0,0,0.06)"
                   },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+                  children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
                     KPICardContent,
                     {
                       metric,
@@ -44708,7 +44777,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 config: { damping: 20 }
               });
             }
-            return /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+            return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
               "div",
               {
                 style: {
@@ -44729,7 +44798,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   transform: `scale(${cardScale})`,
                   boxShadow: "0 2px 12px rgba(0,0,0,0.06)"
                 },
-                children: /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
                   KPICardContent,
                   {
                     metric,
@@ -44781,8 +44850,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       [0, 1],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(import_jsx_runtime69.Fragment, { children: [
-      metric.icon && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(import_jsx_runtime70.Fragment, { children: [
+      metric.icon && /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
         "div",
         {
           style: {
@@ -44792,7 +44861,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: metric.icon
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(
         "div",
         {
           style: {
@@ -44809,7 +44878,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
         "div",
         {
           style: {
@@ -44823,7 +44892,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: metric.label
         }
       ),
-      metric.change !== void 0 && metric.change !== 0 && /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+      metric.change !== void 0 && metric.change !== 0 && /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(
         "div",
         {
           style: {
@@ -44838,7 +44907,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             opacity: changeOpacity
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 18 }, children: metric.change > 0 ? "\u25B2" : "\u25BC" }),
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { style: { fontSize: 18 }, children: metric.change > 0 ? "\u25B2" : "\u25BC" }),
             Math.abs(metric.change).toFixed(1),
             "%"
           ]
@@ -44857,7 +44926,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }
 
   // src/JasonWu/CopyOpenComponents.tsx
-  var import_jsx_runtime70 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime71 = __toESM(require_jsx_runtime());
   var TEXT = "#F8FAFC";
   var BLUE2 = "#22D3EE";
   var GREEN2 = "#10B981";
@@ -44904,24 +44973,100 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return { label: label3 || fallbackLabels[index % fallbackLabels.length], value: (_a2 = nums[index]) != null ? _a2 : fallbackValues[index % fallbackValues.length] };
     });
   };
-  var CopyOpenHeroTitle = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(HeroTitle, { title: str(props, ["body", "bodyText", "effectText", "text"], cue.section.subtitle), subtitle: str(props, ["highlightQuote", "subtitle", "subLabel"], ""), accentColor: BLUE2, textColor: TEXT, subtitleColor: PURPLE, scrimBackground: "transparent" });
-  var CopyOpenProgressBar = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ProgressBar, { progress: num(props, ["progress", "value", "marketTo"], 76), label: str(props, ["label", "bodyText", "body", "effectText", "metricLabel"], cue.section.subtitle), backgroundColor: "transparent", trackColor: "#1E293B", textColor: TEXT, color: GREEN2, animationStyle: "pulse" });
-  var CopyOpenComparisonCard = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ComparisonCard, { title: str(props, ["headline", "title"], cue.section.subtitle), leftLabel: str(props, ["leftLabel", "marketLabel"], "Long video"), rightLabel: str(props, ["rightLabel", "engineeringLabel"], "Short clips"), leftValue: str(props, ["leftValue"], String(num(props, ["from"], 58))), rightValue: str(props, ["rightValue"], String(num(props, ["to", "value", "progress"], 8))), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, leftColor: "#F59E0B", rightColor: GREEN2, changeIndicator: str(props, ["body", "effectText"], "ready"), changeDirection: "up" });
+  var CopyOpenHeroTitle = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(HeroTitle, { title: str(props, ["body", "bodyText", "effectText", "text"], cue.section.subtitle), subtitle: str(props, ["highlightQuote", "subtitle", "subLabel"], ""), accentColor: BLUE2, textColor: TEXT, subtitleColor: PURPLE, scrimBackground: "transparent" });
+  var CopyOpenProgressBar = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(ProgressBar, { progress: num(props, ["progress", "value", "marketTo"], 76), label: str(props, ["label", "bodyText", "body", "effectText", "metricLabel"], cue.section.subtitle), backgroundColor: "transparent", trackColor: "#1E293B", textColor: TEXT, color: GREEN2, animationStyle: "pulse" });
+  var CopyOpenComparisonCard = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(ComparisonCard, { title: str(props, ["headline", "title"], cue.section.subtitle), leftLabel: str(props, ["leftLabel", "marketLabel"], "Long video"), rightLabel: str(props, ["rightLabel", "engineeringLabel"], "Short clips"), leftValue: str(props, ["leftValue"], String(num(props, ["from"], 58))), rightValue: str(props, ["rightValue"], String(num(props, ["to", "value", "progress"], 8))), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, leftColor: "#F59E0B", rightColor: GREEN2, changeIndicator: str(props, ["body", "effectText"], "ready"), changeDirection: "up" });
   var CopyOpenTerminalScene = ({ cue, props }) => {
     const rows3 = list(props, ["steps", "items"], ["openmontage clip input.mp4", "transcribing audio...", "ranking highlight candidates...", "8 clips ready", "remotion render JcMotionCards", "done -> out/shorts"]);
     const steps = rows3.map((text4, index) => index % 3 === 0 ? { kind: "cmd", text: text4, typeSpeed: 0.025 } : index % 3 === 2 ? { kind: "pill", text: text4, color: GREEN2 } : { kind: "out", text: text4 });
-    return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(TerminalScene, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", accentColor: GREEN2, steps });
+    return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(TerminalScene, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", accentColor: GREEN2, steps });
   };
-  var CopyOpenEndTag = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(EndTag, { text: str(props, ["body", "effectText", "headline", "title"], cue.section.subtitle), palette: "cool_offwhite_on_black", fadeInSeconds: 0.5, holdSeconds: 3.2, fadeOutSeconds: 0.5, overlay: true });
-  var CopyOpenBarChart = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(BarChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, gridColor: GRID, animationStyle: "pop", data: chartData(props, ["Hook", "Value", "Pace", "Share"], [94, 82, 76, 69]) });
+  var CopyOpenEndTag = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(EndTag, { text: str(props, ["body", "effectText", "headline", "title"], cue.section.subtitle), palette: "cool_offwhite_on_black", fadeInSeconds: 0.5, holdSeconds: 3.2, fadeOutSeconds: 0.5, overlay: true });
+  var CopyOpenBarChart = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(BarChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, gridColor: GRID, animationStyle: "pop", data: chartData(props, ["Hook", "Value", "Pace", "Share"], [94, 82, 76, 69]) });
   var CopyOpenLineChart = ({ cue, props }) => {
     const data = chartData(props, ["0", "10", "20", "30"], [100, 91, 86, 78]);
-    return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(LineChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, gridColor: GRID, xLabel: "seconds", yLabel: "watch", series: [{ label: str(props, ["label", "metricLabel"], "trend"), color: BLUE2, data: data.map((item2, index) => ({ x: Number(item2.label) || index * 10, y: item2.value })) }] });
+    return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(LineChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, gridColor: GRID, xLabel: "seconds", yLabel: "watch", series: [{ label: str(props, ["label", "metricLabel"], "trend"), color: BLUE2, data: data.map((item2, index) => ({ x: Number(item2.label) || index * 10, y: item2.value })) }] });
   };
-  var CopyOpenPieChart = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(PieChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, donut: true, animationStyle: "sequential", data: chartData(props, ["Hook", "Proof", "Story", "CTA"], [35, 30, 20, 15]).map((item2, index) => ({ ...item2, color: [BLUE2, GREEN2, "#F59E0B", PURPLE][index % 4] })) });
+  var CopyOpenPieChart = ({ cue, props }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(PieChart, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", textColor: TEXT, donut: true, animationStyle: "sequential", data: chartData(props, ["Hook", "Proof", "Story", "CTA"], [35, 30, 20, 15]).map((item2, index) => ({ ...item2, color: [BLUE2, GREEN2, "#F59E0B", PURPLE][index % 4] })) });
   var CopyOpenKPIGrid = ({ cue, props }) => {
     const data = chartData(props, ["clips", "avg score", "minutes saved"], [8, 86, 74]).slice(0, 6);
-    return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(KPIGrid, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, columns: Math.min(3, Math.max(2, data.length)), animationStyle: "cascade", metrics: data.map((item2, index) => ({ label: item2.label, value: item2.value, suffix: index === 1 ? "%" : void 0, change: [12.4, 5.2, 18.1][index % 3] })) });
+    return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(KPIGrid, { title: str(props, ["headline", "title"], cue.section.subtitle), backgroundColor: "transparent", cardBackgroundColor: CARD, textColor: TEXT, columns: Math.min(3, Math.max(2, data.length)), animationStyle: "cascade", metrics: data.map((item2, index) => ({ label: item2.label, value: item2.value, suffix: index === 1 ? "%" : void 0, change: [12.4, 5.2, 18.1][index % 3] })) });
+  };
+
+  // src/JasonWu/SpeakerGrowthDashboard.tsx
+  var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+  var ease3 = Easing.bezier(0.16, 1, 0.3, 1);
+  var BLUE3 = "#38BDF8";
+  var GREEN3 = "#37F29A";
+  var WHITE2 = "#FFFFFF";
+  var textProp2 = (props, key, fallback) => {
+    const value = props == null ? void 0 : props[key];
+    return typeof value === "string" ? value : fallback;
+  };
+  var FeatureIcon = ({ seed }) => /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { width: 52, height: 52, borderRadius: 13, border: `1.5px solid rgba(56,132,255,.58)`, boxShadow: "0 0 24px rgba(37,99,235,.36), inset 0 0 22px rgba(37,99,235,.16)", display: "grid", placeItems: "center", background: "rgba(6,18,38,.46)" }, children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(IcoFontPathIcon, { seed, color: BLUE3 }) });
+  var FeatureRow = ({ title, sub, index, start: start2 }) => {
+    const frame = useCurrentFrame();
+    const opacity2 = interpolate(frame, [start2 + index * 12, start2 + 22 + index * 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    const x = interpolate(frame, [start2 + index * 12, start2 + 24 + index * 12], [-22, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "56px minmax(0, 1fr)", alignItems: "center", gap: 18, opacity: opacity2, transform: `translateX(${x}px)` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(FeatureIcon, { seed: `${title}|${sub}|${index}` }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { minWidth: 0 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { color: WHITE2, fontSize: 30, lineHeight: "35px", fontWeight: 900, overflowWrap: "break-word" }, children: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { marginTop: 4, color: "rgba(148,210,255,.74)", fontSize: 15, lineHeight: "18px", fontWeight: 850, letterSpacing: 2.4 }, children: sub })
+      ] })
+    ] });
+  };
+  var BrandBlock = ({ props }) => /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { position: "absolute", left: 72, right: 0, bottom: 185 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { fontSize: 86, lineHeight: "88px", fontWeight: 950, letterSpacing: -1, textShadow: "0 20px 36px rgba(0,0,0,.6)" }, children: textProp2(props, "headline", "Hermes") }),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { marginTop: 18, height: 5, width: 230, borderRadius: 999, background: BLUE3, boxShadow: "0 0 26px rgba(56,189,248,.9)" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { marginTop: 18, color: BLUE3, fontSize: 23, lineHeight: "28px", fontWeight: 950, letterSpacing: 2.2 }, children: textProp2(props, "skillLabel", "\u81EA\u5A92\u4F53\u8FD0\u8425 SKILL") })
+  ] });
+  var GrowthCurve = ({ start: start2 }) => {
+    const frame = useCurrentFrame();
+    const progress = interpolate(frame, [start2, start2 + 78], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    const pathLength = Math.max(1e-3, progress);
+    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("svg", { width: "336", height: "118", viewBox: "0 0 336 118", style: { display: "block", overflow: "visible" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("linearGradient", { id: "speaker-growth-curve", x1: "0", x2: "1", y1: "0", y2: "0", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("stop", { offset: "0%", stopColor: "#1DDC72", stopOpacity: ".35" }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("stop", { offset: "100%", stopColor: GREEN3, stopOpacity: "1" })
+      ] }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("path", { d: "M8 94 C68 88 92 74 126 74 C166 74 169 46 204 45 C238 45 246 18 314 16", fill: "none", stroke: "url(#speaker-growth-curve)", strokeWidth: "5", strokeLinecap: "round", strokeDasharray: "1", strokeDashoffset: 1 - pathLength, pathLength: "1", style: { filter: "drop-shadow(0 0 14px rgba(55,242,154,.9))" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("circle", { cx: 314, cy: 16, r: interpolate(frame, [start2 + 64, start2 + 90], [0, 7], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 }), fill: GREEN3, style: { filter: "drop-shadow(0 0 18px rgba(55,242,154,.95))" } })
+    ] });
+  };
+  var SpeakerGrowthDashboard = ({ cue, props }) => {
+    const frame = useCurrentFrame();
+    const { fps } = useVideoConfig();
+    const start2 = Math.round(cue.start * fps) + 8;
+    const enterOpacity = interpolate(frame, [start2, start2 + 24], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    const enterX = interpolate(frame, [start2, start2 + 30], [-42, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 });
+    const metricValue = textProp2(props, "metricValue", "165");
+    const numeric = Number(String(metricValue).replace(/[^\d.-]/g, ""));
+    const animatedMetric = Number.isFinite(numeric) ? Math.round(interpolate(frame, [start2 + 72, start2 + 142], [0, numeric], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease3 })).toLocaleString("en-US") : metricValue;
+    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { position: "absolute", left: 0, top: 0, bottom: 0, width: 570, padding: "64px 58px 58px 72px", color: WHITE2, opacity: enterOpacity, transform: `translate(${enterX}px, 150px)`, overflow: "visible" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { position: "absolute", left: 0, top: 0, bottom: 0, width: 2, background: "linear-gradient(180deg, transparent, rgba(56,189,248,.82), transparent)" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { height: 179 } }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { marginTop: 54, display: "grid", gap: 48 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(FeatureRow, { title: textProp2(props, "feature1Title", "\u8BC4\u8BBA\u533A\u81EA\u52A8\u56DE\u590D"), sub: textProp2(props, "feature1Sub", "AUTO-REPLY"), index: 0, start: start2 + 44 }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(FeatureRow, { title: textProp2(props, "feature2Title", "\u59D4\u5A49\u63A8\u8350 \xB7 \u8D22\u52A1\u81EA\u7531\u56E2"), sub: textProp2(props, "feature2Sub", "SOFT CTA"), index: 1, start: start2 + 44 })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { marginTop: 58, position: "relative", minHeight: 250 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "54px minmax(0, 1fr)", gap: 18, alignItems: "start" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { width: 50, height: 50, borderRadius: 16, background: "rgba(55,242,154,.1)", border: "1px solid rgba(55,242,154,.55)", display: "grid", placeItems: "center", boxShadow: "0 0 28px rgba(55,242,154,.2)" }, children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(IcoFontPathIcon, { seed: textProp2(props, "metricTitle", "\u5165\u7FA4\u7387 \u731B\u589E"), color: GREEN3 }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { color: GREEN3, fontSize: 27, lineHeight: "32px", fontWeight: 950, letterSpacing: 1.4, textShadow: "0 0 20px rgba(55,242,154,.55)" }, children: textProp2(props, "metricTitle", "\u5165\u7FA4\u7387 \u731B\u589E") }),
+            /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 14, marginTop: 4 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { style: { color: GREEN3, fontSize: 102, lineHeight: "108px", fontWeight: 950, letterSpacing: -2, textShadow: "0 0 32px rgba(55,242,154,.68)" }, children: animatedMetric }),
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { style: { color: "rgba(226,255,239,.88)", fontSize: 24, fontWeight: 900 }, children: textProp2(props, "metricUnit", "\u751F\u6548\u4F1A\u5458") })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { color: "rgba(164,255,204,.64)", fontSize: 15, fontWeight: 850, letterSpacing: 2.2 }, children: textProp2(props, "metricSub", "NEW MEMBERS \xB7 \u8FD1 30 \u5929") })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { position: "absolute", left: 52, top: 128 }, children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(GrowthCurve, { start: start2 + 90 }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(BrandBlock, { props }),
+      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { position: "absolute", left: 72, right: 90, bottom: 86, borderTop: "1px solid rgba(56,189,248,.34)", paddingTop: 18, color: "rgba(214,241,255,.68)", fontSize: 17, lineHeight: "23px", fontWeight: 900, letterSpacing: 2.4 }, children: textProp2(props, "footer", "\u83B7\u5BA2\u4E00\u628A\u597D\u624B \xB7 GROWTH ENGINE") })
+    ] });
   };
 
   // src/design/tokens.ts
@@ -44937,7 +45082,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/ValueVerdict.tsx
-  var import_jsx_runtime71 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime73 = __toESM(require_jsx_runtime());
   var clean3 = (value, fallback = "") => typeof value === "string" ? value : fallback;
   var metricText = (value) => value === void 0 || value === null ? "" : String(value).trim();
   var accentOf = (value) => ["blue", "green", "yellow", "red"].includes(String(value)) ? String(value) : "blue";
@@ -44955,22 +45100,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const theme = getAccentTheme(accentOf(props == null ? void 0 : props.accent));
     const opacity2 = interpolate(frame, [start2, start2 + 18], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
     const translateX = interpolate(frame, [start2, start2 + 24], [-42, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", left: 86, top: 300, width: hasMetric ? 760 : 620, padding: "26px 30px 24px", borderRadius: 14, color: "#FFFFFF", background: "rgba(5,12,21,.76)", border: "1px solid " + theme.primary, boxShadow: "0 12px 34px rgba(0,0,0,.32), 0 0 26px " + theme.glow, opacity: opacity2, transform: "translateX(" + translateX + "px)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { color: theme.primary, fontSize: 17, fontWeight: 950, letterSpacing: 4 }, children: "VALUE VERDICT" }),
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 10, maxWidth: hasMetric ? 430 : 560, fontSize: 42, lineHeight: "52px", fontWeight: 950, overflowWrap: "break-word" }, children: title }),
-      body ? /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 12, maxWidth: hasMetric ? 430 : 560, color: "rgba(255,255,255,.78)", fontSize: 25, lineHeight: "34px", fontWeight: 750, overflowWrap: "break-word" }, children: body }) : null,
-      hasMetric ? /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", right: 24, top: 24, minWidth: 210, padding: "16px 18px", borderRadius: 12, background: theme.bg, border: "1px solid " + theme.primary, textAlign: "right", opacity: interpolate(frame, [start2 + 12, start2 + 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }), transform: "scale(" + interpolate(frame, [start2 + 12, start2 + 28], [0.9, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + ")" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 14, fontWeight: 950, letterSpacing: 2, color: theme.primary }, children: label3 }),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { marginTop: 2, fontSize: 52, lineHeight: "58px", fontWeight: 950 }, children: value }),
-        unit ? /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 21, fontWeight: 900, color: "rgba(255,255,255,.8)" }, children: unit }) : null
+    return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", left: 86, top: 300, width: hasMetric ? 760 : 620, padding: "26px 30px 24px", borderRadius: 14, color: "#FFFFFF", background: "rgba(5,12,21,.76)", border: "1px solid " + theme.primary, boxShadow: "0 12px 34px rgba(0,0,0,.32), 0 0 26px " + theme.glow, opacity: opacity2, transform: "translateX(" + translateX + "px)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { color: theme.primary, fontSize: 17, fontWeight: 950, letterSpacing: 4 }, children: "VALUE VERDICT" }),
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { marginTop: 10, maxWidth: hasMetric ? 430 : 560, fontSize: 42, lineHeight: "52px", fontWeight: 950, overflowWrap: "break-word" }, children: title }),
+      body ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { marginTop: 12, maxWidth: hasMetric ? 430 : 560, color: "rgba(255,255,255,.78)", fontSize: 25, lineHeight: "34px", fontWeight: 750, overflowWrap: "break-word" }, children: body }) : null,
+      hasMetric ? /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", right: 24, top: 24, minWidth: 210, padding: "16px 18px", borderRadius: 12, background: theme.bg, border: "1px solid " + theme.primary, textAlign: "right", opacity: interpolate(frame, [start2 + 12, start2 + 28], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }), transform: "scale(" + interpolate(frame, [start2 + 12, start2 + 28], [0.9, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + ")" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontSize: 14, fontWeight: 950, letterSpacing: 2, color: theme.primary }, children: label3 }),
+        /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { marginTop: 2, fontSize: 52, lineHeight: "58px", fontWeight: 950 }, children: value }),
+        unit ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontSize: 21, fontWeight: 900, color: "rgba(255,255,255,.8)" }, children: unit }) : null
       ] }) : null
     ] });
   };
 
   // src/design/components.registry.json
   var components_registry_default = {
-    schemaVersion: 4,
-    updatedAt: "2026-09-15T01:37:09.883Z",
+    schemaVersion: 5,
+    updatedAt: "2026-09-16T03:20:50.682Z",
     families: [
       {
         id: "metrics",
@@ -45103,7 +45248,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           metricLabel: "\u6838\u5FC3\u4FE1\u606F",
           unit: "%"
         },
-        updatedAt: "2026-09-14T20:58:35.002Z",
+        updatedAt: "2026-09-15T19:01:08.602Z",
         occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
@@ -45169,7 +45314,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         data: [
           "percentage"
         ],
-        version: 17,
+        version: 19,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
@@ -45228,12 +45373,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           contentPayload: {
             type: "metrics",
             value: 92,
-            label: "\u7EA2\u8272",
-            bodyText: "GOODS",
+            unit: "GOODSwhat",
+            label: "\u7EA2\u8272\u5C0F\u7231\u5FC3",
+            bodyText: "GOODSwhat",
             detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
           },
           categoryTag: "DESIGNRENEW",
-          label: "\u7EA2\u8272",
+          label: "\u7EA2\u8272\u5C0F\u7231\u5FC3",
           title: "GOODS",
           value: 92,
           progress: 92,
@@ -45242,22 +45388,25 @@ Check that all your Remotion packages are on the same version. If your dependenc
             92,
             92
           ],
-          metric: "\u7EA2\u8272",
+          metric: "\u7EA2\u8272\u5C0F\u7231\u5FC3",
           marketTo: 71,
           marketLabel: "--------------",
-          metricLabel: "\u7EA2\u8272",
+          metricLabel: "\u7EA2\u8272\u5C0F\u7231\u5FC3",
           marketSuffix: "SAFASDFAS",
           engineeringLabel: "\u589E\u957F\u6307\u6807",
           engineeringTo: 9,
           engineeringSuffix: "SAFASDFAS",
-          bodyText: "GOODS",
-          unit: "GOODS",
-          detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
+          bodyText: "GOODSwhat",
+          unit: "GOODSwhat",
+          detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
         },
         occupancyScore: 0.56,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T21:16:51.196Z",
+        updatedAt: "2026-09-15T14:43:52.456Z",
         editorSchema: {
           version: 1,
           kind: "metrics",
@@ -45463,118 +45612,84 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        id: "platform-shift-line",
-        name: "\u4EA7\u54C1\u7EBF\u589E\u957F",
-        family: "metrics",
-        description: "metrics \xB7 timeline \xB7 product",
-        tags: [
-          "metrics",
-          "timeline",
-          "product"
-        ],
-        data: [
-          "list",
-          "number"
-        ],
-        version: 9,
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 76,
-          boundsY: 300,
-          boundsWidth: 1120,
-          boundsHeight: 640,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 0.72,
-          spring: "spring-up",
-          sfx: "none",
-          accentColor: "#00F2FE",
-          defaultItemCount: 3,
-          staggerFrames: 15,
-          headerScale: 1,
-          contentScale: 0.72
-        },
+        version: 13,
         sfx: {
           enter: "none",
           exit: "none",
           volume: 0.65
         },
+        occupancyScore: 0.82,
+        faceAvoidanceEligible: false,
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-15T15:28:36.528Z",
+        id: "copyopen-progress-bar",
+        name: "\u5355\u8FDB\u5EA6\u6761\uFF08\u53CD\u5F39\uFF09",
+        family: "metrics",
+        description: "CopyOpen \xB7 fill pulse progress",
+        tags: [
+          "copyopen",
+          "metrics",
+          "progress"
+        ],
+        data: [
+          "percentage"
+        ],
+        tokens: {
+          mountMode: "top-left",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 1246,
+          boundsY: 300,
+          boundsWidth: 760,
+          boundsHeight: 320,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "fade-scale",
+          sfx: "none",
+          accentColor: "#22D3EE",
+          defaultItemCount: 1,
+          staggerFrames: 8,
+          headerScale: 1,
+          contentScale: 0.76
+        },
         mockData: {
-          headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          eyebrow: "DESIGN SYSTEM",
-          effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          text: "Signal confirmed. Visual system ready.",
-          items: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          steps: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          years: [
-            "\u8D77\u70B9",
-            "\u73B0\u5728",
-            "\u4E0B\u4E00\u6B65"
-          ],
-          nodes: [
-            "\u8F93\u5165",
-            "\u5904\u7406",
-            "\u8F93\u51FA"
-          ],
-          comments: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u884C\u52A8\u7ED3\u8BBA"
-          ],
-          metricLabel: "\u6838\u5FC3\u4FE1\u606F001",
-          count: 3,
-          milestones: [
-            "\u57FA\u7840",
-            "\u6269\u5C55",
-            "\u89C4\u6A21\u5316"
-          ],
-          category: "DESIGN SYSTEM",
+          category: "COPYOPEN 001",
+          headline: "Highlight extraction 002",
+          progress: 86,
+          value: 86,
+          label: "COPYOPEN 001",
+          body: "Highlight extraction",
+          effectText: "Highlight extraction",
           contentPayload: {
             type: "metrics",
-            value: 72,
+            value: 86,
             unit: "%",
-            label: "\u6838\u5FC3\u4FE1\u606F001",
-            bodyText: "\u89C6\u89C9\u8282\u594F",
-            detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
+            label: "Highlight",
+            bodyText: "%",
+            detailText: "Highlight extraction"
           },
-          categoryTag: "DESIGN SYSTEM",
-          label: "\u6838\u5FC3\u4FE1\u606F001",
-          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          value: 72,
-          progress: 72,
-          values: [
-            72,
-            72,
-            72
-          ],
-          metric: "\u6838\u5FC3\u4FE1\u606F001",
-          marketTo: 72,
-          marketLabel: "\u6838\u5FC3\u4FE1\u606F001",
+          eyebrow: "COPYOPEN 001",
+          categoryTag: "COPYOPEN 001",
+          title: "Highlight extraction 002",
+          values: [],
+          metric: "Highlight",
+          metricLabel: "Highlight",
           unit: "%",
-          marketSuffix: "\u89C6\u89C9\u8282\u594F",
+          marketLabel: "Highlight extraction",
+          marketTo: 8,
+          marketSuffix: "%",
           engineeringLabel: "\u589E\u957F\u6307\u6807",
-          engineeringTo: 72,
+          engineeringTo: 8,
           engineeringSuffix: "%",
-          bodyText: "\u89C6\u89C9\u8282\u594F",
-          detailText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          effectZh: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"
+          bodyText: "%",
+          detailText: "Highlight extraction",
+          effectZh: "Highlight extraction",
+          items: [],
+          steps: [],
+          comments: []
         },
-        occupancyScore: 0.56,
-        faceAvoidanceEligible: true,
-        displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T21:28:20.828Z",
         editorSchema: {
           version: 1,
           kind: "metrics",
@@ -45593,57 +45708,61 @@ Check that all your Remotion packages are on the same version. If your dependenc
               key: "unit",
               label: "\u5355\u4F4D",
               control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
             }
           ]
         },
         manifest: {
-          id: "platform-shift-line",
-          intent: "system",
+          id: "copyopen-progress-bar",
+          intent: "metrics",
           capacity: {
-            minItems: 3,
-            maxItems: 5
+            minItems: 1,
+            maxItems: 1
           },
           keywords: [
-            "\u4EA7\u54C1\u7EBF",
-            "\u5E73\u53F0",
-            "\u6F14\u8FDB",
-            "\u6269\u5C55",
-            "\u94FE\u8DEF"
+            "\u8FDB\u5EA6",
+            "\u767E\u5206\u6BD4",
+            "\u5B8C\u6210",
+            "%"
           ],
-          visualWeight: "medium"
+          visualWeight: "light"
         }
       },
       {
-        id: "hud-glow-stack",
-        name: "HUD \u6D6E\u52A8\u53D1\u5149",
+        id: "check-progress",
+        name: "\u8FDB\u5EA6100%\u786E\u8BA4\u6E05\u5355",
         family: "metrics",
-        description: "metrics \xB7 product \xB7 statement",
+        description: "process \xB7 confirmation \xB7 progress",
         tags: [
-          "metrics",
-          "product",
-          "statement"
+          "process",
+          "confirmation",
+          "progress"
         ],
         data: [
           "list",
-          "number"
+          "percentage"
         ],
-        version: 19,
+        version: 11,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 76,
+          boundsX: 96,
           boundsY: 300,
-          boundsWidth: 735,
-          boundsHeight: 590,
+          boundsWidth: 760,
+          boundsHeight: 360,
           padding: 48,
           gap: 16,
           position: "center",
-          scale: 0.76,
+          scale: 0.78,
           spring: "spring-up",
           sfx: "none",
           accentColor: "#00F2FE",
-          defaultItemCount: 5,
+          defaultItemCount: 3,
           staggerFrames: 15,
           headerScale: 1,
           contentScale: 0.72
@@ -45656,116 +45775,112 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           eyebrow: "DESIGN SYSTEM",
-          effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
-          text: "Signal confirmed. Visual system ready.",
+          effectText: "PRODUCT RECOVERY",
+          text: "PRODUCT RECOVERY",
           items: [
             "\u6838\u5FC3\u4FE1\u606F",
-            "\u7EC4\u7EC7\u4FE1\u606F002",
-            "\u5B8C\u6210\u9A8C\u8BC1004",
-            "\u65B0\u6807555\u7B7E"
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           steps: [
             "\u6838\u5FC3\u4FE1\u606F",
-            "\u7EC4\u7EC7\u4FE1\u606F002",
-            "\u5B8C\u6210\u9A8C\u8BC1004",
-            "\u65B0\u6807555\u7B7E"
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           years: [
-            "\u8D77\u70B9",
-            "\u73B0\u5728",
-            "\u4E0B\u4E00\u6B65"
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           nodes: [
-            "\u8F93\u5165",
-            "\u5904\u7406",
-            "\u8F93\u51FA"
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           comments: [
             "\u6838\u5FC3\u4FE1\u606F",
-            "\u7EC4\u7EC7\u4FE1\u606F002",
-            "\u5B8C\u6210\u9A8C\u8BC1004",
-            "\u65B0\u6807555\u7B7E"
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
           ],
           category: "DESIGN SYSTEM",
           contentPayload: {
-            type: "chips",
-            items: [
+            type: "steps",
+            steps: [
               {
-                title: "\u6838\u5FC3\u4FE1\u606F",
-                subtitle: ""
+                stepNumber: 1,
+                text: "\u6838\u5FC3\u4FE1\u606F"
               },
               {
-                title: "\u7EC4\u7EC7\u4FE1\u606F002",
-                subtitle: ""
+                stepNumber: 2,
+                text: "\u89C6\u89C9\u8282\u594F"
               },
               {
-                title: "\u5B8C\u6210\u9A8C\u8BC1004",
-                subtitle: ""
-              },
-              {
-                title: "\u65B0\u6807555\u7B7E",
-                subtitle: ""
+                stepNumber: 3,
+                text: "\u5B8C\u6210\u9A8C\u8BC1"
               }
-            ]
+            ],
+            progress: 100,
+            bodyText: "PRODUCT RECOVERY"
           },
           categoryTag: "DESIGN SYSTEM",
+          units: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u89C6\u89C9\u8282\u594F",
+            "\u5B8C\u6210\u9A8C\u8BC1"
+          ],
+          progress: 100,
+          value: 100,
+          label: "DESIGN SYSTEM",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          subLabel: "",
-          itemSubtitles: [
-            "",
-            "",
-            "",
-            ""
+          body: "PRODUCT RECOVERY",
+          effectZh: "PRODUCT RECOVERY",
+          values: [
+            100,
+            100,
+            100
           ],
-          subLabels: [
-            "",
-            "",
-            "",
-            ""
-          ],
-          label: "DESIGN SYSTEM"
+          bodyText: "PRODUCT RECOVERY"
         },
-        occupancyScore: 0.56,
+        occupancyScore: 0.32,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T21:50:02.861Z",
+        updatedAt: "2026-09-15T15:26:14.065Z",
         editorSchema: {
           version: 1,
-          kind: "chips",
+          kind: "steps",
           fields: [
             {
-              key: "items",
-              label: "\u6807\u7B7E\u9879",
-              control: "chip-list",
-              capacity: 3,
-              itemFields: [
-                {
-                  key: "title",
-                  label: "\u6807\u7B7E",
-                  control: "text"
-                },
-                {
-                  key: "subtitle",
-                  label: "\u526F\u6807",
-                  control: "text"
-                }
-              ]
+              key: "bodyText",
+              label: "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+              control: "text"
+            },
+            {
+              key: "steps",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "string-list",
+              capacity: 3
+            },
+            {
+              key: "progress",
+              label: "\u5B8C\u6210\u5EA6",
+              control: "number",
+              minimum: 0,
+              maximum: 100
             }
           ]
         },
         manifest: {
-          id: "hud-glow-stack",
-          intent: "system",
+          id: "check-progress",
+          intent: "process",
           capacity: {
             minItems: 2,
-            maxItems: 4
+            maxItems: 5
           },
           keywords: [
-            "\u7CFB\u7EDF",
-            "\u4FE1\u53F7",
-            "\u94FE\u8DEF",
-            "\u6A21\u5757",
-            "\u95ED\u73AF"
+            "\u786E\u8BA4",
+            "\u68C0\u67E5",
+            "\u5B8C\u6210",
+            "\u6B65\u9AA4"
           ],
           visualWeight: "medium"
         }
@@ -46442,32 +46557,32 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        id: "check-progress",
-        name: "\u8FDB\u5EA6\u786E\u8BA4",
+        id: "platform-shift-line",
+        name: "\u4EA7\u54C1\u7EBF\u589E\u957F",
         family: "metrics",
-        description: "process \xB7 confirmation \xB7 progress",
+        description: "metrics \xB7 timeline \xB7 product",
         tags: [
-          "process",
-          "confirmation",
-          "progress"
+          "metrics",
+          "timeline",
+          "product"
         ],
         data: [
           "list",
-          "percentage"
+          "number"
         ],
-        version: 10,
+        version: 12,
         tokens: {
           mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 96,
+          boundsX: 76,
           boundsY: 300,
-          boundsWidth: 760,
-          boundsHeight: 360,
+          boundsWidth: 1120,
+          boundsHeight: 640,
           padding: 48,
           gap: 16,
           position: "center",
-          scale: 0.78,
+          scale: 0.72,
           spring: "spring-up",
           sfx: "none",
           accentColor: "#00F2FE",
@@ -46484,112 +46599,121 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
           eyebrow: "DESIGN SYSTEM",
-          effectText: "PRODUCT RECOVERY",
-          text: "PRODUCT RECOVERY",
+          effectText: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          text: "Signal confirmed. Visual system ready.",
           items: [
             "\u6838\u5FC3\u4FE1\u606F",
             "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u884C\u52A8\u7ED3\u8BBA"
           ],
           steps: [
             "\u6838\u5FC3\u4FE1\u606F",
             "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u884C\u52A8\u7ED3\u8BBA"
           ],
           years: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u8D77\u70B9",
+            "\u73B0\u5728",
+            "\u4E0B\u4E00\u6B65"
           ],
           nodes: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u8F93\u5165",
+            "\u5904\u7406",
+            "\u8F93\u51FA"
           ],
           comments: [
             "\u6838\u5FC3\u4FE1\u606F",
             "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
+            "\u884C\u52A8\u7ED3\u8BBA"
+          ],
+          metricLabel: "2026\u5E74\u4E2D\u5C0F\u4F01\u4E1A\u7834\u4EA7\u6570\u91CF",
+          count: 72,
+          milestones: [
+            "\u57FA\u7840",
+            "\u6269\u5C55",
+            "\u89C4\u6A21\u5316"
           ],
           category: "DESIGN SYSTEM",
           contentPayload: {
-            type: "steps",
-            steps: [
-              {
-                stepNumber: 1,
-                text: "\u6838\u5FC3\u4FE1\u606F"
-              },
-              {
-                stepNumber: 2,
-                text: "\u89C6\u89C9\u8282\u594F"
-              },
-              {
-                stepNumber: 3,
-                text: "\u5B8C\u6210\u9A8C\u8BC1"
-              }
-            ],
-            progress: 100,
-            bodyText: "PRODUCT RECOVERY"
+            type: "metrics",
+            value: 72,
+            unit: "%",
+            label: "2026\u5E74\u4E2D\u5C0F\u4F01\u4E1A\u7834\u4EA7\u6570\u91CF",
+            bodyText: "\u89C6\u89C9\u8282\u594F",
+            detailText: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E"
           },
           categoryTag: "DESIGN SYSTEM",
-          units: [
-            "\u6838\u5FC3\u4FE1\u606F",
-            "\u89C6\u89C9\u8282\u594F",
-            "\u5B8C\u6210\u9A8C\u8BC1"
-          ],
-          progress: 100,
-          value: 100,
-          label: "DESIGN SYSTEM",
+          label: "2026\u5E74\u4E2D\u5C0F\u4F01\u4E1A\u7834\u4EA7\u6570\u91CF",
           title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
-          body: "PRODUCT RECOVERY",
-          effectZh: "PRODUCT RECOVERY",
+          value: 72,
+          progress: 72,
           values: [
-            100,
-            100,
-            100
+            72,
+            72,
+            72
           ],
-          bodyText: "PRODUCT RECOVERY"
+          metric: "2026\u5E74\u4E2D\u5C0F\u4F01\u4E1A\u7834\u4EA7\u6570\u91CF",
+          marketTo: 72,
+          marketLabel: "\u6838\u5FC3\u4FE1\u606F001",
+          unit: "%",
+          marketSuffix: "\u89C6\u89C9\u8282\u594F",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 72,
+          engineeringSuffix: "%",
+          bodyText: "\u89C6\u89C9\u8282\u594F",
+          detailText: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          body: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          effectZh: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          summary: "\u6839\u636E\u827E\u745E\u7EDF\u8BA1\u7684\u6570\u636E",
+          startLabel: "2020",
+          endLabel: "2025"
         },
-        occupancyScore: 0.32,
+        occupancyScore: 0.56,
         faceAvoidanceEligible: true,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-13T22:50:23.336Z",
+        updatedAt: "2026-09-15T15:12:03.827Z",
         editorSchema: {
-          version: 1,
-          kind: "steps",
           fields: [
             {
-              key: "bodyText",
-              label: "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
               control: "text"
             },
             {
-              key: "steps",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "string-list",
-              capacity: 3
+              key: "value",
+              label: "\u6570\u503C\u5185\u5BB9",
+              control: "number"
             },
             {
-              key: "progress",
-              label: "\u5B8C\u6210\u5EA6",
-              control: "number",
-              minimum: 0,
-              maximum: 100
+              key: "detailText",
+              label: "\u526F\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "startLabel",
+              label: "\u8D77\u70B9\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "endLabel",
+              label: "\u7EC8\u70B9\u5185\u5BB9",
+              control: "text"
             }
           ]
         },
         manifest: {
-          id: "check-progress",
-          intent: "process",
+          id: "platform-shift-line",
+          intent: "system",
           capacity: {
-            minItems: 2,
+            minItems: 3,
             maxItems: 5
           },
           keywords: [
-            "\u786E\u8BA4",
-            "\u68C0\u67E5",
-            "\u5B8C\u6210",
-            "\u6B65\u9AA4"
+            "\u4EA7\u54C1\u7EBF",
+            "\u5E73\u53F0",
+            "\u6F14\u8FDB",
+            "\u6269\u5C55",
+            "\u94FE\u8DEF"
           ],
           visualWeight: "medium"
         }
@@ -50146,7 +50270,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         }
       },
       {
-        version: 12,
+        version: 8,
         sfx: {
           enter: "none",
           exit: "none",
@@ -50155,222 +50279,311 @@ Check that all your Remotion packages are on the same version. If your dependenc
         occupancyScore: 0.82,
         faceAvoidanceEligible: false,
         displayIntent: "side-overlay",
-        updatedAt: "2026-09-15T01:13:08.106Z",
-        id: "copyopen-progress-bar",
-        name: "\u8FDB\u5EA6\u67612",
+        updatedAt: "2026-09-15T01:13:41.484Z",
+        id: "copyopen-pie-chart",
+        name: "\u591A\u5F69\u73AF\u5F62\u56FE",
         family: "metrics",
-        description: "CopyOpen \xB7 fill pulse progress",
+        description: "CopyOpen \xB7 donut category split",
         tags: [
           "copyopen",
-          "metrics",
-          "progress"
+          "chart",
+          "pie"
         ],
         data: [
+          "list",
           "percentage"
         ],
         tokens: {
           mountMode: "top-left",
           mountX: 0,
           mountY: 0,
-          boundsX: 1246,
+          boundsX: 96,
           boundsY: 300,
-          boundsWidth: 760,
-          boundsHeight: 320,
+          boundsWidth: 720,
+          boundsHeight: 460,
           padding: 48,
           gap: 16,
           position: "center",
-          scale: 0.76,
+          scale: 1.2,
           spring: "fade-scale",
           sfx: "none",
           accentColor: "#22D3EE",
-          defaultItemCount: 1,
+          defaultItemCount: 4,
           staggerFrames: 8,
-          headerScale: 1,
-          contentScale: 0.76
+          headerScale: 1.2,
+          contentScale: 1.2
         },
         mockData: {
-          category: "COPYOPEN 001",
-          headline: "Highlight extraction 002",
-          progress: 86,
-          value: 86,
-          label: "COPYOPEN 001",
-          body: "Highlight extraction",
-          effectText: "Highlight extraction",
+          category: "\u7AE0\u828209",
+          headline: "\u591A\u5F69\u73AF\u5F62\u56FE",
+          items: [
+            "Hook",
+            "Proof",
+            "Story",
+            "CTA"
+          ],
+          steps: [
+            "Hook",
+            "Proof",
+            "Story",
+            "CTA"
+          ],
+          values: [
+            35,
+            30,
+            20,
+            15
+          ],
+          value: 8,
+          label: "\u7AE0\u828209",
           contentPayload: {
-            type: "metrics",
-            value: 86,
-            unit: "%",
-            label: "Highlight",
-            bodyText: "%",
-            detailText: "Highlight extraction"
+            type: "steps",
+            steps: [
+              {
+                stepNumber: 1,
+                text: "Hook"
+              },
+              {
+                stepNumber: 2,
+                text: "Proof"
+              },
+              {
+                stepNumber: 3,
+                text: "Story"
+              },
+              {
+                stepNumber: 4,
+                text: "CTA"
+              }
+            ]
           },
-          eyebrow: "COPYOPEN 001",
-          categoryTag: "COPYOPEN 001",
-          title: "Highlight extraction 002",
-          values: [],
-          metric: "Highlight",
-          metricLabel: "Highlight",
-          unit: "%",
-          marketLabel: "Highlight extraction",
-          marketTo: 8,
-          marketSuffix: "%",
-          engineeringLabel: "\u589E\u957F\u6307\u6807",
-          engineeringTo: 8,
-          engineeringSuffix: "%",
-          bodyText: "%",
-          detailText: "Highlight extraction",
-          effectZh: "Highlight extraction",
-          items: [],
-          steps: [],
-          comments: []
+          eyebrow: "\u7AE0\u828209",
+          categoryTag: "\u7AE0\u828209",
+          title: "\u591A\u5F69\u73AF\u5F62\u56FE"
         },
         editorSchema: {
           version: 1,
-          kind: "metrics",
+          kind: "steps",
           fields: [
             {
-              key: "label",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "text"
-            },
-            {
-              key: "value",
-              label: "\u6570\u503C",
-              control: "number"
-            },
-            {
-              key: "unit",
-              label: "\u5355\u4F4D",
-              control: "text"
-            },
-            {
-              key: "detailText",
-              label: "\u8BF4\u660E\u5185\u5BB9",
-              control: "textarea"
+              key: "steps",
+              label: "\u6B65\u9AA4\u5185\u5BB9",
+              control: "string-list",
+              capacity: 4
             }
           ]
         },
         manifest: {
-          id: "copyopen-progress-bar",
+          id: "copyopen-pie-chart",
           intent: "metrics",
           capacity: {
-            minItems: 1,
-            maxItems: 1
+            minItems: 3,
+            maxItems: 5
           },
           keywords: [
-            "\u8FDB\u5EA6",
-            "\u767E\u5206\u6BD4",
-            "\u5B8C\u6210",
-            "%"
+            "\u5360\u6BD4",
+            "\u6BD4\u4F8B",
+            "\u5206\u5E03",
+            "\u4EFD\u989D"
           ],
-          visualWeight: "light"
+          visualWeight: "medium"
         }
       },
       {
-        version: 2,
+        id: "hud-glow-stack",
+        name: "HUD \u6D6E\u52A8\u53D1\u5149",
+        family: "metrics",
+        description: "metrics \xB7 product \xB7 statement",
+        tags: [
+          "metrics",
+          "product",
+          "statement"
+        ],
+        data: [
+          "list",
+          "number"
+        ],
+        version: 19,
+        tokens: {
+          mountMode: "top-left",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 76,
+          boundsY: 300,
+          boundsWidth: 735,
+          boundsHeight: 590,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#00F2FE",
+          defaultItemCount: 5,
+          staggerFrames: 15,
+          headerScale: 1,
+          contentScale: 0.72
+        },
         sfx: {
           enter: "none",
           exit: "none",
           volume: 0.65
         },
-        occupancyScore: 0.82,
-        faceAvoidanceEligible: false,
-        displayIntent: "side-overlay",
-        updatedAt: "2026-09-14T00:00:00Z",
-        id: "copyopen-comparison-card",
-        name: "\u524D\u540E\u5BF9\u6BD4\u5361",
-        family: "metrics",
-        description: "CopyOpen \xB7 left/right metric reveal",
-        tags: [
-          "copyopen",
-          "comparison",
-          "metrics"
-        ],
-        data: [
-          "number",
-          "comparison"
-        ],
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 1216,
-          boundsY: 300,
-          boundsWidth: 800,
-          boundsHeight: 420,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 0.76,
-          spring: "fade-scale",
-          sfx: "none",
-          accentColor: "#22D3EE",
-          defaultItemCount: 1,
-          staggerFrames: 8,
-          headerScale: 1,
-          contentScale: 0.76
-        },
         mockData: {
-          category: "COPYOPEN",
-          headline: "Before / After",
-          leftLabel: "Long video",
-          rightLabel: "Short clips",
-          leftValue: "58 min",
-          rightValue: "8 clips",
-          body: "ready",
-          effectText: "ready",
+          headline: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
+          eyebrow: "DESIGN SYSTEM",
+          effectText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE",
+          text: "Signal confirmed. Visual system ready.",
+          items: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ],
+          steps: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ],
+          years: [
+            "\u8D77\u70B9",
+            "\u73B0\u5728",
+            "\u4E0B\u4E00\u6B65"
+          ],
+          nodes: [
+            "\u8F93\u5165",
+            "\u5904\u7406",
+            "\u8F93\u51FA"
+          ],
+          comments: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ],
+          category: "DESIGN SYSTEM",
           contentPayload: {
-            type: "metrics",
-            value: 8,
-            unit: "clips",
-            label: "Short clips",
-            detailText: "ready"
+            type: "chips",
+            items: [
+              {
+                title: "\u6838\u5FC3\u4FE1\u606F",
+                subtitle: ""
+              },
+              {
+                title: "\u7EC4\u7EC7\u4FE1\u606F002",
+                subtitle: ""
+              },
+              {
+                title: "\u5B8C\u6210\u9A8C\u8BC1004",
+                subtitle: ""
+              },
+              {
+                title: "\u65B0\u6807555\u7B7E",
+                subtitle: ""
+              }
+            ]
           },
-          label: "Before / After",
-          value: 76,
-          unit: "Before / After",
-          detailText: "Before / After"
+          categoryTag: "DESIGN SYSTEM",
+          title: "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7",
+          subLabel: "",
+          itemSubtitles: [
+            "",
+            "",
+            "",
+            ""
+          ],
+          subLabels: [
+            "",
+            "",
+            "",
+            ""
+          ],
+          label: "DESIGN SYSTEM",
+          tags: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ]
         },
+        occupancyScore: 0.56,
+        faceAvoidanceEligible: true,
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-15T16:47:39.667Z",
         editorSchema: {
           version: 1,
-          kind: "metrics",
+          kind: "chips",
           fields: [
             {
-              key: "label",
-              label: "\u6B63\u6587\u5185\u5BB9",
-              control: "text"
-            },
-            {
-              key: "value",
-              label: "\u6570\u503C",
-              control: "number"
-            },
-            {
-              key: "unit",
-              label: "\u5355\u4F4D",
-              control: "text"
-            },
-            {
-              key: "detailText",
-              label: "\u8BF4\u660E\u5185\u5BB9",
-              control: "textarea"
+              key: "tags",
+              type: "string_array",
+              control: "chip-list",
+              label: "\u6807\u7B7E\u680F\u76EE\u5217\u8868",
+              default: [
+                "\u6838\u5FC3\u4FE1\u606F",
+                "\u7EC4\u7EC7\u4FE1\u606F002",
+                "\u5B8C\u6210\u9A8C\u8BC1004",
+                "\u65B0\u6807555\u7B7E"
+              ],
+              capacity: 4,
+              itemFields: [
+                {
+                  key: "title",
+                  label: "\u6807\u7B7E",
+                  control: "text"
+                },
+                {
+                  key: "subtitle",
+                  label: "\u526F\u6807",
+                  control: "text"
+                }
+              ]
             }
           ]
         },
         manifest: {
-          id: "copyopen-comparison-card",
+          id: "hud-glow-stack",
           intent: "metrics",
           capacity: {
             minItems: 2,
-            maxItems: 2
+            maxItems: 4
           },
           keywords: [
-            "\u5BF9\u6BD4",
-            "\u5DEE\u5F02",
-            "\u6570\u503C",
-            "\u589E\u957F"
+            "\u7CFB\u7EDF",
+            "\u4FE1\u53F7",
+            "\u94FE\u8DEF",
+            "\u6A21\u5757",
+            "\u95ED\u73AF"
           ],
           visualWeight: "medium"
+        },
+        defaultPayload: {
+          type: "chips",
+          items: [
+            {
+              title: "\u6838\u5FC3\u4FE1\u606F",
+              subtitle: ""
+            },
+            {
+              title: "\u7EC4\u7EC7\u4FE1\u606F002",
+              subtitle: ""
+            },
+            {
+              title: "\u5B8C\u6210\u9A8C\u8BC1004",
+              subtitle: ""
+            },
+            {
+              title: "\u65B0\u6807555\u7B7E",
+              subtitle: ""
+            }
+          ],
+          tags: [
+            "\u6838\u5FC3\u4FE1\u606F",
+            "\u7EC4\u7EC7\u4FE1\u606F002",
+            "\u5B8C\u6210\u9A8C\u8BC1004",
+            "\u65B0\u6807555\u7B7E"
+          ]
         }
       },
       {
@@ -50583,6 +50796,113 @@ Check that all your Remotion packages are on the same version. If your dependenc
             "\u6536\u675F"
           ],
           visualWeight: "light"
+        }
+      },
+      {
+        version: 2,
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        occupancyScore: 0.82,
+        faceAvoidanceEligible: false,
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-14T00:00:00Z",
+        id: "copyopen-comparison-card",
+        name: "\u524D\u540E\u5BF9\u6BD4\u5361",
+        family: "metrics",
+        description: "CopyOpen \xB7 left/right metric reveal",
+        tags: [
+          "copyopen",
+          "comparison",
+          "metrics"
+        ],
+        data: [
+          "number",
+          "comparison"
+        ],
+        tokens: {
+          mountMode: "top-left",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 1216,
+          boundsY: 300,
+          boundsWidth: 800,
+          boundsHeight: 420,
+          padding: 48,
+          gap: 16,
+          position: "center",
+          scale: 0.76,
+          spring: "fade-scale",
+          sfx: "none",
+          accentColor: "#22D3EE",
+          defaultItemCount: 1,
+          staggerFrames: 8,
+          headerScale: 1,
+          contentScale: 0.76
+        },
+        mockData: {
+          category: "COPYOPEN",
+          headline: "Before / After",
+          leftLabel: "Long video",
+          rightLabel: "Short clips",
+          leftValue: "58 min",
+          rightValue: "8 clips",
+          body: "ready",
+          effectText: "ready",
+          contentPayload: {
+            type: "metrics",
+            value: 8,
+            unit: "clips",
+            label: "Short clips",
+            detailText: "ready"
+          },
+          label: "Before / After",
+          value: 76,
+          unit: "Before / After",
+          detailText: "Before / After"
+        },
+        editorSchema: {
+          version: 1,
+          kind: "metrics",
+          fields: [
+            {
+              key: "label",
+              label: "\u6B63\u6587\u5185\u5BB9",
+              control: "text"
+            },
+            {
+              key: "value",
+              label: "\u6570\u503C",
+              control: "number"
+            },
+            {
+              key: "unit",
+              label: "\u5355\u4F4D",
+              control: "text"
+            },
+            {
+              key: "detailText",
+              label: "\u8BF4\u660E\u5185\u5BB9",
+              control: "textarea"
+            }
+          ]
+        },
+        manifest: {
+          id: "copyopen-comparison-card",
+          intent: "metrics",
+          capacity: {
+            minItems: 2,
+            maxItems: 2
+          },
+          keywords: [
+            "\u5BF9\u6BD4",
+            "\u5DEE\u5F02",
+            "\u6570\u503C",
+            "\u589E\u957F"
+          ],
+          visualWeight: "medium"
         }
       },
       {
@@ -50838,126 +51158,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
             "\u589E\u957F",
             "\u66F2\u7EBF",
             "\u65F6\u95F4"
-          ],
-          visualWeight: "medium"
-        }
-      },
-      {
-        version: 8,
-        sfx: {
-          enter: "none",
-          exit: "none",
-          volume: 0.65
-        },
-        occupancyScore: 0.82,
-        faceAvoidanceEligible: false,
-        displayIntent: "side-overlay",
-        updatedAt: "2026-09-15T01:13:41.484Z",
-        id: "copyopen-pie-chart",
-        name: "\u591A\u5F69\u73AF\u5F62\u56FE",
-        family: "metrics",
-        description: "CopyOpen \xB7 donut category split",
-        tags: [
-          "copyopen",
-          "chart",
-          "pie"
-        ],
-        data: [
-          "list",
-          "percentage"
-        ],
-        tokens: {
-          mountMode: "top-left",
-          mountX: 0,
-          mountY: 0,
-          boundsX: 96,
-          boundsY: 300,
-          boundsWidth: 720,
-          boundsHeight: 460,
-          padding: 48,
-          gap: 16,
-          position: "center",
-          scale: 1.2,
-          spring: "fade-scale",
-          sfx: "none",
-          accentColor: "#22D3EE",
-          defaultItemCount: 4,
-          staggerFrames: 8,
-          headerScale: 1.2,
-          contentScale: 1.2
-        },
-        mockData: {
-          category: "\u7AE0\u828209",
-          headline: "\u591A\u5F69\u73AF\u5F62\u56FE",
-          items: [
-            "Hook",
-            "Proof",
-            "Story",
-            "CTA"
-          ],
-          steps: [
-            "Hook",
-            "Proof",
-            "Story",
-            "CTA"
-          ],
-          values: [
-            35,
-            30,
-            20,
-            15
-          ],
-          value: 8,
-          label: "\u7AE0\u828209",
-          contentPayload: {
-            type: "steps",
-            steps: [
-              {
-                stepNumber: 1,
-                text: "Hook"
-              },
-              {
-                stepNumber: 2,
-                text: "Proof"
-              },
-              {
-                stepNumber: 3,
-                text: "Story"
-              },
-              {
-                stepNumber: 4,
-                text: "CTA"
-              }
-            ]
-          },
-          eyebrow: "\u7AE0\u828209",
-          categoryTag: "\u7AE0\u828209",
-          title: "\u591A\u5F69\u73AF\u5F62\u56FE"
-        },
-        editorSchema: {
-          version: 1,
-          kind: "steps",
-          fields: [
-            {
-              key: "steps",
-              label: "\u6B65\u9AA4\u5185\u5BB9",
-              control: "string-list",
-              capacity: 4
-            }
-          ]
-        },
-        manifest: {
-          id: "copyopen-pie-chart",
-          intent: "metrics",
-          capacity: {
-            minItems: 3,
-            maxItems: 5
-          },
-          keywords: [
-            "\u5360\u6BD4",
-            "\u6BD4\u4F8B",
-            "\u5206\u5E03",
-            "\u4EFD\u989D"
           ],
           visualWeight: "medium"
         }
@@ -51551,7 +51751,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       {
         id: "jc-metrics-big-number",
-        name: "[JC] \u5927\u6570\u5B57\u8BA1\u6570",
+        name: "\u5927\u6570\u5B57\u8BA1\u6570",
         family: "metrics",
         description: "JC imported metrics visual component",
         tags: [
@@ -51562,7 +51762,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 1,
+        version: 2,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -51594,18 +51794,42 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           category: "METRICS",
           headline: "\u5927\u6570\u5B57\u8BA1\u6570",
-          effectText: "",
+          effectText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
           contentPayload: {
             type: "metrics",
-            value: 72,
+            value: 75,
             unit: "%",
             label: "\u8F6C\u5316\u63D0\u5347",
-            detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+            bodyText: "%",
+            detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002"
           },
           label: "\u8F6C\u5316\u63D0\u5347",
-          value: 72,
+          value: 75,
           unit: "%",
-          detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5F62\u6210\u660E\u663E\u5DEE\u5F02\u3002"
+          detailText: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u5927\u6570\u5B57\u8BA1\u6570",
+          progress: 75,
+          count: 75,
+          values: [],
+          metric: "\u8F6C\u5316\u63D0\u5347",
+          metricLabel: "\u8F6C\u5316\u63D0\u5347",
+          marketLabel: "\u8F6C\u5316\u63D0\u5347",
+          marketTo: 75,
+          marketSuffix: "%",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 75,
+          engineeringSuffix: "%",
+          bodyText: "%",
+          summary: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
+          body: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
+          effectZh: "\u5173\u952E\u6307\u6807\u5728\u5F53\u524D\u9636\u6BB5\u5DEE\u5F02\u3002",
+          startLabel: "\u8D77\u70B9",
+          endLabel: "\u76EE\u6807\u9636\u6BB5",
+          items: [],
+          steps: [],
+          comments: []
         },
         defaultPayload: {
           type: "metrics",
@@ -51658,7 +51882,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         runtime: {
           exportName: "BigNumber",
           adapter: "jc-metrics-big-number"
-        }
+        },
+        updatedAt: "2026-09-15T15:30:43.865Z"
       },
       {
         id: "jc-narrative-bilingual-sub",
@@ -52350,7 +52575,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         data: [
           "text"
         ],
-        version: 1,
+        version: 4,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -52381,15 +52606,22 @@ Check that all your Remotion packages are on the same version. If your dependenc
         displayIntent: "side-overlay",
         mockData: {
           category: "CONTRAST",
-          headline: "\u514B\u9686\u98CE\u9669\u7EA7\u8054",
-          effectText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+          headline: "\u514B\u9686\u98CE\u9669\u7EA7\u8054\u6781\u5927",
+          effectText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
           contentPayload: {
             type: "narrative",
-            bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
+            bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
             highlightQuote: "COPY RISK"
           },
           bodyText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002",
-          highlightQuote: "COPY RISK"
+          highlightQuote: "COPY RISK",
+          title: "\u514B\u9686\u98CE\u9669\u7EA7\u8054\u6781\u5927",
+          eyebrow: "CONTRAST",
+          categoryTag: "CONTRAST",
+          body: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
+          effectZh: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
+          text: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0",
+          bullText: "\u540C\u8D28\u5316\u4F1A\u5FEB\u901F\u538B\u4F4E\u5148\u53D1\u4F18\u52BF\u3002\u800C\u4E14\u963B\u788D\u521B\u65B0"
         },
         defaultPayload: {
           type: "narrative",
@@ -52430,7 +52662,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         runtime: {
           exportName: "CloneCascade",
           adapter: "jc-contrast-clone-cascade"
-        }
+        },
+        updatedAt: "2026-09-15T21:52:22.045Z"
       },
       {
         id: "jc-contrast-compare-card",
@@ -52566,7 +52799,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       {
         id: "jc-metrics-curve-overlay",
-        name: "[JC] \u589E\u957F\u66F2\u7EBF",
+        name: "\u589E\u957F\u66F2\u7EBF",
         family: "metrics",
         description: "JC imported metrics visual component",
         tags: [
@@ -52577,7 +52810,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 1,
+        version: 3,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -52609,25 +52842,46 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           category: "METRICS",
           headline: "\u589E\u957F\u66F2\u7EBF",
-          effectText: "",
+          effectText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
           contentPayload: {
             type: "metrics",
             value: 74,
             unit: "%",
-            label: "\u589E\u957F\u66F2\u7EBF",
-            detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+            label: "\u589E\u957F\u66F2\u7EBF111"
           },
-          label: "\u589E\u957F\u66F2\u7EBF",
+          label: "\u589E\u957F\u66F2\u7EBF111",
           value: 74,
           unit: "%",
-          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u589E\u957F\u66F2\u7EBF",
+          progress: 74,
+          count: 74,
+          values: [],
+          metric: "\u589E\u957F\u66F2\u7EBF111",
+          metricLabel: "\u589E\u957F\u66F2\u7EBF111",
+          marketLabel: "\u589E\u957F\u66F2\u7EBF1",
+          marketTo: 74,
+          marketSuffix: "%",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 74,
+          engineeringSuffix: "%",
+          bodyText: "%",
+          summary: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
+          body: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
+          effectZh: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002",
+          startLabel: "\u8D77\u70B9",
+          endLabel: "\u76EE\u6807\u9636\u6BB5",
+          items: [],
+          steps: [],
+          comments: []
         },
         defaultPayload: {
           type: "metrics",
           value: 74,
           unit: "%",
-          label: "\u589E\u957F\u66F2\u7EBF",
-          detailText: "\u66F2\u7EBF\u7528\u4E8E\u5F3A\u8C03\u89C4\u6A21\u4E0E\u6548\u7387\u7684\u540C\u6B65\u53D8\u5316\u3002"
+          label: "\u589E\u957F\u66F2\u7EBF"
         },
         editorSchema: {
           version: 1,
@@ -52637,21 +52891,6 @@ Check that all your Remotion packages are on the same version. If your dependenc
               key: "label",
               label: "\u6B63\u6587\u5185\u5BB9",
               control: "text"
-            },
-            {
-              key: "value",
-              label: "\u6570\u503C",
-              control: "number"
-            },
-            {
-              key: "unit",
-              label: "\u5355\u4F4D",
-              control: "text"
-            },
-            {
-              key: "detailText",
-              label: "\u8BF4\u660E\u5185\u5BB9",
-              control: "textarea"
             }
           ]
         },
@@ -52673,7 +52912,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         runtime: {
           exportName: "CurveOverlay",
           adapter: "jc-metrics-curve-overlay"
-        }
+        },
+        updatedAt: "2026-09-15T16:11:03.353Z"
       },
       {
         id: "jc-narrative-dm-card-stack",
@@ -55070,7 +55310,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       {
         id: "jc-metrics-unit-matrix",
-        name: "[JC] \u5355\u5143\u77E9\u9635",
+        name: "\u5355\u5143\u77E9\u9635%",
         family: "metrics",
         description: "JC imported metrics visual component",
         tags: [
@@ -55081,7 +55321,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 1,
+        version: 6,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -55113,18 +55353,42 @@ Check that all your Remotion packages are on the same version. If your dependenc
         mockData: {
           category: "METRICS",
           headline: "\u5355\u5143\u77E9\u9635",
-          effectText: "",
+          effectText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
           contentPayload: {
             type: "metrics",
-            value: 68,
+            value: 90,
             unit: "%",
             label: "\u7ED3\u6784\u5360\u6BD4",
+            bodyText: "%",
             detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
           },
           label: "\u7ED3\u6784\u5360\u6BD4",
-          value: 68,
+          value: 90,
           unit: "%",
-          detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002"
+          detailText: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
+          eyebrow: "METRICS",
+          categoryTag: "METRICS",
+          title: "\u5355\u5143\u77E9\u9635",
+          progress: 90,
+          count: 90,
+          values: [],
+          metric: "\u7ED3\u6784\u5360\u6BD4",
+          metricLabel: "\u7ED3\u6784\u5360\u6BD4",
+          marketLabel: "\u7ED3\u6784\u5360\u6BD4",
+          marketTo: 69,
+          marketSuffix: "%",
+          engineeringLabel: "\u589E\u957F\u6307\u6807",
+          engineeringTo: 69,
+          engineeringSuffix: "%",
+          bodyText: "%",
+          summary: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
+          body: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
+          effectZh: "\u7528\u5355\u5143\u5BC6\u5EA6\u5C55\u793A\u89C4\u6A21\u4E0E\u7ED3\u6784\u3002",
+          startLabel: "\u8D77\u70B9",
+          endLabel: "\u76EE\u6807\u9636\u6BB5",
+          items: [],
+          steps: [],
+          comments: []
         },
         defaultPayload: {
           type: "metrics",
@@ -55177,7 +55441,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         runtime: {
           exportName: "UnitMatrix",
           adapter: "jc-metrics-unit-matrix"
-        }
+        },
+        updatedAt: "2026-09-16T00:28:03.411Z"
       },
       {
         id: "jc-contrast-verdict-box",
@@ -55315,7 +55580,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       },
       {
         id: "jc-metrics-views-badge",
-        name: "[JC] \u89C2\u770B\u91CF\u5FBD\u7AE0",
+        name: " \u89C2\u770B\u89C6\u89D2",
         family: "metrics",
         description: "JC imported metrics visual component",
         tags: [
@@ -55326,7 +55591,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           "number",
           "percentage"
         ],
-        version: 3,
+        version: 5,
         tokens: {
           mountMode: "center",
           mountX: 0,
@@ -55363,11 +55628,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
             type: "metrics",
             value: 80,
             unit: "M+",
-            label: "\u7F8E\u5143\u57FA\u91D1",
+            label: "\u7F8E\u5143\u57FA\u91D1\u6492\u65E6\u53D1\u751F",
             bodyText: "M+",
             detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002"
           },
-          label: "\u7F8E\u5143\u57FA\u91D1",
+          label: "\u7F8E\u5143\u57FA\u91D1\u6492\u65E6\u53D1\u751F",
           value: 80,
           unit: "M+",
           detailText: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
@@ -55376,8 +55641,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           title: "\u89C2\u770B\u91CF\u5FBD\u7AE0",
           progress: 80,
           values: [],
-          metric: "\u7F8E\u5143\u57FA\u91D1",
-          metricLabel: "\u7F8E\u5143\u57FA\u91D1",
+          metric: "\u7F8E\u5143\u57FA\u91D1\u6492\u65E6\u53D1\u751F",
+          metricLabel: "\u7F8E\u5143\u57FA\u91D1\u6492\u65E6\u53D1\u751F",
           marketLabel: "\u89E6\u8FBE\u89C4\u6A21",
           marketTo: 8,
           marketSuffix: "M+",
@@ -55389,7 +55654,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
           effectZh: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
           items: [],
           steps: [],
-          comments: []
+          comments: [],
+          count: 80,
+          summary: "\u7528\u589E\u957F\u6570\u5B57\u5F3A\u8C03\u5E02\u573A\u53CD\u9988\u3002",
+          startLabel: "\u8D77\u70B9",
+          endLabel: "\u76EE\u6807\u9636\u6BB5"
         },
         defaultPayload: {
           type: "metrics",
@@ -55443,7 +55712,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           exportName: "ViewsBadge",
           adapter: "jc-metrics-views-badge"
         },
-        updatedAt: "2026-09-15T01:17:42.023Z"
+        updatedAt: "2026-09-15T15:50:28.524Z"
       },
       {
         id: "jc-system-window-card",
@@ -55538,6 +55807,154 @@ Check that all your Remotion packages are on the same version. If your dependenc
           exportName: "WindowCard",
           adapter: "jc-system-window-card"
         }
+      },
+      {
+        id: "speaker-growth-dashboard",
+        name: "\u53E3\u64AD\u589E\u957F\u4EEA\u8868\u76D8",
+        family: "metrics",
+        description: "\u67F1\u5B50\u54E5/TzFilm \u98CE\u683C\u5DE6\u4FA7\u53E3\u64AD\u589E\u957F\u6570\u636E\u4EEA\u8868\u76D8",
+        tags: [
+          "metrics",
+          "growth",
+          "speaker",
+          "tzfilm"
+        ],
+        data: [
+          "number",
+          "text"
+        ],
+        version: 2,
+        tokens: {
+          mountMode: "top-left",
+          mountX: 0,
+          mountY: 0,
+          boundsX: 76,
+          boundsY: 58,
+          boundsWidth: 570,
+          boundsHeight: 960,
+          padding: 0,
+          gap: 18,
+          position: "center",
+          scale: 1,
+          spring: "spring-up",
+          sfx: "none",
+          accentColor: "#38BDF8",
+          defaultItemCount: 2,
+          staggerFrames: 12,
+          headerScale: 1,
+          contentScale: 1
+        },
+        sfx: {
+          enter: "none",
+          exit: "none",
+          volume: 0.65
+        },
+        mockData: {
+          headline: "Hermes",
+          category: "LIVE \xB7 AI AGENT",
+          eyebrow: "LIVE \xB7 AI AGENT",
+          subline: "\u81EA\u5A92\u4F53\u8FD0\u8425 \xB7 \u5B9E\u65F6\u6F14\u793A",
+          skillLabel: "\u81EA\u5A92\u4F53\u8FD0\u8425 SKILL",
+          feature1Title: "\u8BC4\u8BBA\u533A\u81EA\u52A8\u56DE\u590D",
+          feature1Sub: "AUTO-REPLY",
+          feature2Title: "\u59D4\u5A49\u63A8\u8350 \xB7 \u8D22\u52A1\u81EA\u7531\u56E2",
+          feature2Sub: "SOFT CTA",
+          metricTitle: "\u5165\u7FA4\u7387 \u731B\u589E",
+          metricValue: "299",
+          metricUnit: "\u751F\u6548\u4F1A\u5458",
+          metricSub: "NEW MEMBERS \xB7 \u8FD190\u5929",
+          footer: "\u83B7\u5BA2\u4E00\u628A\u597D\u624B \xB7 GROWTH ENGINE",
+          contentPayload: {
+            type: "metrics",
+            label: "\u5165\u7FA4\u7387 \u731B\u589E",
+            value: 165,
+            unit: "\u751F\u6548\u4F1A\u5458",
+            bodyText: "\u81EA\u5A92\u4F53\u8FD0\u8425 \xB7 \u5B9E\u65F6\u6F14\u793A"
+          }
+        },
+        editorSchema: {
+          fields: [
+            {
+              key: "eyebrow",
+              label: "\u9876\u7AEF\u6807\u7B7E",
+              type: "text"
+            },
+            {
+              key: "subline",
+              label: "\u526F\u6807\u9898",
+              type: "text"
+            },
+            {
+              key: "skillLabel",
+              label: "\u80FD\u529B\u6807\u7B7E",
+              type: "text"
+            },
+            {
+              key: "feature1Title",
+              label: "\u529F\u80FD1\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+              type: "text"
+            },
+            {
+              key: "feature1Sub",
+              label: "\u529F\u80FD1\u3010\u526F\u6587\u5185\u5BB9\u3011",
+              type: "text"
+            },
+            {
+              key: "feature2Title",
+              label: "\u529F\u80FD2\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+              type: "text"
+            },
+            {
+              key: "feature2Sub",
+              label: "\u529F\u80FD2\u3010\u526F\u6587\u5185\u5BB9\u3011",
+              type: "text"
+            },
+            {
+              key: "metricTitle",
+              label: "\u589E\u957F\u6307\u6807\u6807\u9898",
+              type: "text"
+            },
+            {
+              key: "metricValue",
+              label: "\u589E\u957F\u6570\u5B57",
+              type: "text"
+            },
+            {
+              key: "metricUnit",
+              label: "\u6570\u5B57\u5355\u4F4D",
+              type: "text"
+            },
+            {
+              key: "metricSub",
+              label: "\u6307\u6807\u526F\u6587",
+              type: "text"
+            },
+            {
+              key: "footer",
+              label: "\u5E95\u90E8\u8BF4\u660E",
+              type: "text"
+            }
+          ]
+        },
+        manifest: {
+          id: "speaker-growth-dashboard",
+          intent: "metrics",
+          capacity: {
+            minItems: 1,
+            maxItems: 3
+          },
+          keywords: [
+            "\u53E3\u64AD",
+            "\u81EA\u5A92\u4F53",
+            "\u589E\u957F",
+            "\u83B7\u5BA2",
+            "\u4F1A\u5458",
+            "\u8F6C\u5316"
+          ],
+          visualWeight: "heavy"
+        },
+        displayIntent: "side-overlay",
+        updatedAt: "2026-09-16T03:20:50.682Z"
       }
     ],
     subtitleAssets: [
@@ -55564,28 +55981,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/common/MotionWrapper.tsx
-  var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime74 = __toESM(require_jsx_runtime());
   var BOTTOM_SUBTITLE_SAFE_PCT = 22;
-  var anchors = {
-    center: [0, 0],
-    "bottom-left": [-470, 260],
-    "bottom-right": [470, 260],
-    "top-right": [470, -245],
-    "center-right": [520, 0]
-  };
-  var DEFAULT_COMMON_PROPS = {
-    enterOffset: 0,
-    exitOffset: 0,
-    position: "center",
-    offsetX: 0,
-    offsetY: 0,
-    scale: 1,
-    enterAnimation: "spring-up",
-    exitAnimation: "none",
-    sfx: "none"
-  };
-  var MotionWrapper = ({ commonProps, designTokens, beatDuration, entranceDurationSeconds = 2.2, textRole, preserveNativeMotion = false, children }) => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h, _i;
+  var DEFAULT_COMMON_PROPS = { enterOffset: 0, exitOffset: 0, offsetX: 0, offsetY: 0, scale: 1, enterAnimation: "spring-up", exitAnimation: "none", sfx: "none" };
+  var MotionWrapper = ({ commonProps, layoutProps, designTokens, beatDuration, entranceDurationSeconds = 2.2, textRole, language = "zh", preserveNativeMotion = false, children }) => {
+    var _a2, _b, _c, _d, _e, _f, _g;
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
     const props = { ...DEFAULT_COMMON_PROPS, ...commonProps != null ? commonProps : {} };
@@ -55594,63 +55994,35 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const exitStart = Math.min(Math.max(enterFrames + 1, Math.round(beatDuration * fps) - Math.round(((_b = props.exitOffset) != null ? _b : 0) * fps)), enterFrames + fixedFrames);
     const entranceFrames = Math.max(1, Math.round(entranceDurationSeconds * fps));
     const enterProgress = preserveNativeMotion ? 1 : interpolate(frame, [enterFrames, enterFrames + entranceFrames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-    const exitProgress = props.exitAnimation === "none" ? 0 : interpolate(frame, [exitStart, exitStart + 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-    const hiddenBeforeEnter = !preserveNativeMotion && frame < enterFrames;
-    const [anchorX, anchorY] = (_c = anchors[props.position]) != null ? _c : anchors.center;
-    const mountMode = (_d = designTokens == null ? void 0 : designTokens.mountMode) != null ? _d : "center";
+    const exitProgress = props.exitAnimation === "none" ? 0 : interpolate(frame, [exitStart, exitStart + 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    const mountMode = (_d = (_c = layoutProps == null ? void 0 : layoutProps.align) != null ? _c : designTokens == null ? void 0 : designTokens.mountMode) != null ? _d : "center";
     const mountX = Number.isFinite(designTokens == null ? void 0 : designTokens.mountX) ? Number(designTokens == null ? void 0 : designTokens.mountX) : 0;
     const mountY = Number.isFinite(designTokens == null ? void 0 : designTokens.mountY) ? Number(designTokens == null ? void 0 : designTokens.mountY) : 0;
     const boundsX = Number.isFinite(designTokens == null ? void 0 : designTokens.boundsX) ? Number(designTokens == null ? void 0 : designTokens.boundsX) : 0;
     const boundsY = Number.isFinite(designTokens == null ? void 0 : designTokens.boundsY) ? Number(designTokens == null ? void 0 : designTokens.boundsY) : 0;
     const boundsWidth = Math.max(1, Number.isFinite(designTokens == null ? void 0 : designTokens.boundsWidth) ? Number(designTokens == null ? void 0 : designTokens.boundsWidth) : 1920);
     const boundsHeight = Math.max(1, Number.isFinite(designTokens == null ? void 0 : designTokens.boundsHeight) ? Number(designTokens == null ? void 0 : designTokens.boundsHeight) : 1080);
-    const presenterSafeMaxWidth = Number.isFinite(designTokens == null ? void 0 : designTokens.presenterSafeMaxWidth) ? Number(designTokens == null ? void 0 : designTokens.presenterSafeMaxWidth) : 0;
-    const presenterSafeLogicalWidth = presenterSafeMaxWidth > 0 ? Math.min(boundsWidth, Math.max(1, Number(designTokens == null ? void 0 : designTokens.presenterSafeLogicalWidth) || Math.round(presenterSafeMaxWidth / Math.max(0.01, (_e = props.scale) != null ? _e : 1)))) : 0;
     const presenterSafeInset = designTokens == null ? void 0 : designTokens.presenterSafeInset;
-    const safeClipX = presenterSafeInset === "right" ? boundsX + Math.max(0, boundsWidth - presenterSafeLogicalWidth) : boundsX;
-    const safeClipRight = presenterSafeLogicalWidth > 0 ? Math.max(0, 1920 - safeClipX - presenterSafeLogicalWidth) : 0;
-    const safeClipPath = presenterSafeLogicalWidth > 0 ? "inset(" + Math.max(0, boundsY) + "px " + safeClipRight + "px " + Math.max(0, 1080 - boundsY - boundsHeight) + "px " + Math.max(0, safeClipX) + "px)" : void 0;
     const centeredOffsetX = 960 - (boundsX + boundsWidth / 2) + mountX;
     const centeredOffsetY = 540 - (boundsY + boundsHeight / 2) + mountY;
     const mountOffsetX = mountMode === "top-left" ? mountX : mountMode === "left" ? 96 - boundsX + mountX : mountMode === "right" ? 1824 - (boundsX + boundsWidth) + mountX : centeredOffsetX;
     const rawMountOffsetY = mountMode === "top-left" ? mountY : mountMode === "top" ? 216 - boundsY + mountY : mountMode === "bottom" ? 864 - (boundsY + boundsHeight) + mountY : centeredOffsetY;
     const bottomSubtitleSafePx = 1080 * ((Number.isFinite(designTokens == null ? void 0 : designTokens.bottomSubtitleSafePct) ? Number(designTokens == null ? void 0 : designTokens.bottomSubtitleSafePct) : BOTTOM_SUBTITLE_SAFE_PCT) / 100);
-    const maxSafeBottomY = 1080 - bottomSubtitleSafePx;
-    const maxMountOffsetY = maxSafeBottomY - boundsY - boundsHeight;
+    const maxMountOffsetY = 1080 - bottomSubtitleSafePx - boundsY - boundsHeight;
     const isFullCanvasBounds = boundsX === 0 && boundsY === 0 && boundsWidth >= 1920 && boundsHeight >= 1080;
     const clampedMountOffsetY = isFullCanvasBounds ? rawMountOffsetY : Math.min(rawMountOffsetY, maxMountOffsetY);
     const enterX = props.enterAnimation === "slide-left" ? interpolate(enterProgress, [0, 1], [-110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "slide-right" ? interpolate(enterProgress, [0, 1], [110, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
     const enterY = props.enterAnimation === "spring-up" ? interpolate(enterProgress, [0, 1], [76, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
-    const enterScale = props.enterAnimation === "fade-scale" ? interpolate(enterProgress, [0, 1], [0.86, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : props.enterAnimation === "glitch" ? 1 + Math.sin(frame * 2.2) * (frame < enterFrames + 10 ? 0.015 : 0) : 1;
+    const enterScale = props.enterAnimation === "fade-scale" ? interpolate(enterProgress, [0, 1], [0.86, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 1;
     const exitY = props.exitAnimation === "slide-down" ? interpolate(exitProgress, [0, 1], [0, 96]) : 0;
     const exitScale = props.exitAnimation === "scale-down" ? interpolate(exitProgress, [0, 1], [1, 0.86]) : 1;
-    const opacity2 = hiddenBeforeEnter ? 0 : props.exitAnimation === "fade-out" ? 1 - exitProgress : interpolate(enterProgress, [0, 1], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    const scale = Math.min(1.2, Math.max(0.6, (_f = props.scale) != null ? _f : 1)) * enterScale * exitScale;
-    const presenterSafeCss = presenterSafeLogicalWidth > 0 ? [
-      ".presenter-safe-overlay .layout-effect-root{width:var(--presenter-safe-logical-width)!important;max-width:100%!important;overflow:hidden;}",
-      ".presenter-safe-overlay .layout-effect-root > *{width:100%;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;}",
-      ".presenter-safe-overlay .layout-effect-root [style]{max-width:100%!important;box-sizing:border-box!important;}"
-    ].join("") : "";
-    const commercialTextCss = !textRole ? "" : [
-      ".motion-commercial-analysis [style*='color: rgb(255, 255, 255)'],.motion-commercial-analysis [style*='color: rgb(248, 250, 252)'],.motion-commercial-analysis [style*='color: #F8FAFC'],.motion-commercial-analysis [style*='color: white']{",
-      "-webkit-text-stroke:none!important;text-shadow:0 5px 18px rgba(0,0,0,0.52)!important;",
-      "}",
-      ".motion-text-role-risk [style*='color: rgb(255, 107, 107)'],.motion-text-role-risk [style*='color: #FF6B6B']{",
-      "background:rgba(162,36,48,0.92);padding:4px 10px;border-radius:5px;-webkit-text-stroke:none!important;",
-      "}"
-    ].join("");
-    return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(AbsoluteFill, { className: [textRole ? "motion-commercial-analysis motion-text-role-" + textRole : "", presenterSafeLogicalWidth > 0 ? "presenter-safe-overlay" : ""].filter(Boolean).join(" "), style: {
-      pointerEvents: "none",
-      opacity: opacity2,
-      transform: "translate(" + (mountOffsetX + anchorX + ((_g = props.offsetX) != null ? _g : 0) + enterX) + "px," + (clampedMountOffsetY + anchorY + ((_h = props.offsetY) != null ? _h : 0) + enterY + exitY) + "px) scale(" + scale + ")",
-      transformOrigin: (mountMode === "top-left" || presenterSafeInset === "left" ? boundsX : presenterSafeInset === "right" ? boundsX + boundsWidth : boundsX + boundsWidth / 2) + "px " + (mountMode === "top-left" ? boundsY : boundsY + boundsHeight / 2) + "px",
-      clipPath: safeClipPath,
-      "--presenter-safe-logical-width": presenterSafeLogicalWidth + "px",
-      "--cinematic-center-corridor-pct": String((_i = designTokens == null ? void 0 : designTokens.cinematicCenterCorridorPct) != null ? _i : 0),
-      wordBreak: "keep-all",
-      overflowWrap: "break-word"
-    }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("style", { children: presenterSafeCss + commercialTextCss }),
+    const opacity2 = frame < enterFrames && !preserveNativeMotion ? 0 : props.exitAnimation === "fade-out" ? 1 - exitProgress : enterProgress;
+    const scale = Math.min(1.2, Math.max(0.35, (_e = props.scale) != null ? _e : 1)) * enterScale * exitScale;
+    const isEnglish = language === "en";
+    const englishTextCss = isEnglish ? ".motion-language-en .layout-effect-root :is(div,span,p,h1,h2,h3){min-width:0!important;overflow-wrap:break-word!important;word-break:keep-all!important;hyphens:auto!important}.motion-language-en .layout-effect-root{font-size:.85em;line-height:1.38}" : "";
+    const commercialTextCss = !textRole ? "" : '.motion-commercial-analysis [style*="color: white"],.motion-commercial-analysis [style*="color: #F8FAFC"]{-webkit-text-stroke:none!important;text-shadow:0 5px 18px rgba(0,0,0,0.52)!important}' + (textRole === "risk" ? '.motion-text-role-risk [style*="color: #FF6B6B"]{background:rgba(162,36,48,.92);padding:4px 10px;border-radius:5px;-webkit-text-stroke:none!important}' : "");
+    return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)(AbsoluteFill, { className: [textRole ? "motion-commercial-analysis motion-text-role-" + textRole : "", isEnglish ? "motion-language-en" : ""].filter(Boolean).join(" "), style: { pointerEvents: "none", opacity: opacity2, transform: "translate(" + (mountOffsetX + ((_f = props.offsetX) != null ? _f : 0) + enterX) + "px," + (clampedMountOffsetY + ((_g = props.offsetY) != null ? _g : 0) + enterY + exitY) + "px) scale(" + scale + ")", transformOrigin: (mountMode === "top-left" || presenterSafeInset === "left" ? boundsX : presenterSafeInset === "right" ? boundsX + boundsWidth : boundsX + boundsWidth / 2) + "px " + (mountMode === "top-left" ? boundsY : boundsY + boundsHeight / 2) + "px", wordBreak: "keep-all", overflowWrap: "break-word", hyphens: "auto", lineHeight: isEnglish ? 1.38 : void 0, fontSize: isEnglish ? "0.85em" : void 0 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("style", { children: englishTextCss + commercialTextCss }),
       children
     ] });
   };
@@ -56239,20 +56611,44 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var rows2 = (value) => Array.isArray(value) ? value.map((item2) => stringValue(item2)).filter((item2) => item2.trim()) : [];
   var numbers = (value) => Array.isArray(value) ? value.map((item2) => Number(item2)).filter(Number.isFinite) : [];
   var isPayload = (value) => !!value && typeof value === "object" && ["narrative", "chips", "metrics", "steps"].indexOf(String(value.type)) >= 0;
+  var cloneValue = (value) => Array.isArray(value) ? value.map(cloneValue) : value && typeof value === "object" ? Object.fromEntries(Object.entries(value).map(([key, item2]) => [key, cloneValue(item2)])) : value;
+  var deepMerge = (base, next) => {
+    if (Array.isArray(base)) {
+      if (!Array.isArray(next) || next.length === 0) return cloneValue(base);
+      return next.map((item2, index) => {
+        var _a2, _b;
+        return deepMerge((_b = (_a2 = base[index]) != null ? _a2 : base[0]) != null ? _b : {}, item2);
+      });
+    }
+    if (base && typeof base === "object" && !Array.isArray(base)) {
+      const source = next && typeof next === "object" && !Array.isArray(next) ? next : {};
+      const merged = {};
+      for (const key of Object.keys(base)) merged[key] = deepMerge(base[key], source[key]);
+      for (const [key, value] of Object.entries(source)) if (!(key in merged)) merged[key] = cloneValue(value);
+      return merged;
+    }
+    return next === void 0 || next === null ? cloneValue(base) : next;
+  };
+  var hydratePayload = (payload, fallback) => isPayload(payload) && isPayload(fallback) && payload.type === fallback.type ? deepMerge(fallback, payload) : isPayload(payload) ? payload : isPayload(fallback) ? fallback : payload;
+  var chipItems = (payload, source) => {
+    const tagged = rows2(source.tags);
+    const sourceItems = Array.isArray(payload.items) ? payload.items : tagged.map((title) => ({ title, subtitle: "" }));
+    return sourceItems.map((item2) => ({ title: stringValue(item2 == null ? void 0 : item2.title), subtitle: typeof (item2 == null ? void 0 : item2.subtitle) === "string" ? item2.subtitle : "" }));
+  };
   var normalizeComponentContent = (source) => {
     var _a2, _b, _c;
     const input = source != null ? source : {};
     const projectLayer = input.__projectLayer === true;
     const category = stringValue(input.category, stringValue(input.eyebrow, stringValue(input.categoryTag, projectLayer ? "" : "DESIGN SYSTEM")));
     const headline = stringValue(input.headline, stringValue(input.title, projectLayer ? "" : "\u6838\u5FC3\u8BBE\u8BA1\u4FE1\u53F7"));
-    const payload = input.contentPayload;
+    const payload = hydratePayload(input.contentPayload, input.defaultPayload);
     if (isPayload(payload)) {
       if (payload.type === "narrative") return { category, headline, contentPayload: { type: "narrative", bodyText: stringValue(payload.bodyText, stringValue(input.bullText, stringValue(input.body, stringValue(input.effectText, stringValue(input.text, projectLayer ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))))), ...typeof payload.bearText === "string" || stringValue(input.bearText) ? { bearText: typeof payload.bearText === "string" ? payload.bearText : stringValue(input.bearText) } : {}, ...typeof payload.highlightQuote === "string" || stringValue(input.highlightQuote) ? { highlightQuote: typeof payload.highlightQuote === "string" ? payload.highlightQuote : stringValue(input.highlightQuote) } : {} } };
-      if (payload.type === "chips") return { category, headline, contentPayload: { type: "chips", items: (Array.isArray(payload.items) ? payload.items : []).map((item2) => ({ title: stringValue(item2 == null ? void 0 : item2.title), subtitle: typeof (item2 == null ? void 0 : item2.subtitle) === "string" ? item2.subtitle : "" })) } };
+      if (payload.type === "chips") return { category, headline, contentPayload: { type: "chips", items: chipItems(payload, input) } };
       if (payload.type === "metrics") return { category, headline, contentPayload: { type: "metrics", value: (_c = (_b = (_a2 = payload.value) != null ? _a2 : input.value) != null ? _b : input.progress) != null ? _c : projectLayer ? "" : 71, unit: stringValue(payload.unit), label: stringValue(payload.label, stringValue(input.label, stringValue(input.metric, projectLayer ? "" : "\u5173\u952E\u6307\u6807"))), ...typeof payload.bodyText === "string" || typeof input.bodyText === "string" || typeof input.unit === "string" ? { bodyText: stringValue(payload.bodyText, stringValue(input.bodyText, stringValue(input.unit))) } : {}, ...typeof payload.detailText === "string" || typeof input.detailText === "string" || typeof input.body === "string" || typeof input.effectText === "string" ? { detailText: stringValue(payload.detailText, stringValue(input.detailText, stringValue(input.body, stringValue(input.effectText)))) } : {} } };
       return { category, headline, contentPayload: { type: "steps", steps: (Array.isArray(payload.steps) ? payload.steps : []).map((item2, index) => ({ stepNumber: Number(item2 == null ? void 0 : item2.stepNumber) || index + 1, text: stringValue(item2 == null ? void 0 : item2.text) })), ...Number.isFinite(Number(payload.progress)) ? { progress: Number(payload.progress) } : {}, ...typeof payload.bodyText === "string" ? { bodyText: payload.bodyText } : {} } };
     }
-    const list3 = rows2(input.steps).length ? rows2(input.steps) : rows2(input.items).length ? rows2(input.items) : rows2(input.years).length ? rows2(input.years) : rows2(input.nodes).length ? rows2(input.nodes) : rows2(input.units);
+    const list3 = rows2(input.steps).length ? rows2(input.steps) : rows2(input.items).length ? rows2(input.items) : rows2(input.tags).length ? rows2(input.tags) : rows2(input.years).length ? rows2(input.years) : rows2(input.nodes).length ? rows2(input.nodes) : rows2(input.units);
     return { category, headline, contentPayload: list3.length ? { type: "steps", steps: list3.map((text4, index) => ({ stepNumber: index + 1, text: text4 })) } : { type: "narrative", bodyText: stringValue(input.body, stringValue(input.effectText, stringValue(input.text, "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))) } };
   };
   var toRendererContentProps = (source) => {
@@ -56264,14 +56660,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     if (payload.type === "chips") {
       const values3 = payload.items.map((item2) => item2.title);
       const subtitles = payload.items.map((item2) => typeof item2.subtitle === "string" ? item2.subtitle : "");
-      return { ...base, items: values3, steps: values3, comments: values3, itemSubtitles: subtitles, subLabels: subtitles, subLabel: subtitles.find((value) => value.trim()) || "" };
+      return { ...base, tags: values3, items: values3, steps: values3, comments: values3, itemSubtitles: subtitles, subLabels: subtitles, subLabel: subtitles.find((value) => value.trim()) || "" };
     }
     if (payload.type === "metrics") {
       const list3 = rows2(source == null ? void 0 : source.items).length ? rows2(source == null ? void 0 : source.items) : rows2(source == null ? void 0 : source.steps);
       const numeric = Number(payload.value);
       const bodyText2 = stringValue(payload.bodyText, stringValue(payload.unit, normalized.headline));
-      const detailText = stringValue(payload.detailText, stringValue(source == null ? void 0 : source.body, stringValue(source == null ? void 0 : source.effectText, (source == null ? void 0 : source.__projectLayer) === true ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE")));
-      return { ...base, value: payload.value, progress: payload.value, values: list3.length && Number.isFinite(numeric) ? list3.map(() => numeric) : numbers(source == null ? void 0 : source.values), metric: payload.label, label: payload.label, metricLabel: payload.label, unit: payload.unit, marketLabel: stringValue(source == null ? void 0 : source.marketLabel, payload.label), marketTo: (_a2 = source == null ? void 0 : source.marketTo) != null ? _a2 : payload.value, marketSuffix: stringValue(source == null ? void 0 : source.marketSuffix, payload.unit), engineeringLabel: stringValue(source == null ? void 0 : source.engineeringLabel, (source == null ? void 0 : source.__projectLayer) === true ? "" : "\u589E\u957F\u6307\u6807"), engineeringTo: (_c = (_b = source == null ? void 0 : source.engineeringTo) != null ? _b : source == null ? void 0 : source.value2) != null ? _c : payload.value, engineeringSuffix: stringValue(source == null ? void 0 : source.engineeringSuffix, payload.unit), bodyText: bodyText2, detailText, body: detailText, effectText: detailText, effectZh: detailText, items: list3, steps: list3, comments: list3 };
+      const detailText = stringValue(payload.detailText, stringValue(source == null ? void 0 : source.summary, stringValue(source == null ? void 0 : source.body, stringValue(source == null ? void 0 : source.effectText, (source == null ? void 0 : source.__projectLayer) === true ? "" : "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE"))));
+      return { ...base, value: payload.value, progress: payload.value, count: payload.value, values: list3.length && Number.isFinite(numeric) ? list3.map(() => numeric) : numbers(source == null ? void 0 : source.values), metric: payload.label, label: payload.label, metricLabel: payload.label, unit: payload.unit, marketLabel: stringValue(source == null ? void 0 : source.marketLabel, payload.label), marketTo: (_a2 = source == null ? void 0 : source.marketTo) != null ? _a2 : payload.value, marketSuffix: stringValue(source == null ? void 0 : source.marketSuffix, payload.unit), engineeringLabel: stringValue(source == null ? void 0 : source.engineeringLabel, (source == null ? void 0 : source.__projectLayer) === true ? "" : "\u589E\u957F\u6307\u6807"), engineeringTo: (_c = (_b = source == null ? void 0 : source.engineeringTo) != null ? _b : source == null ? void 0 : source.value2) != null ? _c : payload.value, engineeringSuffix: stringValue(source == null ? void 0 : source.engineeringSuffix, payload.unit), bodyText: bodyText2, detailText, summary: detailText, body: detailText, effectText: detailText, effectZh: detailText, startLabel: stringValue(source == null ? void 0 : source.startLabel, "\u8D77\u70B9"), endLabel: stringValue(source == null ? void 0 : source.endLabel, "\u76EE\u6807\u9636\u6BB5"), items: list3, steps: list3, comments: list3 };
     }
     const values2 = payload.steps.map((item2) => item2.text);
     const bodyText = typeof payload.bodyText === "string" ? payload.bodyText : stringValue(source == null ? void 0 : source.body, stringValue(source == null ? void 0 : source.effectText, stringValue(source == null ? void 0 : source.text)));
@@ -56463,11 +56859,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/BadgeCard.tsx
-  var import_jsx_runtime73 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime75 = __toESM(require_jsx_runtime());
   var BadgeCard = ({ icon, zhTitle, zhResult, enKicker, accent = "yellow", enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "up");
     const c3 = COLOR[accent];
-    return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
       "div",
       {
         style: {
@@ -56484,24 +56880,24 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          icon ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: zhTitle }),
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(ArrowDown, { size: 22, strokeWidth: 2.8, color: c3 }),
-            /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: c3 }, children: zhResult })
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: zhTitle }),
+          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(ArrowDown, { size: 22, strokeWidth: 2.8, color: c3 }),
+            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: c3 }, children: zhResult })
           ] }),
-          enKicker ? /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.3em", color: `${c3}CC` }, children: enKicker.toUpperCase() }) : null
+          enKicker ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.3em", color: `${c3}CC` }, children: enKicker.toUpperCase() }) : null
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/BarChart.tsx
-  var import_jsx_runtime74 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime76 = __toESM(require_jsx_runtime());
   var BarChart2 = ({ items: items2, accent = "yellow", width = 420, enterAt = 0 }) => {
     const frame = useCurrentFrame();
     const max = Math.max(...items2.map((i) => i.value));
-    return /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 2 }, children: items2.map((item2, i) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime76.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 2 }, children: items2.map((item2, i) => {
       const start2 = enterAt + i * MOTION.stagger;
       const t = interpolate(frame, [start2, start2 + 24], [0, 1], {
         extrapolateLeft: "clamp",
@@ -56509,8 +56905,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         easing: Easing.out(Easing.cubic)
       });
       const barW = item2.value / max * width * t;
-      return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 14, opacity: t === 0 ? 0 : 1 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+      return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 14, opacity: t === 0 ? 0 : 1 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
           "div",
           {
             style: {
@@ -56525,7 +56921,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: item2.label
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
           "div",
           {
             style: {
@@ -56536,7 +56932,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
           "div",
           {
             style: {
@@ -56554,7 +56950,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/BigNumber.tsx
-  var import_jsx_runtime75 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime77 = __toESM(require_jsx_runtime());
   var BigNumber = ({
     value,
     countFrom = 0,
@@ -56578,8 +56974,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const text4 = grouping ? v.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) : v.toFixed(decimals);
     const c3 = color === "white" ? COLOR.white : COLOR[color];
-    return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(
         "div",
         {
           style: {
@@ -56597,7 +56993,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           ]
         }
       ),
-      enKicker ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+      enKicker ? /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
         "div",
         {
           style: {
@@ -56611,7 +57007,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: enKicker.toUpperCase()
         }
       ) : null,
-      zhSub ? /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+      zhSub ? /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
         "div",
         {
           style: {
@@ -56629,7 +57025,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/BilingualSub.tsx
-  var import_jsx_runtime76 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime78 = __toESM(require_jsx_runtime());
   var SUB_ZH_SIZE = SIZE.subZh;
   var SUB_EN_SIZE = SIZE.subEn;
   var SUB_PLATE = "rgba(4,6,8,0.84)";
@@ -56641,7 +57037,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     bottom = SAFE.subtitleBottom
   }) => {
     const { height } = useVideoConfig();
-    return /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
       "div",
       {
         style: {
@@ -56652,7 +57048,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           height,
           pointerEvents: "none"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(
           "div",
           {
             style: {
@@ -56668,7 +57064,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               // 两行箱子分离，间距 8-10px（specs.md 字幕行）
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
                 "div",
                 {
                   "data-qc": "subtitle",
@@ -56694,7 +57090,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: zh
                 }
               ),
-              en ? /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+              en ? /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
                 "div",
                 {
                   style: {
@@ -56728,16 +57124,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/Breathe.tsx
-  var import_jsx_runtime77 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime79 = __toESM(require_jsx_runtime());
   var Breathe = ({ children, phase = 0, amp = 1 }) => {
     const frame = useCurrentFrame();
     const s = 1 + 6e-3 * amp * Math.sin((frame + phase) / 22);
     const y = 3 * amp * Math.sin((frame + phase) / 28);
-    return /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { transform: `translateY(${y}px) scale(${s})`, transformOrigin: "center" }, children });
+    return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)("div", { style: { transform: `translateY(${y}px) scale(${s})`, transformOrigin: "center" }, children });
   };
 
   // src/JasonWu/components/jc/BrickWall.tsx
-  var import_jsx_runtime78 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime80 = __toESM(require_jsx_runtime());
   var BRICK_W = 150;
   var BRICK_H = 56;
   var GAP = GRID2;
@@ -56750,11 +57146,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const totalBricks = rows3 * cols;
     const [g0, g1] = GRADIENT.yellow;
     const chipEnter = useEnter(enterAt + totalBricks * 3 + 6, "up");
-    return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW_YELLOW})` }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { position: "absolute", inset: 0, overflow: "hidden", borderRadius: GRID2 * 0.75 }, children: Array.from({ length: rows3 }).map((_, row) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW_YELLOW})` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("div", { style: { position: "absolute", inset: 0, overflow: "hidden", borderRadius: GRID2 * 0.75 }, children: Array.from({ length: rows3 }).map((_, row) => {
         const offset = row % 2 === 1;
         const rowCols = offset ? cols + 1 : cols;
-        return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
           "div",
           {
             style: {
@@ -56771,7 +57167,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 extrapolateRight: "clamp",
                 easing: Easing.out(Easing.cubic)
               });
-              return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+              return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
                 "div",
                 {
                   style: {
@@ -56791,7 +57187,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           row
         );
       }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(
         "div",
         {
           style: {
@@ -56812,7 +57208,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             whiteSpace: "nowrap"
           },
           children: [
-            enLabel ? /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+            enLabel ? /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
               "span",
               {
                 style: {
@@ -56826,7 +57222,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: enLabel
               }
             ) : null,
-            /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: SIZE.chip, color: COLOR.white }, children: label3 })
+            /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: SIZE.chip, color: COLOR.white }, children: label3 })
           ]
         }
       )
@@ -56834,10 +57230,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/CardWall.tsx
-  var import_jsx_runtime79 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime81 = __toESM(require_jsx_runtime());
   var AVATAR_COLORS = ["#3B82F6", "#F59E0B", "#22C55E", "#EF4444", "#8B5CF6", "#F97316"];
   var CardWall = ({ items: items2, cols = 4, cardWidth = 424, gap = 18, enterAt = 0, staggerFrames = 4 }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
       "div",
       {
         style: {
@@ -56845,7 +57241,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           gridTemplateColumns: `repeat(${cols}, ${cardWidth}px)`,
           gap
         },
-        children: items2.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(WallCardView, { card: c3, index: i, enterAt: enterAt + i * staggerFrames }, i))
+        children: items2.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(WallCardView, { card: c3, index: i, enterAt: enterAt + i * staggerFrames }, i))
       }
     );
   };
@@ -56854,7 +57250,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const enter3 = useEnter(enterAt, "up");
     const color = (_a2 = card.avatarColor) != null ? _a2 : AVATAR_COLORS[index % AVATAR_COLORS.length];
     const initial = /[a-zA-Z]/.test(card.name[0]) ? card.name[0].toUpperCase() : card.name[0];
-    return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)(
       "div",
       {
         style: {
@@ -56869,7 +57265,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
             "div",
             {
               style: {
@@ -56889,9 +57285,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: initial
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { style: { minWidth: 0 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 500, fontSize: 17, color: "#8B9098" }, children: card.name }),
-            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)("div", { style: { minWidth: 0 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime81.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 500, fontSize: 17, color: "#8B9098" }, children: card.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
               "div",
               {
                 style: {
@@ -56912,11 +57308,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/Chip.tsx
-  var import_jsx_runtime80 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime82 = __toESM(require_jsx_runtime());
   var Chip = ({ segments, icon, accent = "blue", outlined = false, dimmed = false, surface = "dark", enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "left");
     const isLight = surface === "light";
-    return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
       "div",
       {
         style: {
@@ -56932,8 +57328,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           boxShadow: isLight ? SURFACE.light.shadow : "0 4px 18px rgba(0,0,0,0.35)"
         },
         children: [
-          icon ? /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { fontSize: SIZE.chip - 4, color: COLOR[accent], lineHeight: 1, display: "inline-flex", alignItems: "center" }, children: icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("span", { style: { whiteSpace: "nowrap" }, children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime82.jsx)("span", { style: { fontSize: SIZE.chip - 4, color: COLOR[accent], lineHeight: 1, display: "inline-flex", alignItems: "center" }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)("span", { style: { whiteSpace: "nowrap" }, children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
             "span",
             {
               style: {
@@ -56952,9 +57348,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/Checklist.tsx
-  var import_jsx_runtime81 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime83 = __toESM(require_jsx_runtime());
   var Checklist = ({ items: items2, accent = "blue", outlined = false, top = 200, staggerFrames = MOTION.stagger }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
       "div",
       {
         style: {
@@ -56968,7 +57364,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         },
         children: items2.map((item2, i) => {
           var _a2;
-          return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+          return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
             Chip,
             {
               segments: item2.segments,
@@ -56986,15 +57382,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/CloneCascade.tsx
-  var import_jsx_runtime82 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime84 = __toESM(require_jsx_runtime());
   var CARD2 = GRID2 * 15;
+  var SOURCE_PALETTE = ["#4D9EFF", "#FFC53D", "#3DDC84", "#B26BFF"];
+  var STAR_PALETTE = ["#4D9EFF", "#FF4D4D", "#FFC53D", "#B26BFF", "#3DDC84", "#FDE047"];
+  var CLONE_LABELS = ["A", "B", "C", "D"];
   var SourceCard = ({
     icon,
     label: label3,
-    enterAt
+    enterAt,
+    palette
   }) => {
     const enter3 = useEnter(enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
+    const [blue2, gold, green2, purple] = palette;
+    return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
       "div",
       {
         style: {
@@ -57006,25 +57407,35 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "div",
             {
               style: {
                 width: CARD2,
                 height: CARD2,
                 borderRadius: RADIUS.card,
-                background: "linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92))",
-                border: "2.5px solid rgba(255,255,255,0.92)",
+                background: `linear-gradient(165deg, rgba(20,24,29,0.92), rgba(8,10,13,0.92)) padding-box, linear-gradient(135deg, ${blue2}, ${gold}, ${green2}, ${purple}) border-box`,
+                border: "2.5px solid transparent",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: COLOR.white,
-                boxShadow: "0 14px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.18)"
+                color: blue2,
+                boxShadow: `0 14px 40px rgba(0,0,0,0.55), 0 0 26px ${blue2}55, 0 0 34px ${gold}33, 0 0 38px ${green2}22, inset 0 1px 0 rgba(255,255,255,0.18)`
               },
-              children: icon
+              children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    color: blue2,
+                    filter: `drop-shadow(0 0 10px ${blue2}AA) drop-shadow(0 0 18px ${gold}66) drop-shadow(0 0 24px ${purple}44)`
+                  },
+                  children: icon
+                }
+              )
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "span",
             {
               style: {
@@ -57045,10 +57456,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
     icon,
     index,
     fade,
-    enterAt
+    enterAt,
+    starColor
   }) => {
+    var _a2;
     const enter3 = useEnter(enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
       "div",
       {
         style: {
@@ -57060,7 +57473,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "div",
             {
               style: {
@@ -57072,13 +57485,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: COLOR.grey,
-                boxShadow: "0 8px 24px rgba(0,0,0,0.4)"
+                color: starColor,
+                boxShadow: `0 8px 24px rgba(0,0,0,0.4), 0 0 18px ${starColor}55`
               },
-              children: icon
+              children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    color: starColor,
+                    filter: `drop-shadow(0 0 8px ${starColor}AA) drop-shadow(0 0 16px ${starColor}66)`
+                  },
+                  children: icon
+                }
+              )
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "span",
             {
               style: {
@@ -57088,7 +57511,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 color: COLOR.greyDim,
                 whiteSpace: "nowrap"
               },
-              children: `\u4EFF\u54C1 ${index + 1}`
+              children: (_a2 = CLONE_LABELS[index]) != null ? _a2 : String.fromCharCode(65 + index)
             }
           )
         ]
@@ -57099,9 +57522,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const warnAt = enterAt + MOTION.stagger * (cloneCount + 1);
     const warnEnter = useEnter(warnAt, "left");
     const arrowEnter = useEnter(enterAt + MOTION.stagger, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: GRID2 * 2 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(SourceCard, { icon, label: label3, enterAt }),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: GRID2 * 2 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(SourceCard, { icon, label: label3, enterAt, palette: SOURCE_PALETTE }),
+      /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
         "span",
         {
           style: {
@@ -57116,17 +57539,18 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: "\u2192"
         }
       ),
-      Array.from({ length: cloneCount }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      Array.from({ length: cloneCount }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
         CloneCard,
         {
           icon,
           index: i,
           fade: Math.max(0.4, 0.85 - i * 0.15),
-          enterAt: enterAt + MOTION.stagger * (i + 1)
+          enterAt: enterAt + MOTION.stagger * (i + 1),
+          starColor: STAR_PALETTE[(i + 1) % STAR_PALETTE.length]
         },
         i
       )),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
         "div",
         {
           style: {
@@ -57141,7 +57565,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             transform: warnEnter.transform,
             marginBottom: GRID2 * 4
           },
-          children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
             "span",
             {
               style: {
@@ -57160,15 +57584,26 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/CompareCard.tsx
-  var import_jsx_runtime83 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime85 = __toESM(require_jsx_runtime());
+  var LOGO_PALETTE = ["#4D9EFF", "#FFC53D", "#3DDC84", "#B26BFF"];
   var CompareCard = ({ items: items2, width = 700, enterAt = 0, staggerFrames = MOTION.stagger }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 20 }, children: items2.map((it, i) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(ItemView, { item: it, width, enterAt: enterAt + i * staggerFrames }, i)) });
+    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 20 }, children: items2.map((it, i) => /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(ItemView, { item: it, index: i, width, enterAt: enterAt + i * staggerFrames }, i)) });
   };
-  var ItemView = ({ item: item2, width, enterAt }) => {
-    var _a2;
+  var ItemView = ({ item: item2, index, width, enterAt }) => {
+    var _a2, _b;
     const enter3 = useEnter(enterAt, "left");
     const strong = COLOR[(_a2 = item2.strongColor) != null ? _a2 : "blue"];
-    return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+    const logoColor = LOGO_PALETTE[index % LOGO_PALETTE.length];
+    const logoGlow = LOGO_PALETTE[(index + 1) % LOGO_PALETTE.length];
+    const defaultPayload = {
+      name: `ITEM ${index + 1}`,
+      weak: "\u5F85\u8865\u5145\u9650\u5236",
+      strong: "\u5F85\u8865\u5145\u4F18\u52BF"
+    };
+    const name = readTextSlot(item2, "name", defaultPayload, defaultPayload.name);
+    const weak = readTextSlot(item2, "weak", defaultPayload, defaultPayload.weak);
+    const strongText = readTextSlot(item2, "strong", defaultPayload, defaultPayload.strong);
+    return /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
       "div",
       {
         style: {
@@ -57185,28 +57620,40 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
             "div",
             {
               style: {
                 width: 68,
                 height: 68,
                 borderRadius: 15,
-                background: "#FFFFFF",
+                background: `linear-gradient(165deg, rgba(20,24,29,0.94), rgba(8,10,13,0.96)) padding-box, linear-gradient(135deg, ${logoColor}, ${logoGlow}, rgba(255,255,255,0.86)) border-box`,
+                border: "2px solid transparent",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#16181D",
+                color: logoColor,
                 flexShrink: 0,
-                overflow: "hidden"
+                overflow: "hidden",
+                boxShadow: `0 0 20px ${logoColor}55, 0 0 34px ${logoGlow}2F, inset 0 1px 0 rgba(255,255,255,0.28)`
               },
-              children: item2.logo
+              children: /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                "span",
+                {
+                  style: {
+                    display: "inline-flex",
+                    color: logoColor,
+                    filter: `drop-shadow(0 0 9px ${logoColor}AA) drop-shadow(0 0 18px ${logoGlow}66)`
+                  },
+                  children: (_b = item2.logo) != null ? _b : /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(IcoFontPathIcon, { seed: `${name}|${weak}|${index}`, color: logoColor, size: 38, fallbackIndex: index })
+                }
+              )
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: item2.name }),
-            /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { style: { display: "flex", gap: 12, marginTop: 10 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }, children: name }),
+            /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("div", { style: { display: "flex", gap: 12, marginTop: 10 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
                 "span",
                 {
                   style: {
@@ -57222,12 +57669,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     color: COLOR.grey
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(X, { size: 17, strokeWidth: 3 }),
-                    item2.weak
+                    /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(X, { size: 17, strokeWidth: 3 }),
+                    weak
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
                 "span",
                 {
                   style: {
@@ -57243,8 +57690,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     color: COLOR.white
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Check, { size: 17, strokeWidth: 3, color: strong }),
-                    item2.strong
+                    /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(Check, { size: 17, strokeWidth: 3, color: strong }),
+                    strongText
                   ]
                 }
               )
@@ -57256,7 +57703,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/CurveOverlay.tsx
-  var import_jsx_runtime84 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime86 = __toESM(require_jsx_runtime());
   var CurveOverlay = ({ width, height, color = "yellow", strokeWidth = 6, exponent = 2.2, growFrames = 70, enterAt = 0 }) => {
     const frame = useCurrentFrame();
     const p = interpolate(frame, [enterAt, enterAt + growFrames], [0, 1], {
@@ -57270,7 +57717,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const y = Math.pow(x, exponent);
       return `${(x * width).toFixed(1)},${(height * (0.96 - 0.9 * y)).toFixed(1)}`;
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("svg", { width, height, style: { display: "block" }, children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("svg", { width, height, style: { display: "block" }, children: /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(
       "polyline",
       {
         points: pts.join(" "),
@@ -57286,10 +57733,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/DMCardStack.tsx
-  var import_jsx_runtime85 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime87 = __toESM(require_jsx_runtime());
   var DMCardStack = ({ cards, enterAt = 0, staggerFrames = MOTION.stagger }) => {
     const rots = [-3, 2.5, -1.5, 2];
-    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { position: "relative" }, children: cards.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime87.jsx)("div", { style: { position: "relative" }, children: cards.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
       DMCardView,
       {
         card: c3,
@@ -57304,7 +57751,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   var DMCardView = ({ card, rotate: rotate2, offsetX, offsetY, enterAt }) => {
     var _a2, _b, _c;
     const enter3 = useEnter(enterAt, "up");
-    return /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
       "div",
       {
         style: {
@@ -57315,7 +57762,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           opacity: enter3.opacity,
           transform: `${enter3.transform} rotate(${rotate2}deg)`
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
           "div",
           {
             style: {
@@ -57329,7 +57776,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               alignItems: "flex-start"
             },
             children: [
-              card.chip ? /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              card.chip ? /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
                 "div",
                 {
                   style: {
@@ -57349,13 +57796,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   children: card.chip.text
                 }
               ) : null,
-              card.avatarSrc ? /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              card.avatarSrc ? /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
                 Img,
                 {
                   src: card.avatarSrc,
                   style: { width: 44, height: 44, borderRadius: 8, objectFit: "cover", flexShrink: 0 }
                 }
-              ) : /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              ) : /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
                 "div",
                 {
                   style: {
@@ -57367,7 +57814,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   }
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
                 "div",
                 {
                   style: {
@@ -57389,16 +57836,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
 
   // src/JasonWu/components/jc/FlowChain.tsx
   var import_react127 = __toESM(require_react());
-  var import_jsx_runtime86 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime88 = __toESM(require_jsx_runtime());
   var FlowChain = ({ nodes, nodeWidth = 190, surface = "dark", enterAt = 0, staggerFrames = MOTION.stagger }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: nodes.map((nd, i) => /* @__PURE__ */ (0, import_jsx_runtime86.jsxs)(import_react127.default.Fragment, { children: [
-      i > 0 ? /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(Arrow, { enterAt: enterAt + i * staggerFrames }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(NodeView, { node: nd, width: nodeWidth, surface, enterAt: enterAt + i * staggerFrames })
+    return /* @__PURE__ */ (0, import_jsx_runtime88.jsx)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: nodes.map((nd, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(import_react127.default.Fragment, { children: [
+      i > 0 ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(Arrow, { enterAt: enterAt + i * staggerFrames }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(NodeView, { node: nd, width: nodeWidth, surface, enterAt: enterAt + i * staggerFrames })
     ] }, i)) });
   };
   var Arrow = ({ enterAt }) => {
     const enter3 = useEnter(enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime86.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
       "span",
       {
         style: {
@@ -57423,7 +57870,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const enter3 = useEnter(enterAt, "up");
     const c3 = COLOR[(_a2 = node2.accent) != null ? _a2 : "blue"];
     const isLight = surface === "light";
-    return /* @__PURE__ */ (0, import_jsx_runtime86.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
       "div",
       {
         style: {
@@ -57443,15 +57890,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          node2.icon ? /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: node2.icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { textAlign: "center" }, children: node2.lines.map((l, i) => /* @__PURE__ */ (0, import_jsx_runtime86.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 24, lineHeight: 1.5, color: isLight ? SURFACE.light.fg : COLOR.white }, children: l }, i)) })
+          node2.icon ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)("span", { style: { color: c3, display: "inline-flex" }, children: node2.icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime88.jsx)("div", { style: { textAlign: "center" }, children: node2.lines.map((l, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsx)("div", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 24, lineHeight: 1.5, color: isLight ? SURFACE.light.fg : COLOR.white }, children: l }, i)) })
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/Flywheel.tsx
-  var import_jsx_runtime87 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime89 = __toESM(require_jsx_runtime());
   var Flywheel = ({
     size = 340,
     color = "green",
@@ -57464,7 +57911,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const radius = size * 0.39;
     const circumference = Math.PI * 2 * radius;
     const segment = circumference * (39 / 360);
-    return /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)(
       "div",
       {
         style: {
@@ -57476,7 +57923,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           filter: `drop-shadow(0 0 26px ${color === "green" ? "rgba(61,220,132,0.4)" : `${accent}66`})`
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)(
             "svg",
             {
               width: size,
@@ -57484,7 +57931,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               viewBox: `0 0 ${size} ${size}`,
               style: { transform: `rotate(${frame * 1}deg)` },
               children: [
-                Array.from({ length: 8 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                Array.from({ length: 8 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime89.jsx)(
                   "circle",
                   {
                     cx: size / 2,
@@ -57504,8 +57951,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   const a3 = (index * 45 - 90) * Math.PI / 180;
                   const cx = size / 2, cy = size / 2;
                   const r0 = size * 0.19, r1 = radius - GRID2;
-                  return /* @__PURE__ */ (0, import_jsx_runtime87.jsxs)("g", { children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                  return /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)("g", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime89.jsx)(
                       "line",
                       {
                         x1: cx + r0 * Math.cos(a3),
@@ -57517,7 +57964,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         opacity: 0.75
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime89.jsx)(
                       "circle",
                       {
                         cx: cx + radius * Math.cos(a3 + 0.28),
@@ -57531,7 +57978,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime87.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime89.jsx)(
             "div",
             {
               style: {
@@ -57559,7 +58006,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/HeroText.tsx
-  var import_jsx_runtime88 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime90 = __toESM(require_jsx_runtime());
   var scaleShift = (e, shiftPx) => {
     if (shiftPx === MOTION.popInShift) return e;
     const k = shiftPx / MOTION.popInShift;
@@ -57591,7 +58038,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       config: { damping: 200 },
       durationInFrames: 12
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime90.jsxs)(
       "div",
       {
         "data-qc": "text",
@@ -57603,7 +58050,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           textShadow: "0 2px 12px rgba(0,0,0,0.6)"
         },
         children: [
-          kicker ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+          kicker ? /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
             "div",
             {
               style: {
@@ -57616,7 +58063,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 opacity: kickerEnter.opacity,
                 transform: kickerEnter.transform
               },
-              children: typeof kicker === "string" ? kicker.toUpperCase() : kicker.map((k, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+              children: typeof kicker === "string" ? kicker.toUpperCase() : kicker.map((k, i) => /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
                 "span",
                 {
                   style: { color: k.color ? COLOR[k.color] : COLOR.white },
@@ -57626,7 +58073,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ))
             }
           ) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
             "div",
             {
               style: {
@@ -57634,7 +58081,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 opacity: mainEnter.opacity,
                 transform: mainEnter.transform
               },
-              children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime88.jsxs)(
+              children: segments.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime90.jsxs)(
                 "span",
                 {
                   style: {
@@ -57647,7 +58094,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   },
                   children: [
                     s.t,
-                    s.strike ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+                    s.strike ? /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
                       "span",
                       {
                         style: {
@@ -57667,7 +58114,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ))
             }
           ),
-          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
             "div",
             {
               style: {
@@ -57682,7 +58129,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: zhSub
             }
           ) : null,
-          echo ? /* @__PURE__ */ (0, import_jsx_runtime88.jsx)(
+          echo ? /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
             "div",
             {
               style: {
@@ -57704,12 +58151,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/InfoCard.tsx
-  var import_jsx_runtime89 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime91 = __toESM(require_jsx_runtime());
   var InfoCard = ({ icon, en, zh, accent = "blue", surface = "dark", enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "left");
     const c3 = COLOR[accent];
     const isLight = surface === "light";
-    return /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime91.jsxs)(
       "div",
       {
         style: {
@@ -57725,10 +58172,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          icon ? /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("span", { style: { color: c3, display: "inline-flex", flexShrink: 0 }, children: icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime89.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.kicker, letterSpacing: "0.26em", color: c3 }, children: en.toUpperCase() }),
-            /* @__PURE__ */ (0, import_jsx_runtime89.jsx)("div", { style: { marginTop: 5, fontFamily: FONT.zh, fontWeight: 700, fontSize: 26, color: isLight ? SURFACE.light.fg : COLOR.white }, children: zh })
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime91.jsx)("span", { style: { color: c3, display: "inline-flex", flexShrink: 0 }, children: icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime91.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime91.jsx)("div", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.kicker, letterSpacing: "0.26em", color: c3 }, children: en.toUpperCase() }),
+            /* @__PURE__ */ (0, import_jsx_runtime91.jsx)("div", { style: { marginTop: 5, fontFamily: FONT.zh, fontWeight: 700, fontSize: 26, color: isLight ? SURFACE.light.fg : COLOR.white }, children: zh })
           ] })
         ]
       }
@@ -57736,13 +58183,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/InfoScrim.tsx
-  var import_jsx_runtime90 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime92 = __toESM(require_jsx_runtime());
   var InfoScrim = ({
     strength = 1,
     side = "right"
   }) => {
     const deg = side === "right" ? 90 : 270;
-    return /* @__PURE__ */ (0, import_jsx_runtime90.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -57754,7 +58201,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/LoopDiagram.tsx
-  var import_jsx_runtime91 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime93 = __toESM(require_jsx_runtime());
   var LoopNode = ({ label: label3, index, size, enterAt }) => {
     const frame = useCurrentFrame();
     const angle = -Math.PI / 2 + index * (Math.PI / 2);
@@ -57771,7 +58218,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         easing: Easing.out(Easing.cubic)
       }
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
       "div",
       {
         style: {
@@ -57813,8 +58260,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       extrapolateRight: "clamp",
       easing: Easing.out(Easing.quad)
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime91.jsxs)("div", { style: { position: "relative", width: size, height: size, opacity: bodyOpacity }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)("div", { style: { position: "relative", width: size, height: size, opacity: bodyOpacity }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
         "svg",
         {
           width: ringSize,
@@ -57828,7 +58275,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             transform: `rotate(${frame * 0.25}deg)`,
             filter: `drop-shadow(0 0 18px ${accent}66)`
           },
-          children: /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
             "circle",
             {
               cx: ringSize / 2,
@@ -57843,7 +58290,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           )
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
         "div",
         {
           style: {
@@ -57865,12 +58312,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: "LOOP"
         }
       ),
-      labels.slice(0, 4).map((label3, index) => /* @__PURE__ */ (0, import_jsx_runtime91.jsx)(LoopNode, { label: label3, index, size, enterAt }, `${label3}-${index}`))
+      labels.slice(0, 4).map((label3, index) => /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(LoopNode, { label: label3, index, size, enterAt }, `${label3}-${index}`))
     ] });
   };
 
   // src/JasonWu/components/jc/MatrixIcon.tsx
-  var import_jsx_runtime92 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime94 = __toESM(require_jsx_runtime());
   var CELL_GRADIENT = {
     green: ["#55E698", "#1FA85D"],
     red: ["#FF6B6B", "#D92B35"],
@@ -57888,14 +58335,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [g0, g1] = CELL_GRADIENT[color];
     const W = cols * cell + (cols - 1) * gap;
     const H = rows3 * cell + (rows3 - 1) * gap;
-    return /* @__PURE__ */ (0, import_jsx_runtime92.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW[color]})` }, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW[color]})` }, children: [
       Array.from({ length: rows3 * cols }, (_, i) => {
         const t = interpolate(frame, [enterAt + i * 1.4, enterAt + i * 1.4 + 12], [0, 1], {
           extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
           easing: Easing.out(Easing.cubic)
         });
-        return /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(
           "div",
           {
             style: {
@@ -57914,7 +58361,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           i
         );
       }),
-      icon ? /* @__PURE__ */ (0, import_jsx_runtime92.jsx)(
+      icon ? /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(
         "div",
         {
           style: {
@@ -57941,13 +58388,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
 
   // src/JasonWu/components/jc/NamePlate.tsx
   var import_react128 = __toESM(require_react());
-  var import_jsx_runtime93 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime95 = __toESM(require_jsx_runtime());
   var GOLD2 = "#C9A227";
   var NamePlate = ({ name, slug, avatarText, avatarSrc: avatarSrc2, avatarImgStyle, enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "up");
     const [imgFailed, setImgFailed] = import_react128.default.useState(false);
     const showImg = Boolean(avatarSrc2) && !imgFailed;
-    return /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)(
       "div",
       {
         style: {
@@ -57965,7 +58412,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
             "div",
             {
               style: {
@@ -57985,7 +58432,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 fontSize: 26,
                 color: GOLD2
               },
-              children: showImg ? /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+              children: showImg ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
                 Img,
                 {
                   src: avatarSrc2,
@@ -58005,9 +58452,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ) : avatarText
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime93.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime93.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.t3, color: COLOR.white, lineHeight: 1 }, children: name }),
-            /* @__PURE__ */ (0, import_jsx_runtime93.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", flexDirection: "column", gap: 4 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.t3, color: COLOR.white, lineHeight: 1 }, children: name }),
+            /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
               "span",
               {
                 style: {
@@ -58029,12 +58476,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/PersonBadge.tsx
-  var import_jsx_runtime94 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime96 = __toESM(require_jsx_runtime());
   var PersonBadge = ({ avatarSrc: avatarSrc2, name, zhSub, accent = "blue", enterAt = 0 }) => {
     const frame = useCurrentFrame();
     const enter3 = useEnter(enterAt, "left");
     if (frame < enterAt) return null;
-    return /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
       "div",
       {
         style: {
@@ -58050,13 +58497,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(Img, { src: avatarSrc2, style: { width: 44, height: 44, borderRadius: 22, objectFit: "cover", display: "block" } }),
-          /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime94.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime94.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.08em", color: COLOR.white, lineHeight: 1.1 }, children: name.toUpperCase() }),
-              /* @__PURE__ */ (0, import_jsx_runtime94.jsx)(BadgeCheck, { size: 20, color: COLOR[accent], strokeWidth: 2.4 })
+          /* @__PURE__ */ (0, import_jsx_runtime96.jsx)(Img, { src: avatarSrc2, style: { width: 44, height: 44, borderRadius: 22, objectFit: "cover", display: "block" } }),
+          /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.08em", color: COLOR.white, lineHeight: 1.1 }, children: name.toUpperCase() }),
+              /* @__PURE__ */ (0, import_jsx_runtime96.jsx)(BadgeCheck, { size: 20, color: COLOR[accent], strokeWidth: 2.4 })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime94.jsx)("div", { style: { marginTop: 3, fontFamily: FONT.zh, fontWeight: 700, fontSize: 18, color: COLOR.grey, lineHeight: 1.1 }, children: zhSub })
+            /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { marginTop: 3, fontFamily: FONT.zh, fontWeight: 700, fontSize: 18, color: COLOR.grey, lineHeight: 1.1 }, children: zhSub })
           ] })
         ]
       }
@@ -58064,13 +58511,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/PersonCard.tsx
-  var import_jsx_runtime95 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime97 = __toESM(require_jsx_runtime());
   var PersonCard = ({ name, zhRole, avatarSrc: avatarSrc2, avatarText, avatarColor = "#3E6FB0", ringColor = COLOR.blue, orgChip, kickerNote, enterAt = 0 }) => {
     var _a2;
     const enter3 = useEnter(enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 12px rgba(0,0,0,0.55)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: [
-        avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform, textShadow: "0 2px 12px rgba(0,0,0,0.55)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 18 }, children: [
+        avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
           Img,
           {
             src: avatarSrc2,
@@ -58083,7 +58530,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               flexShrink: 0
             }
           }
-        ) : /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(
+        ) : /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
           "div",
           {
             style: {
@@ -58104,20 +58551,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: avatarText != null ? avatarText : name.slice(0, 1)
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: SIZE.card - 4, color: COLOR.white, letterSpacing: "0.02em" }, children: name.toUpperCase() }),
-          /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: zhRole })
+        /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: SIZE.card - 4, color: COLOR.white, letterSpacing: "0.02em" }, children: name.toUpperCase() }),
+          /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: zhRole })
         ] })
       ] }),
-      orgChip || kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime95.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 16, marginTop: 14, marginLeft: (avatarSrc2 ? 110 : 84) + 18 }, children: [
-        orgChip ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)(Chip, { segments: [{ t: orgChip.text }], accent: (_a2 = orgChip.color) != null ? _a2 : "blue", outlined: true, enterAt: enterAt + 8 }) : null,
-        kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime95.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.22em", color: COLOR.greyDim }, children: kickerNote.toUpperCase() }) : null
+      orgChip || kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 16, marginTop: 14, marginLeft: (avatarSrc2 ? 110 : 84) + 18 }, children: [
+        orgChip ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(Chip, { segments: [{ t: orgChip.text }], accent: (_a2 = orgChip.color) != null ? _a2 : "blue", outlined: true, enterAt: enterAt + 8 }) : null,
+        kickerNote ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.22em", color: COLOR.greyDim }, children: kickerNote.toUpperCase() }) : null
       ] }) : null
     ] });
   };
 
   // src/JasonWu/components/jc/PhoneMockup.tsx
-  var import_jsx_runtime96 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime98 = __toESM(require_jsx_runtime());
   var PhoneMockup = ({
     children,
     header: header2,
@@ -58138,7 +58585,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       extrapolateRight: "clamp",
       easing: Easing.inOut(Easing.cubic)
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)(
       "div",
       {
         style: {
@@ -58154,7 +58601,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           position: "relative"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime96.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
             "div",
             {
               style: {
@@ -58170,7 +58617,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime96.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)(
             "div",
             {
               style: {
@@ -58182,8 +58629,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 position: "relative"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { transform: `translateY(${y}px)` }, children }),
-                header2 ? /* @__PURE__ */ (0, import_jsx_runtime96.jsx)("div", { style: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }, children: header2 }) : null
+                /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("div", { style: { transform: `translateY(${y}px)` }, children }),
+                header2 ? /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("div", { style: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }, children: header2 }) : null
               ]
             }
           )
@@ -58193,7 +58640,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/QuoteDoc.tsx
-  var import_jsx_runtime97 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime99 = __toESM(require_jsx_runtime());
   var QuoteDoc = ({ title, blocks, zhNote, zhNoteYPct, zhNoteX = -18, source, width = 1100, enterAt = 0, highlightAt, noteAt }) => {
     const enter3 = useEnter(enterAt, "up");
     const frame = useCurrentFrame();
@@ -58207,8 +58654,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       extrapolateRight: "clamp",
       easing: Easing.out(Easing.cubic)
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { position: "relative", width, opacity: enter3.opacity, transform: enter3.transform }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)("div", { style: { position: "relative", width, opacity: enter3.opacity, transform: enter3.transform }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
         "div",
         {
           style: {
@@ -58218,7 +58665,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             boxShadow: "0 24px 80px rgba(0,0,0,0.6)"
           },
           children: [
-            title ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+            title ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
               "div",
               {
                 style: {
@@ -58232,8 +58679,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: title
               }
             ) : null,
-            /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16 }, children: blocks.map(
-              (b3, i) => b3.heading ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime99.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16 }, children: blocks.map(
+              (b3, i) => b3.heading ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
                 "div",
                 {
                   style: {
@@ -58248,8 +58695,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 i
               ) : b3.hl ? (
                 // 高亮段：黄底层 scaleX 扫过（origin 左），文字随扫过变深
-                /* @__PURE__ */ (0, import_jsx_runtime97.jsxs)("div", { style: { position: "relative", padding: "10px 12px" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)("div", { style: { position: "relative", padding: "10px 12px" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
                     "div",
                     {
                       style: {
@@ -58263,7 +58710,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       }
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
                     "div",
                     {
                       style: {
@@ -58278,7 +58725,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     }
                   )
                 ] }, i)
-              ) : /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+              ) : /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
                 "div",
                 {
                   style: {
@@ -58293,11 +58740,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 i
               )
             ) }),
-            source ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)("div", { style: { marginTop: 24, fontFamily: FONT.en, fontWeight: 700, fontSize: 17, color: "#9AA0A8" }, children: source }) : null
+            source ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)("div", { style: { marginTop: 24, fontFamily: FONT.en, fontWeight: 700, fontSize: 17, color: "#9AA0A8" }, children: source }) : null
           ]
         }
       ),
-      zhNote && noteT > 0 ? /* @__PURE__ */ (0, import_jsx_runtime97.jsx)(
+      zhNote && noteT > 0 ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
         "div",
         {
           style: {
@@ -58325,7 +58772,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/ScoreBoard.tsx
-  var import_jsx_runtime98 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime100 = __toESM(require_jsx_runtime());
   var ScoreRowView = ({ row, start: start2 }) => {
     const frame = useCurrentFrame();
     const enter3 = useEnter(start2, "up");
@@ -58336,9 +58783,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const l = Math.round(row.left * t);
     const r = Math.round(row.right * t);
-    return /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { style: { opacity: enter3.opacity, transform: enter3.transform }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
           "span",
           {
             style: {
@@ -58351,9 +58798,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: row.enKicker.toUpperCase()
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: row.zhLabel })
+        /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: row.zhLabel })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime98.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
         "div",
         {
           style: {
@@ -58368,13 +58815,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
             textShadow: "0 2px 14px rgba(0,0,0,0.6)"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.green }, children: l }),
-            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.grey, fontSize: SIZE.h2 }, children: ":" }),
-            /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("span", { style: { color: COLOR.red }, children: r })
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("span", { style: { color: COLOR.green }, children: l }),
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("span", { style: { color: COLOR.grey, fontSize: SIZE.h2 }, children: ":" }),
+            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("span", { style: { color: COLOR.red }, children: r })
           ]
         }
       ),
-      row.note ? /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(
+      row.note ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
         "div",
         {
           style: {
@@ -58390,11 +58837,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
     ] });
   };
   var ScoreBoard = ({ rows: rows3, enterAt = 0 }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime98.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 4 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime98.jsx)(ScoreRowView, { row, start: enterAt + i * (MOTION.stagger * 2) }, i)) });
+    return /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: GRID2 * 4 }, children: rows3.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(ScoreRowView, { row, start: enterAt + i * (MOTION.stagger * 2) }, i)) });
   };
 
   // src/JasonWu/components/jc/ShotCard.tsx
-  var import_jsx_runtime99 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime101 = __toESM(require_jsx_runtime());
   var ShotCard = ({
     src,
     children,
@@ -58421,7 +58868,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       easing: Easing.inOut(Easing.cubic)
     }) : 0;
     const punchScale = 1 + punchT * (((_b = punch == null ? void 0 : punch.scale) != null ? _b : 1.6) - 1);
-    return /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
       "div",
       {
         style: {
@@ -58431,7 +58878,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: `${enter3.transform} rotate(${rotate2}deg)`
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
             "div",
             {
               style: {
@@ -58442,7 +58889,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 lineHeight: 0,
                 background: "#fff"
               },
-              children: /* @__PURE__ */ (0, import_jsx_runtime99.jsxs)(
+              children: /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
                 "div",
                 {
                   style: {
@@ -58451,7 +58898,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                     transformOrigin: punch ? `${(_c = punch.originX) != null ? _c : "0%"} ${(_d = punch.originY) != null ? _d : "0%"}` : void 0
                   },
                   children: [
-                    src ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(Img, { src, style: { width: "100%", display: "block" } }) : children,
+                    src ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(Img, { src, style: { width: "100%", display: "block" } }) : children,
                     (highlights != null ? highlights : []).map((h, i) => {
                       var _a3, _b2;
                       const sweep = interpolate(frame, [(_a3 = h.at) != null ? _a3 : 0, ((_b2 = h.at) != null ? _b2 : 0) + 12], [0, 1], {
@@ -58460,7 +58907,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         easing: Easing.out(Easing.cubic)
                       });
                       if (sweep <= 0) return null;
-                      return /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
                         "div",
                         {
                           style: {
@@ -58488,7 +58935,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         easing: Easing.out(Easing.cubic)
                       });
                       if (t <= 0) return null;
-                      return /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
                         "div",
                         {
                           style: {
@@ -58513,7 +58960,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                         `bar${i}`
                       );
                     }),
-                    highlight ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+                    highlight ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
                       "div",
                       {
                         style: {
@@ -58534,7 +58981,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               )
             }
           ),
-          zhBar ? /* @__PURE__ */ (0, import_jsx_runtime99.jsx)(
+          zhBar ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
             "div",
             {
               style: {
@@ -58562,11 +59009,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/SideLabel.tsx
-  var import_jsx_runtime100 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime102 = __toESM(require_jsx_runtime());
   var SideLabel = ({ color, en, zh, sub, icon, side = "left", enterAt = 0, variant = "label" }) => {
     const accent = COLOR[color];
     const enter3 = useEnter(enterAt, "left");
-    const kickerRow = /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
+    const kickerRow = /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
       "div",
       {
         style: {
@@ -58576,7 +59023,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           textShadow: "0 1px 8px rgba(0,0,0,0.55)"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
             "span",
             {
               style: {
@@ -58589,8 +59036,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: en.toUpperCase()
             }
           ),
-          variant === "label" ? /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(import_jsx_runtime100.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          variant === "label" ? /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(import_jsx_runtime102.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
               "span",
               {
                 style: {
@@ -58603,7 +59050,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: "\xB7"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
               "span",
               {
                 style: {
@@ -58620,7 +59067,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         ]
       }
     );
-    const subRow = sub ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+    const subRow = sub ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
       "div",
       {
         style: {
@@ -58634,7 +59081,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         children: sub
       }
     ) : null;
-    return /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
       "div",
       {
         "data-qc": "text",
@@ -58649,7 +59096,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           gap: 14
         },
         children: [
-          icon ? /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          icon ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
             "span",
             {
               style: {
@@ -58661,7 +59108,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: icon
             }
           ) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
             "div",
             {
               style: {
@@ -58675,8 +59122,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          variant === "title" ? /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)(
+          variant === "title" ? /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
               "div",
               {
                 style: {
@@ -58697,9 +59144,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: zh
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime100.jsx)("div", { style: { marginTop: 10 }, children: kickerRow }),
+            /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("div", { style: { marginTop: 10 }, children: kickerRow }),
             subRow
-          ] }) : /* @__PURE__ */ (0, import_jsx_runtime100.jsxs)("div", { children: [
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)("div", { children: [
             kickerRow,
             subRow
           ] })
@@ -58709,7 +59156,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/SolventTank.tsx
-  var import_jsx_runtime101 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime103 = __toESM(require_jsx_runtime());
   var CUBE = 62;
   var CGAP = 14;
   var GLASS_L = 48;
@@ -58764,8 +59211,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
       outline = COLOR.green;
       outlineW = rt * 3;
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(import_jsx_runtime101.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(import_jsx_runtime103.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
         "div",
         {
           style: {
@@ -58791,7 +59238,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         });
         if (bt <= 0 || bt >= 1) return null;
         const bs = 7 + b3 * 3;
-        return /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
           "div",
           {
             style: {
@@ -58821,7 +59268,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const frame = useCurrentFrame();
     const t = interpolate(frame, [at, at + 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
     if (t <= 0) return null;
-    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(
       "div",
       {
         style: {
@@ -58838,9 +59285,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
           opacity: t
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { width: 14, height: 14, borderRadius: 4, background: GRAD[color], flexShrink: 0 } }),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 900, fontSize: 24, color: COLOR[color], whiteSpace: "nowrap" }, children: zh }),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.16em", color: COLOR[color], opacity: 0.85 }, children: en })
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { width: 14, height: 14, borderRadius: 4, background: GRAD[color], flexShrink: 0 } }),
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 900, fontSize: 24, color: COLOR[color], whiteSpace: "nowrap" }, children: zh }),
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 20, letterSpacing: "0.16em", color: COLOR[color], opacity: 0.85 }, children: en })
         ]
       }
     );
@@ -58859,7 +59306,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     });
     const wave = Math.sin(frame / 9) * 3;
     const stream = interpolate(frame, [pourAt - 2, pourAt + 12], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime101.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(
       "div",
       {
         style: {
@@ -58871,7 +59318,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transformOrigin: "center 60%"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
             "div",
             {
               style: {
@@ -58886,7 +59333,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          stream > 0.02 ? /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          stream > 0.02 ? /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
             "div",
             {
               style: {
@@ -58901,7 +59348,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
             "div",
             {
               style: {
@@ -58919,8 +59366,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)("div", { style: { position: "absolute", left: GLASS_L - 8, top: GLASS_TOP - 2, width: GLASS_W + 16, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.62)" } }),
-          [0.28, 0.46, 0.64, 0.82].map((p) => /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("div", { style: { position: "absolute", left: GLASS_L - 8, top: GLASS_TOP - 2, width: GLASS_W + 16, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.62)" } }),
+          [0.28, 0.46, 0.64, 0.82].map((p) => /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
             "div",
             {
               style: {
@@ -58934,16 +59381,16 @@ Check that all your Remotion packages are on the same version. If your dependenc
             },
             p
           )),
-          Array.from({ length: N }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(Cube, { i, pourAt, dissolveAt, resistAt }, i)),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(CampTag, { zh: "\u80FD\u88AB\u6EB6\u89E3", en: "DISSOLVED", color: "red", at: dissolveAt + 6, row: 0 }),
-          /* @__PURE__ */ (0, import_jsx_runtime101.jsx)(CampTag, { zh: "\u4E0D\u80FD\u88AB\u6EB6\u89E3", en: "RESISTANT", color: "green", at: resistAt + 6, row: 1 })
+          Array.from({ length: N }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(Cube, { i, pourAt, dissolveAt, resistAt }, i)),
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(CampTag, { zh: "\u80FD\u88AB\u6EB6\u89E3", en: "DISSOLVED", color: "red", at: dissolveAt + 6, row: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(CampTag, { zh: "\u4E0D\u80FD\u88AB\u6EB6\u89E3", en: "RESISTANT", color: "green", at: resistAt + 6, row: 1 })
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/Stamp.tsx
-  var import_jsx_runtime102 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime104 = __toESM(require_jsx_runtime());
   var plateBg = (color) => {
     const hex = GRADIENT[color][1].replace("#", "");
     const r = Math.round(parseInt(hex.slice(0, 2), 16) * 0.35);
@@ -58969,7 +59416,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const settle = frame - (enterAt + 10);
     const shake = settle > 0 && settle < 12 ? Math.sin(settle * 1.3) * Math.exp(-settle * 0.35) * 1.2 : 0;
     const accent = COLOR[color];
-    return /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
       "div",
       {
         style: {
@@ -58991,7 +59438,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           boxShadow: `0 0 14px ${accent}22, inset 0 0 12px ${accent}14`
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime102.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
             "div",
             {
               style: {
@@ -59001,12 +59448,12 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 letterSpacing: "0.18em"
               },
               children: [
-                icon ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("span", { style: { display: "inline-flex", alignItems: "center" }, children: icon }) : null,
-                /* @__PURE__ */ (0, import_jsx_runtime102.jsx)("span", { children: text4 })
+                icon ? /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { display: "inline-flex", alignItems: "center" }, children: icon }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { children: text4 })
               ]
             }
           ),
-          enSub ? /* @__PURE__ */ (0, import_jsx_runtime102.jsx)(
+          enSub ? /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
             "div",
             {
               style: {
@@ -59026,9 +59473,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/StepList.tsx
-  var import_jsx_runtime103 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime105 = __toESM(require_jsx_runtime());
   var StepList = ({ steps, accent = "blue", enterAt = 0, staggerFrames = MOTION.stagger }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }, children: steps.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(StepView, { step: s, n: i + 1, accent, enterAt: enterAt + i * staggerFrames }, i)) });
+    return /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }, children: steps.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(StepView, { step: s, n: i + 1, accent, enterAt: enterAt + i * staggerFrames }, i)) });
   };
   var StepView = ({
     step,
@@ -59038,7 +59485,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }) => {
     const enter3 = useEnter(enterAt, "left");
     const c3 = COLOR[accent];
-    return /* @__PURE__ */ (0, import_jsx_runtime103.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)(
       "div",
       {
         style: {
@@ -59054,7 +59501,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
             "span",
             {
               style: {
@@ -59074,20 +59521,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: n
             }
           ),
-          step.icon ? /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center" }, children: step.icon }) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime103.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 28, color: COLOR.white, whiteSpace: "nowrap" }, children: step.text })
+          step.icon ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center" }, children: step.icon }) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 28, color: COLOR.white, whiteSpace: "nowrap" }, children: step.text })
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/TimelineCard.tsx
-  var import_jsx_runtime104 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime106 = __toESM(require_jsx_runtime());
   var TimelineCard = ({ title = "THE DEAL", subtitle = "\u7ED3\u5C40", nodes, enterAt, stagger = 10, width = 340 }) => {
     const frame = useCurrentFrame();
     const card = useEnter(enterAt, "up");
     const rows3 = nodes.slice(0, 4);
-    return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)(
       "div",
       {
         "data-qc": "box",
@@ -59105,8 +59552,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: card.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 10, marginBottom: 16 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 10, marginBottom: 16 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
               "span",
               {
                 style: {
@@ -59119,7 +59566,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 children: title
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.grey }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.grey }, children: [
               "\xB7 ",
               subtitle
             ] })
@@ -59138,7 +59585,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             });
             const shift = (1 - t) * 24;
             const c3 = COLOR[(_a2 = n.color) != null ? _a2 : "red"];
-            return /* @__PURE__ */ (0, import_jsx_runtime104.jsxs)(
+            return /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)(
               "div",
               {
                 style: {
@@ -59152,7 +59599,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   transform: `translateY(${shift}px)`
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime104.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
                     "span",
                     {
                       style: {
@@ -59166,8 +59613,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
                       children: n.date
                     }
                   ),
-                  n.icon ? /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center", flexShrink: 0 }, children: n.icon }) : null,
-                  /* @__PURE__ */ (0, import_jsx_runtime104.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.white, whiteSpace: "nowrap" }, children: n.label })
+                  n.icon ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { color: c3, display: "inline-flex", alignItems: "center", flexShrink: 0 }, children: n.icon }) : null,
+                  /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: COLOR.white, whiteSpace: "nowrap" }, children: n.label })
                 ]
               },
               i
@@ -59179,7 +59626,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/TimelineEvents.tsx
-  var import_jsx_runtime105 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime107 = __toESM(require_jsx_runtime());
   var TimelineEvents = ({ events, width = 760, enterAt = 0 }) => {
     const frame = useCurrentFrame();
     const lineT = interpolate(frame, [enterAt, enterAt + 30], [0, 1], {
@@ -59187,9 +59634,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
       extrapolateRight: "clamp",
       easing: Easing.out(Easing.cubic)
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "relative", width, height: 150 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width, height: 3, borderRadius: 2, background: "rgba(255,255,255,0.15)" } }),
-      /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width: width * lineT, height: 3, borderRadius: 2, background: COLOR.blue } }),
+    return /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "relative", width, height: 150 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width, height: 3, borderRadius: 2, background: "rgba(255,255,255,0.15)" } }),
+      /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { position: "absolute", top: 40, left: 0, width: width * lineT, height: 3, borderRadius: 2, background: COLOR.blue } }),
       events.map((ev, i) => {
         const start2 = enterAt + 10 + i * (MOTION.stagger + 6);
         const t = interpolate(frame, [start2, start2 + MOTION.popInFrames], [0, 1], {
@@ -59198,8 +59645,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
           easing: Easing.out(Easing.cubic)
         });
         const x = ev.xPct / 100 * width;
-        return /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "absolute", left: x, top: 0, opacity: t, transform: `translateY(${(1 - t) * 14}px)` }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "absolute", left: x, top: 0, opacity: t, transform: `translateY(${(1 - t) * 14}px)` }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
             "div",
             {
               style: {
@@ -59214,11 +59661,11 @@ Check that all your Remotion packages are on the same version. If your dependenc
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime105.jsxs)("div", { style: { position: "absolute", top: -8, left: -6, whiteSpace: "nowrap" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.chip, color: COLOR.white }, children: ev.title }),
-            ev.sub ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)("span", { style: { marginLeft: 10, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: ev.sub }) : null
+          /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "absolute", top: -8, left: -6, whiteSpace: "nowrap" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.chip, color: COLOR.white }, children: ev.title }),
+            ev.sub ? /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("span", { style: { marginLeft: 10, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall, color: COLOR.grey }, children: ev.sub }) : null
           ] }),
-          ev.chip ? /* @__PURE__ */ (0, import_jsx_runtime105.jsx)(
+          ev.chip ? /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
             "div",
             {
               style: {
@@ -59244,7 +59691,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/TweetCard.tsx
-  var import_jsx_runtime106 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime108 = __toESM(require_jsx_runtime());
   var TweetCard = ({
     name,
     zhIdentity,
@@ -59266,10 +59713,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const idEnter = useEnter(identityAt != null ? identityAt : enterAt, "left");
     const kickerEnter = useEnter(kickerAt != null ? kickerAt : enterAt, "left");
     const mainEnter = useEnter(mainAt != null ? mainAt : enterAt, "left");
-    return /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, opacity: idEnter.opacity, transform: idEnter.transform }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { position: "relative", flexShrink: 0 }, children: [
-          avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(Img, { src: avatarSrc2, style: { width: 116, height: 116, borderRadius: 58, objectFit: "cover", display: "block" } }) : /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { textShadow: "0 2px 14px rgba(0,0,0,0.6)" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 20, opacity: idEnter.opacity, transform: idEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { position: "relative", flexShrink: 0 }, children: [
+          avatarSrc2 ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(Img, { src: avatarSrc2, style: { width: 116, height: 116, borderRadius: 58, objectFit: "cover", display: "block" } }) : /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
             "div",
             {
               style: {
@@ -59289,7 +59736,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
               children: avatarText != null ? avatarText : name.slice(0, 1)
             }
           ),
-          badgeSrc ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+          badgeSrc ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
             Img,
             {
               src: badgeSrc,
@@ -59305,13 +59752,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
             }
           ) : null
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 36, color: COLOR.white, letterSpacing: "0.03em" }, children: name.toUpperCase() }),
-          /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall + 2, color: COLOR.grey }, children: zhIdentity })
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 36, color: COLOR.white, letterSpacing: "0.03em" }, children: name.toUpperCase() }),
+          /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { marginTop: 4, fontFamily: FONT.zh, fontWeight: 700, fontSize: SIZE.subSmall + 2, color: COLOR.grey }, children: zhIdentity })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { opacity: kickerEnter.opacity, transform: kickerEnter.transform }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { opacity: kickerEnter.opacity, transform: kickerEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
           "div",
           {
             style: {
@@ -59325,10 +59772,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: "\u201C"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { marginTop: 26, fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 42, color: COLOR.white, letterSpacing: "0.01em", whiteSpace: "nowrap" }, children: headlineTop.toUpperCase() })
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { marginTop: 26, fontFamily: FONT.enTitle, fontWeight: 400, fontSize: 42, color: COLOR.white, letterSpacing: "0.01em", whiteSpace: "nowrap" }, children: headlineTop.toUpperCase() })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { opacity: mainEnter.opacity, transform: mainEnter.transform }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { opacity: mainEnter.opacity, transform: mainEnter.transform }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
           "div",
           {
             style: {
@@ -59345,20 +59792,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
             children: headlineMain.toUpperCase()
           }
         ),
-        zhSub || headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 18, marginTop: 12 }, children: [
-          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white, whiteSpace: "nowrap" }, children: zhSub }) : null,
-          headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.24em", color: COLOR.grey, whiteSpace: "nowrap" }, children: headlineSub.toUpperCase() }) : null
+        zhSub || headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 18, marginTop: 12 }, children: [
+          zhSub ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white, whiteSpace: "nowrap" }, children: zhSub }) : null,
+          headlineSub ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: SIZE.subSmall, letterSpacing: "0.24em", color: COLOR.grey, whiteSpace: "nowrap" }, children: headlineSub.toUpperCase() }) : null
         ] }) : null
       ] }),
-      chips.length ? /* @__PURE__ */ (0, import_jsx_runtime106.jsx)("div", { style: { display: "flex", gap: 12, marginTop: 24 }, children: chips.map((c3, i) => {
+      chips.length ? /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { display: "flex", gap: 12, marginTop: 24 }, children: chips.map((c3, i) => {
         var _a2;
-        return /* @__PURE__ */ (0, import_jsx_runtime106.jsx)(Chip, { segments: [{ t: c3.text }], accent: (_a2 = c3.color) != null ? _a2 : "blue", enterAt: enterAt + 10 + i * 8 }, i);
+        return /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(Chip, { segments: [{ t: c3.text }], accent: (_a2 = c3.color) != null ? _a2 : "blue", enterAt: enterAt + 10 + i * 8 }, i);
       }) }) : null
     ] });
   };
 
   // src/JasonWu/components/jc/UnitMatrix.tsx
-  var import_jsx_runtime107 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime109 = __toESM(require_jsx_runtime());
   var GLOW2 = {
     green: "rgba(61,220,132,0.4)",
     red: "rgba(255,77,77,0.4)",
@@ -59387,7 +59834,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const fillAt = stages ? stages.fillAt : enterAt;
     const W = cols * cell + (cols - 1) * gap;
     const H = rows3 * cell + (rows3 - 1) * gap;
-    return /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW2[color]})` }, children: Array.from({ length: total }, (_, i) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime109.jsx)("div", { style: { position: "relative", width: W, height: H, filter: `drop-shadow(0 0 28px ${GLOW2[color]})` }, children: Array.from({ length: total }, (_, i) => {
       const rank = i * stride % total;
       const isRed = rank < litCount;
       const isGreen = stages != null && !isRed && rank < litCount + greenCount;
@@ -59418,8 +59865,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         });
         grad = [gg0, gg1];
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime107.jsxs)("div", { style: { position: "absolute", left, top, width: cell, height: cell }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+      return /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)("div", { style: { position: "absolute", left, top, width: cell, height: cell }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(
           "div",
           {
             style: {
@@ -59431,7 +59878,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
             }
           }
         ),
-        grad && t > 0 ? /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+        grad && t > 0 ? /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(
           "div",
           {
             style: {
@@ -59449,7 +59896,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }) });
   };
   var UnitMatrix = ({ groups = 3, rows: rows3 = 5, cols = 8, color = "red", cell = 30, gap = 6, fillRatio, enterAt, stages }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime107.jsx)("div", { style: { display: "flex", gap: GRID2 * 3, alignItems: "flex-start" }, children: Array.from({ length: groups }, (_, g) => /* @__PURE__ */ (0, import_jsx_runtime107.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime109.jsx)("div", { style: { display: "flex", gap: GRID2 * 3, alignItems: "flex-start" }, children: Array.from({ length: groups }, (_, g) => /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(
       MatrixGroup,
       {
         rows: rows3,
@@ -59466,7 +59913,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/VerdictBox.tsx
-  var import_jsx_runtime108 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime110 = __toESM(require_jsx_runtime());
   var ChipTile = ({
     icon,
     label: label3,
@@ -59474,8 +59921,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
     accent
   }) => {
     const enter3 = useEnter(revealAt, "up");
-    return /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8, width: 76 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8, width: 76 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
         "div",
         {
           style: {
@@ -59494,7 +59941,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           children: icon
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
         "div",
         {
           style: {
@@ -59528,7 +59975,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   }) => {
     const accent = COLOR[color];
     const pop = usePop(boxEnterAt);
-    return /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
       "div",
       {
         style: {
@@ -59536,7 +59983,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           top,
           ...side === "left" ? { left: offsetX } : { right: offsetX }
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(Breathe, { phase, children: /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(Breathe, { phase, children: /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
           "div",
           {
             "data-qc": "box",
@@ -59558,10 +60005,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
               transform: pop.transform
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime108.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { display: "inline-flex", alignItems: "center", color: accent }, children: headerIcon }),
-                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: accent, whiteSpace: "nowrap" }, children: headerZh }),
-                /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { display: "inline-flex", alignItems: "center", color: accent }, children: headerIcon }),
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { fontFamily: FONT.zh, fontWeight: 700, fontSize: 22, color: accent, whiteSpace: "nowrap" }, children: headerZh }),
+                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
                   "span",
                   {
                     style: {
@@ -59580,7 +60027,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
                   }
                 )
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime108.jsx)("div", { style: { display: "flex", gap: 14, justifyContent: "center" }, children: chips.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime108.jsx)(ChipTile, { icon: c3.icon, label: c3.label, revealAt: c3.revealAt, accent }, i)) })
+              /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { display: "flex", gap: 14, justifyContent: "center" }, children: chips.map((c3, i) => /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(ChipTile, { icon: c3.icon, label: c3.label, revealAt: c3.revealAt, accent }, i)) })
             ]
           }
         ) })
@@ -59589,7 +60036,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/components/jc/ViewsBadge.tsx
-  var import_jsx_runtime109 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime111 = __toESM(require_jsx_runtime());
   var ViewsBadge = ({ from = 0, to, unit = "M+", label: label3 = "VIEWS", enterAt = 0, countFrames = 20 }) => {
     const frame = useCurrentFrame();
     const enter3 = useEnter(enterAt, "left");
@@ -59601,7 +60048,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         easing: Easing.out(Easing.cubic)
       })
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(
       "div",
       {
         style: {
@@ -59617,23 +60064,23 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime109.jsx)(Eye, { size: 28, color: COLOR.yellow, strokeWidth: 2.4 }),
-          /* @__PURE__ */ (0, import_jsx_runtime109.jsxs)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 36, color: COLOR.yellow, lineHeight: 1, fontVariantNumeric: "tabular-nums" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Eye, { size: 28, color: COLOR.yellow, strokeWidth: 2.4 }),
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 36, color: COLOR.yellow, lineHeight: 1, fontVariantNumeric: "tabular-nums" }, children: [
             n,
             unit
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime109.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 700, fontSize: 20, letterSpacing: "0.22em", color: COLOR.grey, lineHeight: 1 }, children: label3 })
+          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 700, fontSize: 20, letterSpacing: "0.22em", color: COLOR.grey, lineHeight: 1 }, children: label3 })
         ]
       }
     );
   };
 
   // src/JasonWu/components/jc/WindowCard.tsx
-  var import_jsx_runtime110 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime112 = __toESM(require_jsx_runtime());
   var WindowCard = ({ title, icon, chip, width, height, children, enterAt = 0 }) => {
     const enter3 = useEnter(enterAt, "up");
     const chipColor = chip ? chip.color === "purple" ? "#B26BFF" : COLOR[chip.color] : void 0;
-    return /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime112.jsxs)(
       "div",
       {
         style: {
@@ -59650,7 +60097,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
           transform: enter3.transform
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime110.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime112.jsxs)(
             "div",
             {
               style: {
@@ -59662,10 +60109,10 @@ Check that all your Remotion packages are on the same version. If your dependenc
                 flexShrink: 0
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { display: "flex", gap: 7 }, children: ["#FF5F57", "#FEBC2E", "#28C840"].map((c3) => /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { width: 13, height: 13, borderRadius: 7, background: c3 } }, c3)) }),
-                icon ? /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { display: "inline-flex", alignItems: "center", marginLeft: 6 }, children: icon }) : null,
-                /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 24, color: COLOR.white }, children: title }),
-                chip ? /* @__PURE__ */ (0, import_jsx_runtime110.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("div", { style: { display: "flex", gap: 7 }, children: ["#FF5F57", "#FEBC2E", "#28C840"].map((c3) => /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("div", { style: { width: 13, height: 13, borderRadius: 7, background: c3 } }, c3)) }),
+                icon ? /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("span", { style: { display: "inline-flex", alignItems: "center", marginLeft: 6 }, children: icon }) : null,
+                /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("span", { style: { fontFamily: FONT.en, fontWeight: 800, fontSize: 24, color: COLOR.white }, children: title }),
+                chip ? /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(
                   "span",
                   {
                     style: {
@@ -59684,14 +60131,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime110.jsx)("div", { style: { flex: 1, padding: 18, overflow: "hidden", position: "relative" }, children })
+          /* @__PURE__ */ (0, import_jsx_runtime112.jsx)("div", { style: { flex: 1, padding: 18, overflow: "hidden", position: "relative" }, children })
         ]
       }
     );
   };
 
   // src/JasonWu/JcNativeRecipes.tsx
-  var import_jsx_runtime111 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime113 = __toESM(require_jsx_runtime());
   var validColors = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
   var avatarSrc = "data:image/svg+xml,%3Csvg%20xmlns=%27http%3A%2F%2Fwww.w3.org%2F2000%200%20160%20160%27%3E%3Crect%20width%3D%27160%27%20height%3D%27160%27%20fill%3D%27%23131a2a%27%2F%3E%3Ccircle%20cx%3D%2780%27%20cy%3D%2762%27%20r%3D%2732%27%20fill%3D%27%234d9eff%27%2F%3E%3Crect%20x%3D%2734%27%20y%3D%27104%27%20width%3D%2792%27%20height%3D%2736%27%20rx%3D%2718%27%20fill%3D%27%233ddc84%27%2F%3E%3C%2Fsvg%3E";
   var asText = (value, fallback = "") => typeof value === "string" && value.trim() ? value.trim() : fallback;
@@ -59704,8 +60151,9 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const payload = normalized.contentPayload;
     const lines = payload.type === "chips" ? payload.items.map((item2) => item2.title).filter(Boolean) : payload.type === "steps" ? payload.steps.map((item2) => item2.text).filter(Boolean) : stringList(renderer.items).length ? stringList(renderer.items) : stringList(renderer.steps).length ? stringList(renderer.steps) : [normalized.headline];
     const body = payload.type === "narrative" ? payload.bodyText : payload.type === "metrics" ? asText(payload.detailText, asText(renderer.body, normalized.headline)) : asText(renderer.body, normalized.headline);
+    const subtext = payload.type === "narrative" ? asText(payload.highlightQuote, asText(renderer.highlightQuote)) : asText(renderer.highlightQuote);
     const metric = payload.type === "metrics" ? { label: payload.label, value: asNumber(payload.value), unit: (_a2 = payload.unit) != null ? _a2 : "", detail: (_b = payload.detailText) != null ? _b : "" } : { label: asText(renderer.label, normalized.headline), value: asNumber(renderer.value), unit: asText(renderer.unit), detail: body };
-    return { category: normalized.category, headline: normalized.headline, body, lines: lines.length ? lines : [normalized.headline], metric };
+    return { category: normalized.category, headline: normalized.headline, body, subtext, lines: lines.length ? lines : [normalized.headline], metric };
   };
   var sourceAccent = (source, nativeColor) => {
     var _a2;
@@ -59717,7 +60165,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     var _a2, _b;
     return (_b = (_a2 = content2.lines[index]) != null ? _a2 : content2.lines[content2.lines.length - 1]) != null ? _b : content2.headline;
   };
-  var JcNativeStageBackdrop = ({ children, scrim = true }) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(
+  var JcNativeStageBackdrop = ({ children, scrim = true }) => /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(
     AbsoluteFill,
     {
       style: {
@@ -59725,8 +60173,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         overflow: "hidden"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(JcFontGate, {}),
-        scrim ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoScrim, { strength: 0.62, side: "left" }) : null,
+        /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(JcFontGate, {}),
+        scrim ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(InfoScrim, { strength: 0.62, side: "left" }) : null,
         children
       ]
     }
@@ -59740,115 +60188,117 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const color = (nativeColor) => sourceAccent(source, nativeColor);
     switch (exportName) {
       case "BadgeCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 610, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BadgeCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Crown, { size: 64 }), zhTitle: headline, zhResult: body, enKicker: content2.category, accent: color("yellow"), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 610, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BadgeCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Crown, { size: 64 }), zhTitle: headline, zhResult: body, enKicker: content2.category, accent: color("yellow"), enterAt: 0 }) });
       case "BarChart":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 430, top: 285 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BarChart2, { width: 760, accent: color("yellow"), items: lines.slice(0, 4).map((label3, index) => ({ label: label3, value: Math.max(12, metric.value - index * 14), display: String(Math.max(12, metric.value - index * 14)), highlight: index === 0 })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 430, top: 285 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BarChart2, { width: 760, accent: color("yellow"), items: lines.slice(0, 4).map((label3, index) => ({ label: label3, value: Math.max(12, metric.value - index * 14), display: String(Math.max(12, metric.value - index * 14)), highlight: index === 0 })) }) });
       case "BigNumber":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 500, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BigNumber, { value: metric.value, suffix: metric.unit || "%", color: color("green"), enKicker: metric.label || content2.category, zhSub: metric.detail || body, size: "mega", enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 500, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BigNumber, { value: metric.value, suffix: metric.unit || "%", color: color("green"), enKicker: metric.label || content2.category, zhSub: metric.detail || body, size: "mega", enterAt: 0 }) });
       case "BilingualSub":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: "CAPTION", segments: [{ t: headline, color: color("blue") }], top: 250, enterAt: 0 }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BilingualSub, { zh: body, en: content2.category })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_jsx_runtime113.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(HeroText, { kicker: "CAPTION", segments: [{ t: headline, color: color("blue") }], top: 250, enterAt: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BilingualSub, { zh: body, en: content2.category })
         ] });
       case "Breathe":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 690, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Breathe, { amp: 2, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { width: 360, height: 360, borderRadius: 180, border: `6px solid ${COLOR.green}`, color: COLOR.green, boxShadow: `0 0 90px ${COLOR.green}66`, display: "flex", alignItems: "center", justifyContent: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ShieldCheck, { size: 150 }) }) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 690, top: 290 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Breathe, { amp: 2, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { width: 360, height: 360, borderRadius: 180, border: `6px solid ${COLOR.green}`, color: COLOR.green, boxShadow: `0 0 90px ${COLOR.green}66`, display: "flex", alignItems: "center", justifyContent: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(ShieldCheck, { size: 150 }) }) }) });
       case "BrickWall":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 470, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(BrickWall, { label: headline, enLabel: content2.category, rows: 3, width: 880, enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 470, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(BrickWall, { label: headline, enLabel: content2.category, rows: 3, width: 880, enterAt: 0 }) });
       case "CardWall":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 250, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CardWall, { cols: 3, cardWidth: 360, gap: 22, items: lines.slice(0, 6).map((text4, index) => ({ name: String.fromCharCode(65 + index), text: text4 })), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 250, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CardWall, { cols: 3, cardWidth: 360, gap: 22, items: lines.slice(0, 6).map((text4, index) => ({ name: String.fromCharCode(65 + index), text: text4 })), enterAt: 0 }) });
       case "Checklist":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Checklist, { accent: color("green"), top: 250, items: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Eye, { size: 34 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 34 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 34 }), segments: [{ t: text4 }], enterAt: index * 10 })) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Checklist, { accent: color("green"), top: 250, items: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Eye, { size: 34 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flame, { size: 34 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 34 }), segments: [{ t: text4 }], enterAt: index * 10 })) });
       case "Chip":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 520, top: 420, display: "flex", gap: 28 }, children: lines.slice(0, 3).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Chip, { icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Sparkles, { size: 32 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 32 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 32 }), accent: color(index === 0 ? "blue" : index === 1 ? "red" : "green"), outlined: index === 1, segments: [{ t: text4 }], enterAt: index * 10 }, `${text4}-${index}`)) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 520, top: 420, display: "flex", gap: 28 }, children: lines.slice(0, 3).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Chip, { icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Sparkles, { size: 32 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flame, { size: 32 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 32 }), accent: color(index === 0 ? "blue" : index === 1 ? "red" : "green"), outlined: index === 1, segments: [{ t: text4 }], enterAt: index * 10 }, `${text4}-${index}`)) });
       case "CloneCascade":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 260, top: 405 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CloneCascade, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Star, { size: 46 }), label: headline, cloneCount: 4, warnText: body, enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 260, top: 405 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CloneCascade, { icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Star, { size: 46 }), label: content2.subtext || headline, cloneCount: 4, warnText: body, accent: color("red"), enterAt: 0 }) });
       case "CompareCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 390, top: 240 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CompareCard, { width: 900, items: lines.slice(0, 3).map((name, index) => ({ logo: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Bot, { size: 38 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WandSparkles, { size: 38 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CodeXml, { size: 38 }), name, weak: index === 0 ? lineAt(content2, 1) : body, strong: index === 0 ? body : lineAt(content2, index - 1), strongColor: color(index === 0 ? "green" : index === 1 ? "blue" : "yellow") })) }) });
-      case "CurveOverlay":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { position: "absolute", left: 260, top: 250 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(CurveOverlay, { width: 1120, height: 520, color: color("yellow"), strokeWidth: 10, enterAt: 0 }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { color: COLOR.yellow, fontSize: 44, fontWeight: 900, marginTop: -70 }, children: metric.label || headline })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 390, top: 240 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CompareCard, { width: 900, items: lines.slice(0, 3).map((name, index) => ({ logo: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Bot, { size: 38 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(WandSparkles, { size: 38 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CodeXml, { size: 38 }), name, weak: index === 0 ? lineAt(content2, 1) : body, strong: index === 0 ? body : lineAt(content2, index - 1), strongColor: color(index === 0 ? "green" : index === 1 ? "blue" : "yellow") })) }) });
+      case "CurveOverlay": {
+        const curveColor = color("blue");
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { style: { position: "absolute", left: 260, top: 250 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(CurveOverlay, { width: 1120, height: 520, color: curveColor, strokeWidth: 10, enterAt: 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { color: COLOR[curveColor], fontSize: 44, fontWeight: 900, marginTop: -98 }, children: metric.label || headline })
         ] });
+      }
       case "DMCardStack":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 420, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(DMCardStack, { cards: lines.slice(0, 3).map((text4, index) => ({ chip: { text: index === 0 ? content2.category : index === 1 ? "SIGNAL" : "RESULT", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") }, text: text4, width: 640 - index * 40 })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 420, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(DMCardStack, { cards: lines.slice(0, 3).map((text4, index) => ({ chip: { text: index === 0 ? content2.category : index === 1 ? "SIGNAL" : "RESULT", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") }, text: text4, width: 640 - index * 40 })) }) });
       case "FlowChain":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 260, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FlowChain, { nodeWidth: 230, nodes: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Bot, { size: 46 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(GitBranch, { size: 46 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Package, { size: 46 }), lines: [text4], accent: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 260, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(FlowChain, { nodeWidth: 230, nodes: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Bot, { size: 46 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(GitBranch, { size: 46 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Package, { size: 46 }), lines: [text4], accent: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") })) }) });
       case "Flywheel":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 680, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flywheel, { size: 430, color: color("green"), icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Zap, { size: 88 }) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 680, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flywheel, { size: 430, color: color("green"), icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Zap, { size: 88 }) }) });
       case "HeroText":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: [{ t: content2.category.toLowerCase(), color: color("blue") }, { t: " system" }], segments: [{ t: headline, color: color("yellow") }], zhSub: body, echo: "motion card hero", top: 270, enterAt: 8 });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(HeroText, { kicker: [{ t: content2.category.toLowerCase(), color: color("blue") }, { t: " system" }], segments: [{ t: headline, color: color("yellow") }], zhSub: body, echo: "motion card hero", top: 270, enterAt: 8 });
       case "InfoCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 520, top: 380 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Lightbulb, { size: 56 }), en: content2.category, zh: body, accent: color("yellow"), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 520, top: 380 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(InfoCard, { icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Lightbulb, { size: 56 }), en: content2.category, zh: body, accent: color("yellow"), enterAt: 0 }) });
       case "InfoScrim":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(InfoScrim, { strength: 0.9, side: "right" }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(HeroText, { kicker: "SCRIM", segments: [{ t: headline, color: color("blue") }], top: 330, enterAt: 0 })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_jsx_runtime113.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(InfoScrim, { strength: 0.9, side: "right" }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(HeroText, { kicker: "SCRIM", segments: [{ t: headline, color: color("blue") }], top: 330, enterAt: 0 })
         ] });
       case "LoopDiagram":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 620, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(LoopDiagram, { size: 500, color: color("blue"), labels: lines.slice(0, 4) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 620, top: 235 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(LoopDiagram, { size: 500, color: color("blue"), labels: lines.slice(0, 4) }) });
       case "MatrixIcon":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 670, top: 260 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(MatrixIcon, { color: color("yellow"), rows: 5, cols: 5, cell: 58, gap: 12, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Scale, { size: 92 }) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 670, top: 260 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(MatrixIcon, { color: color("yellow"), rows: 5, cols: 5, cell: 58, gap: 12, icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Scale, { size: 92 }) }) });
       case "NamePlate":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(NamePlate, { name: headline, slug: content2.category, avatarText: headline.charAt(0) || "J", enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(NamePlate, { name: headline, slug: content2.category, avatarText: headline.charAt(0) || "J", enterAt: 0 }) });
       case "PersonBadge":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PersonBadge, { avatarSrc, name: headline, zhSub: body, accent: color("blue"), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 570, top: 400 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(PersonBadge, { avatarSrc, name: headline, zhSub: body, accent: color("blue"), enterAt: 0 }) });
       case "PersonCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 360, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PersonCard, { name: headline, zhRole: body, avatarText: headline.charAt(0) || "J", orgChip: { text: content2.category, color: color("green") }, kickerNote: "SANDBOXED", enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 360, top: 330 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(PersonCard, { name: headline, zhRole: body, avatarText: headline.charAt(0) || "J", orgChip: { text: content2.category, color: color("green") }, kickerNote: "SANDBOXED", enterAt: 0 }) });
       case "PhoneMockup":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 720, top: 95 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(PhoneMockup, { width: 340, glow: "purple", scrollTo: -170, scrollStart: 20, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { minHeight: 930, padding: "78px 30px 30px", background: "#f3f4f6", color: "#111827", fontSize: 28, lineHeight: 1.55 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("b", { children: headline }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {}),
-          lines.slice(0, 4).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_react129.default.Fragment, { children: [
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 720, top: 95 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(PhoneMockup, { width: 340, glow: "purple", scrollTo: -170, scrollStart: 20, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { style: { minHeight: 930, padding: "78px 30px 30px", background: "#f3f4f6", color: "#111827", fontSize: 28, lineHeight: 1.55 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("b", { children: headline }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("br", {}),
+          lines.slice(0, 4).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_react129.default.Fragment, { children: [
             index + 1,
             ". ",
             text4,
-            /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {})
+            /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("br", {})
           ] }, `${text4}-${index}`)),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("br", {}),
           body
         ] }) }) });
       case "QuoteDoc":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 360, top: 190 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(QuoteDoc, { width: 960, source: content2.category, title: headline, zhNote: body, zhNoteYPct: 60, blocks: lines.slice(0, 3).map((text4, index) => ({ t: text4, heading: index === 0, hl: index === 2 })), highlightAt: 18, noteAt: 28 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 360, top: 190 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(QuoteDoc, { width: 960, source: content2.category, title: headline, zhNote: body, zhNoteYPct: 60, blocks: lines.slice(0, 3).map((text4, index) => ({ t: text4, heading: index === 0, hl: index === 2 })), highlightAt: 18, noteAt: 28 }) });
       case "ScoreBoard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 500, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ScoreBoard, { rows: lines.slice(0, 3).map((text4, index) => ({ enKicker: content2.category, zhLabel: text4, left: Math.max(4, metric.value - index * 8), right: Math.max(1, metric.value - 13 - index * 8), note: index === 0 ? body : void 0 })), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 500, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(ScoreBoard, { rows: lines.slice(0, 3).map((text4, index) => ({ enKicker: content2.category, zhLabel: text4, left: Math.max(4, metric.value - index * 8), right: Math.max(1, metric.value - 13 - index * 8), note: index === 0 ? body : void 0 })), enterAt: 0 }) });
       case "ShotCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 400, top: 230 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ShotCard, { width: 920, radius: 26, glow: "purple", highlight: { xPct: 12, yPct: 33, wPct: 62, hPct: 18 }, zhBar: { text: body }, enterAt: 0, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { background: "#fff", padding: 52, color: "#111827", minHeight: 430, lineHeight: 1.45 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { fontSize: 48, fontWeight: 900 }, children: headline }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { marginTop: 32, fontSize: 30 }, children: body }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { marginTop: 28, fontSize: 30, color: "#475467" }, children: lineAt(content2, 0) })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 400, top: 230 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(ShotCard, { width: 920, radius: 26, glow: "purple", highlight: { xPct: 12, yPct: 33, wPct: 62, hPct: 18 }, zhBar: { text: body }, enterAt: 0, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { style: { background: "#fff", padding: 52, color: "#111827", minHeight: 430, lineHeight: 1.45 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { fontSize: 48, fontWeight: 900 }, children: headline }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { marginTop: 32, fontSize: 30 }, children: body }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { marginTop: 28, fontSize: 30, color: "#475467" }, children: lineAt(content2, 0) })
         ] }) }) });
       case "SideLabel":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SideLabel, { color: color("blue"), en: content2.category, zh: headline, sub: body, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Sparkles, { size: 28 }), variant: "title" });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(SideLabel, { color: color("blue"), en: content2.category, zh: headline, sub: body, icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Sparkles, { size: 28 }), variant: "title" });
       case "SolventTank":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 610, top: 160 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SolventTank, { enterAt: 0, pourAt: 12, dissolveAt: 45, resistAt: 75 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 610, top: 160 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(SolventTank, { enterAt: 0, pourAt: 12, dissolveAt: 45, resistAt: 75 }) });
       case "Stamp":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 650, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Stamp, { text: headline, color: color("green"), fontSize: 110, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 92 }), enSub: content2.category, enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 650, top: 360 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Stamp, { text: headline, color: color("green"), fontSize: 110, icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 92 }), enSub: content2.category, enterAt: 0 }) });
       case "StepList":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 430, top: 270 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(StepList, { accent: color("blue"), steps: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FileText, { size: 30 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 30 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WandSparkles, { size: 30 }), text: text4 })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 430, top: 270 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(StepList, { accent: color("blue"), steps: lines.slice(0, 3).map((text4, index) => ({ icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(FileText, { size: 30 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flame, { size: 30 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(WandSparkles, { size: 30 }), text: text4 })) }) });
       case "TimelineCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 630, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TimelineCard, { width: 520, title: content2.category, subtitle: headline, enterAt: 0, nodes: lines.slice(0, 3).map((label3, index) => ({ date: index < 9 ? "0" + String(index + 1) : String(index + 1), label: label3, color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green"), icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(FileText, { size: 20 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Flame, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Play, { size: 20 }) })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 630, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(TimelineCard, { width: 520, title: content2.category, subtitle: headline, enterAt: 0, nodes: lines.slice(0, 3).map((label3, index) => ({ date: index < 9 ? "0" + String(index + 1) : String(index + 1), label: label3, color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green"), icon: index === 0 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(FileText, { size: 20 }) : index === 1 ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Flame, { size: 20 }) : /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Play, { size: 20 }) })) }) });
       case "TimelineEvents":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 300, top: 430 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TimelineEvents, { width: 1080, events: lines.slice(0, 3).map((title, index) => {
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 300, top: 430 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(TimelineEvents, { width: 1080, events: lines.slice(0, 3).map((title, index) => {
           var _a2;
           return { xPct: (_a2 = [5, 47, 86][index]) != null ? _a2 : 86, title, sub: index === 0 ? body : "", chip: { text: index === 0 ? "OPEN" : index === 1 ? "PAYOFF" : "DONE", color: color(index === 0 ? "blue" : index === 1 ? "yellow" : "green") } };
         }) }) });
       case "TweetCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 320, top: 210 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(TweetCard, { name: content2.category, zhIdentity: body, avatarText: content2.category.charAt(0) || "J", headlineTop: content2.category, headlineMain: headline, headlineColor: color("red"), zhSub: body, headlineSub: "BY MOTION CARDS", chips: lines.slice(0, 2).map((text4, index) => ({ text: text4, color: color(index === 0 ? "blue" : "yellow") })) }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 320, top: 210 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(TweetCard, { name: content2.category, zhIdentity: body, avatarText: content2.category.charAt(0) || "J", headlineTop: content2.category, headlineMain: headline, headlineColor: color("red"), zhSub: body, headlineSub: "BY MOTION CARDS", chips: lines.slice(0, 2).map((text4, index) => ({ text: text4, color: color(index === 0 ? "blue" : "yellow") })) }) });
       case "UnitMatrix":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 390, top: 300 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(UnitMatrix, { groups: 2, rows: 6, cols: 10, color: color("green"), cell: 44, gap: 9, fillRatio: Math.max(0.01, Math.min(1, metric.value / 100)), enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 390, top: 300 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(UnitMatrix, { groups: 2, rows: 6, cols: 10, color: color("green"), cell: 44, gap: 9, fillRatio: Math.max(0.01, Math.min(1, metric.value / 100)), enterAt: 0 }) });
       case "VerdictBox":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_jsx_runtime111.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(VerdictBox, { color: color("red"), side: "left", headerZh: headline, headerEn: "DROP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(X, { size: 28 }), boxEnterAt: 0, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(X, { size: 34 }), label: label3, revealAt: 12 + index * 10 })) }),
-          /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(VerdictBox, { color: color("green"), side: "right", headerZh: body, headerEn: "KEEP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 28 }), boxEnterAt: 8, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(Check, { size: 34 }), label: label3, revealAt: 20 + index * 10 })) })
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_jsx_runtime113.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(VerdictBox, { color: color("red"), side: "left", headerZh: headline, headerEn: "DROP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(X, { size: 28 }), boxEnterAt: 0, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(X, { size: 34 }), label: label3, revealAt: 12 + index * 10 })) }),
+          /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(VerdictBox, { color: color("green"), side: "right", headerZh: body, headerEn: "KEEP", headerIcon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 28 }), boxEnterAt: 8, top: 360, chips: lines.slice(0, 2).map((label3, index) => ({ icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Check, { size: 34 }), label: label3, revealAt: 20 + index * 10 })) })
         ] });
       case "ViewsBadge":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 650, top: 420 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(ViewsBadge, { from: 0, to: metric.value, unit: metric.unit || "M+", label: metric.label || content2.category, enterAt: 0 }) });
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 650, top: 420 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(ViewsBadge, { from: 0, to: metric.value, unit: metric.unit || "M+", label: metric.label || content2.category, enterAt: 0 }) });
       case "WindowCard":
-        return /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("div", { style: { position: "absolute", left: 450, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(WindowCard, { title: headline, icon: /* @__PURE__ */ (0, import_jsx_runtime111.jsx)(SquareTerminal, { size: 34 }), width: 820, height: 430, chip: { text: content2.category, color: color("blue") }, children: /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)("div", { style: { color: "#F8FAFC", fontSize: 30, lineHeight: 1.7, fontFamily: FONT.en }, children: [
-          lines.slice(0, 4).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime111.jsxs)(import_react129.default.Fragment, { children: [
+        return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { position: "absolute", left: 450, top: 250 }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(WindowCard, { title: headline, icon: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(SquareTerminal, { size: 34 }), width: 820, height: 430, chip: { text: content2.category, color: color("blue") }, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { style: { color: "#F8FAFC", fontSize: 30, lineHeight: 1.7, fontFamily: FONT.en }, children: [
+          lines.slice(0, 4).map((text4, index) => /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(import_react129.default.Fragment, { children: [
             "entry: ",
             text4,
-            /* @__PURE__ */ (0, import_jsx_runtime111.jsx)("br", {})
+            /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("br", {})
           ] }, `${text4}-${index}`)),
           "status: ",
           body
@@ -59859,20 +60309,20 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
 
   // src/JasonWu/jcLayoutRegistry.tsx
-  var import_jsx_runtime112 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime114 = __toESM(require_jsx_runtime());
   var semanticAccents = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
   var accentOf2 = (value) => semanticAccents.has(value) ? value : "blue";
   var entryById = new Map(components_registry_default.components.filter((entry) => entry.id.startsWith("jc-")).map((entry) => [entry.id, entry]));
   var JcEffectAdapter = ({ cue, props }) => {
-    var _a2, _b, _c, _d, _e, _f, _g;
+    var _a2, _b, _c, _d, _e, _f, _g, _h;
     const entry = entryById.get(String((_a2 = props.__jcLayoutId) != null ? _a2 : cue.layout));
     const exportName = (_b = entry == null ? void 0 : entry.runtime) == null ? void 0 : _b.exportName;
     const motion = (_c = props.__jcMotion) != null ? _c : {};
     if (!exportName) return null;
     const recipe = renderJcNativeRecipe(exportName, props);
     if (!recipe) return null;
-    const stage = props.__jcStageBackdropProvided === true ? recipe : /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(JcNativeStageBackdrop, { children: recipe });
-    return /* @__PURE__ */ (0, import_jsx_runtime112.jsx)(
+    const stage = props.__jcStageBackdropProvided === true ? recipe : /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(JcNativeStageBackdrop, { children: recipe });
+    return /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(
       MotionWrapper,
       {
         commonProps: motion.commonProps,
@@ -59880,6 +60330,8 @@ Check that all your Remotion packages are on the same version. If your dependenc
         beatDuration: (_e = motion.beatDuration) != null ? _e : Math.max(1, cue.end - cue.start),
         entranceDurationSeconds: (_f = motion.entranceDurationSeconds) != null ? _f : 2.2,
         accent: accentOf2((_g = motion.accent) != null ? _g : props.accent),
+        layoutProps: motion.layoutProps,
+        language: (_h = motion.language) != null ? _h : cue.language,
         preserveNativeMotion: true,
         children: stage
       }
@@ -59948,7 +60400,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     "time-rewind": [text2("headline", "\u56DE\u6EAF\u6807\u9898"), list2("years", "\u65F6\u95F4\u8282\u70B9"), prose("bodyText", "\u65F6\u95F4\u56DE\u6EAF\u5185\u5BB9\u6B63\u6587")],
     "clipboard-note": [text2("label", "\u4FBF\u7B7E\u6807\u7B7E"), prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField],
     "closing-checklist": [text2("title", "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09"), list2("items", "\u6E05\u5355\u5185\u5BB9", "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846"), checkboxColorField],
-    "platform-shift-line": [text2("metricLabel", "\u589E\u957F\u6307\u6807\u6807\u7B7E"), { key: "count", label: "\u589E\u957F\u6570\u91CF", type: "number" }, prose("summary", "\u589E\u957F\u8BF4\u660E"), list2("milestones", "\u4EA7\u54C1\u7EBF\u8282\u70B9"), text2("startLabel", "\u8D77\u70B9\u6807\u7B7E"), text2("endLabel", "\u7EC8\u70B9\u6807\u7B7E")],
+    "platform-shift-line": [text2("metricLabel", "\u6B63\u6587\u5185\u5BB9"), { key: "count", label: "\u6570\u503C\u5185\u5BB9", type: "number" }, text2("summary", "\u526F\u6587\u5185\u5BB9"), text2("startLabel", "\u8D77\u70B9\u5185\u5BB9"), text2("endLabel", "\u7EC8\u70B9\u5185\u5BB9")],
     "tradeoff-reject-round": [text2("label", "\u5426\u5B9A\u9879\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u5426\u5B9A\u9879", "\u4E09\u9879\u4F1A\u663E\u793A\u5728\u98CE\u9669\u6392\u9664\u4E0B\u65B9\u7684\u7EA2\u8272\u53C9\u53F7\u5217\u8868\u4E2D")],
     "recovery-progress-bars": [text2("label", "\u8FDB\u5EA6\u6807\u7B7E"), prose("bodyText", "\u6B63\u6587\u5185\u5BB9"), list2("items", "\u8FDB\u5EA6\u9879\u76EE"), { key: "progress", label: "\u5B8C\u6210\u5EA6", type: "number", description: "\u6BCF\u6761\u8FDB\u5EA6\u4F1A\u5728\u8BE5\u6570\u5B57\u6B63\u8D1F 15% \u5185\u7A33\u5B9A\u6D6E\u52A8" }],
     "hud-glow-stack": [text2("subLabel", "\u5361\u7247\u8F85\u52A9\u6807\u7B7E"), list2("items", "HUD \u5361\u7247\u5185\u5BB9")],
@@ -59965,9 +60417,27 @@ Check that all your Remotion packages are on the same version. If your dependenc
     "copyopen-bar-chart": [list2("items", "\u67F1\u72B6\u6807\u7B7E"), { key: "values", label: "\u67F1\u72B6\u6570\u503C", type: "string-list" }],
     "copyopen-line-chart": [list2("items", "\u6298\u7EBF\u6A2A\u8F74"), { key: "values", label: "\u6298\u7EBF\u6570\u503C", type: "string-list" }],
     "copyopen-pie-chart": [list2("items", "\u5206\u533A\u6807\u7B7E"), { key: "values", label: "\u5206\u533A\u6570\u503C", type: "string-list" }],
-    "copyopen-kpi-grid": [list2("items", "\u6307\u6807\u6807\u7B7E"), { key: "values", label: "\u6307\u6807\u6570\u503C", type: "string-list" }]
+    "copyopen-kpi-grid": [list2("items", "\u6307\u6807\u6807\u7B7E"), { key: "values", label: "\u6307\u6807\u6570\u503C", type: "string-list" }],
+    "speaker-growth-dashboard": [text2("eyebrow", "\u9876\u7AEF\u6807\u7B7E"), text2("subline", "\u526F\u6807\u9898"), text2("skillLabel", "\u80FD\u529B\u6807\u7B7E"), text2("feature1Title", "\u529F\u80FD1\u3010\u6B63\u6587\u5185\u5BB9\u3011"), text2("feature1Sub", "\u529F\u80FD1\u3010\u526F\u6587\u5185\u5BB9\u3011"), text2("feature2Title", "\u529F\u80FD2\u3010\u6B63\u6587\u5185\u5BB9\u3011"), text2("feature2Sub", "\u529F\u80FD2\u3010\u526F\u6587\u5185\u5BB9\u3011"), text2("metricTitle", "\u589E\u957F\u6307\u6807\u6807\u9898"), text2("metricValue", "\u589E\u957F\u6570\u5B57"), text2("metricUnit", "\u6570\u5B57\u5355\u4F4D"), text2("metricSub", "\u6307\u6807\u526F\u6587"), text2("footer", "\u5E95\u90E8\u8BF4\u660E")]
   };
   var LAYOUT_MANIFEST = {
+    "speaker-growth-dashboard": {
+      "id": "speaker-growth-dashboard",
+      "intent": "metrics",
+      "capacity": {
+        "minItems": 1,
+        "maxItems": 3
+      },
+      "keywords": [
+        "\u53E3\u64AD",
+        "\u81EA\u5A92\u4F53",
+        "\u589E\u957F",
+        "\u83B7\u5BA2",
+        "\u4F1A\u5458",
+        "\u8F6C\u5316"
+      ],
+      "visualWeight": "heavy"
+    },
     "capital-dashboard": {
       "id": "capital-dashboard",
       "intent": "metrics",
@@ -60716,7 +61186,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     item("time-rewind", TimeRewind, "\u65F6\u95F4\u56DE\u6EAF", "\u9006\u5411\u65F6\u95F4\u7EBF\u53D9\u4E8B", "story", "primary", [], { bodyText: "\u65F6\u95F4\u56DE\u5F52" }),
     item("clipboard-note", ClipboardNote, "\u526A\u8D34\u677F\u6279\u6CE8", "\u4FBF\u7B7E\u4E0E\u6279\u6CE8\u4FE1\u606F", "interactive", "primary", [prose("body", "\u6B63\u6587\u5185\u5BB9"), text2("highlightQuote", "\u526F\u6587\u5185\u5BB9"), checkboxColorField], { boxColor: "auto", body: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", highlightQuote: "\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE\u8BF4\u660E" }),
     item("closing-checklist", ClosingChecklist, "\u7ED3\u5C3E\u6E05\u5355", "\u7ED3\u8BBA\u9879\u76EE\u9010\u9879\u786E\u8BA4", "story", "primary", [{ key: "title", label: "\u6E05\u5355\u6807\u9898\uFF08\u4E0E\u6838\u5FC3\u5927\u6807\u9898\u540C\u6B65\uFF09", type: "text" }, { key: "items", label: "\u6E05\u5355\u5185\u5BB9", type: "string-list", description: "\u6BCF\u9879\u5BF9\u5E94\u4E00\u4E2A\u786E\u8BA4\u6846" }, checkboxColorField], { title: "\u6838\u5FC3\u7ED3\u8BBA", boxColor: "auto" }),
-    item("platform-shift-line", PlatformShiftLine, "\u4EA7\u54C1\u7EBF\u589E\u957F", "\u84DD\u8272\u589E\u957F\u6570\u5B57\u4E0E\u4EA7\u54C1\u7EBF\u8282\u70B9", "data", "primary", [], { count: 3, metricLabel: "\u4EA7\u54C1\u7EBF", milestones: ["\u57FA\u7840\u80FD\u529B", "\u4EA7\u54C1\u6269\u5C55", "\u89C4\u6A21\u589E\u957F"], startLabel: "\u8D77\u70B9", endLabel: "\u76EE\u6807\u9636\u6BB5" }),
+    item("platform-shift-line", PlatformShiftLine, "\u4EA7\u54C1\u7EBF\u589E\u957F", "\u84DD\u8272\u589E\u957F\u6570\u5B57\u4E0E\u4EA7\u54C1\u7EBF\u8282\u70B9", "data", "primary", [text2("metricLabel", "\u6B63\u6587\u5185\u5BB9"), { key: "count", label: "\u6570\u503C\u5185\u5BB9", type: "number" }, text2("summary", "\u526F\u6587\u5185\u5BB9"), text2("startLabel", "\u8D77\u70B9\u5185\u5BB9"), text2("endLabel", "\u7EC8\u70B9\u5185\u5BB9")], { count: 3, metricLabel: "\u4EA7\u54C1\u7EBF", summary: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", startLabel: "\u8D77\u70B9", endLabel: "\u76EE\u6807\u9636\u6BB5" }),
     item("tradeoff-reject-round", TradeoffRejectRound, "\u5706\u5F62\u7EA2\u8272\u5426\u5B9A\u9879", "\u65E0\u8FB9\u6846\u7EA2\u8272\u5706\u53C9\u7684\u98CE\u9669\u6E05\u5355", "story", "primary", [{ key: "label", label: "\u5426\u5B9A\u9879\u6807\u7B7E", type: "text" }, { key: "bodyText", label: "\u6B63\u6587\u5185\u5BB9", type: "textarea" }, { key: "items", label: "\u5426\u5B9A\u9879", type: "string-list" }], { label: "\u98CE\u9669\u6392\u9664", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u6838\u5FC3\u4FE1\u606F", "\u89C6\u89C9\u8282\u594F", "\u884C\u52A8\u7ED3\u8BBA"] }),
     item("recovery-progress-bars", RecoveryProgressBars, "\u8FDB\u5EA6\u786E\u8BA4\u6761", "\u8FDB\u5EA6\u6761\u4E0E\u53F3\u4FA7\u786E\u8BA4\u6807\u8BB0", "data", "primary", [], { label: "\u6267\u884C\u8FDB\u5EA6", bodyText: "\u5C55\u793A\u53EF\u7F16\u8F91\u7684\u771F\u5B9E\u7EC4\u4EF6\u9884\u8BBE", items: ["\u9700\u6C42\u786E\u8BA4", "\u80FD\u529B\u5EFA\u8BBE", "\u7ED3\u679C\u9A8C\u8BC1"], progress: 76 }),
     item("hud-glow-stack", HudGlowStack, "HUD \u6D6E\u52A8\u53D1\u5149", "\u53E0\u653E\u7684\u9AD8\u4EAE HUD \u4FE1\u606F\u5361", "interactive", "primary", [], { subLabel: "LIVE SIGNAL", items: ["\u6838\u5FC3\u4FE1\u53F7", "\u5173\u952E\u5224\u65AD", "\u4E0B\u4E00\u6B65\u52A8\u4F5C"] }),
@@ -60734,6 +61204,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     item("copyopen-line-chart", CopyOpenLineChart, "CopyOpen LineChart", "CopyOpen \u539F\u7248\u6298\u7EBF\u7ED8\u5236\u56FE", "data", "primary", [], { items: ["0", "10", "20", "30"], values: [100, 91, 86, 78] }),
     item("copyopen-pie-chart", CopyOpenPieChart, "CopyOpen PieChart", "CopyOpen \u539F\u7248\u73AF\u5F62\u5206\u5E03\u56FE", "data", "primary", [], { items: ["Hook", "Proof", "Story", "CTA"], values: [35, 30, 20, 15], value: 8, label: "clips" }),
     item("copyopen-kpi-grid", CopyOpenKPIGrid, "CopyOpen KPIGrid", "CopyOpen \u539F\u7248 KPI \u4EEA\u8868\u7F51\u683C", "data", "primary", [], { items: ["clips", "avg score", "minutes saved"], values: [8, 86, 74] }),
+    item("speaker-growth-dashboard", SpeakerGrowthDashboard, "\u53E3\u64AD\u589E\u957F\u4EEA\u8868\u76D8", "\u67F1\u5B50\u54E5/TzFilm \u98CE\u683C\u5DE6\u4FA7\u53E3\u64AD\u589E\u957F\u6570\u636E\u4EEA\u8868\u76D8", "data", "primary", [], { eyebrow: "LIVE \xB7 AI AGENT", subline: "\u81EA\u5A92\u4F53\u8FD0\u8425 \xB7 \u5B9E\u65F6\u6F14\u793A", headline: "Hermes", skillLabel: "\u81EA\u5A92\u4F53\u8FD0\u8425 SKILL", feature1Title: "\u8BC4\u8BBA\u533A\u81EA\u52A8\u56DE\u590D", feature1Sub: "AUTO-REPLY", feature2Title: "\u59D4\u5A49\u63A8\u8350 \xB7 \u8D22\u52A1\u81EA\u7531\u56E2", feature2Sub: "SOFT CTA", metricTitle: "\u5165\u7FA4\u7387 \u731B\u589E", metricValue: "165", metricUnit: "\u751F\u6548\u4F1A\u5458", metricSub: "NEW MEMBERS \xB7 \u8FD1 30 \u5929", footer: "\u83B7\u5BA2\u4E00\u628A\u597D\u624B \xB7 GROWTH ENGINE" }),
     ...jcLayoutDefinitions
   ];
   var LAYOUT_BY_KEY = new Map(LAYOUT_DEFINITIONS.map((definition) => [definition.key, definition]));
@@ -60746,7 +61217,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
   // src/design/component-preset-resolver.ts
   var { resolveFaceAwareLayer } = require_face_aware_layout();
   var registry = components_registry_default;
-  var fallbackTokens = { padding: 48, gap: 16, position: "center", scale: 1, headerScale: 1, contentScale: 1, spring: "spring-up", sfx: "none", accentColor: "#00F2FE", defaultItemCount: 1, staggerFrames: 15, mountMode: "center", mountX: 0, mountY: 0, boundsX: 0, boundsY: 0, boundsWidth: 1920, boundsHeight: 1080 };
+  var fallbackTokens = { padding: 48, gap: 16, scale: 1, headerScale: 1, contentScale: 1, spring: "spring-up", sfx: "none", accentColor: "#00F2FE", defaultItemCount: 1, staggerFrames: 15, mountMode: "center", mountX: 0, mountY: 0, boundsX: 0, boundsY: 0, boundsWidth: 1920, boundsHeight: 1080 };
   var getComponentPreset = (layout) => registry.components.find((component) => component.id === layout);
   var getComponentTokens = (layout) => {
     var _a2, _b;
@@ -60754,12 +61225,13 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var isTokenObject = (value) => !!value && typeof value === "object" && !Array.isArray(value);
   var resolveComponentProps = (layout, effectProps) => {
-    var _a2, _b;
-    return { ...effectProps != null ? effectProps : {}, designTokens: { ...getComponentTokens(layout), ...isTokenObject(effectProps == null ? void 0 : effectProps.designTokens) ? effectProps.designTokens : {} }, designPresetVersion: (_b = (_a2 = getComponentPreset(layout)) == null ? void 0 : _a2.version) != null ? _b : 0 };
+    var _a2, _b, _c;
+    const preset = getComponentPreset(layout);
+    return { defaultPayload: (_b = preset == null ? void 0 : preset.defaultPayload) != null ? _b : (_a2 = preset == null ? void 0 : preset.mockData) == null ? void 0 : _a2.contentPayload, ...effectProps != null ? effectProps : {}, designTokens: { ...getComponentTokens(layout), ...isTokenObject(effectProps == null ? void 0 : effectProps.designTokens) ? effectProps.designTokens : {} }, designPresetVersion: (_c = preset == null ? void 0 : preset.version) != null ? _c : 0 };
   };
 
   // src/JasonWu/DemoEffectAdditions.tsx
-  var import_jsx_runtime113 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime115 = __toESM(require_jsx_runtime());
   var strings3 = (value) => Array.isArray(value) ? value.filter((item2) => typeof item2 === "string" && !!item2.trim()).map((item2) => item2.trim()) : [];
   var numberToken = (props, key, fallback) => Number.isFinite(Number(props[key])) ? Math.max(0.6, Math.min(1.2, Number(props[key]))) : fallback;
   var text3 = (props, key, fallback) => typeof props[key] === "string" ? String(props[key]) : fallback;
@@ -60773,13 +61245,14 @@ Check that all your Remotion packages are on the same version. If your dependenc
   };
   var semanticAccents2 = /* @__PURE__ */ new Set(["blue", "green", "yellow", "red"]);
   var headerAccentOf = (value) => semanticAccents2.has(value) ? value : "blue";
-  var StandardComponentHeader = ({ category, headline, accent = "blue" }) => {
+  var StandardComponentHeader = ({ category, headline, accent = "blue", language = "zh" }) => {
     const frame = useCurrentFrame();
     const theme = getAccentTheme(accent);
     const headerFadeIn = interpolate(frame, [0, 15], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-    return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)("div", { className: "static-header-anchor", style: { position: "absolute", left: 76, top: 58, zIndex: 50, maxWidth: 860, pointerEvents: "none", opacity: headerFadeIn, borderLeft: "5px solid " + theme.primary, paddingLeft: 18, textShadow: "0 2px 14px rgba(0,0,0,0.55)" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { color: theme.primary, fontSize: 22, fontWeight: 800, letterSpacing: "0.28em", textTransform: "uppercase", textShadow: "0 0 20px " + theme.glow }, children: category }),
-      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { style: { marginTop: 8, color: "#FFFFFF", fontSize: 44, lineHeight: 1.1, fontWeight: 900 }, children: headline })
+    const isEnglish = language === "en";
+    return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "static-header-anchor", style: { position: "absolute", left: 76, top: 58, zIndex: 50, maxWidth: isEnglish ? 730 : 860, pointerEvents: "none", opacity: headerFadeIn, borderLeft: "5px solid " + theme.primary, paddingLeft: 18, textShadow: "0 2px 14px rgba(0,0,0,0.55)", overflowWrap: "break-word", wordBreak: "keep-all", hyphens: "auto" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { style: { color: theme.primary, fontSize: isEnglish ? 19 : 22, fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", textShadow: "0 0 20px " + theme.glow }, children: isEnglish ? String(category).toUpperCase() : category }),
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { style: { marginTop: 8, color: "#FFFFFF", fontSize: isEnglish ? 37.4 : 44, lineHeight: isEnglish ? 1.38 : 1.1, fontWeight: 900, overflowWrap: "break-word", wordBreak: "keep-all", hyphens: "auto" }, children: headline })
     ] });
   };
   var resolveHeaderContent = (cue, layout) => {
@@ -60792,7 +61265,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     var _a2, _b, _c, _d;
     const content2 = resolveHeaderContent(cue, layout);
     const accent = headerAccentOf((_d = (_a2 = cue.effectProps) == null ? void 0 : _a2.accent) != null ? _d : (_c = (_b = cue.effectProps) == null ? void 0 : _b.contentPayload) == null ? void 0 : _c.accent);
-    return /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(StandardComponentHeader, { category: content2.category, headline: content2.headline, accent });
+    return /* @__PURE__ */ (0, import_jsx_runtime115.jsx)(StandardComponentHeader, { category: content2.category, headline: content2.headline, accent, language: cue.language });
   };
   var LayoutEffectRenderer = ({ cue, layout, showStandardHeader = true }) => {
     const definition = getLayoutDefinition(layout != null ? layout : cue.layout);
@@ -60805,29 +61278,15 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const isCopyOpen = String(layout != null ? layout : cue.layout).startsWith("copyopen-");
     const isJcLayout = String(layout != null ? layout : cue.layout).startsWith("jc-");
     const contentScale = isJcLayout ? 1 : numberToken(props, "contentScale", 1);
-    const contentSlotStyle = isCopyOpen ? {
-      position: "absolute",
-      left: tokens.boundsX,
-      top: tokens.boundsY,
-      width: tokens.boundsWidth,
-      height: tokens.boundsHeight,
-      transform: "scale(" + contentScale + ")",
-      transformOrigin: "top left",
-      overflow: "visible"
-    } : {
-      position: "absolute",
-      inset: 0,
-      transform: "scale(" + contentScale + ")",
-      transformOrigin: "top left"
-    };
-    return /* @__PURE__ */ (0, import_jsx_runtime113.jsxs)(AbsoluteFill, { className: "layout-effect-root component-container", style: { padding: tokens.padding, gap: tokens.gap, ["--component-accent"]: tokens.accentColor }, children: [
-      showStandardHeader && !isJcLayout ? /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(StandardComponentHeader, { category: normalized.category, headline: normalized.headline }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime113.jsx)("div", { className: "layout-effect-content animated-content-slot", style: contentSlotStyle, children: /* @__PURE__ */ (0, import_jsx_runtime113.jsx)(Component, { cue: controlledCue(cue, props), props }) })
+    const contentSlotStyle = isCopyOpen ? { position: "absolute", left: tokens.boundsX, top: tokens.boundsY, width: tokens.boundsWidth, height: tokens.boundsHeight, transform: "scale(" + contentScale + ")", transformOrigin: "top left", overflow: "visible" } : { position: "absolute", inset: 0, transform: "scale(" + contentScale + ")", transformOrigin: "top left" };
+    return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(AbsoluteFill, { className: "layout-effect-root component-container", style: { padding: tokens.padding, gap: tokens.gap }, children: [
+      showStandardHeader && !isJcLayout ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)(StandardComponentHeader, { category: normalized.category, headline: normalized.headline, accent: headerAccentOf(props.accent), language: cue.language }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { className: "layout-effect-content animated-content-slot", style: contentSlotStyle, children: /* @__PURE__ */ (0, import_jsx_runtime115.jsx)(Component, { cue: controlledCue(cue, props), props }) })
     ] });
   };
 
   // src/design/AdminComponentSandbox.tsx
-  var import_jsx_runtime114 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime116 = __toESM(require_jsx_runtime());
   var resolveSandboxAccent = (requested, color) => {
     var _a2;
     if (["blue", "green", "yellow", "red"].indexOf(String(requested)) >= 0) return String(requested);
@@ -60856,30 +61315,65 @@ Check that all your Remotion packages are on the same version. If your dependenc
       return values2.concat(list3.map((item2) => typeof item2 === "string" || typeof item2 === "number" ? String(item2) : "").filter(Boolean));
     }, []);
     const auditText = [base.category, base.headline, ...auditValues].join(" ");
-    const scene = /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(LayoutEffectRenderer, { cue, showStandardHeader: false });
-    const stage = isNativeJc ? /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(JcNativeStageBackdrop, { children: scene }) : scene;
+    const scene = /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(LayoutEffectRenderer, { cue, showStandardHeader: false });
+    const stage = isNativeJc ? /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(JcNativeStageBackdrop, { children: scene }) : scene;
     const shellStyle = { ...isNativeJc ? {} : { background: "#090d16" }, ["--primary-accent"]: (_g = tokens.accentColor) != null ? _g : "#00F2FE" };
-    return /* @__PURE__ */ (0, import_jsx_runtime114.jsxs)(AbsoluteFill, { "data-component-audit": auditText, style: shellStyle, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(LayoutEffectHeader, { cue }),
-      definition.usesInternalMotionWrapper ? stage : /* @__PURE__ */ (0, import_jsx_runtime114.jsx)(MotionWrapper, { commonProps, designTokens: tokens, beatDuration: 4, entranceDurationSeconds: 2.2, children: stage })
+    return /* @__PURE__ */ (0, import_jsx_runtime116.jsxs)(AbsoluteFill, { "data-component-audit": auditText, style: shellStyle, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(LayoutEffectHeader, { cue }),
+      definition.usesInternalMotionWrapper ? stage : /* @__PURE__ */ (0, import_jsx_runtime116.jsx)(MotionWrapper, { commonProps, designTokens: tokens, beatDuration: 4, entranceDurationSeconds: 2.2, children: stage })
     ] });
   };
 
   // src/design/admin-components-client.tsx
-  var import_jsx_runtime115 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime117 = __toESM(require_jsx_runtime());
   var api = async (url, init) => {
     const response = await fetch(url, init);
     const text4 = await response.text();
     if (!response.ok) throw new Error(text4 || "\u8BF7\u6C42\u5931\u8D25");
     return JSON.parse(text4);
   };
-  var number = (value, min, max, step, onChange) => /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "range", min, max, step, value, onChange: (event) => onChange(Number(event.currentTarget.value)) });
-  var coordinate = (value, min, max, onChange) => /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", min, max, step: 1, value, onChange: (event) => onChange(Number(event.currentTarget.value) || 0) });
+  var number = (value, min, max, step, onChange) => /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "range", min, max, step, value, onChange: (event) => onChange(Number(event.currentTarget.value)) });
+  var coordinate = (value, min, max, onChange) => /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "number", min, max, step: 1, value, onChange: (event) => onChange(Number(event.currentTarget.value) || 0) });
   var toStringValue = (value) => typeof value === "string" || typeof value === "number" ? String(value) : "";
+  var buildDefaultCollapsedFamilies = (registry2) => Object.fromEntries(registry2.families.map((family) => [family.id, true]));
+  var componentMatchesSearch = (component, query) => {
+    var _a2, _b, _c, _d, _e, _f;
+    const keyword = query.trim().toLowerCase();
+    if (!keyword) return true;
+    const values2 = [component.id, component.name, component.family, component.description, ...(_a2 = component.tags) != null ? _a2 : [], ...(_b = component.data) != null ? _b : [], ...(_d = (_c = component.manifest) == null ? void 0 : _c.keywords) != null ? _d : [], (_e = component.manifest) == null ? void 0 : _e.intent, (_f = component.manifest) == null ? void 0 : _f.visualWeight];
+    return values2.some((value) => String(value != null ? value : "").toLowerCase().includes(keyword));
+  };
+  var orderComponents = (components, orders) => {
+    const familyBuckets = /* @__PURE__ */ new Map();
+    for (const component of components) {
+      familyBuckets.set(component.family, [...familyBuckets.get(component.family) || [], component]);
+    }
+    const orderedBuckets = /* @__PURE__ */ new Map();
+    for (const [family, items2] of familyBuckets) {
+      const order = orders[family];
+      if (!order) {
+        orderedBuckets.set(family, items2);
+        continue;
+      }
+      const byId = new Map(items2.map((item2) => [item2.id, item2]));
+      const seen = /* @__PURE__ */ new Set();
+      const ordered = [...order.map((id) => byId.get(id)).filter(Boolean), ...items2.filter((item2) => !seen.has(item2.id) && !order.includes(item2.id))];
+      for (const item2 of ordered) seen.add(item2.id);
+      orderedBuckets.set(family, ordered);
+    }
+    const cursors = /* @__PURE__ */ new Map();
+    return components.map((component) => {
+      var _a2;
+      const cursor = cursors.get(component.family) || 0;
+      cursors.set(component.family, cursor + 1);
+      return ((_a2 = orderedBuckets.get(component.family)) == null ? void 0 : _a2[cursor]) || component;
+    });
+  };
   var App = () => {
-    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s;
+    var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t;
     const [registry2, setRegistry] = (0, import_react130.useState)(null);
     const [selectedId, setSelectedId] = (0, import_react130.useState)("");
+    const [searchQuery, setSearchQuery] = (0, import_react130.useState)("");
     const [draft, setDraft] = (0, import_react130.useState)(null);
     const [previewDraft, setPreviewDraft] = (0, import_react130.useState)(null);
     const [status, setStatus] = (0, import_react130.useState)("\u6B63\u5728\u8F7D\u5165\u7EC4\u4EF6\u8D44\u4EA7\u2026");
@@ -60889,12 +61383,19 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const [draggedId, setDraggedId] = (0, import_react130.useState)(null);
     const [dropTargetFamily, setDropTargetFamily] = (0, import_react130.useState)(null);
     const [pendingFamilyMoves, setPendingFamilyMoves] = (0, import_react130.useState)({});
+    const [pendingFamilyOrders, setPendingFamilyOrders] = (0, import_react130.useState)({});
+    const [treeSaveState, setTreeSaveState] = (0, import_react130.useState)("idle");
     const [toast, setToast] = (0, import_react130.useState)("");
     const effectiveComponents = (0, import_react130.useMemo)(() => {
       var _a3;
-      return (_a3 = registry2 == null ? void 0 : registry2.components.map((component) => pendingFamilyMoves[component.id] ? { ...component, family: pendingFamilyMoves[component.id] } : component)) != null ? _a3 : [];
-    }, [registry2, pendingFamilyMoves]);
+      return orderComponents((_a3 = registry2 == null ? void 0 : registry2.components.map((component) => pendingFamilyMoves[component.id] ? { ...component, family: pendingFamilyMoves[component.id] } : component)) != null ? _a3 : [], pendingFamilyOrders);
+    }, [registry2, pendingFamilyMoves, pendingFamilyOrders]);
+    const normalizedSearchQuery = searchQuery.trim();
+    const filteredComponents = (0, import_react130.useMemo)(() => normalizedSearchQuery ? effectiveComponents.filter((component) => componentMatchesSearch(component, normalizedSearchQuery)) : effectiveComponents, [effectiveComponents, normalizedSearchQuery]);
     const pendingMoveCount = Object.keys(pendingFamilyMoves).length;
+    const pendingOrderCount = Object.keys(pendingFamilyOrders).length;
+    const pendingTreeChangeCount = pendingMoveCount + pendingOrderCount;
+    const treeSaveLabel = treeSaveState === "saving" ? "\u4FDD\u5B58\u4E2D\u2026" : treeSaveState === "saved" ? "\u5DF2\u4FDD\u5B58 \u2713" : "\u786E\u8BA4\u4FDD\u5B58\u5217\u8868\u4FEE\u6539" + (pendingTreeChangeCount ? " \xB7 " + pendingTreeChangeCount : "");
     const selected = (0, import_react130.useMemo)(() => {
       var _a3;
       return (_a3 = registry2 == null ? void 0 : registry2.components.find((component) => component.id === selectedId)) != null ? _a3 : null;
@@ -60903,6 +61404,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
       api("/api/admin/components").then((next) => {
         var _a3;
         setRegistry(next);
+        setCollapsedFamilies(buildDefaultCollapsedFamilies(next));
         const first = next.components[0];
         setSelectedId((_a3 = first == null ? void 0 : first.id) != null ? _a3 : "");
         setDraft(first != null ? first : null);
@@ -60974,40 +61476,74 @@ Check that all your Remotion packages are on the same version. If your dependenc
       const original = registry2.components.find((component) => component.id === componentId);
       const destination = registry2.families.find((family) => family.id === familyId);
       if (!source || !original || !destination || source.family === familyId) return;
+      const sourceFamily = source.family;
+      setTreeSaveState("idle");
+      setCollapsedFamilies((current) => ({ ...current, [familyId]: false, [sourceFamily]: false }));
       setPendingFamilyMoves((current) => {
         const next = { ...current };
         if (original.family === familyId) delete next[componentId];
         else next[componentId] = familyId;
         return next;
       });
+      setPendingFamilyOrders((current) => {
+        const sourceOrder = effectiveComponents.filter((item2) => item2.family === sourceFamily && item2.id !== componentId).map((item2) => item2.id);
+        const targetOrder = [componentId, ...effectiveComponents.filter((item2) => item2.family === familyId).map((item2) => item2.id).filter((id) => id !== componentId)];
+        return { ...current, [sourceFamily]: sourceOrder, [familyId]: targetOrder };
+      });
       const message = "\u5DF2\u6682\u5B58\u300C" + source.name + "\u300D\u5230\u300C" + destination.name + "\u300D\u7EC4\uFF0C\u786E\u8BA4\u540E\u4FDD\u5B58\u3002";
       setStatus(message);
       setToast(message);
       setTimeout(() => setToast(""), 2400);
     };
-    const saveFamilyMoves = async () => {
-      if (!registry2 || !pendingMoveCount) return;
-      setStatus("\u6B63\u5728\u4FDD\u5B58 " + pendingMoveCount + " \u9879\u5206\u7EC4\u4FEE\u6539\u2026");
+    const moveComponentWithinFamily = (componentId, familyId, direction) => {
+      const component = effectiveComponents.find((item2) => item2.id === componentId);
+      if (!component) return;
+      const familyComponents = effectiveComponents.filter((item2) => item2.family === familyId);
+      const index = familyComponents.findIndex((item2) => item2.id === componentId);
+      const nextIndex = index + direction;
+      if (index < 0 || nextIndex < 0 || nextIndex >= familyComponents.length) return;
+      const next = [...familyComponents];
+      [next[index], next[nextIndex]] = [next[nextIndex], next[index]];
+      setTreeSaveState("idle");
+      setPendingFamilyOrders((current) => ({ ...current, [familyId]: next.map((item2) => item2.id) }));
+      setCollapsedFamilies((current) => ({ ...current, [familyId]: false }));
+      const message = "\u5DF2\u8C03\u6574\u300C" + component.name + "\u300D\u5728\u5F53\u524D\u7EC4\u5185\u7684\u987A\u5E8F\uFF0C\u786E\u8BA4\u540E\u4FDD\u5B58\u3002";
+      setStatus(message);
+      setToast(message);
+      setTimeout(() => setToast(""), 1800);
+    };
+    const saveTreeChanges = async () => {
+      if (!registry2 || !pendingTreeChangeCount || treeSaveState === "saving") return;
+      setTreeSaveState("saving");
+      setStatus("\u6B63\u5728\u4FDD\u5B58 " + pendingTreeChangeCount + " \u9879\u5217\u8868\u4FEE\u6539\u2026");
       try {
         const moves = Object.keys(pendingFamilyMoves).map((componentId) => ({ componentId, family: pendingFamilyMoves[componentId] }));
-        const saved = await Promise.all(moves.map(({ componentId, family }) => api("/api/admin/components/" + encodeURIComponent(componentId) + "/family", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ family }) })));
-        setRegistry((current) => current ? { ...current, components: current.components.map((component) => {
-          var _a3;
-          return (_a3 = saved.find((item2) => item2.id === component.id)) != null ? _a3 : component;
-        }) } : current);
+        const savedMoves = await Promise.all(moves.map(({ componentId, family }) => api("/api/admin/components/" + encodeURIComponent(componentId) + "/family", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ family }) })));
+        const savedOrders = (await Promise.all(Object.keys(pendingFamilyOrders).map((family) => api("/api/admin/component-families/" + encodeURIComponent(family) + "/order", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ componentIds: pendingFamilyOrders[family] }) })))).flat();
+        const saved = [...savedMoves, ...savedOrders];
+        const refreshed = await api("/api/admin/components");
+        setRegistry(refreshed);
         setDraft((current) => {
           var _a3;
-          return current ? (_a3 = saved.find((item2) => item2.id === current.id)) != null ? _a3 : current : current;
+          return current ? (_a3 = refreshed.components.find((item2) => item2.id === current.id)) != null ? _a3 : current : current;
         });
+        setCollapsedFamilies((current) => ({ ...buildDefaultCollapsedFamilies(refreshed), ...Object.fromEntries(Object.keys(current).filter((key) => current[key] === false).map((key) => [key, false])) }));
         setPendingFamilyMoves({});
-        const message = "\u5DF2\u4FDD\u5B58 " + saved.length + " \u9879\u7EC4\u4EF6\u5206\u7EC4\u4FEE\u6539\u3002";
+        setPendingFamilyOrders({});
+        const message = "\u5217\u8868\u4FEE\u6539\u5DF2\u4FDD\u5B58\u6210\u529F\uFF0C\u5DE6\u4FA7\u5206\u7EC4\u5DF2\u66F4\u65B0\u3002";
+        setTreeSaveState("saved");
         setStatus(message);
         setToast(message);
-        setTimeout(() => setToast(""), 2400);
+        setTimeout(() => {
+          setToast("");
+          setTreeSaveState("idle");
+        }, 2400);
       } catch (error2) {
-        setStatus(error2 instanceof Error ? error2.message : "\u4FDD\u5B58\u5206\u7EC4\u4FEE\u6539\u5931\u8D25");
+        setTreeSaveState("idle");
+        setStatus(error2 instanceof Error ? error2.message : "\u4FDD\u5B58\u5217\u8868\u4FEE\u6539\u5931\u8D25");
       }
     };
+    const saveFamilyMoves = saveTreeChanges;
     const refreshPreview = () => {
       if (!draft) return;
       setPreviewDraft(structuredClone(draft));
@@ -61029,7 +61565,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
         setStatus(error2 instanceof Error ? error2.message : "\u4FDD\u5B58\u5931\u8D25");
       }
     };
-    if (!registry2 || !draft || !previewDraft) return /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("main", { className: "admin-loading", children: status });
+    if (!registry2 || !draft || !previewDraft) return /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("main", { className: "admin-loading", children: status });
     const base = normalizeComponentContent(draft.mockData);
     const payload = base.contentPayload;
     const previewBase = normalizeComponentContent(previewDraft.mockData);
@@ -61041,6 +61577,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     }, []);
     const previewAuditText = [previewBase.category, previewBase.headline, ...previewAuditValues].join(" ");
     const isCapitalDashboard = draft.id === "capital-dashboard";
+    const isPlatformShiftLine = draft.id === "platform-shift-line";
     const isProgressDonut = draft.id === "progress-donut";
     const isTimeRewind = draft.id === "time-rewind";
     const isBullBear = draft.id === "bull-bear";
@@ -61054,6 +61591,7 @@ Check that all your Remotion packages are on the same version. If your dependenc
     const isPersonRank = draft.id === "person-rank";
     const isProductExplosion = draft.id === "product-explosion";
     const isPhotoWall = draft.id === "photo-wall";
+    const isSpeakerGrowthDashboard = draft.id === "speaker-growth-dashboard";
     const showBaseSection = true;
     const photoSlots = [1, 2, 3, 4];
     const jcField = (key) => {
@@ -61064,469 +61602,575 @@ Check that all your Remotion packages are on the same version. If your dependenc
       var _a3, _b2;
       return (_b2 = (_a3 = jcField(key)) == null ? void 0 : _a3.label) != null ? _b2 : fallback;
     };
-    const jcContentEditor = draft.id.startsWith("jc-") ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B" }),
-      payload.type === "narrative" ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(import_jsx_runtime115.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+    const jcContentEditor = draft.id.startsWith("jc-") ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B" }),
+      payload.type === "narrative" ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)(import_jsx_runtime117.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
           jcLabel("bodyText", "\u6B63\u6587\u5185\u5BB9"),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 4, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 4, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
         ] }),
-        jcField("highlightQuote") ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+        jcField("highlightQuote") ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
           jcLabel("highlightQuote", "\u526F\u6587\u5185\u5BB9"),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_a2 = payload.highlightQuote) != null ? _a2 : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_a2 = payload.highlightQuote) != null ? _a2 : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
         ] }) : null
-      ] }) : payload.type === "metrics" ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(import_jsx_runtime115.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      ] }) : payload.type === "metrics" ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)(import_jsx_runtime117.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
           jcLabel("label", "\u6307\u6807\u6807\u7B7E"),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: payload.label, onChange: (event) => updatePayload({ ...payload, label: event.currentTarget.value }) })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: payload.label, onChange: (event) => updatePayload({ ...payload, label: event.currentTarget.value }) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
           jcLabel("value", "\u6570\u503C"),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", value: toStringValue(payload.value), onChange: (event) => updatePayload({ ...payload, value: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "number", value: toStringValue(payload.value), onChange: (event) => updatePayload({ ...payload, value: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
           jcLabel("unit", "\u5355\u4F4D"),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_b = payload.unit) != null ? _b : "", onChange: (event) => updatePayload({ ...payload, unit: event.currentTarget.value }) })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_b = payload.unit) != null ? _b : "", onChange: (event) => updatePayload({ ...payload, unit: event.currentTarget.value }) })
         ] }),
-        jcField("detailText") ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+        jcField("detailText") ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
           jcLabel("detailText", "\u8BF4\u660E\u5185\u5BB9"),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: (_c = payload.detailText) != null ? _c : "", onChange: (event) => updatePayload({ ...payload, detailText: event.currentTarget.value }) })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 3, value: (_c = payload.detailText) != null ? _c : "", onChange: (event) => updatePayload({ ...payload, detailText: event.currentTarget.value }) })
         ] }) : null
-      ] }) : payload.type === "chips" ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(import_jsx_runtime115.Fragment, { children: [
+      ] }) : payload.type === "chips" ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)(import_jsx_runtime117.Fragment, { children: [
         payload.items.map((item2, index) => {
           var _a3;
-          return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: item2.title, "aria-label": "\u6807\u7B7E " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, itemIndex) => itemIndex === index ? { ...entry, title: event.currentTarget.value } : entry) }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_a3 = item2.subtitle) != null ? _a3 : "", "aria-label": "\u526F\u6807 " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, itemIndex) => itemIndex === index ? { ...entry, subtitle: event.currentTarget.value } : entry) }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, items: payload.items.filter((_, itemIndex) => itemIndex !== index) }), children: "\u5220\u9664" })
+          return /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "payload-row", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: item2.title, "aria-label": "\u6807\u7B7E " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, itemIndex) => itemIndex === index ? { ...entry, title: event.currentTarget.value } : entry) }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_a3 = item2.subtitle) != null ? _a3 : "", "aria-label": "\u526F\u6807 " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, itemIndex) => itemIndex === index ? { ...entry, subtitle: event.currentTarget.value } : entry) }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, items: payload.items.filter((_, itemIndex) => itemIndex !== index) }), children: "\u5220\u9664" })
           ] }, index);
         }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, items: [...payload.items, { title: "\u65B0\u6807\u7B7E", subtitle: "" }] }), children: "\u6DFB\u52A0\u6807\u7B7E" })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)(import_jsx_runtime115.Fragment, { children: [
-        typeof payload.progress === "number" && jcField("progress") ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, items: [...payload.items, { title: "\u65B0\u6807\u7B7E", subtitle: "" }] }), children: "\u6DFB\u52A0\u6807\u7B7E" })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)(import_jsx_runtime117.Fragment, { children: [
+        typeof payload.progress === "number" && jcField("progress") ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
           jcLabel("progress", "\u5B8C\u6210\u5EA6"),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", min: 0, max: 100, value: payload.progress, onChange: (event) => updatePayload({ ...payload, progress: Math.max(0, Math.min(100, Number(event.currentTarget.value) || 0)) }) })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "number", min: 0, max: 100, value: payload.progress, onChange: (event) => updatePayload({ ...payload, progress: Math.max(0, Math.min(100, Number(event.currentTarget.value) || 0)) }) })
         ] }) : null,
-        payload.steps.map((step, index) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: step.stepNumber }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: step.text, "aria-label": "\u6B65\u9AA4 " + step.stepNumber, onChange: (event) => updatePayload({ ...payload, steps: payload.steps.map((entry, itemIndex) => itemIndex === index ? { ...entry, text: event.currentTarget.value } : entry) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, steps: payload.steps.filter((_, itemIndex) => itemIndex !== index).map((entry, itemIndex) => ({ ...entry, stepNumber: itemIndex + 1 })) }), children: "\u5220\u9664" })
+        payload.steps.map((step, index) => /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "payload-row", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("output", { children: step.stepNumber }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: step.text, "aria-label": "\u6B65\u9AA4 " + step.stepNumber, onChange: (event) => updatePayload({ ...payload, steps: payload.steps.map((entry, itemIndex) => itemIndex === index ? { ...entry, text: event.currentTarget.value } : entry) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, steps: payload.steps.filter((_, itemIndex) => itemIndex !== index).map((entry, itemIndex) => ({ ...entry, stepNumber: itemIndex + 1 })) }), children: "\u5220\u9664" })
         ] }, index)),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, steps: [...payload.steps, { stepNumber: payload.steps.length + 1, text: "\u65B0\u6B65\u9AA4" }] }), children: "\u6DFB\u52A0\u6B65\u9AA4" })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, steps: [...payload.steps, { stepNumber: payload.steps.length + 1, text: "\u65B0\u6B65\u9AA4" }] }), children: "\u6DFB\u52A0\u6B65\u9AA4" })
       ] })
     ] }) : null;
-    const contentEditor = jcContentEditor != null ? jcContentEditor : isPersonRank ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u4EBA\u7269\u4EA4\u63A5" }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+    const contentEditor = jcContentEditor != null ? jcContentEditor : isSpeakerGrowthDashboard ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6307\u6807" }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u529F\u80FD1\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.feature1Title), onChange: (event) => updateMockData({ feature1Title: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u529F\u80FD1\u3010\u526F\u6587\u5185\u5BB9\u3011",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.feature1Sub), onChange: (event) => updateMockData({ feature1Sub: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u529F\u80FD2\u3010\u6B63\u6587\u5185\u5BB9\u3011",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.feature2Title), onChange: (event) => updateMockData({ feature2Title: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u529F\u80FD2\u3010\u526F\u6587\u5185\u5BB9\u3011",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.feature2Sub), onChange: (event) => updateMockData({ feature2Sub: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u589E\u957F\u6307\u6807\u6807\u9898",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.metricTitle), onChange: (event) => updateMockData({ metricTitle: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u589E\u957F\u6570\u5B57",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.metricValue), onChange: (event) => updateMockData({ metricValue: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u6570\u5B57\u5355\u4F4D",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.metricUnit), onChange: (event) => updateMockData({ metricUnit: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u6307\u6807\u526F\u6587",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.metricSub), onChange: (event) => updateMockData({ metricSub: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u54C1\u724C\u5927\u6807\u9898",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.headline), onChange: (event) => updateBase({ headline: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u80FD\u529B\u6807\u7B7E",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.skillLabel), onChange: (event) => updateMockData({ skillLabel: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u5E95\u90E8\u8BF4\u660E",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 2, value: toStringValue(draft.mockData.footer), onChange: (event) => updateMockData({ footer: event.currentTarget.value }) })
+      ] })
+    ] }) : isPersonRank ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u4EBA\u7269\u4EA4\u63A5" }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u4EBA\u7269A",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.leftName), onChange: (event) => updateMockData({ leftName: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.leftName), onChange: (event) => updateMockData({ leftName: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u4EBA\u7269A\u5934\u50CF\u4E0A\u4F20",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("leftAvatar", event) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("leftAvatar", event) })
       ] }),
-      toStringValue(draft.mockData.leftAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ leftAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269A\u5934\u50CF" }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      toStringValue(draft.mockData.leftAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ leftAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269A\u5934\u50CF" }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u4EBA\u7269B",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.rightName), onChange: (event) => updateMockData({ rightName: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.rightName), onChange: (event) => updateMockData({ rightName: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u4EBA\u7269B\u5934\u50CF\u4E0A\u4F20",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("rightAvatar", event) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("rightAvatar", event) })
       ] }),
-      toStringValue(draft.mockData.rightAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ rightAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269B\u5934\u50CF" }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      toStringValue(draft.mockData.rightAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ rightAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269B\u5934\u50CF" }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u4EBA\u7269C",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.thirdName), onChange: (event) => updateMockData({ thirdName: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.thirdName), onChange: (event) => updateMockData({ thirdName: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u4EBA\u7269C\u5934\u50CF\u4E0A\u4F20",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("thirdAvatar", event) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("thirdAvatar", event) })
       ] }),
-      toStringValue(draft.mockData.thirdAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ thirdAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269C\u5934\u50CF" }) : null
-    ] }) : isProductExplosion ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u4EA7\u54C1\u7206\u70B8\u56FE" }),
-      photoSlots.map((slot) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: slot }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { style: { display: "grid", gap: 8, flex: 1 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      toStringValue(draft.mockData.thirdAvatar) ? /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ thirdAvatar: "" }), children: "\u6E05\u9664\u4EBA\u7269C\u5934\u50CF" }) : null
+    ] }) : isProductExplosion ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u4EA7\u54C1\u7206\u70B8\u56FE" }),
+      photoSlots.map((slot) => /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "payload-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("output", { children: slot }),
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { style: { display: "grid", gap: 8, flex: 1 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u4EA7\u54C1" + slot + "\u540D\u79F0",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData["productTitle" + slot]), onChange: (event) => {
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData["productTitle" + slot]), onChange: (event) => {
               const titles = photoSlots.map((index) => index === slot ? event.currentTarget.value : toStringValue(draft.mockData["productTitle" + index])).filter(Boolean);
               updateMockData({ ["productTitle" + slot]: event.currentTarget.value, items: titles, steps: titles, contentPayload: { type: "chips", items: titles.map((title) => ({ title, subtitle: "" })) } });
             } })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u4EA7\u54C1" + slot + "\u56FE\u7247\u4E0A\u4F20",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("productImage" + slot, event) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("productImage" + slot, event) })
           ] }),
-          toStringValue(draft.mockData["productImage" + slot]) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ ["productImage" + slot]: "" }), children: [
+          toStringValue(draft.mockData["productImage" + slot]) ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ ["productImage" + slot]: "" }), children: [
             "\u6E05\u9664\u4EA7\u54C1",
             slot,
             "\u56FE\u7247"
           ] }) : null
         ] })
       ] }, slot)),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u4E2D\u5FC3\u4EA7\u54C1\u6807\u9898",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.centerLabel), onChange: (event) => updateMockData({ centerLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.centerLabel), onChange: (event) => updateMockData({ centerLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u4E2D\u5FC3\u4EA7\u54C1\u56FE\u7247\u4E0A\u4F20",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("centerImage", event) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("centerImage", event) })
       ] }),
-      toStringValue(draft.mockData.centerImage) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ centerImage: "" }), children: "\u6E05\u9664\u4E2D\u5FC3\u56FE\u7247" }) : null
-    ] }) : isPhotoWall ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u7167\u7247\u5899" }),
-      photoSlots.map((slot) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: slot }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { style: { display: "grid", gap: 8, flex: 1 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      toStringValue(draft.mockData.centerImage) ? /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ centerImage: "" }), children: "\u6E05\u9664\u4E2D\u5FC3\u56FE\u7247" }) : null
+    ] }) : isPhotoWall ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u7167\u7247\u5899" }),
+      photoSlots.map((slot) => /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "payload-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("output", { children: slot }),
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { style: { display: "grid", gap: 8, flex: 1 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u7167\u7247" + slot + "\u6807\u9898",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData["photoTitle" + slot]), onChange: (event) => updateMockData({ ["photoTitle" + slot]: event.currentTarget.value, items: photoSlots.map((index) => index === slot ? event.currentTarget.value : toStringValue(draft.mockData["photoTitle" + index])).filter(Boolean) }) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData["photoTitle" + slot]), onChange: (event) => updateMockData({ ["photoTitle" + slot]: event.currentTarget.value, items: photoSlots.map((index) => index === slot ? event.currentTarget.value : toStringValue(draft.mockData["photoTitle" + index])).filter(Boolean) }) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u7167\u7247" + slot + "\u526F\u6807\u9898",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData["photoSubtitle" + slot]), onChange: (event) => updateMockData({ ["photoSubtitle" + slot]: event.currentTarget.value }) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData["photoSubtitle" + slot]), onChange: (event) => updateMockData({ ["photoSubtitle" + slot]: event.currentTarget.value }) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u7167\u7247" + slot + "\u4E0A\u4F20",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("photo" + slot, event) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "file", accept: "image/*", onChange: (event) => uploadAvatar("photo" + slot, event) })
           ] }),
-          toStringValue(draft.mockData["photo" + slot]) ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ ["photo" + slot]: "" }), children: [
+          toStringValue(draft.mockData["photo" + slot]) ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("button", { type: "button", className: "payload-remove", onClick: () => updateMockData({ ["photo" + slot]: "" }), children: [
             "\u6E05\u9664\u7167\u7247",
             slot
           ] }) : null
         ] })
       ] }, slot))
-    ] }) : payload.type === "narrative" ? isCookMachine ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u7ECF\u8425\u673A\u5668" }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+    ] }) : payload.type === "narrative" ? isCookMachine ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u7ECF\u8425\u673A\u5668" }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.leftLabel), onChange: (event) => updateMockData({ leftLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.leftLabel), onChange: (event) => updateMockData({ leftLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.leftValue), onChange: (event) => updateMockData({ leftValue: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.leftValue), onChange: (event) => updateMockData({ leftValue: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.rightLabel), onChange: (event) => updateMockData({ rightLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.rightLabel), onChange: (event) => updateMockData({ rightLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.rightValue), onChange: (event) => updateMockData({ rightValue: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.rightValue), onChange: (event) => updateMockData({ rightValue: event.currentTarget.value }) })
       ] })
-    ] }) : isBullBear ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u591A\u7A7A\u89C2\u70B9" }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+    ] }) : isBullBear ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u591A\u7A7A\u89C2\u70B9" }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u591A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 3, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u7A7A\u65B9\u89C2\u70B9\u3010\u6B63\u6587\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: (_d = payload.bearText) != null ? _d : "", onChange: (event) => updatePayload({ ...payload, bearText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 3, value: (_d = payload.bearText) != null ? _d : "", onChange: (event) => updatePayload({ ...payload, bearText: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u8FA9\u8BBA\u4E3B\u9898",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_e = payload.highlightQuote) != null ? _e : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_e = payload.highlightQuote) != null ? _e : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u53D9\u4E8B" }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u53D9\u4E8B" }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 4, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 4, value: payload.bodyText, onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u526F\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_f = payload.highlightQuote) != null ? _f : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_f = payload.highlightQuote) != null ? _f : "", onChange: (event) => updatePayload({ ...payload, highlightQuote: event.currentTarget.value }) })
       ] })
-    ] }) : payload.type === "metrics" ? isCapitalDashboard ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u8D44\u672C\u4EEA\u8868\u76D8" }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+    ] }) : payload.type === "metrics" ? isCapitalDashboard ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u8D44\u672C\u4EEA\u8868\u76D8" }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u5C0F\u6807\u98981\u3010\u6807\u9898\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.marketLabel), onChange: (event) => updateMockData({ marketLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.marketLabel), onChange: (event) => updateMockData({ marketLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6570\u503C1\u3010\u6570\u5B57\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", value: toStringValue(draft.mockData.marketTo), onChange: (event) => updateMockData({ marketTo: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "number", value: toStringValue(draft.mockData.marketTo), onChange: (event) => updateMockData({ marketTo: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u5C0F\u6807\u98982\u3010\u6807\u9898\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue(draft.mockData.engineeringLabel), onChange: (event) => updateMockData({ engineeringLabel: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.engineeringLabel), onChange: (event) => updateMockData({ engineeringLabel: event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6570\u503C2\u3010\u6570\u5B57\u5185\u5BB9\u3011",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", value: toStringValue(draft.mockData.engineeringTo), onChange: (event) => updateMockData({ engineeringTo: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "number", value: toStringValue(draft.mockData.engineeringTo), onChange: (event) => updateMockData({ engineeringTo: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6570\u5B57\u5355\u4F4D",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: toStringValue((_h = (_g = draft.mockData.marketSuffix) != null ? _g : draft.mockData.engineeringSuffix) != null ? _h : payload.unit), onChange: (event) => updateMockData({ marketSuffix: event.currentTarget.value, engineeringSuffix: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue((_h = (_g = draft.mockData.marketSuffix) != null ? _g : draft.mockData.engineeringSuffix) != null ? _h : payload.unit), onChange: (event) => updateMockData({ marketSuffix: event.currentTarget.value, engineeringSuffix: event.currentTarget.value }) })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6307\u6807" }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
-        isProgressDonut ? "\u5C0F\u6807\u9898" : "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: payload.label, onChange: (event) => updatePayload({ ...payload, label: event.currentTarget.value }) })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
-        "\u6570\u503C",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", value: toStringValue(payload.value), onChange: (event) => updatePayload({ ...payload, value: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
-      ] }),
-      isProgressDonut ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+    ] }) : isPlatformShiftLine ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6307\u6807\u9762\u677F" }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_j = (_i = payload.bodyText) != null ? _i : payload.unit) != null ? _j : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value, unit: event.currentTarget.value }) })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
-        "\u5355\u4F4D",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_k = payload.unit) != null ? _k : "", onChange: (event) => updatePayload({ ...payload, unit: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: payload.label, onChange: (event) => updatePayload({ ...payload, label: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u6570\u503C\u5185\u5BB9",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "number", value: toStringValue(payload.value), onChange: (event) => updatePayload({ ...payload, value: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u526F\u6587\u5185\u5BB9",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_i = payload.detailText) != null ? _i : "", onChange: (event) => updatePayload({ ...payload, detailText: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u8D77\u70B9\u5185\u5BB9",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.startLabel), onChange: (event) => updateMockData({ startLabel: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u7EC8\u70B9\u5185\u5BB9",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: toStringValue(draft.mockData.endLabel), onChange: (event) => updateMockData({ endLabel: event.currentTarget.value }) })
       ] })
-    ] }) : payload.type === "chips" ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6807\u7B7E" }),
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6307\u6807" }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        isProgressDonut ? "\u5C0F\u6807\u9898" : "\u6B63\u6587\u5185\u5BB9",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: payload.label, onChange: (event) => updatePayload({ ...payload, label: event.currentTarget.value }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u6570\u503C",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "number", value: toStringValue(payload.value), onChange: (event) => updatePayload({ ...payload, value: Number.isFinite(Number(event.currentTarget.value)) ? Number(event.currentTarget.value) : event.currentTarget.value }) })
+      ] }),
+      isProgressDonut ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u6B63\u6587\u5185\u5BB9",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_k = (_j = payload.bodyText) != null ? _j : payload.unit) != null ? _k : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value, unit: event.currentTarget.value }) })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
+        "\u5355\u4F4D",
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_l = payload.unit) != null ? _l : "", onChange: (event) => updatePayload({ ...payload, unit: event.currentTarget.value }) })
+      ] })
+    ] }) : payload.type === "chips" ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6807\u7B7E" }),
       payload.items.map((item2, index) => {
         var _a3;
-        return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: item2.title, "aria-label": "\u6807\u7B7E " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, i) => i === index ? { ...entry, title: event.currentTarget.value } : entry) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_a3 = item2.subtitle) != null ? _a3 : "", "aria-label": "\u526F\u6807 " + (index + 1), placeholder: "\u526F\u6807\uFF08\u53EF\u9009\uFF09", onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, i) => i === index ? { ...entry, subtitle: event.currentTarget.value } : entry) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, items: payload.items.filter((_, i) => i !== index) }), children: "\u5220\u9664" })
+        return /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "payload-row", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: item2.title, "aria-label": "\u6807\u7B7E " + (index + 1), onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, i) => i === index ? { ...entry, title: event.currentTarget.value } : entry) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_a3 = item2.subtitle) != null ? _a3 : "", "aria-label": "\u526F\u6807 " + (index + 1), placeholder: "\u526F\u6807\uFF08\u53EF\u9009\uFF09", onChange: (event) => updatePayload({ ...payload, items: payload.items.map((entry, i) => i === index ? { ...entry, subtitle: event.currentTarget.value } : entry) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, items: payload.items.filter((_, i) => i !== index) }), children: "\u5220\u9664" })
         ] }, index);
       }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, items: [...payload.items, { title: "\u65B0\u6807\u7B7E", subtitle: "" }] }), children: "\u6DFB\u52A0\u6807\u7B7E" })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: isBriefingPoster ? "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u62A5\u7EB8\u7B80\u62A5" : isTradeoffReject ? "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u98CE\u9669\u6392\u9664" : "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6B65\u9AA4" }),
-      (isCheckProgress || isRecoveryProgressBars) && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, items: [...payload.items, { title: "\u65B0\u6807\u7B7E", subtitle: "" }] }), children: "\u6DFB\u52A0\u6807\u7B7E" })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: isBriefingPoster ? "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u62A5\u7EB8\u7B80\u62A5" : isTradeoffReject ? "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u98CE\u9669\u6392\u9664" : "\u9ED8\u8BA4\u5185\u5BB9\u6A21\u677F / \u6C99\u76D2\u793A\u4F8B \xB7 \u6B65\u9AA4" }),
+      (isCheckProgress || isRecoveryProgressBars) && /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         isCheckProgress ? "\u8FDB\u5EA6\u6761\u6807\u9898\u3010\u6B63\u6587\u5185\u5BB9\u3011" : "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: (_l = payload.bodyText) != null ? _l : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: (_m = payload.bodyText) != null ? _m : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      typeof payload.progress === "number" && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      typeof payload.progress === "number" && /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u5B8C\u6210\u5EA6",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "number", min: 0, max: 100, value: payload.progress, onChange: (event) => updatePayload({ ...payload, progress: Math.max(0, Math.min(100, Number(event.currentTarget.value) || 0)) }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "number", min: 0, max: 100, value: payload.progress, onChange: (event) => updatePayload({ ...payload, progress: Math.max(0, Math.min(100, Number(event.currentTarget.value) || 0)) }) })
       ] }),
-      isTimeRewind && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      isTimeRewind && /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u65F6\u95F4\u56DE\u6EAF\u5185\u5BB9\u6B63\u6587",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: (_m = payload.bodyText) != null ? _m : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 3, value: (_n = payload.bodyText) != null ? _n : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      isBriefingPoster && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      isBriefingPoster && /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 4, value: (_n = payload.bodyText) != null ? _n : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 4, value: (_o = payload.bodyText) != null ? _o : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      isTradeoffReject && /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+      isTradeoffReject && /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
         "\u6B63\u6587\u5185\u5BB9",
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("textarea", { rows: 3, value: (_o = payload.bodyText) != null ? _o : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("textarea", { rows: 3, value: (_p = payload.bodyText) != null ? _p : "", onChange: (event) => updatePayload({ ...payload, bodyText: event.currentTarget.value }) })
       ] }),
-      payload.steps.map((step, index) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "payload-row", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: step.stepNumber }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: step.text, "aria-label": (isBriefingPoster ? "\u526F\u6587\u5185\u5BB9 " : isTradeoffReject ? "\u5426\u5B9A\u9879 " : "\u6B65\u9AA4 ") + step.stepNumber, placeholder: isBriefingPoster ? "\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u5426\u5B9A\u9879\u5185\u5BB9" : "\u6B65\u9AA4\u5185\u5BB9", onChange: (event) => updatePayload({ ...payload, steps: payload.steps.map((entry, i) => i === index ? { ...entry, text: event.currentTarget.value } : entry) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, steps: payload.steps.filter((_, i) => i !== index).map((entry, i) => ({ ...entry, stepNumber: i + 1 })) }), children: "\u5220\u9664" })
+      payload.steps.map((step, index) => /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "payload-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("output", { children: step.stepNumber }),
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: step.text, "aria-label": (isBriefingPoster ? "\u526F\u6587\u5185\u5BB9 " : isTradeoffReject ? "\u5426\u5B9A\u9879 " : "\u6B65\u9AA4 ") + step.stepNumber, placeholder: isBriefingPoster ? "\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u5426\u5B9A\u9879\u5185\u5BB9" : "\u6B65\u9AA4\u5185\u5BB9", onChange: (event) => updatePayload({ ...payload, steps: payload.steps.map((entry, i) => i === index ? { ...entry, text: event.currentTarget.value } : entry) }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-remove", onClick: () => updatePayload({ ...payload, steps: payload.steps.filter((_, i) => i !== index).map((entry, i) => ({ ...entry, stepNumber: i + 1 })) }), children: "\u5220\u9664" })
       ] }, index)),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, steps: [...payload.steps, { stepNumber: payload.steps.length + 1, text: isBriefingPoster ? "\u65B0\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u65B0\u5426\u5B9A\u9879" : "\u65B0\u6B65\u9AA4" }] }), children: isBriefingPoster ? "\u6DFB\u52A0\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u6DFB\u52A0\u5426\u5B9A\u9879" : "\u6DFB\u52A0\u6B65\u9AA4" })
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", className: "payload-add", onClick: () => updatePayload({ ...payload, steps: [...payload.steps, { stepNumber: payload.steps.length + 1, text: isBriefingPoster ? "\u65B0\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u65B0\u5426\u5B9A\u9879" : "\u65B0\u6B65\u9AA4" }] }), children: isBriefingPoster ? "\u6DFB\u52A0\u526F\u6587\u5185\u5BB9" : isTradeoffReject ? "\u6DFB\u52A0\u5426\u5B9A\u9879" : "\u6DFB\u52A0\u6B65\u9AA4" })
     ] });
-    return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("main", { className: "admin-shell", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("aside", { className: "admin-tree", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-tree-head", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-brand", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("strong", { children: "\u7EC4\u4EF6\u8D44\u4EA7\u5E93" }),
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { children: effectiveComponents.length + " visual components" })
+    return /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("main", { className: "admin-shell", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("aside", { className: "admin-tree", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "admin-tree-head", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "admin-brand", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("strong", { children: "\u7EC4\u4EF6\u8D44\u4EA7\u5E93" }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { children: normalizedSearchQuery ? filteredComponents.length + " / " + effectiveComponents.length + " visual components" : effectiveComponents.length + " visual components" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("a", { className: "weight-link", href: "/admin/component-weights", children: "\u7EC4\u4EF6\u547D\u4E2D\u4F18\u5148\u7EA7" })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { className: "component-search", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { children: "\u641C\u7D22\u7EC4\u4EF6" }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "search", value: searchQuery, placeholder: "\u641C\u7D22\u7EC4\u4EF6\u540D\u79F0 / ID / \u6807\u7B7E", onChange: (event) => setSearchQuery(event.currentTarget.value) }),
+            normalizedSearchQuery ? /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", onClick: () => setSearchQuery(""), "aria-label": "\u6E05\u7A7A\u641C\u7D22", children: "\xD7" }) : null
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { className: "search-summary", children: normalizedSearchQuery ? "\u547D\u4E2D " + filteredComponents.length + " \u4E2A\u7EC4\u4EF6" : "\u53EF\u6309\u4E2D\u6587\u540D\u3001\u82F1\u6587 ID\u3001\u6807\u7B7E\u5FEB\u901F\u5B9A\u4F4D" }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("a", { className: "weight-link", href: "/admin/component-weights", children: "\u7EC4\u4EF6\u547D\u4E2D\u4F18\u5148\u7EA7" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { className: "tree-scroll", children: registry2.families.map((family) => {
-          const familyComponents = effectiveComponents.filter((component) => component.family === family.id);
-          const collapsed = !!collapsedFamilies[family.id];
-          return /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "family-group" + (dropTargetFamily === family.id ? " is-drop-target" : ""), onDragEnter: (event) => {
-            event.preventDefault();
-            setDropTargetFamily(family.id);
-          }, onDragOver: (event) => {
-            event.preventDefault();
-            setDropTargetFamily(family.id);
-          }, onDrop: (event) => {
-            event.preventDefault();
-            stageFamilyMove(draggedId, family.id);
-            setDraggedId(null);
-            setDropTargetFamily(null);
-          }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { className: "family-header", type: "button", onClick: () => toggleFamily(family.id), "aria-expanded": !collapsed, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("i", { className: "family-accent" }),
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { children: family.name }),
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { className: "family-chevron", children: collapsed ? "\u203A" : "\u2304" })
-            ] }),
-            !collapsed && /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { className: "family-components", children: familyComponents.map((component) => /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { draggable: true, "data-component-id": component.id, className: (component.id === selectedId ? "asset active" : "asset") + (component.id === draggedId ? " dragging" : "") + (pendingFamilyMoves[component.id] ? " pending" : ""), onDragStart: (event) => {
-              event.dataTransfer.effectAllowed = "move";
-              setDraggedId(component.id);
-            }, onDragEnd: () => {
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "tree-scroll", children: [
+          registry2.families.map((family) => {
+            const familyComponents = filteredComponents.filter((component) => component.family === family.id);
+            if (normalizedSearchQuery && familyComponents.length === 0) return null;
+            const collapsed = normalizedSearchQuery ? false : collapsedFamilies[family.id] !== false;
+            return /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { "data-family-id": family.id, className: "family-group" + (dropTargetFamily === family.id ? " is-drop-target" : ""), onDragEnter: (event) => {
+              event.preventDefault();
+              setDropTargetFamily(family.id);
+            }, onDragOver: (event) => {
+              event.preventDefault();
+              setDropTargetFamily(family.id);
+            }, onDrop: (event) => {
+              event.preventDefault();
+              stageFamilyMove(draggedId, family.id);
               setDraggedId(null);
               setDropTargetFamily(null);
-            }, onClick: () => setSelectedId(component.id), title: "\u62D6\u52A8\u5230\u5176\u4ED6\u5206\u7EC4", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { className: "drag-handle", "aria-hidden": "true", children: "\u22EE\u22EE" }),
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("span", { className: "asset-copy", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("strong", { children: component.name }),
-                /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("span", { children: [
-                  component.id,
-                  " \xB7 v",
-                  component.version,
-                  pendingFamilyMoves[component.id] ? " \xB7 \u5F85\u4FDD\u5B58" : ""
+            }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("button", { className: "family-header", type: "button", onClick: () => toggleFamily(family.id), "aria-expanded": !collapsed, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("i", { className: "family-accent" }),
+                /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { children: family.name }),
+                /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { className: "family-count", children: familyComponents.length }),
+                /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { className: "family-chevron", children: collapsed ? "\u203A" : "\u2304" })
+              ] }),
+              !collapsed && /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("div", { className: "family-components", children: familyComponents.map((component, index) => /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { draggable: true, "data-component-id": component.id, role: "button", tabIndex: 0, className: (component.id === selectedId ? "asset active" : "asset") + (component.id === draggedId ? " dragging" : "") + (pendingFamilyMoves[component.id] || pendingFamilyOrders[component.family] ? " pending" : ""), onDragStart: (event) => {
+                event.dataTransfer.effectAllowed = "move";
+                setDraggedId(component.id);
+              }, onDragOver: (event) => event.preventDefault(), onDrop: (event) => {
+                event.preventDefault();
+                if (draggedId && draggedId !== component.id) {
+                  const dragged = effectiveComponents.find((item2) => item2.id === draggedId);
+                  if ((dragged == null ? void 0 : dragged.family) === component.family) {
+                    const familyOrder = familyComponents.map((item2) => item2.id).filter((id) => id !== draggedId);
+                    familyOrder.splice(index, 0, draggedId);
+                    setPendingFamilyOrders((current) => ({ ...current, [component.family]: familyOrder }));
+                  } else stageFamilyMove(draggedId, component.family);
+                }
+                setDraggedId(null);
+                setDropTargetFamily(null);
+              }, onDragEnd: () => {
+                setDraggedId(null);
+                setDropTargetFamily(null);
+              }, onClick: () => setSelectedId(component.id), onKeyDown: (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setSelectedId(component.id);
+                }
+              }, title: "\u53EF\u62D6\u52A8\u6392\u5E8F\uFF0C\u4E5F\u53EF\u7528\u53F3\u4FA7\u4E0B\u62C9\u79FB\u52A8\u5206\u7EC4", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { className: "drag-handle", "aria-hidden": "true", children: "\u22EE\u22EE" }),
+                /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("span", { className: "asset-copy", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("strong", { children: component.name }),
+                  /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("span", { children: [
+                    component.id,
+                    " \xB7 v",
+                    component.version,
+                    pendingFamilyMoves[component.id] || pendingFamilyOrders[component.family] ? " \xB7 \u5F85\u4FDD\u5B58" : ""
+                  ] })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("span", { className: "asset-tools", onClick: (event) => event.stopPropagation(), children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("select", { className: "asset-family-select", "aria-label": "\u79FB\u52A8\u81F3\u5206\u7EC4 " + component.name, value: component.family, onChange: (event) => stageFamilyMove(component.id, event.currentTarget.value), children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { value: component.family, children: "\u79FB\u52A8\u81F3\u5206\u7EC4" }),
+                    registry2.families.filter((item2) => item2.id !== component.family).map((item2) => /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("option", { value: item2.id, children: [
+                      item2.name,
+                      registry2.families.some((other) => other.id !== item2.id && other.name === item2.name) ? " \xB7 " + item2.id : ""
+                    ] }, item2.id))
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("span", { className: "asset-order-buttons", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", "aria-label": "\u4E0A\u79FB " + component.name, disabled: index === 0, onClick: () => moveComponentWithinFamily(component.id, family.id, -1), children: "\u2191" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { type: "button", "aria-label": "\u4E0B\u79FB " + component.name, disabled: index === familyComponents.length - 1, onClick: () => moveComponentWithinFamily(component.id, family.id, 1), children: "\u2193" })
+                  ] })
                 ] })
-              ] })
-            ] }, component.id)) })
-          ] }, family.id);
-        }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-tree-actions", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("button", { className: "tree-save", type: "button", disabled: !pendingMoveCount, onClick: saveFamilyMoves, children: [
-            "\u786E\u8BA4\u4FDD\u5B58\u62D6\u62FD\u4FEE\u6539",
-            pendingMoveCount ? " \xB7 " + pendingMoveCount : ""
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { className: "tree-pending", children: pendingMoveCount ? "\u5206\u7EC4\u5DF2\u6682\u5B58\uFF0C\u786E\u8BA4\u540E\u624D\u4F1A\u5199\u5165\u7EC4\u4EF6\u5E93\u3002" : "\u62D6\u52A8\u7EC4\u4EF6\u5230\u5206\u7EC4\u540E\uFF0C\u5728\u8FD9\u91CC\u786E\u8BA4\u4FDD\u5B58\u3002" })
+              ] }, component.family + ":" + component.id)) })
+            ] }, family.id);
+          }),
+          normalizedSearchQuery && filteredComponents.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("div", { className: "empty-search", children: "\u6CA1\u6709\u5339\u914D\u7684\u7EC4\u4EF6" }) : null
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "admin-tree-actions", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { className: "tree-save " + (treeSaveState === "saved" ? "saved" : treeSaveState === "saving" ? "saving" : ""), type: "button", disabled: treeSaveState === "saving" || !pendingTreeChangeCount && treeSaveState !== "saved", onClick: saveTreeChanges, children: treeSaveLabel }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { className: "tree-pending", children: treeSaveState === "saved" ? "\u5217\u8868\u4FEE\u6539\u5DF2\u4FDD\u5B58\u6210\u529F\uFF0C\u5DE6\u4FA7\u5206\u7EC4\u5DF2\u66F4\u65B0\u3002" : pendingTreeChangeCount ? "\u5217\u8868\u4FEE\u6539\u5DF2\u6682\u5B58\uFF0C\u786E\u8BA4\u540E\u5199\u5165\u7EC4\u4EF6\u5E93\u3002" : "\u5206\u7C7B\u9ED8\u8BA4\u6298\u53E0\uFF1B\u5C55\u5F00\u540E\u53EF\u4E0B\u62C9\u6362\u7EC4\uFF0C\u4E5F\u53EF\u62D6\u52A8\u6216\u7528\u7BAD\u5934\u6392\u5E8F\u3002" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "admin-preview", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("p", { children: "Live Remotion Sandbox" }),
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h1", { children: "\u6240\u89C1\u5373\u6240\u5F97" }),
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { children: "\u771F\u5B9E\u7EC4\u4EF6 \xB7 4 \u79D2\u5165\u573A\u52A8\u6548" })
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "admin-preview", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "admin-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("p", { children: "Live Remotion Sandbox" }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h1", { children: "\u6240\u89C1\u5373\u6240\u5F97" }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { children: "\u771F\u5B9E\u7EC4\u4EF6 \xB7 4 \u79D2\u5165\u573A\u52A8\u6548" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "preview-actions", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { className: "replay", onClick: refreshPreview, children: "\u4FDD\u5B58\u9884\u89C8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { className: "replay", onClick: () => {
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "preview-actions", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { className: "replay", onClick: refreshPreview, children: "\u4FDD\u5B58\u9884\u89C8" }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { className: "replay", onClick: () => {
               setReplay(true);
               setNonce((value) => value + 1);
             }, children: "\u91CD\u65B0\u64AD\u653E" })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "player-frame", "data-component-audit": previewAuditText, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)(Player, { style: { width: "100%", height: "100%" }, component: AdminComponentSandbox, inputProps: { layout: previewDraft.id, tokens: previewDraft.tokens, mockData: previewDraft.mockData }, durationInFrames: 120, compositionWidth: 1920, compositionHeight: 1080, fps: 30, initialFrame: 0, controls: true, autoPlay: replay }, previewDraft.id + "-" + nonce),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("span", { className: "component-audit-snapshot", "aria-hidden": "true", style: { display: "none" }, children: previewAuditText })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "player-frame", "data-component-audit": previewAuditText, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)(Player, { style: { width: "100%", height: "100%" }, component: AdminComponentSandbox, inputProps: { layout: previewDraft.id, tokens: previewDraft.tokens, mockData: previewDraft.mockData }, durationInFrames: 120, compositionWidth: 1920, compositionHeight: 1080, fps: 30, initialFrame: 0, controls: true, autoPlay: replay }, previewDraft.id + "-" + nonce),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("span", { className: "component-audit-snapshot", "aria-hidden": "true", style: { display: "none" }, children: previewAuditText })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "admin-inspector", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { className: "admin-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("p", { children: "Token Inspector" }),
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { className: "asset-name-editor", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "admin-inspector", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { className: "admin-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("p", { children: "Token Inspector" }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { className: "asset-name-editor", children: [
               "\u7EC4\u4EF6\u540D\u79F0 / Component Name",
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "text", value: draft.name, onChange: (event) => updateAssetMeta({ name: event.currentTarget.value }) })
+              /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "text", value: draft.name, onChange: (event) => updateAssetMeta({ name: event.currentTarget.value }) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("span", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("span", { children: [
               draft.id,
               " \xB7 ",
               draft.family
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("button", { className: "save", onClick: save, children: "\u4FDD\u5B58\u5168\u5C40\u9884\u8BBE" })
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("button", { className: "save", onClick: save, children: "\u4FDD\u5B58\u5168\u5C40\u9884\u8BBE" })
         ] }),
-        showBaseSection ? /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section inspector-section-base", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u9ED8\u8BA4\u5934\u4FE1\u606F\u6A21\u677F" }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+        showBaseSection ? /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section inspector-section-base", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u9ED8\u8BA4\u5934\u4FE1\u606F\u6A21\u677F" }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u7AE0\u8282 / Category",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: base.category, onChange: (event) => updateBase({ category: event.currentTarget.value }) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: base.category, onChange: (event) => updateBase({ category: event.currentTarget.value }) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u6838\u5FC3\u5927\u6807\u9898 / Headline",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { value: base.headline, onChange: (event) => updateBase({ headline: event.currentTarget.value }) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { value: base.headline, onChange: (event) => updateBase({ headline: event.currentTarget.value }) })
           ] })
         ] }) : null,
         contentEditor,
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("section", { className: "inspector-section", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("h2", { children: "\u89C6\u89C9 Token" }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("section", { className: "inspector-section", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("h2", { children: "\u89C6\u89C9 Token" }),
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u5185\u8FB9\u8DDD ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("output", { children: [
               draft.tokens.padding,
               "px"
             ] }),
             number(draft.tokens.padding, 0, 160, 2, (value) => updateTokens({ padding: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u7EC4\u4EF6\u95F4\u8DDD ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("output", { children: [
               draft.tokens.gap,
               "px"
             ] }),
             number(draft.tokens.gap, 0, 80, 1, (value) => updateTokens({ gap: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u6574\u4F53\u7F29\u653E ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("output", { children: [
               Math.round(draft.tokens.scale * 100),
               "%"
             ] }),
             number(draft.tokens.scale, 0.6, 1.2, 0.01, (value) => updateTokens({ scale: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u6807\u9898\u533A\u7F29\u653E ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
-              Math.round(((_p = draft.tokens.headerScale) != null ? _p : 1) * 100),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("output", { children: [
+              Math.round(((_q = draft.tokens.headerScale) != null ? _q : 1) * 100),
               "%"
             ] }),
-            number((_q = draft.tokens.headerScale) != null ? _q : 1, 0.6, 1.2, 0.01, (value) => updateTokens({ headerScale: value }))
+            number((_r = draft.tokens.headerScale) != null ? _r : 1, 0.6, 1.2, 0.01, (value) => updateTokens({ headerScale: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u6B63\u6587\u5185\u5BB9\u7F29\u653E ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
-              Math.round(((_r = draft.tokens.contentScale) != null ? _r : 1) * 100),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("output", { children: [
+              Math.round(((_s = draft.tokens.contentScale) != null ? _s : 1) * 100),
               "%"
             ] }),
-            number((_s = draft.tokens.contentScale) != null ? _s : 1, 0.6, 1.2, 0.01, (value) => updateTokens({ contentScale: value }))
+            number((_t = draft.tokens.contentScale) != null ? _t : 1, 0.6, 1.2, 0.01, (value) => updateTokens({ contentScale: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u9ED8\u8BA4\u9879\u76EE\u6570\u91CF ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("output", { children: draft.tokens.defaultItemCount }),
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("output", { children: draft.tokens.defaultItemCount }),
             number(draft.tokens.defaultItemCount, 1, 8, 1, (value) => updateTokens({ defaultItemCount: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u9519\u5CF0\u5E27\u6570 ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("output", { children: [
               draft.tokens.staggerFrames,
               "f"
             ] }),
             number(draft.tokens.staggerFrames, 0, 45, 1, (value) => updateTokens({ staggerFrames: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u6302\u8F7D\u65B9\u5F0F",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("select", { value: draft.tokens.mountMode, onChange: (event) => updateTokens({ mountMode: event.currentTarget.value }), children: [
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "top-left", children: "\u5DE6\u4E0A\u89D2" }),
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "left", children: "\u5DE6\u8FB9" }),
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "right", children: "\u53F3\u8FB9" }),
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "top", children: "\u4E0A\u8FB9" }),
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "bottom", children: "\u4E0B\u8FB9" }),
-              /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { value: "center", children: "\u4E2D\u95F4" })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("select", { value: draft.tokens.mountMode, onChange: (event) => updateTokens({ mountMode: event.currentTarget.value }), children: [
+              /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { value: "top-left", children: "\u5DE6\u4E0A\u89D2" }),
+              /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { value: "left", children: "\u5DE6\u8FB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { value: "right", children: "\u53F3\u8FB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { value: "top", children: "\u4E0A\u8FB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { value: "bottom", children: "\u4E0B\u8FB9" }),
+              /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { value: "center", children: "\u4E2D\u95F4" })
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u5B89\u5168\u8FB9\u8DDD X ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("output", { children: [
               draft.tokens.mountX,
               "px"
             ] }),
             coordinate(draft.tokens.mountX, -960, 960, (value) => updateTokens({ mountX: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u5B89\u5168\u8FB9\u8DDD Y ",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("output", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("output", { children: [
               draft.tokens.mountY,
               "px"
             ] }),
             coordinate(draft.tokens.mountY, -540, 540, (value) => updateTokens({ mountY: value }))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u5165\u573A\u9884\u8BBE",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("select", { value: draft.tokens.spring, onChange: (event) => updateTokens({ spring: event.currentTarget.value }), children: ["spring-up", "fade-scale", "slide-left", "slide-right", "glitch"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { children: value }, value)) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("select", { value: draft.tokens.spring, onChange: (event) => updateTokens({ spring: event.currentTarget.value }), children: ["spring-up", "fade-scale", "slide-left", "slide-right", "glitch"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { children: value }, value)) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u5165\u573A\u97F3\u6548",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("select", { value: draft.tokens.sfx, onChange: (event) => updateTokens({ sfx: event.currentTarget.value }), children: ["none", "whoosh", "tech-click", "pop"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("option", { children: value }, value)) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("select", { value: draft.tokens.sfx, onChange: (event) => updateTokens({ sfx: event.currentTarget.value }), children: ["none", "whoosh", "tech-click", "pop"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("option", { children: value }, value)) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime115.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime117.jsxs)("label", { children: [
             "\u5F3A\u8C03\u8272",
-            /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("input", { type: "color", value: draft.tokens.accentColor, onChange: (event) => updateTokens({ accentColor: event.currentTarget.value.toUpperCase() }) })
+            /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("input", { type: "color", value: draft.tokens.accentColor, onChange: (event) => updateTokens({ accentColor: event.currentTarget.value.toUpperCase() }) })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("p", { className: "admin-status", children: status })
+        /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("p", { className: "admin-status", children: status })
       ] }),
-      toast && /* @__PURE__ */ (0, import_jsx_runtime115.jsx)("div", { className: "admin-toast", role: "status", children: toast })
+      toast && /* @__PURE__ */ (0, import_jsx_runtime117.jsx)("div", { className: "admin-toast", role: "status", children: toast })
     ] });
   };
   var node = document.getElementById("admin-components-root");
-  if (node) (0, import_client.createRoot)(node).render(/* @__PURE__ */ (0, import_jsx_runtime115.jsx)(App, {}));
+  if (node) (0, import_client.createRoot)(node).render(/* @__PURE__ */ (0, import_jsx_runtime117.jsx)(App, {}));
 })();
 /*! Bundled license information:
 

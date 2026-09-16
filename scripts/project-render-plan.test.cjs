@@ -39,6 +39,14 @@ test("rejects a project whose beats overlap or leave a frame gap", () => {
   );
 });
 
+test("full project renderer builds each stale Beat into a fresh output path", () => {
+  const source = readFileSync(require.resolve("./render-project-full.cjs"), "utf8");
+  assert.match(source, /const renderAttemptPath = \(relativeOutput\) => relativeOutput\.replace\(/);
+  assert.match(source, /Date\.now\(\) \+ "-" \+ process\.pid/);
+  assert.match(source, /const relativeOutput = renderAttemptPath\(currentAssetPath\(project\.projectId, beat\)\)/);
+  assert.match(source, /previewPath: relativeOutput, renderedVideoPath: relativeOutput/);
+});
+
 test("full project renderer builds Remotion once and renders beats from the bundle", () => {
   const source = readFileSync(require.resolve("./render-project-full.cjs"), "utf8");
   assert.match(source, /const bundleEntry = join\(root, "build"\)/);

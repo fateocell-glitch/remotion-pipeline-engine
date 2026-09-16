@@ -44,7 +44,7 @@ export type BaseLayerCommonProps = {
   enterOffset: number;
   exitOffset?: number;
   duration?: number;
-  position: "center" | "bottom-left" | "bottom-right" | "top-right" | "center-right";
+  position?: "center" | "bottom-left" | "bottom-right" | "top-right" | "center-right";
   offsetX?: number;
   offsetY?: number;
   scale?: number;
@@ -65,8 +65,10 @@ export type JasonWuEffectLayer = {
   textRole?: CommercialTextRole;
   role?: CommercialTextRole;
   accent?: SemanticAccent;
+  contentPayload?: Record<string, unknown>;
   payload?: Record<string, unknown>;
   effectProps?: Record<string, unknown>; // Legacy project compatibility only.
+  layoutProps?: {sceneMode?: "speaker" | "cinematic"; align?: "left" | "right"};
   commonProps?: Partial<BaseLayerCommonProps>;
   enterOffset?: number;
 };
@@ -128,6 +130,7 @@ export type JasonWuCue = {
     | "copyopen-line-chart"
     | "copyopen-pie-chart"
     | "copyopen-kpi-grid"
+    | "speaker-growth-dashboard"
     | `jc-${string}`;
   people?: JasonWuPerson[];
   steps?: JasonWuStep[];
@@ -136,6 +139,7 @@ export type JasonWuCue = {
   layers?: JasonWuEffectLayer[];
   faceZone?: import("../design/component-preset-resolver").FaceZone | null;
   sceneMode?: "speaker_mode" | "cinematic_mode";
+  language?: "zh" | "en";
 };
 
 export const jasonWuCues: JasonWuCue[] = [
@@ -247,7 +251,4 @@ export const activeTranscriptAtFrame = (
   }
   return cues.find((cue) => seconds >= cue.start && seconds < cue.end) ?? cues[cues.length - 1];
 };
-
-
-
 

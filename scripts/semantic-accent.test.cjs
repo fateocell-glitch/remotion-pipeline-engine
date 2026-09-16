@@ -95,7 +95,26 @@ test("multi-item recovered components keep private color palettes instead of sem
   assert.doesNotMatch(component, /\[\[-90,-45,BLUE\],\[0,0,BLUE\],\[90,45,RED\]\]/);
 });
 
-test("subtitle plate masks burned-in captions without a heavy double outline", () => {
+
+test("JC clone cascade keeps source multicolor while warning chip follows layer accent", () => {
+  const cloneCascade = readSource("src/JasonWu/components/jc/CloneCascade.tsx");
+  const recipe = readSource("src/JasonWu/JcNativeRecipes.tsx");
+
+  assert.match(cloneCascade, /SOURCE_PALETTE = \['#4D9EFF', '#FFC53D', '#3DDC84', '#B26BFF'\]/);
+  assert.match(cloneCascade, /linear-gradient\(135deg, \$\{blue\}, \$\{gold\}, \$\{green\}, \$\{purple\}\) border-box/);
+  assert.match(cloneCascade, /drop-shadow\(0 0 10px \$\{blue\}AA\).*drop-shadow\(0 0 24px \$\{purple\}44\)/s);
+  assert.match(recipe, /case "CloneCascade":[\s\S]*<jc\.CloneCascade[\s\S]*accent=\{color\("red"\)\}/);
+});
+
+
+test("JC compare card logo tiles use private multicolor glow palette", () => {
+  const compareCard = readSource("src/JasonWu/components/jc/CompareCard.tsx");
+
+  assert.match(compareCard, /LOGO_PALETTE = \['#4D9EFF', '#FFC53D', '#3DDC84', '#B26BFF'\]/);
+  assert.match(compareCard, /logoColor = LOGO_PALETTE\[index % LOGO_PALETTE\.length\]/);
+  assert.match(compareCard, /linear-gradient\(135deg, \$\{logoColor\}, \$\{logoGlow\}, rgba\(255,255,255,0\.86\)\) border-box/);
+  assert.match(compareCard, /drop-shadow\(0 0 9px \$\{logoColor\}AA\).*drop-shadow\(0 0 18px \$\{logoGlow\}66\)/s);
+});test("subtitle plate masks burned-in captions without a heavy double outline", () => {
   const composition = readSource("src/JasonWu/JasonWuComposition.tsx");
   assert.match(composition, /background: "rgba\(0, 0, 0, 0\.88\)"/);
   assert.match(composition, /WebkitTextStroke: subtitleSettings\.theme\.autoContrastStroke \? "1px rgba\(0,0,0,0\.85\)" : "none"/);

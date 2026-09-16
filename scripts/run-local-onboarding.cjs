@@ -11,6 +11,7 @@ const {cleanWhisperTranscript} = require("./services/transcript-cleaner.cjs");
 const {captionsToWhisperTranscript, runFasterTranscription, writeCaptionBridgeOutput} = require("./faster-transcription.cjs");
 const {detectProjectFaceZones} = require("./services/face-detector.cjs");
 const {createTwentyFiveSecondDualUniqueProject} = require("./produce-project-25s-dual-unique.cjs");
+const {resolveLanguageRoute} = require("./services/language-routing.cjs");
 
 const root = process.cwd();
 const run = (command, args, {allowFailure = false} = {}) =>
@@ -51,7 +52,7 @@ const transcriptionProgressPayload = ({count = 0, end = 0}, totalDuration, prefi
   return {step: 2, stage: "transcribing", progress, captionCount: count, currentEnd, totalDuration: total, transcriptionPercent: percent, transcriptionProgressText, message: prefix + " " + transcriptionProgressText};
 };
 
-async function onboard({projectId, name, videoSrc, audioSrc, targetBeatDuration = 20, onProgress}) {
+async function onboard({projectId, name, videoSrc, audioSrc, targetBeatDuration = 30, sourceLanguage = "auto", targetLanguage = "same", onProgress}) {
   const publicDir = join(root, "public");
   const projectsDir = join(root, "src", "JasonWu", "projects");
   const videoPath = videoSrc ? join(publicDir, videoSrc) : null;
@@ -67,22 +68,33 @@ async function onboard({projectId, name, videoSrc, audioSrc, targetBeatDuration 
   await mkdir(join(root, "out"), {recursive: true});
   const totalDuration = await durationFromMedia(audioPath);
   onProgress?.({step: 2, stage: "transcribing", progress: 10, captionCount: 0, currentEnd: 0, totalDuration, transcriptionPercent: 0, transcriptionProgressText: "00:00 / " + formatTranscriptionTime(totalDuration) + " (0%) · 已捕获 0 句台词", message: "正在提取音频字幕，进度： 00:00 / " + formatTranscriptionTime(totalDuration) + " (0%) · 已捕获 0 句台词"});
-  const bridgeCaptions = await runFasterTranscription({
+  const transcriptionResult = await runFasterTranscription({
     audioPath,
     outputPath: bridgeOutput,
-    language: "zh",
+    language: sourceLanguage,
+    task: "transcribe",
+    returnMetadata: true,
     onProgress: (progress) => onProgress?.(transcriptionProgressPayload(progress, totalDuration)),
   });
-  const transcript = captionsToWhisperTranscript(bridgeCaptions, "zh");
+  const bridgeCaptions = transcriptionResult.captions;
+  const route = resolveLanguageRoute({sourceLanguage, targetLanguage, detectedSourceLanguage: transcriptionResult.detectedLanguage});
+  const transcript = captionsToWhisperTranscript(bridgeCaptions, route.detectedSourceLanguage);
   await writeFile(`${transcriptBase}.json`, `${JSON.stringify(transcript, null, 2)}\n`);
   onProgress?.({step: 3, stage: "semantic_slicing", progress: 55, message: "正在校正字幕并准备语义分拍..."});
   const cleanedTranscript = cleanWhisperTranscript(transcript);
   await writeCaptionBridgeOutput(bridgeOutput, cleanedTranscript);
-  const translation = undefined;
   onProgress?.({step: 3, stage: "semantic_slicing", progress: 72, message: "正在按标点执行 20~30s 弹性语义分拍..."});
   const project = buildProjectFromWhisper({
-    projectId, name, videoSrc, audioSrc: resolvedAudioSrc,
-    duration: totalDuration, transcript: cleanedTranscript, translation, targetBeatDuration,
+    projectId,
+    name,
+    videoSrc,
+    audioSrc: resolvedAudioSrc,
+    duration: totalDuration,
+    transcript: cleanedTranscript,
+    targetBeatDuration,
+    sourceLanguage: route.sourceLanguage,
+    targetLanguage: route.targetLanguage,
+    detectedSourceLanguage: route.detectedSourceLanguage,
   });
   project.transcript = {
     rawPath: `out/${projectId}-whisper.json`,
@@ -94,7 +106,7 @@ async function onboard({projectId, name, videoSrc, audioSrc, targetBeatDuration 
   return project;
 }
 
-async function stage1TranscribeToReview({workspaceRoot = root, projectId, name, targetBeatDuration = 30, audioAlreadyPrepared = false, onProgress, transcribe = runFasterTranscription, getDuration = durationFromMedia}) {
+async function stage1TranscribeToReview({workspaceRoot = root, projectId, name, targetBeatDuration = 30, sourceLanguage = "auto", targetLanguage = "same", audioAlreadyPrepared = false, onProgress, transcribe = runFasterTranscription, getDuration = durationFromMedia}) {
   const storage = await createProjectStorage(workspaceRoot, projectId);
   if (!existsSync(storage.rawVideo)) throw new Error("A sandboxed source video is required.");
   const remotion = join(workspaceRoot, "node_modules", ".bin", "remotion.CMD");
@@ -102,17 +114,27 @@ async function stage1TranscribeToReview({workspaceRoot = root, projectId, name, 
   if (!audioAlreadyPrepared) await run(remotion, ["ffmpeg", "-y", "-i", storage.rawVideo, "-vn", "-ar", "16000", "-ac", "1", storage.audioFile]);
   const totalDuration = await getDuration(storage.audioFile);
   onProgress?.({step: 2, stage: "transcribing", progress: 10, captionCount: 0, currentEnd: 0, totalDuration, transcriptionPercent: 0, transcriptionProgressText: "00:00 / " + formatTranscriptionTime(totalDuration) + " (0%) · 已捕获 0 句台词", message: "正在提取音频字幕，进度： 00:00 / " + formatTranscriptionTime(totalDuration) + " (0%) · 已捕获 0 句台词"});
-  const bridgeCaptions = await transcribe({
+  const transcriptionResult = await transcribe({
     audioPath: storage.audioFile,
     outputPath: storage.captionsFile,
-    language: "zh",
+    language: sourceLanguage,
+    task: "transcribe",
+    returnMetadata: true,
     onProgress: (progress) => onProgress?.(transcriptionProgressPayload(progress, totalDuration)),
+  });
+  const bridgeCaptions = Array.isArray(transcriptionResult) ? transcriptionResult : transcriptionResult?.captions;
+  if (!Array.isArray(bridgeCaptions)) throw new Error("Transcription did not return caption rows.");
+  const provisionalTranscript = captionsToWhisperTranscript(bridgeCaptions.map((caption) => ({...caption, text: caption.text || caption.zh || ""})), "auto");
+  const route = resolveLanguageRoute({
+    sourceLanguage,
+    targetLanguage,
+    detectedSourceLanguage: transcriptionResult?.detectedLanguage || provisionalTranscript?.result?.language,
   });
   await writeFile(storage.captionsFile, JSON.stringify(bridgeCaptions, null, 2) + "\n");
   onProgress?.({step: 3, stage: "captions_review", progress: 55, message: "正在校正转录文本并准备字幕核对…"});
-  const rawTranscript = captionsToWhisperTranscript(bridgeCaptions.map((caption) => ({...caption, text: caption.text || caption.zh || ""})), "zh");
+  const rawTranscript = captionsToWhisperTranscript(bridgeCaptions.map((caption) => ({...caption, text: caption.text || caption.zh || ""})), route.detectedSourceLanguage);
   const cleanedTranscript = cleanWhisperTranscript(rawTranscript);
-  const cleanedCaptions = whisperToCaptions(cleanedTranscript, "zh");
+  const cleanedCaptions = whisperToCaptions(cleanedTranscript, route.detectedSourceLanguage);
   await writeFile(storage.captionsCleanedFile, JSON.stringify(cleanedCaptions, null, 2) + "\n");
   await writeFile(storage.captionsDraftFile, JSON.stringify(cleanedCaptions, null, 2) + "\n");
   const createdAt = new Date().toISOString();
@@ -128,7 +150,10 @@ async function stage1TranscribeToReview({workspaceRoot = root, projectId, name, 
     audioSrc: "project-media/" + projectId + "/audio.wav",
     targetBeatDuration,
     duration: totalDuration,
-    language: "zh",
+    sourceLanguage: route.sourceLanguage,
+    targetLanguage: route.targetLanguage,
+    detectedSourceLanguage: route.detectedSourceLanguage,
+    language: route.finalLanguage,
     state: "CAPTIONS_REVIEW",
     createdAt,
     updatedAt: createdAt,
@@ -150,16 +175,33 @@ async function stage2ProduceFromConfirmed({workspaceRoot = root, projectId, onPr
   if (!existsSync(storage.captionsConfirmedFile)) throw new Error("Please confirm captions before producing Beats.");
   const confirmedCaptions = JSON.parse(await readFile(storage.captionsConfirmedFile, "utf8"));
   if (!Array.isArray(confirmedCaptions) || !confirmedCaptions.length) throw new Error("Confirmed captions are empty.");
-  const language = shell.language === "en" ? "en" : "zh";
-  const reviewCaptions = mergeShortCaptions(confirmedCaptions);
-  const transcript = captionsToWhisperTranscript(reviewCaptions.map((caption) => ({...caption, text: caption.text || (language === "en" ? caption.en : caption.zh) || ""})), language);
+  const route = resolveLanguageRoute({
+    sourceLanguage: shell.sourceLanguage,
+    targetLanguage: shell.targetLanguage,
+    detectedSourceLanguage: shell.detectedSourceLanguage,
+  });
+  const reviewCaptions = mergeShortCaptions(confirmedCaptions, {language: route.detectedSourceLanguage});
+  const transcript = captionsToWhisperTranscript(reviewCaptions.map((caption) => ({
+    ...caption,
+    text: route.detectedSourceLanguage === "en" ? (caption.en || caption.zh) : caption.zh,
+  })), route.detectedSourceLanguage);
   onProgress?.({step: 4, stage: "semantic_slicing", progress: 68, message: "正在按已确认字幕执行语义分拍…"});
   const targetBeatDuration = Number(shell.targetBeatDuration) || 30;
-  const baseProject = buildProjectFromWhisper({projectId, name: shell.name, videoSrc: shell.videoSrc, audioSrc: shell.audioSrc, duration: Number(shell.duration), transcript, targetBeatDuration});
+  const baseProject = buildProjectFromWhisper({
+    projectId,
+    name: shell.name,
+    videoSrc: shell.videoSrc,
+    audioSrc: shell.audioSrc,
+    duration: Number(shell.duration),
+    transcript,
+    targetBeatDuration,
+    sourceLanguage: route.sourceLanguage,
+    targetLanguage: route.targetLanguage,
+    detectedSourceLanguage: route.detectedSourceLanguage,
+  });
   const project = targetBeatDuration === 25
     ? createTwentyFiveSecondDualUniqueProject(baseProject, {targetSeconds: 25})
     : baseProject;
-  // Once confirmed, this file and project.captions are the same canonical transcript.
   await writeFile(storage.captionsConfirmedFile, JSON.stringify(reviewCaptions, null, 2) + "\n");
   project.captions = reviewCaptions;
   project.captionReviewMerged = true;

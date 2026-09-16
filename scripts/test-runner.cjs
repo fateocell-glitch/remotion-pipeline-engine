@@ -138,7 +138,8 @@ async function testMatcher() {
   const hud = buildEffectProps({eyebrow: "LIVE SIGNAL", subtitle: "core signal", effectText: "Current Beat semantic content", zh: "Current Beat semantic content"}, captions, "hud-glow-stack");
   assert.equal(hud.contentPayload.type, "chips", "HUD extraction must use the shared chips payload");
   assert.equal(hud.contentPayload.items[0].title, hud.items[0], "chip title must mirror the renderer item");
-  assert.equal(typeof hud.contentPayload.items[0].subtitle, "string", "chip subtitle must exist for the shared editor");
+  assert.ok(Array.isArray(hud.contentPayload.items), "HUD hydrated payload must keep item array safe for rendering");
+  assert.equal(typeof hud.contentPayload.items[0].subtitle, "string", "HUD hydrated payload must preserve subtitle fallback");
   assert.equal(buildEffectProps({eyebrow: "BRIEF", subtitle: "brief", effectText: "details"}, captions, "briefing-poster").contentPayload.type, "steps", "briefing poster must use the shared list payload");
 }
 
@@ -158,7 +159,9 @@ async function testLayerOwnedCopy() {
 
 async function testCompositionSourceIsParseable() {
   const composition = readFileSync(join(process.cwd(), "src", "JasonWu", "JasonWuComposition.tsx"), "utf8");
-  assert.equal(composition.includes(";\\n    const "), false, "composition source must not contain a literal \\n between TypeScript statements");
+  assert.equal(composition.includes(";\
+    const "), false, "composition source must not contain a literal \
+ between TypeScript statements");
 }
 
 async function testEmptyFieldsStayEmpty() {
@@ -219,7 +222,7 @@ async function testComponentIntakeGuard() {
       assert.equal(typeof field.label, "string", component.id + " schema field label must be a string");
       assert.ok(field.label.length > 0, component.id + " schema field label must not be empty");
       const fieldType = field.type || field.control;
-      assert.ok(["text", "number", "select", "textarea", "string-list", "key-value-list", "chips", "chip-list", "list", "image"].includes(fieldType), component.id + " schema field type is invalid: " + fieldType);
+      assert.ok(["text", "number", "select", "textarea", "string-list", "string_array", "key-value-list", "chips", "chip-list", "list", "image"].includes(fieldType), component.id + " schema field type is invalid: " + fieldType);
       assert.ok(Object.prototype.hasOwnProperty.call(component.mockData, field.key), component.id + " mockData must contain schema field " + field.key);
     }
     assert.ok(component.mockData.contentPayload && ["narrative", "chips", "metrics", "steps"].includes(component.mockData.contentPayload.type), component.id + " must use one of the four standard payload families");
@@ -234,6 +237,24 @@ async function testJcComponents() {
   execFileSync(process.execPath, ["scripts/qa-test-jc-components.cjs"], {cwd: process.cwd(), stdio: "pipe"});
 }
 
+async function testContractCheck() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["scripts/qa-contract-check.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
+
+async function testMultilingualRouting() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["--test", "scripts/multilingual-routing.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
+
+async function testDurableBeatWorker() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["--test", "scripts/durable-beat-render-worker.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
+async function testFullRenderOutputIsolation() {
+  const {execFileSync} = require("node:child_process");
+  execFileSync(process.execPath, ["--test", "scripts/project-render-plan.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+}
 async function testCache() {
   const base = ensureProjectLifecycle({projectId: "qa-cache", fps: 30, globalSettings: {}, captions: [], beats: [{id: "beat-001", start: 0, end: 4, subtitle: "稳定缓存", zh: "稳定缓存", en: "", layout: "diagonal-chips", effectProps: {}, render: {revision: 1, status: "ready"}}]});
   const beat = base.beats[0];
@@ -256,7 +277,7 @@ async function testCache() {
 
 async function testFaceAwareLayout() {
   const {execFileSync} = require("node:child_process");
-  execFileSync(process.execPath, ["--test", "scripts/services/face-detector.test.cjs", "scripts/services/face-aware-layout.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
+  execFileSync(process.execPath, ["--test", "scripts/services/face-detector.test.cjs", "scripts/services/face-aware-layout.test.cjs", "scripts/english-layout-rendering.test.cjs"], {cwd: process.cwd(), stdio: "pipe"});
 }
 async function runOnce() {
   const cases = [
@@ -274,7 +295,10 @@ async function runOnce() {
     ["test:commercial-analysis", testCommercialAnalysisPreset],
     ["test:component-intake", testComponentIntakeGuard],
     ["test:semantic-accent", testSemanticAccent],
+    ["test:multilingual-routing", testMultilingualRouting],
     ["test:jc-components", testJcComponents],
+    ["test:durable-beat-worker", testDurableBeatWorker],
+    ["test:full-render-output", testFullRenderOutputIsolation],
     ["test:cache", testCache],
   ];
   let passed = 0;
@@ -297,9 +321,4 @@ if (watch) {
 } else {
   runOnce().catch((error) => { console.error(error.stack || error.message); process.exit(1); });
 }
-
-
-
-
-
 

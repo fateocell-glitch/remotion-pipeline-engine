@@ -2,7 +2,7 @@
 
 const assert = require("node:assert/strict");
 const test = require("node:test");
-const {extractBeatContent} = require("./beat-content-extraction.cjs");
+const {extractBeatContent, extractComponentPayload} = require("./beat-content-extraction.cjs");
 
 test("separates a market-competition beat into a concise title and a distinct effect sentence", () => {
   const result = extractBeatContent("beat-015", [
@@ -20,6 +20,68 @@ test("separates a market-competition beat into a concise title and a distinct ef
 });
 
 
+test("derives a contextual second item for auto-generated multi-item cards", () => {
+  const result = extractComponentPayload({
+    layout: "briefing-poster",
+    editorSchema: {kind: "steps", fields: [{key: "items", type: "string-list"}]},
+    captions: [{start: 0, end: 5, zh: "采购成本每件压低四分钱。"}],
+    copy: {
+      headline: "规模采购压低单价",
+      effectText: "物流效率继续摊薄固定成本",
+      steps: ["采购成本持续下降"],
+    },
+  });
+  const rows = result.contentPayload.steps.map((item) => item.text);
+  assert.equal(rows.length, 2);
+  assert.deepEqual(rows, ["采购成本持续下降", "物流效率继续摊薄固定成本"]);
+  assert.ok(rows.every((item) => !/识别关键机制|降低行动阻力|持续放大优势/.test(item)));
+});
+test("maps photo-wall copy to dedicated text fields and keeps upload fields blank", () => {
+  const result = extractComponentPayload({
+    layout: "photo-wall",
+    editorSchema: {
+      kind: "photo-wall",
+      fields: [
+        {key: "photoTitle1", control: "text"},
+        {key: "photoSubtitle1", control: "text"},
+        {key: "photo1", control: "image"},
+        {key: "photoTitle2", control: "text"},
+        {key: "photoSubtitle2", control: "text"},
+        {key: "photo2", control: "image"},
+        {key: "photoTitle3", control: "text"},
+        {key: "photo3", control: "image"},
+      ],
+    },
+    captions: [{en: "There are multiple higher education opportunities in Virginia Beach, including Regent University and Virginia Wesleyan."}],
+    copy: {
+      headline: "Higher Education Hub",
+      effectText: "Universities expand the region's skilled talent pipeline.",
+      steps: ["Regent University", "Virginia Wesleyan"],
+    },
+  });
+  assert.deepEqual(result.fields, {
+    photoTitle1: "Regent University",
+    photoSubtitle1: "Universities expand the region's skilled talent pipeline.",
+    photo1: "",
+    photoTitle2: "Virginia Wesleyan",
+    photoSubtitle2: "",
+    photo2: "",
+    photoTitle3: "",
+    photo3: "",
+  });
+});
+test("strips leading English conjunctions and separates body from subtext", () => {
+  const result = extractBeatContent("beat-en-leisure", [
+    {en: "and tackle obstacle courses. Meanwhile, golfers enjoy public courses like the Red Wing Lake Golf Course."},
+  ], {start: 0, end: 10, language: "en"}, 0);
+  assert.equal(result.headline, "Outdoor Leisure Mix");
+  assert.equal(result.bodyText, "Outdoor attractions create a broader recreation mix for local residents.");
+  assert.equal(result.effectText, "Golf courses add premium variety beside adventure activities.");
+  assert.equal(/^and\b/i.test(result.bodyText), false);
+  assert.notEqual(result.bodyText, result.effectText);
+  assert.ok(result.bodyText.replace(/[.!?]+$/, "").split(/\s+/).length >= 10);
+  assert.ok(result.bodyText.replace(/[.!?]+$/, "").split(/\s+/).length <= 18);
+});
 test("diversity repair prefers a second local semantic topic over a time marker", () => {
   const {enforceHeadlineDiversity} = require("./beat-content-extraction.cjs");
   const beats = [{id:"beat-001",start:0,end:12,subtitle:"市场竞争白热化",zh:"中端市场竞争升温"},{id:"beat-002",start:12,end:24,subtitle:"市场竞争白热化",zh:"品牌差异化逐渐抹平"},{id:"beat-003",start:24,end:36,subtitle:"供需缺口显现",zh:"中端需求缺少承接"},{id:"beat-004",start:36,end:48,subtitle:"供需缺口显现",zh:"排队人数持续增加"}];
@@ -53,6 +115,10 @@ test("ships the visual-card extraction prompt contract with a bad and good few-s
   assert.match(VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT, /Bad Case/);
   assert.match(VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT, /Good Case/);
   assert.match(VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT, /8~14 字/);
+  assert.match(VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT, /多项卡片/);
+  assert.match(VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT, /Higher Education Hub/);
+  assert.match(VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT, /10~18 词/);
+  assert.match(VISUAL_CARD_EXTRACTION_SYSTEM_PROMPT, /Subtext/);
 });
 
 
@@ -133,4 +199,83 @@ test("enforces the commercial two-layer role rhythm before keyword classificatio
     layerIndex: 1,
     layerCount: 2,
   }), "verdict");
+});
+
+
+
+
+test("extracts schema-aware HUD chip fields with safe defaults", () => {
+  const result = extractComponentPayload({
+    layout: "hud-glow-stack",
+    family: "metrics",
+    editorSchema: {kind: "chips", fields: [{key: "tags", type: "string_array", control: "chip-list"}]},
+    captions: [{start: 0, end: 6, zh: "先用低价入口降低试用门槛，然后用会员模板提高复购。"}],
+    copy: {headline: "低价入口形成复购", effectText: "会员模板持续降低交易阻力", steps: ["低价入口", "会员模板", "复购提升"]},
+  });
+  assert.equal(result.contentPayload.type, "chips");
+  assert.deepEqual(result.fields.tags, ["低价入口", "会员模板", "复购提升"]);
+});
+
+test("extracts metric value and unit fields for schema-driven metric components", () => {
+  const result = extractComponentPayload({
+    layout: "capital-dashboard",
+    family: "metrics",
+    editorSchema: {kind: "metrics", fields: [
+      {key: "marketLabel", type: "text"},
+      {key: "marketTo", type: "number"},
+      {key: "marketSuffix", type: "text"},
+      {key: "engineeringLabel", type: "text"},
+      {key: "engineeringTo", type: "number"},
+      {key: "engineeringSuffix", type: "text"},
+    ]},
+    captions: [{start: 0, end: 7, zh: "转化率直接飙到78%，复购率也提升到32%。"}],
+    copy: {headline: "转化率直接飙升", effectText: "复购率同步验证增长质量", steps: ["转化率", "复购率"]},
+  });
+  assert.equal(result.fields.marketLabel, "转化率");
+  assert.equal(result.fields.marketTo, 78);
+  assert.equal(result.fields.marketSuffix, "%");
+  assert.equal(result.fields.engineeringLabel, "复购率");
+  assert.equal(result.fields.engineeringTo, 32);
+  assert.equal(result.fields.engineeringSuffix, "%");
+});
+
+test("extracts contrast fields for bull/bear style comparison components", () => {
+  const result = extractComponentPayload({
+    layout: "bull-bear",
+    family: "contrast",
+    editorSchema: {kind: "narrative", fields: [
+      {key: "bullText", type: "textarea"},
+      {key: "bearText", type: "textarea"},
+      {key: "highlightQuote", type: "textarea"},
+    ]},
+    captions: [{start: 0, end: 8, zh: "看多的是低价入口能带来复购，风险是供应链不稳会吞掉利润。"}],
+    copy: {headline: "低价入口换复购", effectText: "供应链不稳会吞掉利润", bodyText: "低价入口能带来复购"},
+  });
+  assert.equal(result.fields.bullText, "低价入口能带来复购");
+  assert.equal(result.fields.bearText, "供应链不稳会吞掉利润");
+  assert.equal(result.fields.highlightQuote, "供应链不稳会吞掉利润");
+});
+
+test("auto-hydrates extracted payloads from component defaultPayload", () => {
+  const result = extractComponentPayload({
+    layout: "hud-glow-stack",
+    family: "chips",
+    editorSchema: {kind: "chips", fields: [{key: "tags", type: "string_array", control: "chip-list"}]},
+    defaultPayload: {type: "chips", items: [{title: "默认标题", subtitle: "默认副标题"}]},
+    captions: [{start: 0, end: 4, zh: "低价入口带来第一次试用。"}],
+    copy: {headline: "低价入口", effectText: "第一次试用", steps: ["低价入口"]},
+  });
+  assert.equal(result.contentPayload.type, "chips");
+  assert.equal(result.contentPayload.items[0].title, "低价入口");
+  assert.equal(result.contentPayload.items[0].subtitle, "第一次试用");
+  const sparse = extractComponentPayload({
+    layout: "hud-glow-stack",
+    family: "chips",
+    editorSchema: {kind: "chips", fields: []},
+    defaultPayload: {type: "chips", items: [{title: "默认标题", subtitle: "默认副标题", icon: "star"}]},
+    captions: [],
+    copy: {headline: "", effectText: "", steps: []},
+  });
+  assert.equal(sparse.contentPayload.items[0].subtitle, "默认副标题");
+  assert.equal(sparse.contentPayload.items[0].icon, "star");
 });

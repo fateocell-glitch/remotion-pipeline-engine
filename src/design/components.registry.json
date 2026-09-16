@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 4,
-  "updatedAt": "2026-09-15T01:37:09.883Z",
+  "schemaVersion": 5,
+  "updatedAt": "2026-09-16T03:20:50.682Z",
   "families": [
     {
       "id": "metrics",
@@ -133,7 +133,7 @@
         "metricLabel": "核心信息",
         "unit": "%"
       },
-      "updatedAt": "2026-09-14T20:58:35.002Z",
+      "updatedAt": "2026-09-15T19:01:08.602Z",
       "occupancyScore": 0.32,
       "faceAvoidanceEligible": true,
       "displayIntent": "side-overlay",
@@ -199,7 +199,7 @@
       "data": [
         "percentage"
       ],
-      "version": 17,
+      "version": 19,
       "tokens": {
         "mountMode": "top-left",
         "mountX": 0,
@@ -258,12 +258,13 @@
         "contentPayload": {
           "type": "metrics",
           "value": 92,
-          "label": "红色",
-          "bodyText": "GOODS",
+          "unit": "GOODSwhat",
+          "label": "红色小爱心",
+          "bodyText": "GOODSwhat",
           "detailText": "展示可编辑的真实组件预设"
         },
         "categoryTag": "DESIGNRENEW",
-        "label": "红色",
+        "label": "红色小爱心",
         "title": "GOODS",
         "value": 92,
         "progress": 92,
@@ -272,22 +273,25 @@
           92,
           92
         ],
-        "metric": "红色",
+        "metric": "红色小爱心",
         "marketTo": 71,
         "marketLabel": "--------------",
-        "metricLabel": "红色",
+        "metricLabel": "红色小爱心",
         "marketSuffix": "SAFASDFAS",
         "engineeringLabel": "增长指标",
         "engineeringTo": 9,
         "engineeringSuffix": "SAFASDFAS",
-        "bodyText": "GOODS",
-        "unit": "GOODS",
-        "detailText": "展示可编辑的真实组件预设"
+        "bodyText": "GOODSwhat",
+        "unit": "GOODSwhat",
+        "detailText": "展示可编辑的真实组件预设",
+        "body": "展示可编辑的真实组件预设",
+        "effectText": "展示可编辑的真实组件预设",
+        "effectZh": "展示可编辑的真实组件预设"
       },
       "occupancyScore": 0.56,
       "faceAvoidanceEligible": true,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-13T21:16:51.196Z",
+      "updatedAt": "2026-09-15T14:43:52.456Z",
       "editorSchema": {
         "version": 1,
         "kind": "metrics",
@@ -493,118 +497,84 @@
       }
     },
     {
-      "id": "platform-shift-line",
-      "name": "产品线增长",
-      "family": "metrics",
-      "description": "metrics · timeline · product",
-      "tags": [
-        "metrics",
-        "timeline",
-        "product"
-      ],
-      "data": [
-        "list",
-        "number"
-      ],
-      "version": 9,
-      "tokens": {
-        "mountMode": "top-left",
-        "mountX": 0,
-        "mountY": 0,
-        "boundsX": 76,
-        "boundsY": 300,
-        "boundsWidth": 1120,
-        "boundsHeight": 640,
-        "padding": 48,
-        "gap": 16,
-        "position": "center",
-        "scale": 0.72,
-        "spring": "spring-up",
-        "sfx": "none",
-        "accentColor": "#00F2FE",
-        "defaultItemCount": 3,
-        "staggerFrames": 15,
-        "headerScale": 1,
-        "contentScale": 0.72
-      },
+      "version": 13,
       "sfx": {
         "enter": "none",
         "exit": "none",
         "volume": 0.65
       },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": false,
+      "displayIntent": "side-overlay",
+      "updatedAt": "2026-09-15T15:28:36.528Z",
+      "id": "copyopen-progress-bar",
+      "name": "单进度条（反弹）",
+      "family": "metrics",
+      "description": "CopyOpen · fill pulse progress",
+      "tags": [
+        "copyopen",
+        "metrics",
+        "progress"
+      ],
+      "data": [
+        "percentage"
+      ],
+      "tokens": {
+        "mountMode": "top-left",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 1246,
+        "boundsY": 300,
+        "boundsWidth": 760,
+        "boundsHeight": 320,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 0.76,
+        "spring": "fade-scale",
+        "sfx": "none",
+        "accentColor": "#22D3EE",
+        "defaultItemCount": 1,
+        "staggerFrames": 8,
+        "headerScale": 1,
+        "contentScale": 0.76
+      },
       "mockData": {
-        "headline": "核心设计信号",
-        "eyebrow": "DESIGN SYSTEM",
-        "effectText": "展示可编辑的真实组件预设",
-        "text": "Signal confirmed. Visual system ready.",
-        "items": [
-          "核心信息",
-          "视觉节奏",
-          "行动结论"
-        ],
-        "steps": [
-          "核心信息",
-          "视觉节奏",
-          "行动结论"
-        ],
-        "years": [
-          "起点",
-          "现在",
-          "下一步"
-        ],
-        "nodes": [
-          "输入",
-          "处理",
-          "输出"
-        ],
-        "comments": [
-          "核心信息",
-          "视觉节奏",
-          "行动结论"
-        ],
-        "metricLabel": "核心信息001",
-        "count": 3,
-        "milestones": [
-          "基础",
-          "扩展",
-          "规模化"
-        ],
-        "category": "DESIGN SYSTEM",
+        "category": "COPYOPEN 001",
+        "headline": "Highlight extraction 002",
+        "progress": 86,
+        "value": 86,
+        "label": "COPYOPEN 001",
+        "body": "Highlight extraction",
+        "effectText": "Highlight extraction",
         "contentPayload": {
           "type": "metrics",
-          "value": 72,
+          "value": 86,
           "unit": "%",
-          "label": "核心信息001",
-          "bodyText": "视觉节奏",
-          "detailText": "展示可编辑的真实组件预设"
+          "label": "Highlight",
+          "bodyText": "%",
+          "detailText": "Highlight extraction"
         },
-        "categoryTag": "DESIGN SYSTEM",
-        "label": "核心信息001",
-        "title": "核心设计信号",
-        "value": 72,
-        "progress": 72,
-        "values": [
-          72,
-          72,
-          72
-        ],
-        "metric": "核心信息001",
-        "marketTo": 72,
-        "marketLabel": "核心信息001",
+        "eyebrow": "COPYOPEN 001",
+        "categoryTag": "COPYOPEN 001",
+        "title": "Highlight extraction 002",
+        "values": [],
+        "metric": "Highlight",
+        "metricLabel": "Highlight",
         "unit": "%",
-        "marketSuffix": "视觉节奏",
+        "marketLabel": "Highlight extraction",
+        "marketTo": 8,
+        "marketSuffix": "%",
         "engineeringLabel": "增长指标",
-        "engineeringTo": 72,
+        "engineeringTo": 8,
         "engineeringSuffix": "%",
-        "bodyText": "视觉节奏",
-        "detailText": "展示可编辑的真实组件预设",
-        "body": "展示可编辑的真实组件预设",
-        "effectZh": "展示可编辑的真实组件预设"
+        "bodyText": "%",
+        "detailText": "Highlight extraction",
+        "effectZh": "Highlight extraction",
+        "items": [],
+        "steps": [],
+        "comments": []
       },
-      "occupancyScore": 0.56,
-      "faceAvoidanceEligible": true,
-      "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-13T21:28:20.828Z",
       "editorSchema": {
         "version": 1,
         "kind": "metrics",
@@ -623,57 +593,61 @@
             "key": "unit",
             "label": "单位",
             "control": "text"
+          },
+          {
+            "key": "detailText",
+            "label": "说明内容",
+            "control": "textarea"
           }
         ]
       },
       "manifest": {
-        "id": "platform-shift-line",
-        "intent": "system",
+        "id": "copyopen-progress-bar",
+        "intent": "metrics",
         "capacity": {
-          "minItems": 3,
-          "maxItems": 5
+          "minItems": 1,
+          "maxItems": 1
         },
         "keywords": [
-          "产品线",
-          "平台",
-          "演进",
-          "扩展",
-          "链路"
+          "进度",
+          "百分比",
+          "完成",
+          "%"
         ],
-        "visualWeight": "medium"
+        "visualWeight": "light"
       }
     },
     {
-      "id": "hud-glow-stack",
-      "name": "HUD 浮动发光",
+      "id": "check-progress",
+      "name": "进度100%确认清单",
       "family": "metrics",
-      "description": "metrics · product · statement",
+      "description": "process · confirmation · progress",
       "tags": [
-        "metrics",
-        "product",
-        "statement"
+        "process",
+        "confirmation",
+        "progress"
       ],
       "data": [
         "list",
-        "number"
+        "percentage"
       ],
-      "version": 19,
+      "version": 11,
       "tokens": {
         "mountMode": "top-left",
         "mountX": 0,
         "mountY": 0,
-        "boundsX": 76,
+        "boundsX": 96,
         "boundsY": 300,
-        "boundsWidth": 735,
-        "boundsHeight": 590,
+        "boundsWidth": 760,
+        "boundsHeight": 360,
         "padding": 48,
         "gap": 16,
         "position": "center",
-        "scale": 0.76,
+        "scale": 0.78,
         "spring": "spring-up",
         "sfx": "none",
         "accentColor": "#00F2FE",
-        "defaultItemCount": 5,
+        "defaultItemCount": 3,
         "staggerFrames": 15,
         "headerScale": 1,
         "contentScale": 0.72
@@ -686,116 +660,112 @@
       "mockData": {
         "headline": "核心设计信号",
         "eyebrow": "DESIGN SYSTEM",
-        "effectText": "展示可编辑的真实组件预设",
-        "text": "Signal confirmed. Visual system ready.",
+        "effectText": "PRODUCT RECOVERY",
+        "text": "PRODUCT RECOVERY",
         "items": [
           "核心信息",
-          "组织信息002",
-          "完成验证004",
-          "新标555签"
+          "视觉节奏",
+          "完成验证"
         ],
         "steps": [
           "核心信息",
-          "组织信息002",
-          "完成验证004",
-          "新标555签"
+          "视觉节奏",
+          "完成验证"
         ],
         "years": [
-          "起点",
-          "现在",
-          "下一步"
+          "核心信息",
+          "视觉节奏",
+          "完成验证"
         ],
         "nodes": [
-          "输入",
-          "处理",
-          "输出"
+          "核心信息",
+          "视觉节奏",
+          "完成验证"
         ],
         "comments": [
           "核心信息",
-          "组织信息002",
-          "完成验证004",
-          "新标555签"
+          "视觉节奏",
+          "完成验证"
         ],
         "category": "DESIGN SYSTEM",
         "contentPayload": {
-          "type": "chips",
-          "items": [
+          "type": "steps",
+          "steps": [
             {
-              "title": "核心信息",
-              "subtitle": ""
+              "stepNumber": 1,
+              "text": "核心信息"
             },
             {
-              "title": "组织信息002",
-              "subtitle": ""
+              "stepNumber": 2,
+              "text": "视觉节奏"
             },
             {
-              "title": "完成验证004",
-              "subtitle": ""
-            },
-            {
-              "title": "新标555签",
-              "subtitle": ""
+              "stepNumber": 3,
+              "text": "完成验证"
             }
-          ]
+          ],
+          "progress": 100,
+          "bodyText": "PRODUCT RECOVERY"
         },
         "categoryTag": "DESIGN SYSTEM",
+        "units": [
+          "核心信息",
+          "视觉节奏",
+          "完成验证"
+        ],
+        "progress": 100,
+        "value": 100,
+        "label": "DESIGN SYSTEM",
         "title": "核心设计信号",
-        "subLabel": "",
-        "itemSubtitles": [
-          "",
-          "",
-          "",
-          ""
+        "body": "PRODUCT RECOVERY",
+        "effectZh": "PRODUCT RECOVERY",
+        "values": [
+          100,
+          100,
+          100
         ],
-        "subLabels": [
-          "",
-          "",
-          "",
-          ""
-        ],
-        "label": "DESIGN SYSTEM"
+        "bodyText": "PRODUCT RECOVERY"
       },
-      "occupancyScore": 0.56,
+      "occupancyScore": 0.32,
       "faceAvoidanceEligible": true,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-13T21:50:02.861Z",
+      "updatedAt": "2026-09-15T15:26:14.065Z",
       "editorSchema": {
         "version": 1,
-        "kind": "chips",
+        "kind": "steps",
         "fields": [
           {
-            "key": "items",
-            "label": "标签项",
-            "control": "chip-list",
-            "capacity": 3,
-            "itemFields": [
-              {
-                "key": "title",
-                "label": "标签",
-                "control": "text"
-              },
-              {
-                "key": "subtitle",
-                "label": "副标",
-                "control": "text"
-              }
-            ]
+            "key": "bodyText",
+            "label": "进度条标题【正文内容】",
+            "control": "text"
+          },
+          {
+            "key": "steps",
+            "label": "正文内容",
+            "control": "string-list",
+            "capacity": 3
+          },
+          {
+            "key": "progress",
+            "label": "完成度",
+            "control": "number",
+            "minimum": 0,
+            "maximum": 100
           }
         ]
       },
       "manifest": {
-        "id": "hud-glow-stack",
-        "intent": "system",
+        "id": "check-progress",
+        "intent": "process",
         "capacity": {
           "minItems": 2,
-          "maxItems": 4
+          "maxItems": 5
         },
         "keywords": [
-          "系统",
-          "信号",
-          "链路",
-          "模块",
-          "闭环"
+          "确认",
+          "检查",
+          "完成",
+          "步骤"
         ],
         "visualWeight": "medium"
       }
@@ -1472,32 +1442,32 @@
       }
     },
     {
-      "id": "check-progress",
-      "name": "进度确认",
+      "id": "platform-shift-line",
+      "name": "产品线增长",
       "family": "metrics",
-      "description": "process · confirmation · progress",
+      "description": "metrics · timeline · product",
       "tags": [
-        "process",
-        "confirmation",
-        "progress"
+        "metrics",
+        "timeline",
+        "product"
       ],
       "data": [
         "list",
-        "percentage"
+        "number"
       ],
-      "version": 10,
+      "version": 12,
       "tokens": {
         "mountMode": "top-left",
         "mountX": 0,
         "mountY": 0,
-        "boundsX": 96,
+        "boundsX": 76,
         "boundsY": 300,
-        "boundsWidth": 760,
-        "boundsHeight": 360,
+        "boundsWidth": 1120,
+        "boundsHeight": 640,
         "padding": 48,
         "gap": 16,
         "position": "center",
-        "scale": 0.78,
+        "scale": 0.72,
         "spring": "spring-up",
         "sfx": "none",
         "accentColor": "#00F2FE",
@@ -1514,112 +1484,121 @@
       "mockData": {
         "headline": "核心设计信号",
         "eyebrow": "DESIGN SYSTEM",
-        "effectText": "PRODUCT RECOVERY",
-        "text": "PRODUCT RECOVERY",
+        "effectText": "根据艾瑞统计的数据",
+        "text": "Signal confirmed. Visual system ready.",
         "items": [
           "核心信息",
           "视觉节奏",
-          "完成验证"
+          "行动结论"
         ],
         "steps": [
           "核心信息",
           "视觉节奏",
-          "完成验证"
+          "行动结论"
         ],
         "years": [
-          "核心信息",
-          "视觉节奏",
-          "完成验证"
+          "起点",
+          "现在",
+          "下一步"
         ],
         "nodes": [
-          "核心信息",
-          "视觉节奏",
-          "完成验证"
+          "输入",
+          "处理",
+          "输出"
         ],
         "comments": [
           "核心信息",
           "视觉节奏",
-          "完成验证"
+          "行动结论"
+        ],
+        "metricLabel": "2026年中小企业破产数量",
+        "count": 72,
+        "milestones": [
+          "基础",
+          "扩展",
+          "规模化"
         ],
         "category": "DESIGN SYSTEM",
         "contentPayload": {
-          "type": "steps",
-          "steps": [
-            {
-              "stepNumber": 1,
-              "text": "核心信息"
-            },
-            {
-              "stepNumber": 2,
-              "text": "视觉节奏"
-            },
-            {
-              "stepNumber": 3,
-              "text": "完成验证"
-            }
-          ],
-          "progress": 100,
-          "bodyText": "PRODUCT RECOVERY"
+          "type": "metrics",
+          "value": 72,
+          "unit": "%",
+          "label": "2026年中小企业破产数量",
+          "bodyText": "视觉节奏",
+          "detailText": "根据艾瑞统计的数据"
         },
         "categoryTag": "DESIGN SYSTEM",
-        "units": [
-          "核心信息",
-          "视觉节奏",
-          "完成验证"
-        ],
-        "progress": 100,
-        "value": 100,
-        "label": "DESIGN SYSTEM",
+        "label": "2026年中小企业破产数量",
         "title": "核心设计信号",
-        "body": "PRODUCT RECOVERY",
-        "effectZh": "PRODUCT RECOVERY",
+        "value": 72,
+        "progress": 72,
         "values": [
-          100,
-          100,
-          100
+          72,
+          72,
+          72
         ],
-        "bodyText": "PRODUCT RECOVERY"
+        "metric": "2026年中小企业破产数量",
+        "marketTo": 72,
+        "marketLabel": "核心信息001",
+        "unit": "%",
+        "marketSuffix": "视觉节奏",
+        "engineeringLabel": "增长指标",
+        "engineeringTo": 72,
+        "engineeringSuffix": "%",
+        "bodyText": "视觉节奏",
+        "detailText": "根据艾瑞统计的数据",
+        "body": "根据艾瑞统计的数据",
+        "effectZh": "根据艾瑞统计的数据",
+        "summary": "根据艾瑞统计的数据",
+        "startLabel": "2020",
+        "endLabel": "2025"
       },
-      "occupancyScore": 0.32,
+      "occupancyScore": 0.56,
       "faceAvoidanceEligible": true,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-13T22:50:23.336Z",
+      "updatedAt": "2026-09-15T15:12:03.827Z",
       "editorSchema": {
-        "version": 1,
-        "kind": "steps",
         "fields": [
           {
-            "key": "bodyText",
-            "label": "进度条标题【正文内容】",
+            "key": "label",
+            "label": "正文内容",
             "control": "text"
           },
           {
-            "key": "steps",
-            "label": "正文内容",
-            "control": "string-list",
-            "capacity": 3
+            "key": "value",
+            "label": "数值内容",
+            "control": "number"
           },
           {
-            "key": "progress",
-            "label": "完成度",
-            "control": "number",
-            "minimum": 0,
-            "maximum": 100
+            "key": "detailText",
+            "label": "副文内容",
+            "control": "text"
+          },
+          {
+            "key": "startLabel",
+            "label": "起点内容",
+            "control": "text"
+          },
+          {
+            "key": "endLabel",
+            "label": "终点内容",
+            "control": "text"
           }
         ]
       },
       "manifest": {
-        "id": "check-progress",
-        "intent": "process",
+        "id": "platform-shift-line",
+        "intent": "system",
         "capacity": {
-          "minItems": 2,
+          "minItems": 3,
           "maxItems": 5
         },
         "keywords": [
-          "确认",
-          "检查",
-          "完成",
-          "步骤"
+          "产品线",
+          "平台",
+          "演进",
+          "扩展",
+          "链路"
         ],
         "visualWeight": "medium"
       }
@@ -5176,7 +5155,7 @@
       }
     },
     {
-      "version": 12,
+      "version": 8,
       "sfx": {
         "enter": "none",
         "exit": "none",
@@ -5185,222 +5164,311 @@
       "occupancyScore": 0.82,
       "faceAvoidanceEligible": false,
       "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-15T01:13:08.106Z",
-      "id": "copyopen-progress-bar",
-      "name": "进度条2",
+      "updatedAt": "2026-09-15T01:13:41.484Z",
+      "id": "copyopen-pie-chart",
+      "name": "多彩环形图",
       "family": "metrics",
-      "description": "CopyOpen · fill pulse progress",
+      "description": "CopyOpen · donut category split",
       "tags": [
         "copyopen",
-        "metrics",
-        "progress"
+        "chart",
+        "pie"
       ],
       "data": [
+        "list",
         "percentage"
       ],
       "tokens": {
         "mountMode": "top-left",
         "mountX": 0,
         "mountY": 0,
-        "boundsX": 1246,
+        "boundsX": 96,
         "boundsY": 300,
-        "boundsWidth": 760,
-        "boundsHeight": 320,
+        "boundsWidth": 720,
+        "boundsHeight": 460,
         "padding": 48,
         "gap": 16,
         "position": "center",
-        "scale": 0.76,
+        "scale": 1.2,
         "spring": "fade-scale",
         "sfx": "none",
         "accentColor": "#22D3EE",
-        "defaultItemCount": 1,
+        "defaultItemCount": 4,
         "staggerFrames": 8,
-        "headerScale": 1,
-        "contentScale": 0.76
+        "headerScale": 1.2,
+        "contentScale": 1.2
       },
       "mockData": {
-        "category": "COPYOPEN 001",
-        "headline": "Highlight extraction 002",
-        "progress": 86,
-        "value": 86,
-        "label": "COPYOPEN 001",
-        "body": "Highlight extraction",
-        "effectText": "Highlight extraction",
+        "category": "章节09",
+        "headline": "多彩环形图",
+        "items": [
+          "Hook",
+          "Proof",
+          "Story",
+          "CTA"
+        ],
+        "steps": [
+          "Hook",
+          "Proof",
+          "Story",
+          "CTA"
+        ],
+        "values": [
+          35,
+          30,
+          20,
+          15
+        ],
+        "value": 8,
+        "label": "章节09",
         "contentPayload": {
-          "type": "metrics",
-          "value": 86,
-          "unit": "%",
-          "label": "Highlight",
-          "bodyText": "%",
-          "detailText": "Highlight extraction"
+          "type": "steps",
+          "steps": [
+            {
+              "stepNumber": 1,
+              "text": "Hook"
+            },
+            {
+              "stepNumber": 2,
+              "text": "Proof"
+            },
+            {
+              "stepNumber": 3,
+              "text": "Story"
+            },
+            {
+              "stepNumber": 4,
+              "text": "CTA"
+            }
+          ]
         },
-        "eyebrow": "COPYOPEN 001",
-        "categoryTag": "COPYOPEN 001",
-        "title": "Highlight extraction 002",
-        "values": [],
-        "metric": "Highlight",
-        "metricLabel": "Highlight",
-        "unit": "%",
-        "marketLabel": "Highlight extraction",
-        "marketTo": 8,
-        "marketSuffix": "%",
-        "engineeringLabel": "增长指标",
-        "engineeringTo": 8,
-        "engineeringSuffix": "%",
-        "bodyText": "%",
-        "detailText": "Highlight extraction",
-        "effectZh": "Highlight extraction",
-        "items": [],
-        "steps": [],
-        "comments": []
+        "eyebrow": "章节09",
+        "categoryTag": "章节09",
+        "title": "多彩环形图"
       },
       "editorSchema": {
         "version": 1,
-        "kind": "metrics",
+        "kind": "steps",
         "fields": [
           {
-            "key": "label",
-            "label": "正文内容",
-            "control": "text"
-          },
-          {
-            "key": "value",
-            "label": "数值",
-            "control": "number"
-          },
-          {
-            "key": "unit",
-            "label": "单位",
-            "control": "text"
-          },
-          {
-            "key": "detailText",
-            "label": "说明内容",
-            "control": "textarea"
+            "key": "steps",
+            "label": "步骤内容",
+            "control": "string-list",
+            "capacity": 4
           }
         ]
       },
       "manifest": {
-        "id": "copyopen-progress-bar",
+        "id": "copyopen-pie-chart",
         "intent": "metrics",
         "capacity": {
-          "minItems": 1,
-          "maxItems": 1
+          "minItems": 3,
+          "maxItems": 5
         },
         "keywords": [
-          "进度",
-          "百分比",
-          "完成",
-          "%"
+          "占比",
+          "比例",
+          "分布",
+          "份额"
         ],
-        "visualWeight": "light"
+        "visualWeight": "medium"
       }
     },
     {
-      "version": 2,
+      "id": "hud-glow-stack",
+      "name": "HUD 浮动发光",
+      "family": "metrics",
+      "description": "metrics · product · statement",
+      "tags": [
+        "metrics",
+        "product",
+        "statement"
+      ],
+      "data": [
+        "list",
+        "number"
+      ],
+      "version": 19,
+      "tokens": {
+        "mountMode": "top-left",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 76,
+        "boundsY": 300,
+        "boundsWidth": 735,
+        "boundsHeight": 590,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 0.76,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#00F2FE",
+        "defaultItemCount": 5,
+        "staggerFrames": 15,
+        "headerScale": 1,
+        "contentScale": 0.72
+      },
       "sfx": {
         "enter": "none",
         "exit": "none",
         "volume": 0.65
       },
-      "occupancyScore": 0.82,
-      "faceAvoidanceEligible": false,
-      "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-14T00:00:00Z",
-      "id": "copyopen-comparison-card",
-      "name": "前后对比卡",
-      "family": "metrics",
-      "description": "CopyOpen · left/right metric reveal",
-      "tags": [
-        "copyopen",
-        "comparison",
-        "metrics"
-      ],
-      "data": [
-        "number",
-        "comparison"
-      ],
-      "tokens": {
-        "mountMode": "top-left",
-        "mountX": 0,
-        "mountY": 0,
-        "boundsX": 1216,
-        "boundsY": 300,
-        "boundsWidth": 800,
-        "boundsHeight": 420,
-        "padding": 48,
-        "gap": 16,
-        "position": "center",
-        "scale": 0.76,
-        "spring": "fade-scale",
-        "sfx": "none",
-        "accentColor": "#22D3EE",
-        "defaultItemCount": 1,
-        "staggerFrames": 8,
-        "headerScale": 1,
-        "contentScale": 0.76
-      },
       "mockData": {
-        "category": "COPYOPEN",
-        "headline": "Before / After",
-        "leftLabel": "Long video",
-        "rightLabel": "Short clips",
-        "leftValue": "58 min",
-        "rightValue": "8 clips",
-        "body": "ready",
-        "effectText": "ready",
+        "headline": "核心设计信号",
+        "eyebrow": "DESIGN SYSTEM",
+        "effectText": "展示可编辑的真实组件预设",
+        "text": "Signal confirmed. Visual system ready.",
+        "items": [
+          "核心信息",
+          "组织信息002",
+          "完成验证004",
+          "新标555签"
+        ],
+        "steps": [
+          "核心信息",
+          "组织信息002",
+          "完成验证004",
+          "新标555签"
+        ],
+        "years": [
+          "起点",
+          "现在",
+          "下一步"
+        ],
+        "nodes": [
+          "输入",
+          "处理",
+          "输出"
+        ],
+        "comments": [
+          "核心信息",
+          "组织信息002",
+          "完成验证004",
+          "新标555签"
+        ],
+        "category": "DESIGN SYSTEM",
         "contentPayload": {
-          "type": "metrics",
-          "value": 8,
-          "unit": "clips",
-          "label": "Short clips",
-          "detailText": "ready"
+          "type": "chips",
+          "items": [
+            {
+              "title": "核心信息",
+              "subtitle": ""
+            },
+            {
+              "title": "组织信息002",
+              "subtitle": ""
+            },
+            {
+              "title": "完成验证004",
+              "subtitle": ""
+            },
+            {
+              "title": "新标555签",
+              "subtitle": ""
+            }
+          ]
         },
-        "label": "Before / After",
-        "value": 76,
-        "unit": "Before / After",
-        "detailText": "Before / After"
+        "categoryTag": "DESIGN SYSTEM",
+        "title": "核心设计信号",
+        "subLabel": "",
+        "itemSubtitles": [
+          "",
+          "",
+          "",
+          ""
+        ],
+        "subLabels": [
+          "",
+          "",
+          "",
+          ""
+        ],
+        "label": "DESIGN SYSTEM",
+        "tags": [
+          "核心信息",
+          "组织信息002",
+          "完成验证004",
+          "新标555签"
+        ]
       },
+      "occupancyScore": 0.56,
+      "faceAvoidanceEligible": true,
+      "displayIntent": "side-overlay",
+      "updatedAt": "2026-09-15T16:47:39.667Z",
       "editorSchema": {
         "version": 1,
-        "kind": "metrics",
+        "kind": "chips",
         "fields": [
           {
-            "key": "label",
-            "label": "正文内容",
-            "control": "text"
-          },
-          {
-            "key": "value",
-            "label": "数值",
-            "control": "number"
-          },
-          {
-            "key": "unit",
-            "label": "单位",
-            "control": "text"
-          },
-          {
-            "key": "detailText",
-            "label": "说明内容",
-            "control": "textarea"
+            "key": "tags",
+            "type": "string_array",
+            "control": "chip-list",
+            "label": "标签栏目列表",
+            "default": [
+              "核心信息",
+              "组织信息002",
+              "完成验证004",
+              "新标555签"
+            ],
+            "capacity": 4,
+            "itemFields": [
+              {
+                "key": "title",
+                "label": "标签",
+                "control": "text"
+              },
+              {
+                "key": "subtitle",
+                "label": "副标",
+                "control": "text"
+              }
+            ]
           }
         ]
       },
       "manifest": {
-        "id": "copyopen-comparison-card",
+        "id": "hud-glow-stack",
         "intent": "metrics",
         "capacity": {
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 4
         },
         "keywords": [
-          "对比",
-          "差异",
-          "数值",
-          "增长"
+          "系统",
+          "信号",
+          "链路",
+          "模块",
+          "闭环"
         ],
         "visualWeight": "medium"
+      },
+      "defaultPayload": {
+        "type": "chips",
+        "items": [
+          {
+            "title": "核心信息",
+            "subtitle": ""
+          },
+          {
+            "title": "组织信息002",
+            "subtitle": ""
+          },
+          {
+            "title": "完成验证004",
+            "subtitle": ""
+          },
+          {
+            "title": "新标555签",
+            "subtitle": ""
+          }
+        ],
+        "tags": [
+          "核心信息",
+          "组织信息002",
+          "完成验证004",
+          "新标555签"
+        ]
       }
     },
     {
@@ -5613,6 +5681,113 @@
           "收束"
         ],
         "visualWeight": "light"
+      }
+    },
+    {
+      "version": 2,
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "occupancyScore": 0.82,
+      "faceAvoidanceEligible": false,
+      "displayIntent": "side-overlay",
+      "updatedAt": "2026-09-14T00:00:00Z",
+      "id": "copyopen-comparison-card",
+      "name": "前后对比卡",
+      "family": "metrics",
+      "description": "CopyOpen · left/right metric reveal",
+      "tags": [
+        "copyopen",
+        "comparison",
+        "metrics"
+      ],
+      "data": [
+        "number",
+        "comparison"
+      ],
+      "tokens": {
+        "mountMode": "top-left",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 1216,
+        "boundsY": 300,
+        "boundsWidth": 800,
+        "boundsHeight": 420,
+        "padding": 48,
+        "gap": 16,
+        "position": "center",
+        "scale": 0.76,
+        "spring": "fade-scale",
+        "sfx": "none",
+        "accentColor": "#22D3EE",
+        "defaultItemCount": 1,
+        "staggerFrames": 8,
+        "headerScale": 1,
+        "contentScale": 0.76
+      },
+      "mockData": {
+        "category": "COPYOPEN",
+        "headline": "Before / After",
+        "leftLabel": "Long video",
+        "rightLabel": "Short clips",
+        "leftValue": "58 min",
+        "rightValue": "8 clips",
+        "body": "ready",
+        "effectText": "ready",
+        "contentPayload": {
+          "type": "metrics",
+          "value": 8,
+          "unit": "clips",
+          "label": "Short clips",
+          "detailText": "ready"
+        },
+        "label": "Before / After",
+        "value": 76,
+        "unit": "Before / After",
+        "detailText": "Before / After"
+      },
+      "editorSchema": {
+        "version": 1,
+        "kind": "metrics",
+        "fields": [
+          {
+            "key": "label",
+            "label": "正文内容",
+            "control": "text"
+          },
+          {
+            "key": "value",
+            "label": "数值",
+            "control": "number"
+          },
+          {
+            "key": "unit",
+            "label": "单位",
+            "control": "text"
+          },
+          {
+            "key": "detailText",
+            "label": "说明内容",
+            "control": "textarea"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "copyopen-comparison-card",
+        "intent": "metrics",
+        "capacity": {
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "keywords": [
+          "对比",
+          "差异",
+          "数值",
+          "增长"
+        ],
+        "visualWeight": "medium"
       }
     },
     {
@@ -5868,126 +6043,6 @@
           "增长",
           "曲线",
           "时间"
-        ],
-        "visualWeight": "medium"
-      }
-    },
-    {
-      "version": 8,
-      "sfx": {
-        "enter": "none",
-        "exit": "none",
-        "volume": 0.65
-      },
-      "occupancyScore": 0.82,
-      "faceAvoidanceEligible": false,
-      "displayIntent": "side-overlay",
-      "updatedAt": "2026-09-15T01:13:41.484Z",
-      "id": "copyopen-pie-chart",
-      "name": "多彩环形图",
-      "family": "metrics",
-      "description": "CopyOpen · donut category split",
-      "tags": [
-        "copyopen",
-        "chart",
-        "pie"
-      ],
-      "data": [
-        "list",
-        "percentage"
-      ],
-      "tokens": {
-        "mountMode": "top-left",
-        "mountX": 0,
-        "mountY": 0,
-        "boundsX": 96,
-        "boundsY": 300,
-        "boundsWidth": 720,
-        "boundsHeight": 460,
-        "padding": 48,
-        "gap": 16,
-        "position": "center",
-        "scale": 1.2,
-        "spring": "fade-scale",
-        "sfx": "none",
-        "accentColor": "#22D3EE",
-        "defaultItemCount": 4,
-        "staggerFrames": 8,
-        "headerScale": 1.2,
-        "contentScale": 1.2
-      },
-      "mockData": {
-        "category": "章节09",
-        "headline": "多彩环形图",
-        "items": [
-          "Hook",
-          "Proof",
-          "Story",
-          "CTA"
-        ],
-        "steps": [
-          "Hook",
-          "Proof",
-          "Story",
-          "CTA"
-        ],
-        "values": [
-          35,
-          30,
-          20,
-          15
-        ],
-        "value": 8,
-        "label": "章节09",
-        "contentPayload": {
-          "type": "steps",
-          "steps": [
-            {
-              "stepNumber": 1,
-              "text": "Hook"
-            },
-            {
-              "stepNumber": 2,
-              "text": "Proof"
-            },
-            {
-              "stepNumber": 3,
-              "text": "Story"
-            },
-            {
-              "stepNumber": 4,
-              "text": "CTA"
-            }
-          ]
-        },
-        "eyebrow": "章节09",
-        "categoryTag": "章节09",
-        "title": "多彩环形图"
-      },
-      "editorSchema": {
-        "version": 1,
-        "kind": "steps",
-        "fields": [
-          {
-            "key": "steps",
-            "label": "步骤内容",
-            "control": "string-list",
-            "capacity": 4
-          }
-        ]
-      },
-      "manifest": {
-        "id": "copyopen-pie-chart",
-        "intent": "metrics",
-        "capacity": {
-          "minItems": 3,
-          "maxItems": 5
-        },
-        "keywords": [
-          "占比",
-          "比例",
-          "分布",
-          "份额"
         ],
         "visualWeight": "medium"
       }
@@ -6581,7 +6636,7 @@
     },
     {
       "id": "jc-metrics-big-number",
-      "name": "[JC] 大数字计数",
+      "name": "大数字计数",
       "family": "metrics",
       "description": "JC imported metrics visual component",
       "tags": [
@@ -6592,7 +6647,7 @@
         "number",
         "percentage"
       ],
-      "version": 1,
+      "version": 2,
       "tokens": {
         "mountMode": "center",
         "mountX": 0,
@@ -6624,18 +6679,42 @@
       "mockData": {
         "category": "METRICS",
         "headline": "大数字计数",
-        "effectText": "",
+        "effectText": "关键指标在当前阶段差异。",
         "contentPayload": {
           "type": "metrics",
-          "value": 72,
+          "value": 75,
           "unit": "%",
           "label": "转化提升",
-          "detailText": "关键指标在当前阶段形成明显差异。"
+          "bodyText": "%",
+          "detailText": "关键指标在当前阶段差异。"
         },
         "label": "转化提升",
-        "value": 72,
+        "value": 75,
         "unit": "%",
-        "detailText": "关键指标在当前阶段形成明显差异。"
+        "detailText": "关键指标在当前阶段差异。",
+        "eyebrow": "METRICS",
+        "categoryTag": "METRICS",
+        "title": "大数字计数",
+        "progress": 75,
+        "count": 75,
+        "values": [],
+        "metric": "转化提升",
+        "metricLabel": "转化提升",
+        "marketLabel": "转化提升",
+        "marketTo": 75,
+        "marketSuffix": "%",
+        "engineeringLabel": "增长指标",
+        "engineeringTo": 75,
+        "engineeringSuffix": "%",
+        "bodyText": "%",
+        "summary": "关键指标在当前阶段差异。",
+        "body": "关键指标在当前阶段差异。",
+        "effectZh": "关键指标在当前阶段差异。",
+        "startLabel": "起点",
+        "endLabel": "目标阶段",
+        "items": [],
+        "steps": [],
+        "comments": []
       },
       "defaultPayload": {
         "type": "metrics",
@@ -6688,7 +6767,8 @@
       "runtime": {
         "exportName": "BigNumber",
         "adapter": "jc-metrics-big-number"
-      }
+      },
+      "updatedAt": "2026-09-15T15:30:43.865Z"
     },
     {
       "id": "jc-narrative-bilingual-sub",
@@ -7380,7 +7460,7 @@
       "data": [
         "text"
       ],
-      "version": 1,
+      "version": 4,
       "tokens": {
         "mountMode": "center",
         "mountX": 0,
@@ -7411,15 +7491,22 @@
       "displayIntent": "side-overlay",
       "mockData": {
         "category": "CONTRAST",
-        "headline": "克隆风险级联",
-        "effectText": "同质化会快速压低先发优势。",
+        "headline": "克隆风险级联极大",
+        "effectText": "同质化会快速压低先发优势。而且阻碍创新",
         "contentPayload": {
           "type": "narrative",
-          "bodyText": "同质化会快速压低先发优势。",
+          "bodyText": "同质化会快速压低先发优势。而且阻碍创新",
           "highlightQuote": "COPY RISK"
         },
         "bodyText": "同质化会快速压低先发优势。",
-        "highlightQuote": "COPY RISK"
+        "highlightQuote": "COPY RISK",
+        "title": "克隆风险级联极大",
+        "eyebrow": "CONTRAST",
+        "categoryTag": "CONTRAST",
+        "body": "同质化会快速压低先发优势。而且阻碍创新",
+        "effectZh": "同质化会快速压低先发优势。而且阻碍创新",
+        "text": "同质化会快速压低先发优势。而且阻碍创新",
+        "bullText": "同质化会快速压低先发优势。而且阻碍创新"
       },
       "defaultPayload": {
         "type": "narrative",
@@ -7460,7 +7547,8 @@
       "runtime": {
         "exportName": "CloneCascade",
         "adapter": "jc-contrast-clone-cascade"
-      }
+      },
+      "updatedAt": "2026-09-15T21:52:22.045Z"
     },
     {
       "id": "jc-contrast-compare-card",
@@ -7596,7 +7684,7 @@
     },
     {
       "id": "jc-metrics-curve-overlay",
-      "name": "[JC] 增长曲线",
+      "name": "增长曲线",
       "family": "metrics",
       "description": "JC imported metrics visual component",
       "tags": [
@@ -7607,7 +7695,7 @@
         "number",
         "percentage"
       ],
-      "version": 1,
+      "version": 3,
       "tokens": {
         "mountMode": "center",
         "mountX": 0,
@@ -7639,25 +7727,46 @@
       "mockData": {
         "category": "METRICS",
         "headline": "增长曲线",
-        "effectText": "",
+        "effectText": "曲线用于强调规模与效率的同步变化。",
         "contentPayload": {
           "type": "metrics",
           "value": 74,
           "unit": "%",
-          "label": "增长曲线",
-          "detailText": "曲线用于强调规模与效率的同步变化。"
+          "label": "增长曲线111"
         },
-        "label": "增长曲线",
+        "label": "增长曲线111",
         "value": 74,
         "unit": "%",
-        "detailText": "曲线用于强调规模与效率的同步变化。"
+        "detailText": "曲线用于强调规模与效率的同步变化。",
+        "eyebrow": "METRICS",
+        "categoryTag": "METRICS",
+        "title": "增长曲线",
+        "progress": 74,
+        "count": 74,
+        "values": [],
+        "metric": "增长曲线111",
+        "metricLabel": "增长曲线111",
+        "marketLabel": "增长曲线1",
+        "marketTo": 74,
+        "marketSuffix": "%",
+        "engineeringLabel": "增长指标",
+        "engineeringTo": 74,
+        "engineeringSuffix": "%",
+        "bodyText": "%",
+        "summary": "曲线用于强调规模与效率的同步变化。",
+        "body": "曲线用于强调规模与效率的同步变化。",
+        "effectZh": "曲线用于强调规模与效率的同步变化。",
+        "startLabel": "起点",
+        "endLabel": "目标阶段",
+        "items": [],
+        "steps": [],
+        "comments": []
       },
       "defaultPayload": {
         "type": "metrics",
         "value": 74,
         "unit": "%",
-        "label": "增长曲线",
-        "detailText": "曲线用于强调规模与效率的同步变化。"
+        "label": "增长曲线"
       },
       "editorSchema": {
         "version": 1,
@@ -7667,21 +7776,6 @@
             "key": "label",
             "label": "正文内容",
             "control": "text"
-          },
-          {
-            "key": "value",
-            "label": "数值",
-            "control": "number"
-          },
-          {
-            "key": "unit",
-            "label": "单位",
-            "control": "text"
-          },
-          {
-            "key": "detailText",
-            "label": "说明内容",
-            "control": "textarea"
           }
         ]
       },
@@ -7703,7 +7797,8 @@
       "runtime": {
         "exportName": "CurveOverlay",
         "adapter": "jc-metrics-curve-overlay"
-      }
+      },
+      "updatedAt": "2026-09-15T16:11:03.353Z"
     },
     {
       "id": "jc-narrative-dm-card-stack",
@@ -10100,7 +10195,7 @@
     },
     {
       "id": "jc-metrics-unit-matrix",
-      "name": "[JC] 单元矩阵",
+      "name": "单元矩阵%",
       "family": "metrics",
       "description": "JC imported metrics visual component",
       "tags": [
@@ -10111,7 +10206,7 @@
         "number",
         "percentage"
       ],
-      "version": 1,
+      "version": 6,
       "tokens": {
         "mountMode": "center",
         "mountX": 0,
@@ -10143,18 +10238,42 @@
       "mockData": {
         "category": "METRICS",
         "headline": "单元矩阵",
-        "effectText": "",
+        "effectText": "用单元密度展示规模与结构。",
         "contentPayload": {
           "type": "metrics",
-          "value": 68,
+          "value": 90,
           "unit": "%",
           "label": "结构占比",
+          "bodyText": "%",
           "detailText": "用单元密度展示规模与结构。"
         },
         "label": "结构占比",
-        "value": 68,
+        "value": 90,
         "unit": "%",
-        "detailText": "用单元密度展示规模与结构。"
+        "detailText": "用单元密度展示规模与结构。",
+        "eyebrow": "METRICS",
+        "categoryTag": "METRICS",
+        "title": "单元矩阵",
+        "progress": 90,
+        "count": 90,
+        "values": [],
+        "metric": "结构占比",
+        "metricLabel": "结构占比",
+        "marketLabel": "结构占比",
+        "marketTo": 69,
+        "marketSuffix": "%",
+        "engineeringLabel": "增长指标",
+        "engineeringTo": 69,
+        "engineeringSuffix": "%",
+        "bodyText": "%",
+        "summary": "用单元密度展示规模与结构。",
+        "body": "用单元密度展示规模与结构。",
+        "effectZh": "用单元密度展示规模与结构。",
+        "startLabel": "起点",
+        "endLabel": "目标阶段",
+        "items": [],
+        "steps": [],
+        "comments": []
       },
       "defaultPayload": {
         "type": "metrics",
@@ -10207,7 +10326,8 @@
       "runtime": {
         "exportName": "UnitMatrix",
         "adapter": "jc-metrics-unit-matrix"
-      }
+      },
+      "updatedAt": "2026-09-16T00:28:03.411Z"
     },
     {
       "id": "jc-contrast-verdict-box",
@@ -10345,7 +10465,7 @@
     },
     {
       "id": "jc-metrics-views-badge",
-      "name": "[JC] 观看量徽章",
+      "name": " 观看视角",
       "family": "metrics",
       "description": "JC imported metrics visual component",
       "tags": [
@@ -10356,7 +10476,7 @@
         "number",
         "percentage"
       ],
-      "version": 3,
+      "version": 5,
       "tokens": {
         "mountMode": "center",
         "mountX": 0,
@@ -10393,11 +10513,11 @@
           "type": "metrics",
           "value": 80,
           "unit": "M+",
-          "label": "美元基金",
+          "label": "美元基金撒旦发生",
           "bodyText": "M+",
           "detailText": "用增长数字强调市场反馈。"
         },
-        "label": "美元基金",
+        "label": "美元基金撒旦发生",
         "value": 80,
         "unit": "M+",
         "detailText": "用增长数字强调市场反馈。",
@@ -10406,8 +10526,8 @@
         "title": "观看量徽章",
         "progress": 80,
         "values": [],
-        "metric": "美元基金",
-        "metricLabel": "美元基金",
+        "metric": "美元基金撒旦发生",
+        "metricLabel": "美元基金撒旦发生",
         "marketLabel": "触达规模",
         "marketTo": 8,
         "marketSuffix": "M+",
@@ -10419,7 +10539,11 @@
         "effectZh": "用增长数字强调市场反馈。",
         "items": [],
         "steps": [],
-        "comments": []
+        "comments": [],
+        "count": 80,
+        "summary": "用增长数字强调市场反馈。",
+        "startLabel": "起点",
+        "endLabel": "目标阶段"
       },
       "defaultPayload": {
         "type": "metrics",
@@ -10473,7 +10597,7 @@
         "exportName": "ViewsBadge",
         "adapter": "jc-metrics-views-badge"
       },
-      "updatedAt": "2026-09-15T01:17:42.023Z"
+      "updatedAt": "2026-09-15T15:50:28.524Z"
     },
     {
       "id": "jc-system-window-card",
@@ -10568,6 +10692,154 @@
         "exportName": "WindowCard",
         "adapter": "jc-system-window-card"
       }
+    },
+    {
+      "id": "speaker-growth-dashboard",
+      "name": "口播增长仪表盘",
+      "family": "metrics",
+      "description": "柱子哥/TzFilm 风格左侧口播增长数据仪表盘",
+      "tags": [
+        "metrics",
+        "growth",
+        "speaker",
+        "tzfilm"
+      ],
+      "data": [
+        "number",
+        "text"
+      ],
+      "version": 2,
+      "tokens": {
+        "mountMode": "top-left",
+        "mountX": 0,
+        "mountY": 0,
+        "boundsX": 76,
+        "boundsY": 58,
+        "boundsWidth": 570,
+        "boundsHeight": 960,
+        "padding": 0,
+        "gap": 18,
+        "position": "center",
+        "scale": 1,
+        "spring": "spring-up",
+        "sfx": "none",
+        "accentColor": "#38BDF8",
+        "defaultItemCount": 2,
+        "staggerFrames": 12,
+        "headerScale": 1,
+        "contentScale": 1
+      },
+      "sfx": {
+        "enter": "none",
+        "exit": "none",
+        "volume": 0.65
+      },
+      "mockData": {
+        "headline": "Hermes",
+        "category": "LIVE · AI AGENT",
+        "eyebrow": "LIVE · AI AGENT",
+        "subline": "自媒体运营 · 实时演示",
+        "skillLabel": "自媒体运营 SKILL",
+        "feature1Title": "评论区自动回复",
+        "feature1Sub": "AUTO-REPLY",
+        "feature2Title": "委婉推荐 · 财务自由团",
+        "feature2Sub": "SOFT CTA",
+        "metricTitle": "入群率 猛增",
+        "metricValue": "299",
+        "metricUnit": "生效会员",
+        "metricSub": "NEW MEMBERS · 近90天",
+        "footer": "获客一把好手 · GROWTH ENGINE",
+        "contentPayload": {
+          "type": "metrics",
+          "label": "入群率 猛增",
+          "value": 165,
+          "unit": "生效会员",
+          "bodyText": "自媒体运营 · 实时演示"
+        }
+      },
+      "editorSchema": {
+        "fields": [
+          {
+            "key": "eyebrow",
+            "label": "顶端标签",
+            "type": "text"
+          },
+          {
+            "key": "subline",
+            "label": "副标题",
+            "type": "text"
+          },
+          {
+            "key": "skillLabel",
+            "label": "能力标签",
+            "type": "text"
+          },
+          {
+            "key": "feature1Title",
+            "label": "功能1【正文内容】",
+            "type": "text"
+          },
+          {
+            "key": "feature1Sub",
+            "label": "功能1【副文内容】",
+            "type": "text"
+          },
+          {
+            "key": "feature2Title",
+            "label": "功能2【正文内容】",
+            "type": "text"
+          },
+          {
+            "key": "feature2Sub",
+            "label": "功能2【副文内容】",
+            "type": "text"
+          },
+          {
+            "key": "metricTitle",
+            "label": "增长指标标题",
+            "type": "text"
+          },
+          {
+            "key": "metricValue",
+            "label": "增长数字",
+            "type": "text"
+          },
+          {
+            "key": "metricUnit",
+            "label": "数字单位",
+            "type": "text"
+          },
+          {
+            "key": "metricSub",
+            "label": "指标副文",
+            "type": "text"
+          },
+          {
+            "key": "footer",
+            "label": "底部说明",
+            "type": "text"
+          }
+        ]
+      },
+      "manifest": {
+        "id": "speaker-growth-dashboard",
+        "intent": "metrics",
+        "capacity": {
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "keywords": [
+          "口播",
+          "自媒体",
+          "增长",
+          "获客",
+          "会员",
+          "转化"
+        ],
+        "visualWeight": "heavy"
+      },
+      "displayIntent": "side-overlay",
+      "updatedAt": "2026-09-16T03:20:50.682Z"
     }
   ],
   "subtitleAssets": [

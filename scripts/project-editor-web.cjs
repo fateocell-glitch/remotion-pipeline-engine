@@ -20,10 +20,11 @@ const {cleanProjectPreviews, deleteProject, listProjectSummaries, renameProject}
 const {validateBeatIntegrity, shouldAbortForStall, diagnoseRenderFailure} = require("./services/beat-render-guard.cjs");
 const {buildAdminComponentsPage} = require("./admin-components-page.cjs");
 const {buildComponentWeightsPage} = require("./component-weights-page.cjs");
-const {getComponentRegistrySync, moveComponentToFamily, updateComponentPreset} = require("./services/component-registry-store.cjs");
+const {getComponentRegistrySync, moveComponentToFamily, reorderComponentsInFamily, updateComponentPreset} = require("./services/component-registry-store.cjs");
 const {getComponentWeightsSync, updateComponentWeights} = require("./services/component-weight-store.cjs");
 
 const root = process.cwd();
+const serverPort = Number(process.env.PROJECT_EDITOR_PORT || 4318);
 const projectsDir = join(root, "data", "projects");
 const previewDir = join(root, "out", "project-editor-web-previews");
 const componentAssetRegistry = getComponentRegistrySync(root);
@@ -32,12 +33,17 @@ const layouts = componentAssetRegistry.components.map((component) => component.i
 const layoutSet = new Set(layouts);
 const jobs = new Map();
 const activeBeatRenders = new Map();
+const isProcessAlive = (value) => {
+  const pid = Number(value);
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+  try { process.kill(pid, 0); return true; } catch { return false; }
+};
 const logger = createLogger({root});
 const isLocalAdmin = (req) => ["127.0.0.1", "::1", "::ffff:127.0.0.1"].includes(String(req.socket?.remoteAddress || ""));
 const logWork = (projectId, action, details = {}) => logger.info({traceId: `trace-${Date.now()}`, projectId, stage: action === "upload-started" ? "UPLOAD" : action.includes("render") ? "RENDER_FULL" : action.includes("progress") ? "TRANSCRIBE" : "SLICE_BEATS", message: action, context: details}).catch(() => {});
 const checkboxColorField = {key: "boxColor", label: "确认框颜色", type: "select", options: [{value: "auto", label: "自动分配"}, {value: "purple", label: "紫色"}, {value: "blue", label: "蓝色"}, {value: "gold", label: "金色"}, {value: "white", label: "白色"}, {value: "green", label: "绿色"}, {value: "red", label: "红色"}]};
 const layoutOverrides = {
-  "platform-shift-line": {category: "data", label: "产品线增长", fields: [{key: "metricLabel", label: "增长指标标签", type: "text"}, {key: "count", label: "增长数量", type: "number"}, {key: "summary", label: "增长说明", type: "textarea"}, {key: "milestones", label: "产品线节点", type: "string-list"}, {key: "startLabel", label: "起点标签", type: "text"}, {key: "endLabel", label: "终点标签", type: "text"}], defaults: {count: 3, metricLabel: "产品线", milestones: ["基础能力", "产品扩展", "规模增长"]}},
+  "platform-shift-line": {category: "data", label: "产品线增长", fields: [{key: "metricLabel", label: "正文内容", type: "text"}, {key: "count", label: "数值内容", type: "number"}, {key: "summary", label: "副文内容", type: "text"}, {key: "startLabel", label: "起点内容", type: "text"}, {key: "endLabel", label: "终点内容", type: "text"}], defaults: {count: 3, metricLabel: "产品线", summary: "展示可编辑的真实组件预设", startLabel: "起点", endLabel: "目标阶段"}},
   "tradeoff-reject-round": {category: "story", label: "圆形红色否定项", fields: [{key: "label", label: "否定项标签", type: "text"}, {key: "title", label: "否定项标题", type: "text"}, {key: "items", label: "圆形否定项", type: "string-list"}], defaults: {items: ["无效投入", "重复流程", "低效路径"]}},
   "recovery-progress-bars": {category: "data", label: "进度确认条", fields: [{key: "label", label: "进度标签", type: "text"}, {key: "title", label: "进度标题", type: "text"}, {key: "items", label: "进度项目", type: "string-list"}, {key: "values", label: "进度数值（%）", type: "string-list"}], defaults: {items: ["需求确认", "能力建设", "结果验证"], values: [68,54,42]}},
   "hud-glow-stack": {category: "interactive", label: "HUD 浮动发光", fields: [{key: "subLabel", label: "卡片辅助标签", type: "text"}, {key: "items", label: "HUD 卡片内容", type: "string-list"}], defaults: {subLabel: "LIVE SIGNAL", items: ["核心信号", "关键判断", "下一步动作"]}},
@@ -90,7 +96,7 @@ const getProject = async (id) => {
     ? JSON.parse(await readFile(storage.captionsConfirmedFile, "utf8"))
     : (Array.isArray(source.captions) ? source.captions : []);
   const normalizedBase = withNormalizedLayers(ensureProjectLifecycle({...source, captions, captionReviewMerged: source.captionReviewMerged === true || source.state !== "CAPTIONS_REVIEW"}));
-  const recovered = recoverOrphanedBeatRenders(normalizedBase, (beat) => [...jobs.values()].some((job) => job.kind === "beat" && job.projectId === id && job.beatId === beat.id && job.state === "running"));
+  const recovered = recoverOrphanedBeatRenders(normalizedBase, (beat) => [...jobs.values()].some((job) => job.kind === "beat" && job.projectId === id && job.beatId === beat.id && job.state === "running") || isProcessAlive(beat.render?.workerPid));
   const cache = reconcileProjectRenderCache(recovered.project, (relativePath) => existsSync(join(root, relativePath)));
   const normalized = cache.project;
   if (JSON.stringify(source) !== JSON.stringify(normalized)) {
@@ -98,7 +104,23 @@ const getProject = async (id) => {
   }
   return normalized;
 };
-const canonicalCaptionFile = (storage, project) => {
+const findPersistedBeatJob = async (jobId) => {
+  const requested = String(jobId || "");
+  if (!requested) return null;
+  for (const entry of readdirSync(projectsDir, {withFileTypes: true})) {
+    if (!entry.isDirectory()) continue;
+    let project;
+    try { project = await getProject(entry.name); } catch { continue; }
+    const beat = project.beats.find((item) => item.render?.jobId === requested);
+    if (!beat) continue;
+    const render = beat.render || {};
+    const base = {kind: "beat", projectId: entry.name, beatId: beat.id, currentFrame: Number(render.currentFrame) || 0, totalFrames: Number(render.totalFrames) || 0, progress: Number(render.progress) || 0, percentage: Number(render.percentage) || Number(render.progress) || 0, startedAt: render.startedAt || null, message: render.message || "正在恢复单拍渲染..."};
+    if (render.status === "ready") return {...base, state: "done", progress: 100, percentage: 100, message: "当前 beat 预览完成", output: "/project-asset/" + entry.name + "/" + beat.id};
+    if (render.status === "failed" || render.status === "stale") return {...base, state: "failed", error: render.error || "上一次单拍任务已中断。", message: render.message || "单拍渲染失败"};
+    return {...base, state: "running", recovered: true};
+  }
+  return null;
+};const canonicalCaptionFile = (storage, project) => {
   if (project.state !== "CAPTIONS_REVIEW" && existsSync(storage.captionsConfirmedFile)) return storage.captionsConfirmedFile;
   if (existsSync(storage.captionsDraftFile)) return storage.captionsDraftFile;
   if (existsSync(storage.captionsConfirmedFile)) return storage.captionsConfirmedFile;
@@ -161,50 +183,51 @@ const startEnglishCaptionTranslation = async (projectId) => {
   const active = [...jobs.values()].find((job) => job.kind === "subtitle-translation" && job.projectId === projectId && job.state === "running");
   if (active) return active.jobId;
   const project = await getProject(projectId);
-  if (!project.captions?.length) throw new Error("当前项目没有可翻译的字幕。");
-  if (project.captions.every((caption) => String(caption.en || "").trim())) {
+  const sourceLanguage = project.detectedSourceLanguage || project.sourceLanguage || "auto";
+  if (sourceLanguage !== "en") throw new Error("当前原音频不是英语。Whisper 只保留原声听写，不再将字幕翻译为英文。");
+  if (!project.captions?.length) throw new Error("当前项目没有可核对的字幕。");
+  if (project.captions.every((caption) => String(caption.en || caption.zh || "").trim())) {
     const jobId = "subtitle-translation-ready-" + projectId + "-" + Date.now();
-    jobs.set(jobId, {state: "done", kind: "subtitle-translation", projectId, jobId, message: "英文字幕已就绪"});
+    jobs.set(jobId, {state: "done", kind: "subtitle-translation", projectId, jobId, message: "英文原声字幕已就绪"});
     return jobId;
   }
   const storage = projectPaths(root, projectId);
-  if (!existsSync(storage.audioFile)) throw new Error("项目音频缺失，无法生成英文字幕。");
+  if (!existsSync(storage.audioFile)) throw new Error("项目音频缺失，无法重新听写英文原声。");
   const jobId = "subtitle-translation-" + projectId + "-" + Date.now();
   const outputFile = join(storage.sourceDir, "captions.en.json");
-  jobs.set(jobId, {state: "running", kind: "subtitle-translation", projectId, jobId, progress: 1, message: "正在用 faster-whisper 生成英文字幕..."});
-  logWork(projectId, "subtitle-translation-started", {engine: "faster-whisper"});
+  jobs.set(jobId, {state: "running", kind: "subtitle-translation", projectId, jobId, progress: 1, message: "正在用 faster-whisper 听写英文原声..."});
+  logWork(projectId, "subtitle-native-transcription-started", {engine: "faster-whisper", language: "en"});
   runFasterTranscription({
     audioPath: storage.audioFile,
     outputPath: outputFile,
-    language: "zh",
-    task: "translate",
+    language: "en",
+    task: "transcribe",
     onProgress: ({count}) => {
       const current = jobs.get(jobId);
-      if (current?.state === "running") jobs.set(jobId, {...current, progress: Math.min(95, Number(current.progress || 1) + 1), captionCount: count, message: "正在用 faster-whisper 生成英文字幕... 已生成 " + count + " 句"});
+      if (current?.state === "running") jobs.set(jobId, {...current, progress: Math.min(95, Number(current.progress || 1) + 1), captionCount: count, message: "正在用 faster-whisper 听写英文原声... 已生成 " + count + " 句"});
     },
-  }).then(async (translatedRows) => {
+  }).then(async (nativeRows) => {
     try {
-      const translated = captionsToWhisperTranscript(translatedRows, "en");
-      const merged = mergeWhisperCaptions(project.captions, translated, "zh");
       const latest = await getProject(projectId);
-      latest.captions = latest.captions.map((caption, index) => ({...caption, en: String(caption.en || "").trim() || String(merged[index]?.en || "").trim()}));
-      latest.subtitleTranslation = {status: "ready", completedAt: new Date().toISOString(), source: "faster-whisper-translate"};
+      const native = captionsToWhisperTranscript(nativeRows, "en");
+      const refreshed = mergeWhisperCaptions(latest.captions, native, "en");
+      latest.captions = latest.captions.map((caption, index) => ({...caption, en: String(refreshed[index]?.en || caption.en || caption.zh || "").trim()}));
+      latest.subtitleTranslation = {status: "ready", completedAt: new Date().toISOString(), source: "faster-whisper-transcribe", language: "en"};
       latest.updatedAt = new Date().toISOString();
       if (latest.state !== "CAPTIONS_REVIEW") await writeFile(storage.captionsConfirmedFile, JSON.stringify(latest.captions, null, 2) + "\n");
       await writeProjectAtomically(projectId, latest);
-      jobs.set(jobId, {state: "done", kind: "subtitle-translation", projectId, jobId, progress: 100, message: "英文字幕已补齐"});
-      logWork(projectId, "subtitle-translation-completed", {captionCount: latest.captions.length});
+      jobs.set(jobId, {state: "done", kind: "subtitle-translation", projectId, jobId, progress: 100, message: "英文原声字幕已补齐"});
+      logWork(projectId, "subtitle-native-transcription-completed", {captionCount: latest.captions.length});
     } catch (error) {
       jobs.set(jobId, {state: "failed", kind: "subtitle-translation", projectId, jobId, error: error.stack || error.message});
-      logWork(projectId, "subtitle-translation-failed", {error: error.message});
+      logWork(projectId, "subtitle-native-transcription-failed", {error: error.message});
     }
   }).catch((error) => {
     jobs.set(jobId, {state: "failed", kind: "subtitle-translation", projectId, jobId, error: error.stack || error.message});
-    logWork(projectId, "subtitle-translation-failed", {error: error.message});
+    logWork(projectId, "subtitle-native-transcription-failed", {error: error.message});
   });
   return jobId;
 };
-
 const openProjectRenders = async (projectId) => {
   const storage = await createProjectStorage(root, projectId);
   const explorer = spawn("explorer.exe", [storage.rendersDir], {detached: true, stdio: "ignore", windowsHide: true});
@@ -323,6 +346,8 @@ createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/api/admin/component-weights") {if(!isLocalAdmin(req))return send(res,403,"Local super-admin access required.","text/plain");return send(res,200,JSON.stringify(getComponentWeightsSync(root)));}
     if (req.method === "PUT" && url.pathname === "/api/admin/component-weights") {if(!isLocalAdmin(req))return send(res,403,"Local super-admin access required.","text/plain");let body="";for await(const chunk of req)body+=chunk;const payload=body?JSON.parse(body):{};const weights=await updateComponentWeights(root,payload.weights);await logger.info({traceId:"component-weights-"+Date.now(),projectId:"design-system",stage:"DESIGN_SYSTEM",message:"component-weights-updated",context:{changed:Object.keys(payload.weights||{}).length}});return send(res,200,JSON.stringify(weights));}
     if (req.method === "GET" && url.pathname === "/api/admin/components") {if(!isLocalAdmin(req))return send(res,403,"Local super-admin access required.","text/plain");return send(res,200,JSON.stringify(getComponentRegistrySync(root)));}
+    const adminComponentFamilyOrderRoute = url.pathname.match(/^\/api\/admin\/component-families\/([a-z0-9-]+)\/order$/);
+    if (adminComponentFamilyOrderRoute && req.method === "PUT") {if(!isLocalAdmin(req))return send(res,403,"Local super-admin access required.","text/plain");let body="";for await(const chunk of req)body+=chunk;const payload=body?JSON.parse(body):{};const components=await reorderComponentsInFamily(root,adminComponentFamilyOrderRoute[1],payload.componentIds);for(const component of components)componentAssetsById.set(component.id,component);await logger.info({traceId:"component-family-order-"+adminComponentFamilyOrderRoute[1]+"-"+Date.now(),projectId:"design-system",stage:"DESIGN_SYSTEM",message:"component-family-reordered",context:{family:adminComponentFamilyOrderRoute[1],count:components.length}});return send(res,200,JSON.stringify(components));}
     const adminComponentFamilyRoute = url.pathname.match(/^\/api\/admin\/components\/([a-z0-9-]+)\/family$/);
     if (adminComponentFamilyRoute && req.method === "PUT") {if(!isLocalAdmin(req))return send(res,403,"Local super-admin access required.","text/plain");let body="";for await(const chunk of req)body+=chunk;const payload=body?JSON.parse(body):{};const component=await moveComponentToFamily(root,adminComponentFamilyRoute[1],payload.family);componentAssetsById.set(component.id,component);const metadata=layoutMetadata.find((entry)=>entry.key===component.id);if(metadata)metadata.family=component.family;await logger.info({traceId:"component-family-"+component.id+"-"+Date.now(),projectId:"design-system",stage:"DESIGN_SYSTEM",message:"component-family-moved",context:{componentId:component.id,family:component.family}});return send(res,200,JSON.stringify(component));}
     const adminComponentRoute = url.pathname.match(/^\/api\/admin\/components\/([a-z0-9-]+)$/);
@@ -396,13 +421,20 @@ createServer(async (req, res) => {
       if (!beat) return send(res, 404, "Unknown beat.", "text/plain");
       const renderSlot = render[1] + ":" + render[2];
       const activeJobId = activeBeatRenders.get(renderSlot);
-      if (activeJobId) return send(res, 202, JSON.stringify({jobId: activeJobId, reused: true}));
+      if (activeJobId && beat.render?.status === "rendering") return send(res, 202, JSON.stringify({jobId: activeJobId, reused: true}));
+      if (activeJobId) activeBeatRenders.delete(renderSlot);
+      if (beat.render?.status === "rendering" && beat.render?.jobId && isProcessAlive(beat.render.workerPid)) {
+        const recoveredJob = beat.render.jobId;
+        activeBeatRenders.set(renderSlot, recoveredJob);
+        jobs.set(recoveredJob, {state: "running", kind: "beat", projectId: render[1], beatId: beat.id, currentFrame: Number(beat.render.currentFrame) || 0, totalFrames: Number(beat.render.totalFrames) || 0, progress: Number(beat.render.progress) || 0, percentage: Number(beat.render.percentage) || 0, startedAt: beat.render.startedAt || null, message: beat.render.message || "正在恢复单拍渲染...", recovered: true});
+        return send(res, 202, JSON.stringify({jobId: recoveredJob, reused: true, recovered: true}));
+      }
 
       const integrity = validateBeatIntegrity(beat, project);
       if (!integrity.valid) {
         const reason = integrity.errors.map((item) => item.message).join("；");
         const error = "预渲染质检未通过：" + reason;
-        project = updateBeatRender(project, beat.id, beat.render.revision, {status: "failed", previewPath: null, renderedAt: null, error});
+        project = updateBeatRender(project, beat.id, beat.render.revision, {status: "failed", previewPath: null, renderedAt: null, error, message: "预渲染质检未通过"});
         await writeProjectAtomically(render[1], JSON.stringify(project, null, 2) + "\n");
         await logger.error({traceId: "gate-" + Date.now(), projectId: render[1], stage: "PRE_RENDER_GATE", beatId: beat.id, message: "single-beat-gate-blocked", errorStack: error, context: {language: integrity.isEn ? "en" : "zh", errors: integrity.errors}});
         return send(res, 422, JSON.stringify({error, code: "PRE_RENDER_GATE_BLOCKED", diagnostics: integrity.errors}));
@@ -412,135 +444,35 @@ createServer(async (req, res) => {
       const contentHash = renderContentHash(project, beat);
       const canonicalOutput = currentAssetPath(render[1], beat);
       const relativeOutput = existsSync(join(root, canonicalOutput)) ? canonicalOutput.replace(/\.mp4$/i, "-" + Date.now() + ".mp4") : canonicalOutput;
-      const output = join(root, relativeOutput);
       const frames = Math.floor(beat.start * project.fps) + "-" + (Math.ceil(beat.end * project.fps) - 1);
       const totalFrames = Math.ceil(beat.end * project.fps) - Math.floor(beat.start * project.fps);
-      const command = "remotion render src/index.ts ProjectEditor " + output + " --frames=" + frames;
       const jobId = "beat-" + render[1] + "-" + render[2] + "-" + revision + "-" + Date.now();
-      const remotionArgs = ["render", "src/index.ts", "ProjectEditor", output, "--props=" + projectPath(render[1]), "--frames=" + frames, "--codec=h264", "--crf=20", "--pixel-format=yuv420p", "--concurrency=2", "--x264-preset=veryfast"];
+      const startedAt = new Date().toISOString();
+      const workerScript = join(root, "scripts", "services", "beat-render-worker.cjs");
+      const workerSpec = JSON.stringify({projectId: render[1], beatId: beat.id, revision, jobId, relativeOutput, contentHash, frames, totalFrames, startedAt});
       activeBeatRenders.set(renderSlot, jobId);
       try {
-        await mkdir(dirname(output), {recursive: true});
-        project = updateBeatRender(project, beat.id, revision, {status: "rendering", previewPath: null, renderedAt: null, error: null});
+        await mkdir(dirname(join(root, relativeOutput)), {recursive: true});
+        project = updateBeatRender(project, beat.id, revision, {status: "rendering", previewPath: null, renderedAt: null, error: null, jobId, startedAt, workerPid: null, rendererPid: null, currentFrame: 0, totalFrames, progress: 0, percentage: 0, message: "正在初始化单拍渲染..."});
         await writeProjectAtomically(render[1], JSON.stringify(project, null, 2) + "\n");
+        const worker = spawn(process.execPath, [workerScript, workerSpec], {cwd: root, windowsHide: true, detached: true, stdio: "ignore"});
+        worker.unref();
+        project = updateBeatRender(project, beat.id, revision, {status: "rendering", jobId, startedAt, workerPid: worker.pid, rendererPid: null, currentFrame: 0, totalFrames, progress: 0, percentage: 0, message: "正在初始化单拍渲染..."});
+        await writeProjectAtomically(render[1], JSON.stringify(project, null, 2) + "\n");
+        jobs.set(jobId, {state: "running", kind: "beat", projectId: render[1], beatId: beat.id, progress: 0, percentage: 0, currentFrame: 0, totalFrames, fps: 0, startedAt: Date.now(), message: "正在初始化单拍渲染...", workerPid: worker.pid});
+        await logger.info({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-started", command: "node scripts/services/beat-render-worker.cjs", context: {revision, layout: beat.layout, workerPid: worker.pid}});
+        return send(res, 202, JSON.stringify({jobId}));
       } catch (error) {
-        if (activeBeatRenders.get(renderSlot) === jobId) activeBeatRenders.delete(renderSlot);
-        throw error;
-      }
-      jobs.set(jobId, {state: "running", kind: "beat", projectId: render[1], beatId: beat.id, progress: 0, percentage: 0, currentFrame: 0, totalFrames, fps: 0, startedAt: Date.now(), message: "正在初始化单拍渲染...", attempt: 0, maxRetries: 1});
-      await logger.info({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-started", command, context: {revision, layout: beat.layout, effectProps: beat.effectProps}});
-
-      const terminateProcessTree = (child) => {
-        if (!child) return;
-        if (process.platform === "win32" && child.pid) {
-          const killer = spawn("taskkill", ["/pid", String(child.pid), "/T", "/F"], {windowsHide: true});
-          killer.unref();
-          return;
-        }
-        child.kill();
-      };
-      const sampleCpuSeconds = (pid) => new Promise((resolve) => {
-        if (process.platform !== "win32" || !pid) return resolve(null);
-        const cpu = spawn("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", "(Get-Process -Id " + pid + " -ErrorAction SilentlyContinue).CPU"], {windowsHide: true});
-        let outputText = "";
-        cpu.stdout.on("data", (chunk) => { outputText += String(chunk); });
-        cpu.on("close", () => { const value = Number.parseFloat(outputText); resolve(Number.isFinite(value) ? value : null); });
-        cpu.on("error", () => resolve(null));
-      });
-      let settled = false;
-      const releaseRenderSlot = () => { if (activeBeatRenders.get(renderSlot) === jobId) activeBeatRenders.delete(renderSlot); };
-      const finishFailure = async (error, message) => {
-        if (settled) return;
-        settled = true;
+        const detail = error.stack || error.message || String(error);
         const latest = await getProject(render[1]);
-        const saved = updateBeatRender(latest, beat.id, revision, {status: "failed", previewPath: null, renderedAt: null, error});
+        const saved = updateBeatRender(latest, beat.id, revision, {status: "failed", jobId, workerPid: null, rendererPid: null, previewPath: null, renderedAt: null, error: detail, message: "单拍渲染启动失败"});
         await writeProjectAtomically(render[1], JSON.stringify(saved, null, 2) + "\n");
-        releaseRenderSlot();
-        jobs.set(jobId, {...(jobs.get(jobId) || {}), state: "failed", kind: "beat", projectId: render[1], beatId: beat.id, error, message});
-        await logger.error({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-failed", errorStack: error, command});
-      };
-      const launchAttempt = (attempt) => {
-        if (settled) return;
-        const child = spawn(join(root, "node_modules", ".bin", "remotion.CMD"), remotionArgs, {cwd: root, windowsHide: true, shell: true});
-        let log = "";
-        let lastFrame = 0;
-        let lastFrameAt = Date.now();
-        let lastProgressAt = Date.now();
-        let previousCpuSeconds = null;
-        let stalled = false;
-        let sampling = false;
-        const watchdog = setInterval(async () => {
-          if (settled || stalled || sampling) return;
-          sampling = true;
-          const currentCpuSeconds = await sampleCpuSeconds(child.pid);
-          sampling = false;
-          if (shouldAbortForStall({now: Date.now(), lastProgressAt, previousCpuSeconds, currentCpuSeconds, stallMs: 45000})) {
-            stalled = true;
-            jobs.set(jobId, {...(jobs.get(jobId) || {}), state: "running", attempt, message: "45 秒无新增帧输出，正在启动自动恢复..."});
-            await logger.error({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-watchdog-stalled", errorStack: log, command, context: {attempt, previousCpuSeconds, currentCpuSeconds}});
-            terminateProcessTree(child);
-            return;
-          }
-          if (Number.isFinite(currentCpuSeconds)) previousCpuSeconds = currentCpuSeconds;
-        }, 5000);
-        child.stdout.on("data", (chunk) => {
-          if (settled || stalled) return;
-          const outputText = String(chunk);
-          log = (log + outputText).slice(-4000);
-          const match = outputText.match(/(?:rendered|rendering|frames?)[^\d]*(\d+)\s*\/\s*(\d+)/i) || outputText.match(/(\d+)\s*\/\s*(\d+)\s*(?:frames?|fr)/i);
-          if (!match) return;
-          const currentFrame = Number(match[1]);
-          const renderedFrames = Number(match[2]);
-          const now = Date.now();
-          if (currentFrame > lastFrame) lastProgressAt = now;
-          const elapsed = Math.max(0.1, (now - (jobs.get(jobId)?.startedAt || now)) / 1000);
-          const fps = Math.max(0, (currentFrame - lastFrame) / Math.max(0.1, (now - lastFrameAt) / 1000));
-          lastFrame = currentFrame;
-          lastFrameAt = now;
-          const percentage = Math.min(99, Math.floor(currentFrame / Math.max(1, renderedFrames) * 100));
-          const remainingSeconds = fps > 0 ? Math.max(0, Math.round((renderedFrames - currentFrame) / fps)) : null;
-          jobs.set(jobId, {...(jobs.get(jobId) || {}), state: "running", attempt, currentFrame, totalFrames: renderedFrames, percentage, progress: percentage, fps: Math.round(fps), elapsedSeconds: Math.floor(elapsed), remainingSeconds, message: "正在生成帧: " + currentFrame + " / " + renderedFrames});
-        });
-        child.stderr.on("data", (chunk) => { log = (log + String(chunk)).slice(-4000); });
-        child.on("error", async (error) => {
-          clearInterval(watchdog);
-          if (stalled) return;
-          await finishFailure(error.stack || error.message, "单拍渲染失败");
-        });
-        child.on("close", async (code) => {
-          clearInterval(watchdog);
-if (stalled) {
-            if (attempt < 1) {
-              jobs.set(jobId, {...(jobs.get(jobId) || {}), state: "running", attempt: attempt + 1, message: "检测到静默卡死，正在自动重试（1/1）..."});
-              await logger.info({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-watchdog-retry", command, context: {attempt: attempt + 1}});
-              launchAttempt(attempt + 1);
-              return;
-            }
-            const diagnosis = diagnoseRenderFailure(log);
-            await finishFailure("连续 30 秒无新增帧，自动重试后仍失败。\n" + log, diagnosis);
-            return;
-          }
-          try {
-            if (code === 0) {
-              const latest = await getProject(render[1]);
-              const saved = updateBeatRender(latest, beat.id, revision, {status: "ready", previewPath: relativeOutput, renderedVideoPath: relativeOutput, contentHash, renderedAt: new Date().toISOString(), error: null});
-              await writeProjectAtomically(render[1], JSON.stringify(saved, null, 2) + "\n");
-              settled = true;
-              releaseRenderSlot();
-              jobs.set(jobId, {...(jobs.get(jobId) || {}), state: "done", kind: "beat", projectId: render[1], beatId: beat.id, progress: 100, percentage: 100, message: "当前 beat 预览完成", output: "/project-asset/" + render[1] + "/" + beat.id});
-              await logger.info({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-completed", command, context: {output: relativeOutput, revision, attempt}});
-              return;
-            }
-            await finishFailure(log || "Remotion exited with " + code, diagnoseRenderFailure(log));
-          } catch (error) {
-            await finishFailure(error.stack || error.message || String(error), "渲染完成后缓存核验失败");
-          }
-        });
-      };
-      launchAttempt(0);
-      return send(res, 202, JSON.stringify({jobId}));
-    }
-    const asset = url.pathname.match(/^\/project-asset\/([a-z0-9-]+)\/([a-z0-9-]+)$/);
+        if (activeBeatRenders.get(renderSlot) === jobId) activeBeatRenders.delete(renderSlot);
+        jobs.set(jobId, {state: "failed", kind: "beat", projectId: render[1], beatId: beat.id, error: detail, message: "单拍渲染启动失败"});
+        await logger.error({traceId: jobId, projectId: render[1], stage: "RENDER_BEAT", beatId: beat.id, frames, message: "single-beat-render-failed", errorStack: detail});
+        return send(res, 500, JSON.stringify({error: detail}));
+      }
+    }    const asset = url.pathname.match(/^\/project-asset\/([a-z0-9-]+)\/([a-z0-9-]+)$/);
     if (asset && req.method === "GET") {
       const project = await getProject(asset[1]);
       const beat = project.beats.find((item) => item.id === asset[2]);
@@ -571,18 +503,88 @@ if (stalled) {
     if (full && req.method === "POST") return send(res,202,JSON.stringify({jobId:await startFullRender(full[1])}));
     const openRendersRoute = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/open-renders$/);
     if (openRendersRoute && req.method === "POST") {const renderDir=await openProjectRenders(openRendersRoute[1]);return send(res,200,JSON.stringify({opened:true,renderDir}));}
-    if (req.method === "POST" && url.pathname === "/api/onboard") {const id=url.searchParams.get("id")||"",name=url.searchParams.get("name")||id,extension=(url.searchParams.get("extension")||"").toLowerCase(),target=Number(url.searchParams.get("target")||30);if(!Number.isFinite(target)||target<25||target>35)return send(res,400,"Target semantic window must be between 25 and 35 seconds.","text/plain");if(!/^[a-z0-9-]+$/.test(id)||!["mp4","mov","m4v","wav"].includes(extension))return send(res,400,"Only MP4, MOV, M4V, or WAV files are supported.","text/plain");if(existsSync(projectPath(id)))return send(res,409,"This project ID already exists. Choose a new ID.","text/plain");logWork(id,"upload-started",{name,extension,target});const jobId=`onboard-${id}-${Date.now()}`,storage=await createProjectStorage(root,id),isAudio=extension==="wav",file=isAudio?storage.audioFile:storage.rawVideo;if(isAudio)await require("node:fs/promises").copyFile(join(root,"public","test.mp4"),storage.rawVideo);jobs.set(jobId,{state:"uploading",step:1,progress:8,message:"正在上传文件…"});const stream=createWriteStream(file);req.pipe(stream);stream.on("finish",()=>{logWork(id,"upload-finished",{file:"source/raw.mp4"});const startedAt=Date.now();jobs.set(jobId,{state:"running",step:2,stage:"transcribing",progress:10,startedAt,message:"正在提取音频字幕，进度： 正在捕获台词"});const heartbeat=setInterval(()=>{const current=jobs.get(jobId);if(!current||current.state!=="running"||current.stage!=="transcribing")return;let captionCount=Number(current.captionCount||0);try{if(!captionCount){const parsed=JSON.parse(readFileSync(storage.captionsFile,"utf8"));captionCount=Array.isArray(parsed.transcription)?parsed.transcription.length:Array.isArray(parsed)?parsed.length:0}}catch(_){}const elapsed=Math.floor((Date.now()-startedAt)/1000);const timeText=current.transcriptionProgressText||((captionCount?"已捕获 "+captionCount+" 句台词":"正在捕获台词")+" · 已耗时 "+elapsed+"s");jobs.set(jobId,{...current,elapsedSeconds:elapsed,captionCount,message:"正在提取音频字幕，进度： "+timeText,transcriptionProgressText:current.transcriptionProgressText||timeText})},1000);stage1TranscribeToReview({projectId:id,name,targetBeatDuration:target,audioAlreadyPrepared:isAudio,onProgress:p=>{logWork(id,"onboarding-progress",p);const current=jobs.get(jobId)||{};jobs.set(jobId,{...current,state:"running",...p})}}).then(()=>{clearInterval(heartbeat);logWork(id,"captions-review-ready");jobs.set(jobId,{state:"done",step:3,stage:"captions_review",progress:100,nextAction:"captions_review",message:"转录完成，请先核对字幕内容。"})}).catch(error=>{clearInterval(heartbeat);logWork(id,"onboarding-failed",{error:error.message});jobs.set(jobId,{state:"failed",error:error.message})})});stream.on("error",error=>jobs.set(jobId,{state:"failed",error:error.message}));return send(res,202,JSON.stringify({jobId}));}
+    if (req.method === "POST" && url.pathname === "/api/onboard") {
+      const id = url.searchParams.get("id") || "";
+      const name = url.searchParams.get("name") || id;
+      const extension = (url.searchParams.get("extension") || "").toLowerCase();
+      const target = Number(url.searchParams.get("target") || 30);
+      const sourceLanguage = (url.searchParams.get("sourceLanguage") || "auto").toLowerCase();
+      const targetLanguage = (url.searchParams.get("targetLanguage") || "same").toLowerCase();
+      if (!Number.isFinite(target) || target < 25 || target > 35) return send(res, 400, "Target semantic window must be between 25 and 35 seconds.", "text/plain");
+      if (!["auto", "en", "zh"].includes(sourceLanguage) || !["same", "en", "zh"].includes(targetLanguage)) return send(res, 400, "Unsupported source or target language.", "text/plain");
+      if (!/^[a-z0-9-]+$/.test(id) || !["mp4", "mov", "m4v", "wav"].includes(extension)) return send(res, 400, "Only MP4, MOV, M4V, or WAV files are supported.", "text/plain");
+      if (existsSync(projectPath(id))) return send(res, 409, "This project ID already exists. Choose a new ID.", "text/plain");
+      logWork(id, "upload-started", {name, extension, target, sourceLanguage, targetLanguage});
+      const jobId = `onboard-${id}-${Date.now()}`;
+      const storage = await createProjectStorage(root, id);
+      const isAudio = extension === "wav";
+      const file = isAudio ? storage.audioFile : storage.rawVideo;
+      if (isAudio) await require("node:fs/promises").copyFile(join(root, "public", "test.mp4"), storage.rawVideo);
+      jobs.set(jobId, {state: "uploading", step: 1, progress: 8, message: "正在上传文件…"});
+      const stream = createWriteStream(file);
+      req.pipe(stream);
+      stream.on("finish", () => {
+        logWork(id, "upload-finished", {file: "source/raw.mp4"});
+        const startedAt = Date.now();
+        jobs.set(jobId, {state: "running", step: 2, stage: "transcribing", progress: 10, startedAt, message: "正在提取音频字幕，进度： 正在捕获台词"});
+        const heartbeat = setInterval(() => {
+          const current = jobs.get(jobId);
+          if (!current || current.state !== "running" || current.stage !== "transcribing") return;
+          let captionCount = Number(current.captionCount || 0);
+          try {
+            if (!captionCount) {
+              const parsed = JSON.parse(readFileSync(storage.captionsFile, "utf8"));
+              captionCount = Array.isArray(parsed.transcription) ? parsed.transcription.length : Array.isArray(parsed) ? parsed.length : 0;
+            }
+          } catch (_) {}
+          const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+          const timeText = current.transcriptionProgressText || ((captionCount ? "已捕获 " + captionCount + " 句台词" : "正在捕获台词") + " · 已耗时 " + elapsed + "s");
+          jobs.set(jobId, {...current, elapsedSeconds: elapsed, captionCount, message: "正在提取音频字幕，进度： " + timeText, transcriptionProgressText: current.transcriptionProgressText || timeText});
+        }, 1000);
+        stage1TranscribeToReview({
+          projectId: id,
+          name,
+          targetBeatDuration: target,
+          sourceLanguage,
+          targetLanguage,
+          audioAlreadyPrepared: isAudio,
+          onProgress: (progress) => {
+            logWork(id, "onboarding-progress", progress);
+            const current = jobs.get(jobId) || {};
+            jobs.set(jobId, {...current, state: "running", ...progress});
+          },
+        }).then(() => {
+          clearInterval(heartbeat);
+          logWork(id, "captions-review-ready");
+          jobs.set(jobId, {state: "done", step: 3, stage: "captions_review", progress: 100, nextAction: "captions_review", message: "转录完成，请先核对字幕内容。"});
+        }).catch((error) => {
+          clearInterval(heartbeat);
+          logWork(id, "onboarding-failed", {error: error.message});
+          jobs.set(jobId, {state: "failed", error: error.message});
+        });
+      });
+      stream.on("error", (error) => jobs.set(jobId, {state: "failed", error: error.message}));
+      return send(res, 202, JSON.stringify({jobId}));
+    }
     const diagnosticRoute = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/diagnostic-report$/);
     if (diagnosticRoute && req.method === "GET") {const project=await getProject(diagnosticRoute[1]);const file=projectPaths(root,diagnosticRoute[1]).executionLog;const rows=existsSync(file)?(await readFile(file,"utf8")).trim().split("\n").filter(Boolean).map((line)=>JSON.parse(line)):[];const errors=rows.filter((row)=>row.level==="ERROR");const stale=project.beats.filter((beat)=>beat.render?.status==="failed"||beat.render?.status==="stale").map((beat)=>({id:beat.id,status:beat.render?.status,error:beat.render?.error}));const last=errors.at(-1);const report=[`# Video Studio Diagnostic Report`,`- Project: ${project.projectId}`,`- State: ${project.state ?? "READY"}`,`- Beats: ${project.beats.length}`,`- Failed or stale beats: ${JSON.stringify(stale)}`,`- Last error: ${last ? last.message : "None"}`,last?.errorStack ? `\n\`\`\`\n${last.errorStack}\n\`\`\`` : ""].filter(Boolean).join("\n");return send(res,200,report,"text/markdown; charset=utf-8");}
     const logsRoute = url.pathname.match(/^\/api\/projects\/([a-z0-9-]+)\/logs$/);
     if (logsRoute && req.method === "GET") {const file=projectPaths(root,logsRoute[1]).executionLog;const level=url.searchParams.get("level"),stage=url.searchParams.get("stage");const rows=existsSync(file)?(await readFile(file,"utf8")).trim().split("\n").filter(Boolean).map((line)=>JSON.parse(line)).filter((row)=>(!level||row.level===level)&&(!stage||row.stage===stage)).slice(-80):[];return send(res,200,JSON.stringify(rows));}
-    const job = url.pathname.match(/^\/api\/jobs\/([\w-]+)$/); if(job && req.method === "GET") return send(res,200,JSON.stringify(jobs.get(job[1])||{state:"idle"}));
+    const job = url.pathname.match(/^\/api\/jobs\/([\w-]+)$/);
+    if (job && req.method === "GET") {
+      const persisted = await findPersistedBeatJob(job[1]);
+      if (persisted) {
+        jobs.set(job[1], persisted);
+        return send(res, 200, JSON.stringify(persisted));
+      }
+      return send(res, 200, JSON.stringify(jobs.get(job[1]) || {state: "idle"}));
+    }
     const preview=url.pathname.match(/^\/preview\/([\w-]+)$/);if(preview&&req.method==="GET"){const file=join(previewDir,`${preview[1]}.mp4`);if(!existsSync(file))return send(res,404,"Not found","text/plain");const info=await stat(file);res.writeHead(200,{"Content-Type":"video/mp4","Content-Length":info.size});return createReadStream(file).pipe(res);}
     const recovered=url.pathname.match(/^\/recovered-output\/([a-z0-9-]+)$/);if(recovered&&req.method==="GET"){const storage=projectPaths(root,recovered[1]),legacy=join(root,"out",recovered[1]+"-initial.mp4"),file=existsSync(storage.finalRenderFile)?storage.finalRenderFile:legacy;if(!existsSync(file))return send(res,404,"Not found","text/plain");const info=await stat(file);res.writeHead(200,{"Content-Type":"video/mp4","Content-Length":info.size});return createReadStream(file).pipe(res);}
     const output=url.pathname.match(/^\/output\/([\w-]+)$/);if(output&&req.method==="GET"){const record=jobs.get(output[1]);if(!record?.file||!existsSync(record.file))return send(res,404,"Not found","text/plain");const info=await stat(record.file);res.writeHead(200,{"Content-Type":"video/mp4","Content-Length":info.size});return createReadStream(record.file).pipe(res);}
     return send(res,404,"Not found","text/plain");
   } catch (error) {return send(res,500,JSON.stringify({error:error.message}));}
-}).listen(4318,"127.0.0.1",()=>console.log("Project Editor Web ready at http://127.0.0.1:4318"));
+}).listen(serverPort,"127.0.0.1",()=>console.log("Project Editor Web ready at http://127.0.0.1:"+serverPort));
 
 
 

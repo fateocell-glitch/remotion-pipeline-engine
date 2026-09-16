@@ -3,6 +3,10 @@ import { Check, X } from 'lucide-react';
 import './fonts';
 import { useEnter } from './motion';
 import { COLOR, FONT, MOTION, type SemanticColor } from './tokens';
+import { IcoFontPathIcon } from '../common/IcoFontPathIcon';
+import { readTextSlot } from '../common/EditableTextSlots';
+
+const LOGO_PALETTE = ['#4D9EFF', '#FFC53D', '#3DDC84', '#B26BFF'] as const;
 
 export type CompareItem = {
   logo?: React.ReactNode; // lucide 图标或 <Img>（白底方块内）
@@ -23,15 +27,25 @@ export const CompareCard: React.FC<{
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {items.map((it, i) => (
-        <ItemView key={i} item={it} width={width} enterAt={enterAt + i * staggerFrames} />
+        <ItemView key={i} item={it} index={i} width={width} enterAt={enterAt + i * staggerFrames} />
       ))}
     </div>
   );
 };
 
-const ItemView: React.FC<{ item: CompareItem; width: number; enterAt: number }> = ({ item, width, enterAt }) => {
+const ItemView: React.FC<{ item: CompareItem; index: number; width: number; enterAt: number }> = ({ item, index, width, enterAt }) => {
   const enter = useEnter(enterAt, 'left');
   const strong = COLOR[item.strongColor ?? 'blue'];
+  const logoColor = LOGO_PALETTE[index % LOGO_PALETTE.length];
+  const logoGlow = LOGO_PALETTE[(index + 1) % LOGO_PALETTE.length];
+  const defaultPayload = {
+    name: `ITEM ${index + 1}`,
+    weak: '待补充限制',
+    strong: '待补充优势',
+  };
+  const name = readTextSlot(item as unknown as Record<string, unknown>, 'name', defaultPayload, defaultPayload.name);
+  const weak = readTextSlot(item as unknown as Record<string, unknown>, 'weak', defaultPayload, defaultPayload.weak);
+  const strongText = readTextSlot(item as unknown as Record<string, unknown>, 'strong', defaultPayload, defaultPayload.strong);
   return (
     <div
       style={{
@@ -53,19 +67,29 @@ const ItemView: React.FC<{ item: CompareItem; width: number; enterAt: number }> 
           width: 68,
           height: 68,
           borderRadius: 15,
-          background: '#FFFFFF',
+          background: `linear-gradient(165deg, rgba(20,24,29,0.94), rgba(8,10,13,0.96)) padding-box, linear-gradient(135deg, ${logoColor}, ${logoGlow}, rgba(255,255,255,0.86)) border-box`,
+          border: '2px solid transparent',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: '#16181D',
+          color: logoColor,
           flexShrink: 0,
           overflow: 'hidden',
+          boxShadow: `0 0 20px ${logoColor}55, 0 0 34px ${logoGlow}2F, inset 0 1px 0 rgba(255,255,255,0.28)`,
         }}
       >
-        {item.logo}
+        <span
+          style={{
+            display: 'inline-flex',
+            color: logoColor,
+            filter: `drop-shadow(0 0 9px ${logoColor}AA) drop-shadow(0 0 18px ${logoGlow}66)`,
+          }}
+        >
+          {item.logo ?? <IcoFontPathIcon seed={`${name}|${weak}|${index}`} color={logoColor} size={38} fallbackIndex={index} />}
+        </span>
       </div>
       <div>
-        <div style={{ fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }}>{item.name}</div>
+        <div style={{ fontFamily: FONT.zh, fontWeight: FONT.zhHeavy, fontSize: 30, color: COLOR.white }}>{name}</div>
         <div style={{ display: 'flex', gap: 12, marginTop: 10 }}>
           <span
             style={{
@@ -82,7 +106,7 @@ const ItemView: React.FC<{ item: CompareItem; width: number; enterAt: number }> 
             }}
           >
             <X size={17} strokeWidth={3} />
-            {item.weak}
+            {weak}
           </span>
           <span
             style={{
@@ -99,7 +123,7 @@ const ItemView: React.FC<{ item: CompareItem; width: number; enterAt: number }> 
             }}
           >
             <Check size={17} strokeWidth={3} color={strong} />
-            {item.strong}
+            {strongText}
           </span>
         </div>
       </div>

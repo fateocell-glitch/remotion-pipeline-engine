@@ -27,6 +27,8 @@ type JcMotion = {
   beatDuration?: number;
   entranceDurationSeconds?: number;
   accent?: SemanticAccent;
+  layoutProps?: {sceneMode?: "speaker" | "cinematic"; align?: "left" | "right"};
+  language?: "zh" | "en";
 };
 
 const semanticAccents = new Set<SemanticAccent>(["blue", "green", "yellow", "red"]);
@@ -50,6 +52,8 @@ const JcEffectAdapter: React.FC<{cue: JasonWuCue; props: RecordValue}> = ({cue, 
       beatDuration={motion.beatDuration ?? Math.max(1, cue.end - cue.start)}
       entranceDurationSeconds={motion.entranceDurationSeconds ?? 2.2}
       accent={accentOf(motion.accent ?? props.accent)}
+      layoutProps={motion.layoutProps}
+      language={motion.language ?? cue.language}
       preserveNativeMotion
     >
       {stage}

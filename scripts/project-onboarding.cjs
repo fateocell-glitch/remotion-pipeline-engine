@@ -7,6 +7,7 @@ const {compactEffectCopy} = require("./services/effect-copy.cjs");
 const {normalizeSimplifiedChinese} = require("./services/text-analysis.cjs");
 const {enforceBeatTextSeparation, enforceHeadlineDiversity, extractBeatContent, matchWindowCaptions} = require("./services/beat-content-extraction.cjs");
 const {detectLanguage} = require("./services/language-support.cjs");
+const {resolveLanguageRoute} = require("./services/language-routing.cjs");
 
 const roundSeconds = (milliseconds) => Number((milliseconds / 1000).toFixed(2));
 
@@ -132,7 +133,43 @@ function repairSplitLatinRows(rows) {
   }
   return repaired;
 }
-function mergeShortCaptions(captions, {targetMin = 23, targetMax = 29, minDuration = 2.5, maxDuration = 4.5} = {}) {
+const englishWordCount = (value) => String(value || "").trim().split(/\s+/).filter(Boolean).length;
+
+function mergeEnglishCaptions(captions, {minWords = 8, maxWords = 18, maxDuration = 5} = {}) {
+  const rows = (captions || []).map((caption, index) => ({
+    ...caption,
+    id: String(caption?.id || "subtitle-" + String(index + 1).padStart(3, "0")),
+    start: Number(caption?.start),
+    end: Number(caption?.end),
+    zh: String(caption?.zh ?? caption?.en ?? caption?.text ?? "").replace(/\s+/g, " ").trim(),
+    en: String(caption?.en ?? caption?.zh ?? caption?.text ?? "").replace(/\s+/g, " ").trim(),
+  })).filter((caption) => Number.isFinite(caption.start) && Number.isFinite(caption.end) && caption.end > caption.start && caption.zh)
+    .sort((left, right) => left.start - right.start);
+  const merged = [];
+  let group = [];
+  const groupText = () => group.map((caption) => caption.zh).join(" ").replace(/\s+/g, " ").trim();
+  const flush = () => {
+    if (!group.length) return;
+    const first = group[0];
+    const last = group[group.length - 1];
+    const text = groupText();
+    merged.push({id: first.id || "subtitle-" + String(merged.length + 1).padStart(3, "0"), start: first.start, end: last.end, zh: text, en: text});
+    group = [];
+  };
+  for (const row of rows) {
+    const nextText = [groupText(), row.zh].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+    if (group.length && englishWordCount(nextText) > maxWords && englishWordCount(groupText()) >= minWords) flush();
+    group.push(row);
+    const text = groupText();
+    const duration = group[group.length - 1].end - group[0].start;
+    if ((/[.!?]$/.test(text) && englishWordCount(text) >= minWords) || (duration >= maxDuration && englishWordCount(text) >= minWords)) flush();
+  }
+  flush();
+  return merged.map((caption, index) => ({...caption, id: "subtitle-" + String(index + 1).padStart(3, "0")}));
+}
+
+function mergeShortCaptions(captions, {targetMin = 23, targetMax = 29, minDuration = 2.5, maxDuration = 4.5, language = "zh"} = {}) {
+  if (language === "en") return mergeEnglishCaptions(captions);
   const rows = repairSplitLatinRows((captions || []).map(normalizeCaptionRow)).flatMap((caption) => splitLongCaptionRow(caption, targetMin, targetMax, maxDuration))
     .filter((caption) => Number.isFinite(caption.start) && Number.isFinite(caption.end) && caption.end > caption.start && caption.zh)
     .sort((left, right) => left.start - right.start);
@@ -284,6 +321,9 @@ function buildProjectFromWhisper({
   transcript,
   translation,
   targetBeatDuration = 30,
+  sourceLanguage = "auto",
+  targetLanguage = "same",
+  detectedSourceLanguage,
 }) {
   if (!/^[a-z0-9-]+$/.test(projectId ?? "")) {
     throw new Error("Project id must use lowercase letters, numbers, and hyphens.");
@@ -292,8 +332,15 @@ function buildProjectFromWhisper({
   if (!Number.isFinite(target) || target < 25 || target > 35) {
     throw new Error("targetBeatDuration must be between 25 and 35 seconds.");
   }
-  const language = detectLanguage(transcript);
-  const captions = mergeWhisperCaptions(whisperToCaptions(transcript, language), translation, language);
+
+  const route = resolveLanguageRoute({
+    sourceLanguage,
+    targetLanguage,
+    detectedSourceLanguage: detectedSourceLanguage || detectLanguage(transcript),
+  });
+  const language = route.finalLanguage;
+  const captionLanguage = route.detectedSourceLanguage;
+  const captions = mergeWhisperCaptions(whisperToCaptions(transcript, captionLanguage), translation, captionLanguage);
   const beats = hydrateBeatDrafts(generateInitialBeats(duration, target, captions, {language}).map((beat) => ({
     id: beat.id,
     start: beat.start,
@@ -302,7 +349,7 @@ function buildProjectFromWhisper({
     subtitle: beat.headline,
     zh: beat.zh,
     en: language === "en" ? beat.zh : beat.en,
-    effectText: language === "en" ? beat.zh : beat.zh,
+    effectText: beat.zh,
     layout: beat.layout,
     layoutSource: "auto",
     layoutLocked: false,
@@ -322,6 +369,9 @@ function buildProjectFromWhisper({
     videoSrc,
     audioSrc,
     targetBeatDuration: target,
+    sourceLanguage: route.sourceLanguage,
+    targetLanguage: route.targetLanguage,
+    detectedSourceLanguage: route.detectedSourceLanguage,
     language,
     beats: separatedBeats,
     captions,

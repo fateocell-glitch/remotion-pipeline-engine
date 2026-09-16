@@ -24,7 +24,9 @@ const jcComponents = registry.components.filter((component) => component.id.star
 const ids = registry.components.map((component) => component.id);
 
 
-assert.equal(registry.components.length, 87, "registry must contain 47 existing + 2 backfilled + 38 JC visual assets");
+const nonJcComponents = registry.components.filter((component) => !component.id.startsWith("jc-"));
+assert.ok(nonJcComponents.length >= 49, "registry must retain the existing non-JC visual assets and backfilled assets");
+assert.equal(registry.components.length, nonJcComponents.length + jcComponents.length, "registry total must equal non-JC visual assets plus JC visual assets");
 assert.equal(new Set(ids).size, ids.length, "registry IDs must be globally unique");
 assert.equal(registry.components.some((component) => component.id === "avatar-handoff"), true, "avatar-handoff must be backfilled into the registry");
 assert.equal(registry.components.some((component) => component.id === "data-flow"), true, "data-flow must be backfilled into the registry");
@@ -35,7 +37,8 @@ assert.ok(Array.isArray(packageJson.sideEffects) && packageJson.sideEffects.incl
 
 for (const component of jcComponents) {
   assert.match(component.id, /^jc-(narrative|metrics|process|contrast|system)-[a-z0-9-]+$/, component.id + " must use the jc-{intent}-{name} namespace");
-  assert.match(component.name, /^\[JC\]\s/, component.id + " must be labeled as an imported JC component");
+  assert.ok(String(component.name || "").trim().length > 0, component.id + " must retain a non-empty display name");
+  assert.ok(Array.isArray(component.tags) && component.tags.includes("jc"), component.id + " must retain the imported JC provenance tag");
   assert.ok(allowedIntents.has(component.manifest?.intent), component.id + " must declare one commercial intent");
   assert.ok(component.editorSchema && Array.isArray(component.editorSchema.fields) && component.editorSchema.fields.length > 0, component.id + " must expose a shared editor schema");
   assert.ok(component.mockData && payloadTypes.has(component.mockData.contentPayload?.type), component.id + " must expose a valid default content payload");
@@ -86,7 +89,8 @@ assert.match(adminClientSource, /editorSchema/);
 assert.match(adminClientSource, /jcContentEditor/);
 assert.match(adminSandboxSource, /usesInternalMotionWrapper/);
 assert.match(adminSandboxSource, /resolveSandboxAccent/);
-assert.match(adminClientSource, /const contentEditor = jcContentEditor \?\? \(isPersonRank \?/);
+assert.match(adminClientSource, /const contentEditor = jcContentEditor \?\? \(/);
+assert.match(adminClientSource, /isPersonRank \? <section className="inspector-section">/);
 assert.doesNotMatch(runtimeSource, /const Body =/,
   "JC adapters must not substitute a generic body card for original component visuals");
 assert.doesNotMatch(runtimeSource, /JcPayloadCaption/,

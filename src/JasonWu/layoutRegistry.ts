@@ -11,6 +11,7 @@ import {
 } from "./IncompleteEffectComponents";
 import {PlatformShiftLine, TradeoffRejectRound, RecoveryProgressBars, HudGlowStack, BriefingPoster, RewindMilestones, FlyingPaperStack, ChecklistEditorial} from "./RecoveredEffectComponents";
 import {CopyOpenHeroTitle, CopyOpenProgressBar, CopyOpenComparisonCard, CopyOpenTerminalScene, CopyOpenEndTag, CopyOpenBarChart, CopyOpenLineChart, CopyOpenPieChart, CopyOpenKPIGrid} from "./CopyOpenComponents";
+import {SpeakerGrowthDashboard} from "./SpeakerGrowthDashboard";
 import type {JasonWuCue} from "./timeline";
 import {ValueVerdict} from "./ValueVerdict";
 import {jcLayoutDefinitions} from "./jcLayoutRegistry";
@@ -70,7 +71,7 @@ const CONTROLLED_FIELDS: Partial<Record<JasonWuCue["layout"], EditableField[]>> 
   "time-rewind": [text("headline", "回溯标题"), list("years", "时间节点"), prose("bodyText", "时间回溯内容正文")],
   "clipboard-note": [text("label", "便签标签"), prose("body", "正文内容"), text("highlightQuote", "副文内容"), checkboxColorField],
   "closing-checklist": [text("title", "清单标题（与核心大标题同步）"), list("items", "清单内容", "每项对应一个确认框"), checkboxColorField],
-  "platform-shift-line": [text("metricLabel", "增长指标标签"), {key: "count", label: "增长数量", type: "number"}, prose("summary", "增长说明"), list("milestones", "产品线节点"), text("startLabel", "起点标签"), text("endLabel", "终点标签")],
+  "platform-shift-line": [text("metricLabel", "正文内容"), {key: "count", label: "数值内容", type: "number"}, text("summary", "副文内容"), text("startLabel", "起点内容"), text("endLabel", "终点内容")],
   "tradeoff-reject-round": [text("label", "否定项标签"), prose("bodyText", "正文内容"), list("items", "否定项", "三项会显示在风险排除下方的红色叉号列表中")],
   "recovery-progress-bars": [text("label", "进度标签"), prose("bodyText", "正文内容"), list("items", "进度项目"), {key: "progress", label: "完成度", type: "number", description: "每条进度会在该数字正负 15% 内稳定浮动"}],
   "hud-glow-stack": [text("subLabel", "卡片辅助标签"), list("items", "HUD 卡片内容")],
@@ -88,9 +89,26 @@ const CONTROLLED_FIELDS: Partial<Record<JasonWuCue["layout"], EditableField[]>> 
   "copyopen-line-chart": [list("items", "折线横轴"), {key:"values",label:"折线数值",type:"string-list"}],
   "copyopen-pie-chart": [list("items", "分区标签"), {key:"values",label:"分区数值",type:"string-list"}],
   "copyopen-kpi-grid": [list("items", "指标标签"), {key:"values",label:"指标数值",type:"string-list"}],
+  "speaker-growth-dashboard": [text("eyebrow", "顶端标签"), text("subline", "副标题"), text("skillLabel", "能力标签"), text("feature1Title", "功能1【正文内容】"), text("feature1Sub", "功能1【副文内容】"), text("feature2Title", "功能2【正文内容】"), text("feature2Sub", "功能2【副文内容】"), text("metricTitle", "增长指标标题"), text("metricValue", "增长数字"), text("metricUnit", "数字单位"), text("metricSub", "指标副文"), text("footer", "底部说明")],
 };
 export const LAYOUT_MANIFEST: Partial<Record<JasonWuCue["layout"], ComponentManifest>> = {
-  "capital-dashboard": {
+  "speaker-growth-dashboard": {
+    "id": "speaker-growth-dashboard",
+    "intent": "metrics",
+    "capacity": {
+      "minItems": 1,
+      "maxItems": 3
+    },
+    "keywords": [
+      "口播",
+      "自媒体",
+      "增长",
+      "获客",
+      "会员",
+      "转化"
+    ],
+    "visualWeight": "heavy"
+  },  "capital-dashboard": {
     "id": "capital-dashboard",
     "intent": "metrics",
     "capacity": {
@@ -835,7 +853,7 @@ export const LAYOUT_DEFINITIONS: LayoutDef[] = [
   item("time-rewind", TimeRewind, "时间回溯", "逆向时间线叙事", "story", "primary", [], {bodyText: "时间回归"}),
   item("clipboard-note", ClipboardNote, "剪贴板批注", "便签与批注信息", "interactive", "primary", [prose("body", "正文内容"), text("highlightQuote", "副文内容"), checkboxColorField], {boxColor: "auto", body: "展示可编辑的真实组件预设", highlightQuote: "真实组件预设说明"}),
   item("closing-checklist", ClosingChecklist, "结尾清单", "结论项目逐项确认", "story", "primary", [{key: "title", label: "清单标题（与核心大标题同步）", type: "text"}, {key: "items", label: "清单内容", type: "string-list", description: "每项对应一个确认框"}, checkboxColorField], {title: "核心结论", boxColor: "auto"}),
-  item("platform-shift-line", PlatformShiftLine, "产品线增长", "蓝色增长数字与产品线节点", "data", "primary", [], {count: 3, metricLabel: "产品线", milestones: ["基础能力", "产品扩展", "规模增长"], startLabel: "起点", endLabel: "目标阶段"}),
+  item("platform-shift-line", PlatformShiftLine, "产品线增长", "蓝色增长数字与产品线节点", "data", "primary", [text("metricLabel", "正文内容"), {key: "count", label: "数值内容", type: "number"}, text("summary", "副文内容"), text("startLabel", "起点内容"), text("endLabel", "终点内容")], {count: 3, metricLabel: "产品线", summary: "展示可编辑的真实组件预设", startLabel: "起点", endLabel: "目标阶段"}),
   item("tradeoff-reject-round", TradeoffRejectRound, "圆形红色否定项", "无边框红色圆叉的风险清单", "story", "primary", [{key: "label", label: "否定项标签", type: "text"}, {key: "bodyText", label: "正文内容", type: "textarea"}, {key: "items", label: "否定项", type: "string-list"}], {label: "风险排除", bodyText: "展示可编辑的真实组件预设", items: ["核心信息", "视觉节奏", "行动结论"]}),
   item("recovery-progress-bars", RecoveryProgressBars, "进度确认条", "进度条与右侧确认标记", "data", "primary", [], {label: "执行进度", bodyText: "展示可编辑的真实组件预设", items: ["需求确认", "能力建设", "结果验证"], progress: 76}),
   item("hud-glow-stack", HudGlowStack, "HUD 浮动发光", "叠放的高亮 HUD 信息卡", "interactive", "primary", [], {subLabel: "LIVE SIGNAL", items: ["核心信号", "关键判断", "下一步动作"]}),
@@ -853,6 +871,7 @@ export const LAYOUT_DEFINITIONS: LayoutDef[] = [
   item("copyopen-line-chart", CopyOpenLineChart, "CopyOpen LineChart", "CopyOpen 原版折线绘制图", "data", "primary", [], {items: ["0", "10", "20", "30"], values: [100, 91, 86, 78]}),
   item("copyopen-pie-chart", CopyOpenPieChart, "CopyOpen PieChart", "CopyOpen 原版环形分布图", "data", "primary", [], {items: ["Hook", "Proof", "Story", "CTA"], values: [35, 30, 20, 15], value: 8, label: "clips"}),
   item("copyopen-kpi-grid", CopyOpenKPIGrid, "CopyOpen KPIGrid", "CopyOpen 原版 KPI 仪表网格", "data", "primary", [], {items: ["clips", "avg score", "minutes saved"], values: [8, 86, 74]}),
+  item("speaker-growth-dashboard", SpeakerGrowthDashboard, "口播增长仪表盘", "柱子哥/TzFilm 风格左侧口播增长数据仪表盘", "data", "primary", [], {eyebrow: "LIVE · AI AGENT", subline: "自媒体运营 · 实时演示", headline: "Hermes", skillLabel: "自媒体运营 SKILL", feature1Title: "评论区自动回复", feature1Sub: "AUTO-REPLY", feature2Title: "委婉推荐 · 财务自由团", feature2Sub: "SOFT CTA", metricTitle: "入群率 猛增", metricValue: "165", metricUnit: "生效会员", metricSub: "NEW MEMBERS · 近 30 天", footer: "获客一把好手 · GROWTH ENGINE"}),
   ...jcLayoutDefinitions,
 ];
 

@@ -4,7 +4,7 @@ const {mkdtemp} = require("node:fs/promises");
 const {tmpdir} = require("node:os");
 const {join} = require("node:path");
 
-const {getComponentRegistry, getFamilyCandidates, moveComponentToFamily, updateComponentPreset} = require('./services/component-registry-store.cjs');
+const {getComponentRegistry, getFamilyCandidates, moveComponentToFamily, reorderComponentsInFamily, updateComponentPreset} = require('./services/component-registry-store.cjs');
 
 test("registry exposes at least the current 47 visual components in five families and keeps subtitles separate", async () => {
   const registry = await getComponentRegistry(process.cwd());
@@ -49,6 +49,26 @@ test("moving a component to another family persists without changing its visual 
   assert.equal(moved.version, original.version);
 });
 
+
+
+
+test("reordering components inside a family persists without changing their family or version", async () => {
+  const root = await mkdtemp(join(tmpdir(), "component-family-order-"));
+  const before = await getComponentRegistry(root);
+  const metrics = before.components.filter((component) => component.family === "metrics").slice(0, 3);
+  assert.equal(metrics.length, 3);
+  const order = [metrics[2].id, metrics[0].id, metrics[1].id];
+  const saved = await reorderComponentsInFamily(root, "metrics", order);
+  const after = await getComponentRegistry(root);
+  const afterMetrics = after.components.filter((component) => component.family === "metrics").slice(0, 3);
+  assert.deepEqual(saved.slice(0, 3).map((component) => component.id), order);
+  assert.deepEqual(afterMetrics.map((component) => component.id), order);
+  for (const component of metrics) {
+    const next = after.components.find((item) => item.id === component.id);
+    assert.equal(next.family, "metrics");
+    assert.equal(next.version, component.version);
+  }
+});
 
 test("component tokens support separate title and content scale and compact progress defaults", async () => {
   const root = await mkdtemp(join(tmpdir(), "component-scale-"));

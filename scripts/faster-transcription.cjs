@@ -3,13 +3,19 @@
 const {readFile, writeFile} = require("node:fs/promises");
 const {join} = require("node:path");
 const {spawn} = require("node:child_process");
+const {normalizeDetectedLanguage, normalizeSourceLanguage} = require("./services/language-routing.cjs");
 
 const root = process.cwd();
 const FASTER_WHISPER_PYTHON = "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe";
 const FASTER_WHISPER_SCRIPT = join("scripts", "transcribe_faster.py");
 
-function fasterWhisperArgs({audioPath, outputPath, language = "zh", task = "transcribe", model = process.env.FASTER_WHISPER_MODEL || "medium", beamSize = process.env.FASTER_WHISPER_BEAM_SIZE || 1, cpuThreads = process.env.FASTER_WHISPER_CPU_THREADS || 8}) {
-  return [FASTER_WHISPER_SCRIPT, "--audio", audioPath, "--output", outputPath, "--language", language, "--task", task, "--model", String(model), "--beam-size", String(beamSize), "--cpu-threads", String(cpuThreads)];
+function normalizeWhisperLanguage(language) {
+  return normalizeSourceLanguage(language);
+}
+
+function fasterWhisperArgs({audioPath, outputPath, language = "auto", task = "transcribe", model = process.env.FASTER_WHISPER_MODEL || "medium", beamSize = process.env.FASTER_WHISPER_BEAM_SIZE || 1, cpuThreads = process.env.FASTER_WHISPER_CPU_THREADS || 8}) {
+  if (task !== "transcribe") throw new Error("faster-whisper only supports the native transcribe task.");
+  return [FASTER_WHISPER_SCRIPT, "--audio", audioPath, "--output", outputPath, "--language", normalizeWhisperLanguage(language), "--task", "transcribe", "--model", String(model), "--beam-size", String(beamSize), "--cpu-threads", String(cpuThreads)];
 }
 function progressFromOutput(line) {
   const match = String(line).match(/^TRANSCRIBE_PROGRESS\s+(\{.*\})\s*$/);
@@ -22,6 +28,15 @@ function progressFromOutput(line) {
   }
 }
 
+function detectedLanguageFromOutput(line) {
+  const match = String(line).match(/^TRANSCRIBE_LANGUAGE\s+(\{.*\})\s*$/);
+  if (!match) return "";
+  try {
+    return normalizeDetectedLanguage(JSON.parse(match[1])?.language);
+  } catch (_) {
+    return "";
+  }
+}
 function captionsToWhisperTranscript(captions, language = "zh") {
   return {
     result: {language},
@@ -45,11 +60,12 @@ function whisperTranscriptToCaptions(transcript) {
   })).filter((caption) => caption.text && caption.end > caption.start);
 }
 
-function runFasterTranscription({audioPath, outputPath, language = "zh", task = "transcribe", model, beamSize, cpuThreads, onProgress}) {
+function runFasterTranscription({audioPath, outputPath, language = "auto", task = "transcribe", model, beamSize, cpuThreads, onProgress, returnMetadata = false}) {
   return new Promise((resolve, reject) => {
     const child = spawn(FASTER_WHISPER_PYTHON, fasterWhisperArgs({audioPath, outputPath, language, task, model, beamSize, cpuThreads}), {cwd: root, windowsHide: true});
     let output = "";
     let buffer = "";
+    let detectedLanguage = "";
     const absorb = (chunk) => {
       const text = String(chunk);
       output = (output + text).slice(-12000);
@@ -59,6 +75,7 @@ function runFasterTranscription({audioPath, outputPath, language = "zh", task = 
       for (const line of lines) {
         const progress = progressFromOutput(line);
         if (progress) onProgress?.(progress);
+        detectedLanguage = detectedLanguage || detectedLanguageFromOutput(line);
       }
     };
     child.stdout.on("data", absorb);
@@ -68,7 +85,7 @@ function runFasterTranscription({audioPath, outputPath, language = "zh", task = 
       if (code !== 0) return reject(new Error(output || "faster-whisper transcription failed."));
       try {
         const captions = JSON.parse(await readFile(outputPath, "utf8"));
-        resolve(captions);
+        resolve(returnMetadata ? {captions, detectedLanguage: detectedLanguage || normalizeWhisperLanguage(language)} : captions);
       } catch (error) {
         reject(error);
       }
@@ -86,7 +103,9 @@ module.exports = {
   FASTER_WHISPER_PYTHON,
   FASTER_WHISPER_SCRIPT,
   captionsToWhisperTranscript,
+  detectedLanguageFromOutput,
   fasterWhisperArgs,
+  normalizeWhisperLanguage,
   progressFromOutput,
   runFasterTranscription,
   whisperTranscriptToCaptions,

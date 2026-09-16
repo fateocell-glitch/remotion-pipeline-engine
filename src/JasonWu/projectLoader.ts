@@ -15,14 +15,16 @@ const applyProjectBeat = (cue: JasonWuCue, beat: VideoProject["beats"][number]):
   effectProps: beat.effectProps ?? cue.effectProps,
   layers: beat.layers,
   faceZone: beat.faceZone ?? null,
+  language: "zh",
 });
 
 export const projectToCues = (project: VideoProject): JasonWuCue[] => {
+  const language = project.language ?? "zh";
   const byId = new Map(project.beats.map((beat) => [beat.id, beat]));
   if (project.projectId === "zhuzige-ceo") {
     return zhuzigeFullCues.map((cue) => {
       const beat = byId.get(cue.id);
-      return beat ? applyProjectBeat(cue, beat) : cue;
+      return {...(beat ? applyProjectBeat(cue, beat) : cue), language};
     });
   }
 
@@ -36,6 +38,7 @@ export const projectToCues = (project: VideoProject): JasonWuCue[] => {
     effectProps: beat.effectProps,
     layers: beat.layers,
     faceZone: beat.faceZone ?? null,
+    language,
   }));
 };
 

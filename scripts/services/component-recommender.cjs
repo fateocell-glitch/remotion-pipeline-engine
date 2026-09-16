@@ -18,6 +18,7 @@ const componentManifest = {
   "copyopen-line-chart": {intent:"metrics", capacity:{minItems:3,maxItems:5}, keywords:["趋势","增长","曲线","时间"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","timeline","growth"], data:["list","number"]},
   "copyopen-pie-chart": {intent:"metrics", capacity:{minItems:3,maxItems:5}, keywords:["占比","比例","分布","份额"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","market","comparison"], data:["list","percentage"]},
   "copyopen-kpi-grid": {intent:"metrics", capacity:{minItems:3,maxItems:6}, keywords:["KPI","指标","数据","增长"], visualWeight:"medium", family:"F1_QUANTITATIVE", tags:["metrics","market","growth"], data:["list","number"]},
+  "speaker-growth-dashboard": {intent:"metrics", capacity:{minItems:1,maxItems:3}, keywords:["口播","自媒体","增长","获客","入群","会员","转化"], visualWeight:"heavy", family:"F1_QUANTITATIVE", tags:["metrics","growth","speaker","tzfilm"], data:["number","text"]},
 
   "ordered-sequence": {intent:"process", capacity:{minItems:2,maxItems:5}, keywords:["第一步","第二步","阶段","步骤","流程"], visualWeight:"medium", family:"F2_TIMELINE_PROCESS", tags:["process","steps"], data:["list"]},
   "event-timeline": {intent:"process", capacity:{minItems:3,maxItems:5}, keywords:["时间线","阶段","演进","节点"], visualWeight:"medium", family:"F2_TIMELINE_PROCESS", tags:["timeline","process"], data:["list","time"]},

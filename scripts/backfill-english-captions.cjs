@@ -22,20 +22,18 @@ function applyEnglishCaptions(project, translatedCaptions, rawTranslations = [])
 async function backfillEnglish(projectId) {
   const projectFile = join(root, "src", "JasonWu", "projects", `${projectId}.json`);
   const project = JSON.parse(await readFile(projectFile, "utf8"));
+  const sourceLanguage = project.detectedSourceLanguage || project.sourceLanguage || project.language;
+  if (sourceLanguage !== "en") throw new Error("This helper only re-transcribes native English audio; it does not translate another source language.");
   const audioPath = join(root, "public", project.audioSrc);
-  if (!existsSync(audioPath)) {
-    throw new Error("Project audio is missing.");
-  }
+  if (!existsSync(audioPath)) throw new Error("Project audio is missing.");
   const outputFile = join(root, "out", `${projectId}-faster-whisper-en.json`);
-  const translatedRows = await runFasterTranscription({audioPath, outputPath: outputFile, language: "zh", task: "translate"});
-  const translated = captionsToWhisperTranscript(translatedRows, "en");
-  const translatedCaptions = mergeWhisperCaptions(project.captions, translated);
-  const rawTranslations = (translated.transcription ?? []).map((item) => String(item.text ?? "").trim());
-  const updated = applyEnglishCaptions(project, translatedCaptions, rawTranslations);
+  const nativeRows = await runFasterTranscription({audioPath, outputPath: outputFile, language: "en", task: "transcribe"});
+  const native = captionsToWhisperTranscript(nativeRows, "en");
+  const nativeCaptions = mergeWhisperCaptions(project.captions, native, "en");
+  const updated = applyEnglishCaptions(project, nativeCaptions);
   await writeFile(projectFile, `${JSON.stringify(updated, null, 2)}\n`);
   return updated;
 }
-
 module.exports = {applyEnglishCaptions, backfillEnglish};
 
 if (require.main === module) {

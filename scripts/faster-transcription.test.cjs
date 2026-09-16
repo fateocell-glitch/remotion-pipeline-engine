@@ -58,16 +58,13 @@ test("converts faster bridge captions to the existing Whisper transcript shape",
   });
 });
 
-test("adds translate mode for English caption backfill", () => {
-  const args = fasterWhisperArgs({
+test("rejects translate mode so source speech is always transcribed natively", () => {
+  assert.throws(() => fasterWhisperArgs({
     audioPath: "D:\\projects\\iphon\\source\\audio.wav",
     outputPath: "D:\\projects\\iphon\\source\\captions.en.json",
-    language: "zh",
+    language: "en",
     task: "translate",
-  });
-
-  assert.equal(args.includes("translate"), true);
-  assert.equal(args.includes("medium"), true);
+  }), /transcribe/i);
 });
 
 test("allows overriding model and beam size for high-accuracy transcription", () => {

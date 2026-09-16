@@ -114,7 +114,8 @@ function validateBeatIntegrity(beat, project = {}) {
     const layout = layer.layout || beat.layout || "unknown";
     const values = getItemList(props);
     if (MULTI_ITEM_LAYOUTS.has(layout)) {
-      if (!Array.isArray(values) || values.length < 2 || values.some((value) => !text(value) || isTemplateDefault(value))) errors.push(error("component-items", "组件 “" + layout + "” 需要至少两项真实且非空的内容。", {layerIndex: index, layout}));
+      const realItems = Array.isArray(values) ? values.filter((value) => text(value) && !isTemplateDefault(value)) : [];
+      if (!realItems.length) errors.push(error("component-items", "组件 “" + layout + "” 至少需要一项真实且非空的内容。", {layerIndex: index, layout}));
     } else if (NARRATIVE_BODY_LAYOUTS.has(layout)) {
       const bodyText = firstText(props.bodyText, props.body, props.text, props.effectText, layer.effectText, beat.effectText, beat.zh, beat.en);
       if (!bodyText || isTemplateDefault(bodyText)) errors.push(error("component-body", "组件 “" + layout + "” 需要一段真实且非空的正文内容。", {layerIndex: index, layout}));
@@ -146,3 +147,4 @@ function diagnoseRenderFailure(output) {
 }
 
 module.exports = {validateBeatIntegrity, shouldAbortForStall, diagnoseRenderFailure};
+

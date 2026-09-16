@@ -60,6 +60,8 @@ function hydrateLayerWithPayload(layout, effectProps = {}, captions = []) {
     editorSchema: component?.editorSchema || {},
     family: component?.family || "",
     captions,
+    defaultPayload: component?.defaultPayload || component?.mockData?.contentPayload,
+    mockData: component?.mockData || {},
     copy: {
       headline: effectProps.headline,
       effectText: effectProps.effectText || effectProps.effectZh,
@@ -76,6 +78,7 @@ function hydrateLayerWithPayload(layout, effectProps = {}, captions = []) {
     next.itemSubtitles = contentPayload.items.map((item) => item.subtitle || "");
     next.subLabels = next.itemSubtitles;
   } else if (contentPayload.type === "steps") {
+    Object.assign(next, extraction.fields);
     const items = contentPayload.steps.map((item) => item.text);
     next.items = items; next.steps = items; next.years = items; next.nodes = items; next.units = items; next.comments = items;
     if (contentPayload.bodyText) { next.bodyText = contentPayload.bodyText; next.body = contentPayload.bodyText; }
@@ -122,7 +125,8 @@ function extractListItems(captions, beat, max = 4) {
   return [...items, ...fallback.filter((item) => !items.includes(item))].slice(0, max);
 }
 
-function buildEffectProps(beat, captions, layout, previousAccent = "") {
+function buildEffectProps(beat, captions, layout, previousAccent = "", language = "zh") {
+  const isEnglish = language === "en";
   const card = beat.visualCard || {};
   const sourceText = (captions || []).map((caption) => String(caption.zh || caption.en || "")).join(" ");
   const textRole = typeof card.role === "string" ? card.role : typeof card.textRole === "string" ? card.textRole : typeof beat.role === "string" ? beat.role : typeof beat.textRole === "string" ? beat.textRole : inferCommercialTextRole({captions, layerIndex: 0, layerCount: 1});
@@ -136,27 +140,27 @@ function buildEffectProps(beat, captions, layout, previousAccent = "") {
   const metrics = numericValuesFromCaptions(captions);
   const contentPayload = contentPayloadFor(layout, headline, effectZh, items, bodyText, metrics);
   const shared = {textRole, role: textRole, accent, headline, eyebrow: compact(beat.eyebrow), effectText: effectZh, effectZh, body: bodyText, bodyText, title: headline, items: takeItems(layout, items), steps: takeItems(layout, items), units: takeItems(layout, items), comments: takeItems(layout, items), contentPayload, ...(contentPayload.type === "chips" ? {itemSubtitles: contentPayload.items.map((item) => item.subtitle || ""), subLabels: contentPayload.items.map((item) => item.subtitle || "")} : {})};
-  if (layout === "platform-shift-line") return {...shared, count: Math.max(1, items.length), metricLabel: "产品线", milestones: takeItems(layout, items), startLabel: "起点", endLabel: "目标阶段", summary: effectZh};
-  if (layout === "tradeoff-reject-round") return {...shared, label: "风险排除", title: headline, items: takeItems(layout, items)};
-  if (layout === "recovery-progress-bars") return {...shared, label: "执行进度", title: headline, items: takeItems(layout, items), values: takeItems(layout, items).map((_, index) => 76 - index * 14)};
+  if (layout === "platform-shift-line") return {...shared, count: Math.max(1, items.length), metricLabel: isEnglish ? "PRODUCT LINE" : "产品线", milestones: takeItems(layout, items), startLabel: isEnglish ? "START" : "起点", endLabel: isEnglish ? "TARGET STAGE" : "目标阶段", summary: effectZh};
+  if (layout === "tradeoff-reject-round") return {...shared, label: isEnglish ? "RISK SCREEN" : "风险排除", title: headline, items: takeItems(layout, items)};
+  if (layout === "recovery-progress-bars") return {...shared, label: isEnglish ? "EXECUTION" : "执行进度", title: headline, items: takeItems(layout, items), values: takeItems(layout, items).map((_, index) => 76 - index * 14)};
   if (layout === "hud-glow-stack") return {...shared, subLabel: beat.eyebrow || "LIVE SIGNAL", items: takeItems(layout, items)};
-  if (layout === "briefing-poster") return {...shared, label: "简报摘要", title: headline, items: takeItems(layout, items)};
-  if (layout === "rewind-milestones") return {...shared, label: "时间回溯", title: headline, years: takeItems(layout, items), milestoneLabel: "能力演进"};
+  if (layout === "briefing-poster") return {...shared, label: isEnglish ? "BRIEF SUMMARY" : "简报摘要", title: headline, items: takeItems(layout, items)};
+  if (layout === "rewind-milestones") return {...shared, label: isEnglish ? "MILESTONE REVIEW" : "时间回溯", title: headline, years: takeItems(layout, items), milestoneLabel: isEnglish ? "CAPABILITY SHIFT" : "能力演进"};
   if (layout === "flying-paper-stack") return {...shared, headline, ghostTitle: items[0] || headline, body: effectZh};
-  if (layout === "checklist-editorial") return {...shared, label: "最终确认", title: headline, items: takeItems(layout, items)};
-  if (layout === "ordered-sequence") return {...shared, categoryTag: beat.eyebrow || "核心步骤"};
+  if (layout === "checklist-editorial") return {...shared, label: isEnglish ? "FINAL CHECK" : "最终确认", title: headline, items: takeItems(layout, items)};
+  if (layout === "ordered-sequence") return {...shared, categoryTag: beat.eyebrow || (isEnglish ? "CORE STEPS" : "核心步骤")};
   if (layout === "diagonal-chips" || layout === "floating-chips" || layout === "photo-wall" || layout === "desktop-folders" || layout === "product-explosion") return shared;
   if (layout === "pivot-list") return {...shared, text: effectZh};
   if (layout === "zoom-statement") return {...shared, headline: effectZh, title: headline, body: effectZh};
-  if (layout === "data-flow" || layout === "cook-machine") return {...shared, leftLabel: items[0] || headline, leftValue: items[1] || headline, rightLabel: items[2] || "关键结论", rightValue: effectZh, from: 0, to: 100};
+  if (layout === "data-flow" || layout === "cook-machine") return {...shared, leftLabel: items[0] || headline, leftValue: items[1] || headline, rightLabel: items[2] || (isEnglish ? "KEY TAKEAWAY" : "关键结论"), rightValue: effectZh, from: 0, to: 100};
   if (layout === "event-timeline") return {...shared, years: takeItems(layout, items)};
   if (layout === "capital-dashboard") return {...shared, marketLabel: items[0] || headline, marketTo: metrics[0] ?? "", marketSuffix: metrics.length ? "%" : "", engineeringLabel: items[1] || effectZh, engineeringTo: metrics[1] ?? "", engineeringSuffix: metrics.length > 1 ? "%" : ""};
   if (layout === "progress-donut" || layout === "check-progress") return {...shared, label: headline, progress: metrics[0] ?? "", value: metrics[0] ?? "", metric: effectZh};
-  if (layout === "person-rank" || layout === "avatar-handoff") return {...shared, leftName: items[0] || headline, leftRole: beat.eyebrow || "前序角色", rightName: items[1] || effectZh, rightRole: "目标角色"};
-  if (layout === "org-chart") return {...shared, leader: headline, leaderRole: beat.eyebrow || "核心节点"};
-  if (layout === "bull-bear") return {...shared, bullLabel: "多方观点", bullText: contentPayload.bodyText || bodyText, bearLabel: "空方观点", bearText: contentPayload.bearText || effectZh, highlightQuote: contentPayload.highlightQuote || headline};
+  if (layout === "person-rank" || layout === "avatar-handoff") return {...shared, leftName: items[0] || headline, leftRole: beat.eyebrow || (isEnglish ? "PREVIOUS ROLE" : "前序角色"), rightName: items[1] || effectZh, rightRole: isEnglish ? "TARGET ROLE" : "目标角色"};
+  if (layout === "org-chart") return {...shared, leader: headline, leaderRole: beat.eyebrow || (isEnglish ? "CORE NODE" : "核心节点")};
+  if (layout === "bull-bear") return {...shared, bullLabel: isEnglish ? "BULL CASE" : "多方观点", bullText: contentPayload.bodyText || bodyText, bearLabel: isEnglish ? "BEAR CASE" : "空方观点", bearText: contentPayload.bearText || effectZh, highlightQuote: contentPayload.highlightQuote || headline};
   if (layout === "closing-checklist" || layout === "reject-list" || layout === "clipboard-note") return {...shared, boxColor: "auto"};
-  if (layout === "newspaper-swap") return {...shared, oldLabel: "此前判断", oldHeadline: effectZh, newLabel: beat.eyebrow || "最新判断", newHeadline: headline, footer: effectZh};
+  if (layout === "newspaper-swap") return {...shared, oldLabel: isEnglish ? "PREVIOUS VIEW" : "此前判断", oldHeadline: effectZh, newLabel: beat.eyebrow || (isEnglish ? "LATEST VIEW" : "最新判断"), newHeadline: headline, footer: effectZh};
   if (layout === "route-map" || layout === "market-battlefield") return {...shared, nodes: takeItems(layout, items)};
   return shared;
 }
@@ -165,7 +169,7 @@ function applyEffectProps(beat, layout, effectProps) {
   const found = layers.findIndex((layer) => layer.layout === layout);
   const index = found < 0 ? 0 : found;
   if (!layers.length) layers.push({layerId: "layer-1", layout, effectProps: {}, commonProps: {enterOffset: 0}, enterOffset: 0});
-  layers[index] = {...layers[index], layout, category: effectProps.eyebrow, headline: effectProps.headline, effectText: effectProps.effectText, textRole: effectProps.textRole, role: effectProps.role || effectProps.textRole, accent: effectProps.accent, payload: {...effectProps}, effectProps: {...effectProps}};
+  layers[index] = {...layers[index], layout, category: effectProps.eyebrow, headline: effectProps.headline, effectText: effectProps.effectText, textRole: effectProps.textRole, role: effectProps.role || effectProps.textRole, accent: effectProps.accent, contentPayload: effectProps.contentPayload, payload: {...effectProps}, effectProps: {...effectProps}};
   return {...beat, layout, effectProps: {...effectProps}, layers};
 }
 
@@ -222,13 +226,13 @@ function buildTimedEffectLayers(project, beat, beatIndex, layerCount, history, {
     const captions = windowCaptions(project.captions, start, end);
     const text = captions.map((caption) => String(caption.zh || "") + " " + String(caption.en || "")).join(" ");
     const semanticIndex = beatIndex * layerCount + layerIndex;
-    const extracted = extractBeatContent(beat.id + "-layer-" + (layerIndex + 1), captions, {start, end, layerIndex, layerCount, previousAccent: layers.at(-1)?.accent}, semanticIndex);
+    const extracted = extractBeatContent(beat.id + "-layer-" + (layerIndex + 1), captions, {start, end, language: project.language, layerIndex, layerCount, previousAccent: layers.at(-1)?.accent}, semanticIndex);
     const derived = layerIndex > 0 ? diversifyVisualCard(extracted, layers.at(-1)?.headline, captions) : extracted;
     const layout = preserveLayout && layerIndex === 0 && typeof beat.layout === "string" && beat.layout
       ? beat.layout
       : inferLayoutFromContent(text, beatIndex, project.beats.length, layerHistory, layerIndex, captions, layerCount, derived.textRole);
     const localBeat = {...beat, start, end, eyebrow: derived.chapter || beat.eyebrow, subtitle: derived.headline || beat.subtitle, zh: derived.effectZh || beat.zh, effectText: derived.effectZh || beat.effectText || beat.zh, visualCard: derived};
-    const effectProps = hydrateLayerWithPayload(layout, buildEffectProps(localBeat, captions, layout, layers.at(-1)?.accent), captions);
+    const effectProps = hydrateLayerWithPayload(layout, buildEffectProps(localBeat, captions, layout, layers.at(-1)?.accent, project.language), captions);
     layers.push({
       layerId: "layer-" + (layerIndex + 1),
       layout,
@@ -236,6 +240,8 @@ function buildTimedEffectLayers(project, beat, beatIndex, layerCount, history, {
       headline: effectProps.headline,
       effectText: effectProps.effectText,
       textRole: effectProps.textRole,
+      contentPayload: effectProps.contentPayload,
+
       payload: {...effectProps},
       effectProps,
       commonProps: timedCommonProps(beat.start, start, end, layerIndex === layerCount - 1),
@@ -270,7 +276,7 @@ function autoMatchProject(project, {force = false, preserveLayout = false, effec
     const text = captions.map((caption) => String(caption.zh || "") + " " + String(caption.en || "")).join(" ");
     const layout = preserveLayout && typeof beat.layout === "string" && beat.layout ? beat.layout : inferLayoutFromContent(text, index, project.beats.length, history, 0, captions, 1);
     history.push({layout, family: componentRegistry[layout]?.family, intent: componentManifest[layout]?.intent, beatIndex:index, layerIndex:0});
-    const effectProps = hydrateLayerWithPayload(layout, buildEffectProps(beat, captions, layout, history.at(-1)?.accent), captions);
+    const effectProps = hydrateLayerWithPayload(layout, buildEffectProps(beat, captions, layout, history.at(-1)?.accent, project.language), captions);
     const next = applyEffectProps(beat, layout, effectProps);
     if (JSON.stringify({layout: beat.layout, effectProps: beat.effectProps, layers: beat.layers}) !== JSON.stringify({layout: next.layout, effectProps: next.effectProps, layers: next.layers})) changed.push(beat.id);
     return {...next, layoutSource: "auto", layoutLocked: false};

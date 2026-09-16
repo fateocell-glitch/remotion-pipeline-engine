@@ -5,6 +5,7 @@ const path = require("node:path");
 const {cleanWhisperTranscript} = require("./services/transcript-cleaner.cjs");
 const {captionsToWhisperTranscript, runFasterTranscription, writeCaptionBridgeOutput} = require("./faster-transcription.cjs");
 const {whisperToCaptions} = require("./project-onboarding.cjs");
+const {resolveLanguageRoute} = require("./services/language-routing.cjs");
 
 const projectId = process.argv[2];
 if (!projectId) throw new Error("Usage: node scripts/retranscribe-project.cjs <projectId>");
@@ -17,24 +18,36 @@ if (!fs.existsSync(projectFile)) throw new Error("Project not found: " + project
 if (!fs.existsSync(audioFile)) throw new Error("Project audio not found: " + audioFile);
 
 (async () => {
+  const project = JSON.parse(fs.readFileSync(projectFile, "utf8"));
+  const route = resolveLanguageRoute({
+    sourceLanguage: project.sourceLanguage,
+    targetLanguage: project.targetLanguage,
+    detectedSourceLanguage: project.detectedSourceLanguage,
+  });
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   const backupDir = path.join(projectDir, "backups");
   fs.mkdirSync(backupDir, {recursive: true});
   fs.copyFileSync(projectFile, path.join(backupDir, "project-before-retranscribe-" + stamp + ".json"));
   const outputFile = path.join(projectDir, "source", "captions.cleaned.json");
-  console.log(JSON.stringify({stage: "transcribing", projectId, engine: "faster-whisper"}, null, 2));
-  const bridgeCaptions = await runFasterTranscription({
+  console.log(JSON.stringify({stage: "transcribing", projectId, engine: "faster-whisper", sourceLanguage: route.sourceLanguage}, null, 2));
+  const transcriptionResult = await runFasterTranscription({
     audioPath: audioFile,
     outputPath: outputFile,
-    language: "zh",
+    language: route.sourceLanguage,
+    task: "transcribe",
+    returnMetadata: true,
     onProgress: ({count, text}) => console.log(JSON.stringify({stage: "transcribing", projectId, captions: count, text})),
   });
-  const raw = captionsToWhisperTranscript(bridgeCaptions, "zh");
+  const detectedRoute = resolveLanguageRoute({...route, detectedSourceLanguage: transcriptionResult.detectedLanguage});
+  const raw = captionsToWhisperTranscript(transcriptionResult.captions, detectedRoute.detectedSourceLanguage);
   const cleaned = cleanWhisperTranscript(raw);
-  const project = JSON.parse(fs.readFileSync(projectFile, "utf8"));
-  const captions = whisperToCaptions(cleaned, "zh");
+  const captions = whisperToCaptions(cleaned, detectedRoute.detectedSourceLanguage);
   fs.writeFileSync(path.join(projectDir, "source", "captions.json"), JSON.stringify(raw, null, 2) + "\n");
   await writeCaptionBridgeOutput(path.join(projectDir, "source", "captions.cleaned.json"), cleaned);
+  project.sourceLanguage = detectedRoute.sourceLanguage;
+  project.targetLanguage = detectedRoute.targetLanguage;
+  project.detectedSourceLanguage = detectedRoute.detectedSourceLanguage;
+  project.language = detectedRoute.finalLanguage;
   project.captions = captions;
   project.transcript = {...(project.transcript || {}), rawPath: "source/captions.json", cleanedPath: "source/captions.cleaned.json", cleaning: cleaned.cleaning, reprocessedAt: new Date().toISOString(), engine: "faster-whisper"};
   project.updatedAt = new Date().toISOString();
